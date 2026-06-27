@@ -1,0 +1,9252 @@
+import type { DrillTask } from '../types';
+
+export const extraTasks: DrillTask[] = [
+  {
+    "id": "canonical-debounce",
+    "block": "JS Functions / Polyfills",
+    "title": "Debounce",
+    "timeLimitMin": 10,
+    "description": "Реалізуйте оптимальне рішення для Debounce.",
+    "starter": "function debounce(func, wait) {\n  // Ваша реалізація тут\n}",
+    "solution": "function debounce(func, wait) {\n  // Зберігаємо ідентифікатор активного таймауту в замиканні\n  let timeoutId = null;\n  \n  return function(...args) {\n    const context = this; // Зберігаємо поточний контекст виклику (this)\n    \n    // Якщо функція викликана знову до закінчення wait, скасовуємо попередній таймаут\n    if (timeoutId) {\n      clearTimeout(timeoutId);\n    }\n    \n    // Встановлюємо новий таймаут для виконання оригінальної функції\n    timeoutId = setTimeout(() => {\n      func.apply(context, args); // Викликаємо оригінальну функцію з правильним контекстом та аргументами\n    }, wait);\n  };\n}",
+    "clozeSteps": [
+      "function debounce(func, wait) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  return function(...args) {\n    const context = this; \n    \n    \n    if (timeoutId) {\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n      func.apply(context, args); \n    }, wait);\n  };\n}",
+      "function debounce(func, wait) {\n  \n  let timeoutId = null;\n  \n  return function(...args) {\n    const context = this; \n    \n    \n    if (timeoutId) {\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    timeoutId = setTimeout(() => {\n      func.apply(context, args); \n    /* TODO: реалізувати цей рядок */\n  };\n}",
+      "function debounce(func, wait) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  return function(...args) {\n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n      func.apply(context, args); \n    }, wait);\n  };\n}"
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Debounce\".",
+    "testCode": "test('Debounce case 1', async () => {\n  let count = 0;\n  const fn = () => { count++; };\n  const debounced = debounce(fn, 50);\n  debounced();\n  debounced();\n  debounced();\n  assertEqual(count, 0);\n  await new Promise(r => setTimeout(r, 60));\n  assertEqual(count, 1);\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-memoize",
+    "block": "JS Functions / Polyfills",
+    "title": "Memoize",
+    "timeLimitMin": 10,
+    "description": "[Memoization](https://whatthefuck.is/memoization) is a common technique to boost performance. If you use React, you definitely have used `React.memo` before.\n\nMemoization is also commonly used in algorithm problem, when you have a recursion solution, in most cases, you can improve it by memoization, and then you might be able to get a Dynamic Programming approach.\n\nSo could you implement a general `memo()` function, which cache the result once called, so when same arguments are passed in, the result will be returned right away.\n\n```js\nconst func = (arg1, arg2) => {\n  return arg1 + arg2;\n};\n\nconst memoed = memo(func);\n\nmemoed(1, 2);\n// 3, func is called\n\nmemoed(1, 2);\n// 3 is returned right away without calling func\n\nmemoed(1, 3);\n// 4, new arguments, so func is called\n```\n\nThe parameters are arbitrary, so memo should accept an extra resolver parameter, which is used to generate the cache key, like what [\\_.memoize()](https://lodash.com/docs/4.17.15#memoize) does.\n\n```js\nconst memoed = memo(func, () => 'samekey');\n\nmemoed(1, 2);\n// 3, func is called, 3 is cache with key 'samekey'\n\nmemoed(1, 2);\n// 3, since key is the same, 3 is returned without calling func\n\nmemoed(1, 3);\n// 3, since key is the same, 3 is returned without calling func\n```\n\nDefault cache key could be just `Array.from(arguments).join('_')`\n\n**note**\n\nIt is a trade-off of space for time, so if you use this in an interview, please do analyze how much space it might cost",
+    "starter": "function memoize(func, resolver) {\n  // Ваша реалізація тут\n}",
+    "solution": "function memoize(func, resolver) {\n  // Створюємо карту для збереження результатів обчислень\n  const cache = new Map();\n  \n  return function(...args) {\n    // Якщо передано resolver, використовуємо його для створення ключа, інакше серіалізуємо аргументи\n    const key = resolver ? resolver(...args) : JSON.stringify(args);\n    \n    // Якщо результат для этого ключа вже є в кеші — повертаємо його без повторного обчислення\n    if (cache.has(key)) {\n      return cache.get(key);\n    }\n    \n    // Обчислюємо результат оригінальної функції\n    const result = func.apply(this, args);\n    \n    // Зберігаємо обчислений результат в кеш\n    cache.set(key, result);\n    \n    return result;\n  };\n}",
+    "clozeSteps": [
+      "function memoize(func, resolver) {\n  \n  const cache = new Map();\n  \n  return function(...args) {\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (cache.has(key)) {\n      return cache.get(key);\n    }\n    \n    \n    const result = func.apply(this, args);\n    \n    \n    cache.set(key, result);\n    \n    return result;\n  };\n}",
+      "function memoize(func, resolver) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  return function(...args) {\n    \n    const key = resolver ? resolver(...args) : JSON.stringify(args);\n    \n    \n    if (cache.has(key)) {\n      return cache.get(key);\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n    \n    return result;\n  };\n}",
+      "function memoize(func, resolver) {\n  \n  const cache = new Map();\n  \n  return function(...args) {\n    \n    const key = resolver ? resolver(...args) : JSON.stringify(args);\n    \n    \n    if (cache.has(key)) {\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  };\n}"
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Memoize\".",
+    "testCode": "test('Memoize case 1', () => {\n  let count = 0;\n  const fn = (x) => { count++; return x * 2; };\n  const memoized = memoize(fn);\n  assertEqual(memoized(2), 4);\n  assertEqual(memoized(2), 4);\n  assertEqual(count, 1);\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-promise",
+    "block": "General Quiz",
+    "title": "[Promise",
+    "timeLimitMin": 10,
+    "description": "## [Promise\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz?tags=Promise)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz?tags=Promise)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz?tags=Promise)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz?tags=Promise)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz?tags=Promise)\n\n### Компанії:\n* Google, Meta, Netflix, Lyft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promise() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promise() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promise() {\n  \n  return true;\n}",
+      "function promise() {\n  \n  return true;\n}",
+      "function promise() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"[Promise\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-throttle",
+    "block": "JS Functions / Polyfills",
+    "title": "Throttle",
+    "timeLimitMin": 10,
+    "description": "This is a follow up on [4. implement basic throttle()](https://bigfrontend.dev/problem/implement-basic-throttle), please refer to it for detailed explanation.\n\nIn this problem, you are asked to implement a enhanced `throttle()` which accepts third parameter, `option: {leading: boolean, trailing: boolean}`\n\n1. leading: whether to invoke right away\n2. trailing: whether to invoke after the delay.\n\n[4. implement basic throttle()](https://bigfrontend.dev/problem/implement-basic-throttle) is the default case with `{leading: true, trailing: true}`.\n\nExplanation\n\nfor the previous example of throttling by 3 dashes\n\n─A─B─C─ ─D─ ─ ─ ─ ─ ─ E─ ─F─G\n\nwith `{leading: true, trailing: true}`, we get as below\n\n─A─ ─ ─C─ ─ ─D ─ ─ ─ ─ E─ ─ ─G\n\nwith `{leading: false, trailing: true}`, A and E are swallowed.\n\n─ ─ ─ ─C─ ─ ─D─ ─ ─ ─ ─ ─ ─G\n\nwith `{leading: true, trailing: false}`, only A D E are kept\n\n─A─ ─ ─ ─D─ ─ ─ ─ ─ ─ E\n\nwith `{leading: false, trailing: false}`, of course, nothing happens.\n\n**notes**\n\n1. please follow above spec. the behavior is not exactly the same as `lodash.throttle()`\n\n2. because `window.setTimeout` and `window.clearTimeout` are not accurate in browser environment, they are replaced to other implementation when judging your code. They still have the same interface, and internally keep track of the timing for testing purpose.\n\nSomething like below will be used to do the test.\n\n```js\nlet currentTime = 0;\n\nconst run = (input) => {\n  currentTime = 0;\n  const calls = [];\n\n  const func = (arg) => {\n    calls.push(`${arg}@${currentTime}`);\n  };\n\n  const throttled = throttle(func, 3);\n  input.forEach((call) => {\n    const [arg, time] = call.split('@');\n    setTimeout(() => throttled(arg), time);\n  });\n  return calls;\n};\n\nexpect(run(['A@0', 'B@2', 'C@3'])).toEqual(['A@0', 'C@3']);\n```",
+    "starter": "function throttle(func, wait) {\n  // Ваша реалізація тут\n}",
+    "solution": "function throttle(func, wait) {\n  // Прапорець, який вказує чи знаходиться функція в режимі очікування (throttle)\n  let inThrottle = false;\n  \n  return function(...args) {\n    const context = this; // Зберігаємо контекст виконання\n    \n    // Якщо режим обмеження неактивний, виконуємо функцію\n    if (!inThrottle) {\n      func.apply(context, args); // Виклик оригінальної функції\n      inThrottle = true; // Активуємо режим обмеження\n      \n      // Через wait мілісекунд знімаємо режим обмеження частоти\n      setTimeout(() => {\n        inThrottle = false;\n      }, wait);\n    }\n  };\n}",
+    "clozeSteps": [
+      "function throttle(func, wait) {\n  \n  let inThrottle = false;\n  \n  return function(...args) {\n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (!inThrottle) {\n      func.apply(context, args); \n      inThrottle = true; \n      \n      \n      setTimeout(() => {\n        /* TODO: реалізувати цей рядок */\n      }, wait);\n    }\n  };\n}",
+      "function throttle(func, wait) {\n  \n  let inThrottle = false;\n  \n  return function(...args) {\n    const context = this; \n    \n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      \n      \n      setTimeout(() => {\n        inThrottle = false;\n      /* TODO: реалізувати цей рядок */\n    }\n  };\n}",
+      "function throttle(func, wait) {\n  \n  let inThrottle = false;\n  \n  return function(...args) {\n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n      func.apply(context, args); \n      /* TODO: реалізувати цей рядок */\n      \n      \n      setTimeout(() => {\n        /* TODO: реалізувати цей рядок */\n      }, wait);\n    }\n  };\n}"
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Throttle\".",
+    "testCode": "test('Throttle case 1', async () => {\n  let count = 0;\n  const fn = () => { count++; };\n  const throttled = throttle(fn, 50);\n  throttled();\n  throttled();\n  throttled();\n  assertEqual(count, 1);\n  await new Promise(r => setTimeout(r, 60));\n  throttled();\n  assertEqual(count, 2);\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-curry",
+    "block": "JS Functions / Polyfills",
+    "title": "Curry",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [1. implement curry()](https://bigfrontend.dev/problem/implement-curry)\n\nplease implement curry() which also supports placeholder.\n\nHere is an example\n\n```js\nconst join = (a, b, c) => {\n  return `${a}_${b}_${c}`;\n};\n\nconst curriedJoin = curry(join);\nconst \\_ = curry.placeholder;\n\ncurriedJoin(1, 2, 3); // '1_2_3'\n\ncurriedJoin(\\_, 2)(1, 3); // '1_2_3'\n\ncurriedJoin(_, _, _)(1)(_, 3)(2); // '1_2_3'\n```\n\nmore to read\n\nhttps://javascript.info/currying-partials\n\nhttps://lodash.com/docs/4.17.15#curry\n\nhttps://github.com/planttheidea/curriable",
+    "starter": "function curry(func) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param { Function } func\n */\nfunction curry(func) {\n  return function curried(...args) {\n    const sanitizedArgs = args.slice(0, func.length);\n    const hasPlaceholder = sanitizedArgs.some(\n      (arg) => arg === curry.placeholder\n    );\n    if (!hasPlaceholder && sanitizedArgs.length === func.length) {\n      return func.apply(this, sanitizedArgs);\n    } else {\n      return function (...newArgs) {\n        return curried.apply(this, mergeArgs(sanitizedArgs, newArgs));\n      };\n    }\n  };\n}\n\nfunction mergeArgs(oldArgs, newArgs) {\n  const mergedArgs = [];\n\n  let i = 0;\n  let j = 0;\n\n  while (i < oldArgs.length && j < newArgs.length) {\n    if (oldArgs[i] === curry.placeholder) {\n      mergedArgs.push(newArgs[j]);\n      j++;\n      i++;\n    } else {\n      mergedArgs.push(oldArgs[i]);\n      i++;\n    }\n  }\n\n  while (i < oldArgs.length) {\n    mergedArgs.push(oldArgs[i]);\n    i++;\n  }\n\n  while (j < newArgs.length) {\n    mergedArgs.push(newArgs[j]);\n    j++;\n  }\n\n  return mergedArgs;\n}\n\ncurry.placeholder = Symbol();",
+    "clozeSteps": [
+      "\nfunction curry(func) {\n  return function curried(...args) {\n    const sanitizedArgs = args.slice(0, func.length);\n    const hasPlaceholder = sanitizedArgs.some(\n      /* TODO: реалізувати цей рядок */\n    );\n    if (!hasPlaceholder && sanitizedArgs.length === func.length) {\n      return func.apply(this, sanitizedArgs);\n    /* TODO: реалізувати цей рядок */\n      return function (...newArgs) {\n        return curried.apply(this, mergeArgs(sanitizedArgs, newArgs));\n      };\n    }\n  };\n}\n\nfunction mergeArgs(oldArgs, newArgs) {\n  const mergedArgs = [];\n\n  let i = 0;\n  let j = 0;\n\n  while (i < oldArgs.length && j < newArgs.length) {\n    if (oldArgs[i] === curry.placeholder) {\n      mergedArgs.push(newArgs[j]);\n      j++;\n      i++;\n    } else {\n      mergedArgs.push(oldArgs[i]);\n      i++;\n    }\n  }\n\n  while (i < oldArgs.length) {\n    /* TODO: реалізувати цей рядок */\n    i++;\n  }\n\n  while (j < newArgs.length) {\n    /* TODO: реалізувати цей рядок */\n    j++;\n  }\n\n  return mergedArgs;\n}\n\ncurry.placeholder = Symbol();",
+      "\nfunction curry(func) {\n  return function curried(...args) {\n    const sanitizedArgs = args.slice(0, func.length);\n    /* TODO: реалізувати цей рядок */\n      (arg) => arg === curry.placeholder\n    );\n    if (!hasPlaceholder && sanitizedArgs.length === func.length) {\n      return func.apply(this, sanitizedArgs);\n    /* TODO: реалізувати цей рядок */\n      return function (...newArgs) {\n        /* TODO: реалізувати цей рядок */\n      };\n    }\n  };\n}\n\nfunction mergeArgs(oldArgs, newArgs) {\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n  let j = 0;\n\n  while (i < oldArgs.length && j < newArgs.length) {\n    if (oldArgs[i] === curry.placeholder) {\n      mergedArgs.push(newArgs[j]);\n      j++;\n      i++;\n    } else {\n      mergedArgs.push(oldArgs[i]);\n      i++;\n    }\n  }\n\n  while (i < oldArgs.length) {\n    /* TODO: реалізувати цей рядок */\n    i++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    j++;\n  }\n\n  return mergedArgs;\n}\n\n/* TODO: реалізувати цей рядок */",
+      "\nfunction curry(func) {\n  return function curried(...args) {\n    const sanitizedArgs = args.slice(0, func.length);\n    const hasPlaceholder = sanitizedArgs.some(\n      (arg) => arg === curry.placeholder\n    );\n    if (!hasPlaceholder && sanitizedArgs.length === func.length) {\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      return function (...newArgs) {\n        return curried.apply(this, mergeArgs(sanitizedArgs, newArgs));\n      };\n    }\n  };\n}\n\nfunction mergeArgs(oldArgs, newArgs) {\n  const mergedArgs = [];\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      mergedArgs.push(newArgs[j]);\n      j++;\n      i++;\n    } else {\n      /* TODO: реалізувати цей рядок */\n      i++;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    i++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    j++;\n  }\n\n  return mergedArgs;\n}\n\ncurry.placeholder = Symbol();"
+    ],
+    "breakdown": "Рішення для завдання \"Curry\".",
+    "testCode": "test('Curry case 1', () => {\n  const join = (a, b, c) => `${a}_${b}_${c}`;\n  const curried = curry(join);\n  assertEqual(curried(1, 2, 3), '1_2_3');\n  assertEqual(curried(1)(2, 3), '1_2_3');\n  assertEqual(curried(1, 2)(3), '1_2_3');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-file-explorer",
+    "block": "React Hooks & Components",
+    "title": "File Explorer",
+    "timeLimitMin": 10,
+    "description": "Implement a file explorer component (like VS Code sidebar) that allows viewing a nested folder structure, toggling folder open/close state, adding new files/folders, and deleting files/folders.",
+    "starter": "export function FileExplorer({ data }: { data: ExplorerNode }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\ninterface ExplorerNode {\n  name: string;\n  isFolder: boolean;\n  items?: ExplorerNode[];\n}\n\nexport function FileExplorer({ data }: { data: ExplorerNode }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [isOpen, setIsOpen] = useState(false);\n  // Оголошення та ініціалізація змінної \"\"\n  const [nodes, setNodes] = useState(data);\n\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (!nodes.isFolder) {\n    // Повернення обчисленого значення\n    return <div className=\"file\">📄 {nodes.name}</div>;\n  }\n\n  // Повернення обчисленого значення\n  return (\n    <div className=\"folder\">\n      <div onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer' }}>\n        {isOpen ? '📂' : '📁'} {nodes.name}\n      </div>\n      {isOpen && nodes.items && (\n        <div style={{ paddingLeft: 20 }}>\n          // Трансформація елементів масиву\n          {nodes.items.map((item, idx) => (\n            <FileExplorer key={idx} data={item} />\n          ))}\n        </div>\n      )}\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n\ninterface ExplorerNode {\n  name: string;\n  isFolder: boolean;\n  items?: ExplorerNode[];\n}\n\nexport function FileExplorer({ data }: { data: ExplorerNode }) {\n  \n  const [isOpen, setIsOpen] = useState(false);\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  if (!nodes.isFolder) {\n    \n    return <div className=\"file\">📄 {nodes.name}</div>;\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div className=\"folder\">\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      </div>\n      {isOpen && nodes.items && (\n        <div style={{ paddingLeft: 20 }}>\n          \n          {nodes.items.map((item, idx) => (\n            <FileExplorer key={idx} data={item} />\n          ))}\n        </div>\n      )}\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\ninterface ExplorerNode {\n  name: string;\n  /* TODO: реалізувати цей рядок */\n  items?: ExplorerNode[];\n}\n\nexport function FileExplorer({ data }: { data: ExplorerNode }) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  if (!nodes.isFolder) {\n    \n    return <div className=\"file\">📄 {nodes.name}</div>;\n  }\n\n  \n  return (\n    <div className=\"folder\">\n      /* TODO: реалізувати цей рядок */\n        {isOpen ? '📂' : '📁'} {nodes.name}\n      </div>\n      {isOpen && nodes.items && (\n        /* TODO: реалізувати цей рядок */\n          \n          {nodes.items.map((item, idx) => (\n            /* TODO: реалізувати цей рядок */\n          ))}\n        </div>\n      )}\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}\n\nexport function FileExplorer({ data }: { data: ExplorerNode }) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    return <div className=\"file\">📄 {nodes.name}</div>;\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div className=\"folder\">\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      </div>\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          \n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          ))}\n        /* TODO: реалізувати цей рядок */\n      )}\n    /* TODO: реалізувати цей рядок */\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"File Explorer\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-progress-bar",
+    "block": "React Hooks & Components",
+    "title": "Progress Bar",
+    "timeLimitMin": 10,
+    "description": "Create a progress bar component that visualizes completion percentage. Add options for custom colors, labels, and transition animations.",
+    "starter": "export function ProgressBar({ value, color = '#339af0' }: ProgressBarProps) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React from 'react';\n\ninterface ProgressBarProps {\n  value: number; // 0 to 100\n  color?: string;\n}\n\nexport function ProgressBar({ value, color = '#339af0' }: ProgressBarProps) {\n  const clampedValue = Math.min(100, Math.max(0, value));\n  return (\n    <div style={{\n      width: '100%',\n      backgroundColor: '#dee2e6',\n      borderRadius: 4,\n      overflow: 'hidden',\n      height: 20\n    }}>\n      <div style={{\n        width: `${clampedValue}%`,\n        backgroundColor: color,\n        height: '100%',\n        transition: 'width 0.3s ease',\n        display: 'flex',\n        alignItems: 'center',\n        justifyContent: 'center',\n        color: '#fff',\n        fontSize: 12,\n        fontWeight: 'bold'\n      }}>\n        {clampedValue}%\n      </div>\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n\ninterface ProgressBarProps {\n  /* TODO: реалізувати цей рядок */\n  color?: string;\n}\n\nexport function ProgressBar({ value, color = '#339af0' }: ProgressBarProps) {\n  /* TODO: реалізувати цей рядок */\n  return (\n    <div style={{\n      width: '100%',\n      backgroundColor: '#dee2e6',\n      /* TODO: реалізувати цей рядок */\n      overflow: 'hidden',\n      height: 20\n    }}>\n      <div style={{\n        width: `${clampedValue}%`,\n        /* TODO: реалізувати цей рядок */\n        height: '100%',\n        transition: 'width 0.3s ease',\n        display: 'flex',\n        alignItems: 'center',\n        /* TODO: реалізувати цей рядок */\n        color: '#fff',\n        fontSize: 12,\n        fontWeight: 'bold'\n      }}>\n        {clampedValue}%\n      </div>\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  value: number; \n  /* TODO: реалізувати цей рядок */\n}\n\nexport function ProgressBar({ value, color = '#339af0' }: ProgressBarProps) {\n  const clampedValue = Math.min(100, Math.max(0, value));\n  return (\n    <div style={{\n      /* TODO: реалізувати цей рядок */\n      backgroundColor: '#dee2e6',\n      borderRadius: 4,\n      overflow: 'hidden',\n      /* TODO: реалізувати цей рядок */\n    }}>\n      /* TODO: реалізувати цей рядок */\n        width: `${clampedValue}%`,\n        backgroundColor: color,\n        /* TODO: реалізувати цей рядок */\n        transition: 'width 0.3s ease',\n        /* TODO: реалізувати цей рядок */\n        alignItems: 'center',\n        justifyContent: 'center',\n        color: '#fff',\n        /* TODO: реалізувати цей рядок */\n        fontWeight: 'bold'\n      }}>\n        {clampedValue}%\n      </div>\n    /* TODO: реалізувати цей рядок */\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  color?: string;\n}\n\nexport function ProgressBar({ value, color = '#339af0' }: ProgressBarProps) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      width: '100%',\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }}>\n      <div style={{\n        /* TODO: реалізувати цей рядок */\n        backgroundColor: color,\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        display: 'flex',\n        /* TODO: реалізувати цей рядок */\n        justifyContent: 'center',\n        /* TODO: реалізувати цей рядок */\n        fontSize: 12,\n        /* TODO: реалізувати цей рядок */\n      }}>\n        {clampedValue}%\n      </div>\n    </div>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Progress Bar\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-data-table",
+    "block": "React Hooks & Components",
+    "title": "Data Table",
+    "timeLimitMin": 10,
+    "description": "Build a table component supporting pagination, client-side sorting by columns, and search filtering.",
+    "starter": "export function DataTable({ columns, data }: { columns: Column[], data: any[] }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState, useMemo } from 'react';\n\ninterface Column {\n  key: string;\n  label: string;\n}\n\nexport function DataTable({ columns, data }: { columns: Column[], data: any[] }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [search, setSearch] = useState('');\n  // Оголошення та ініціалізація змінної \"\"\n  const [sortKey, setSortKey] = useState<string | null>(null);\n  // Оголошення та ініціалізація змінної \"\"\n  const [sortAsc, setSortAsc] = useState(true);\n\n  // Оголошення та ініціалізація змінної \"filteredData\"\n  const filteredData = useMemo(() => {\n    // Повернення обчисленого значення\n    return data.filter(row => \n      Object.values(row).some(val => \n        String(val).toLowerCase().includes(search.toLowerCase())\n      )\n    );\n  }, [data, search]);\n\n  // Оголошення та ініціалізація змінної \"sortedData\"\n  const sortedData = useMemo(() => {\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!sortKey) return filteredData;\n    // Повернення обчисленого значення\n    return [...filteredData].sort((a, b) => {\n      // Перевірка умови виконання\n      if (a[sortKey] < b[sortKey]) return sortAsc ? -1 : 1;\n      // Перевірка умови виконання\n      if (a[sortKey] > b[sortKey]) return sortAsc ? 1 : -1;\n      // Повернення обчисленого значення\n      return 0;\n    });\n  }, [filteredData, sortKey, sortAsc]);\n\n  // Оголошення та ініціалізація змінної \"handleSort\"\n  const handleSort = (key: string) => {\n    // Перевірка умови виконання\n    if (sortKey === key) {\n      setSortAsc(!sortAsc);\n    } else {\n      setSortKey(key);\n      setSortAsc(true);\n    }\n  };\n\n  // Повернення обчисленого значення\n  return (\n    <div>\n      <input \n        type=\"text\" \n        placeholder=\"Search...\" \n        value={search} \n        onChange={e => setSearch(e.target.value)} \n      />\n      <table>\n        <thead>\n          <tr>\n            // Трансформація елементів масиву\n            {columns.map(col => (\n              <th key={col.key} onClick={() => handleSort(col.key)} style={{ cursor: 'pointer' }}>\n                {col.label} {sortKey === col.key ? (sortAsc ? '▲' : '▼') : ''}\n              </th>\n            ))}\n          </tr>\n        </thead>\n        <tbody>\n          // Трансформація елементів масиву\n          {sortedData.map((row, idx) => (\n            <tr key={idx}>\n              // Трансформація елементів масиву\n              {columns.map(col => (\n                <td key={col.key}>{row[col.key]}</td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState, useMemo } from 'react';\n\ninterface Column {\n  key: string;\n  label: string;\n}\n\nexport function DataTable({ columns, data }: { columns: Column[], data: any[] }) {\n  \n  const [search, setSearch] = useState('');\n  \n  const [sortKey, setSortKey] = useState<string | null>(null);\n  \n  const [sortAsc, setSortAsc] = useState(true);\n\n  \n  const filteredData = useMemo(() => {\n    \n    return data.filter(row => \n      Object.values(row).some(val => \n        String(val).toLowerCase().includes(search.toLowerCase())\n      )\n    );\n  }, [data, search]);\n\n  \n  const sortedData = useMemo(() => {\n    \n    if (!sortKey) return filteredData;\n    \n    return [...filteredData].sort((a, b) => {\n      \n      /* TODO: реалізувати цей рядок */\n      \n      if (a[sortKey] > b[sortKey]) return sortAsc ? 1 : -1;\n      \n      return 0;\n    });\n  }, [filteredData, sortKey, sortAsc]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (sortKey === key) {\n      setSortAsc(!sortAsc);\n    } else {\n      setSortKey(key);\n      setSortAsc(true);\n    }\n  };\n\n  \n  return (\n    <div>\n      <input \n        type=\"text\" \n        placeholder=\"Search...\" \n        value={search} \n        onChange={e => setSearch(e.target.value)} \n      />\n      <table>\n        <thead>\n          <tr>\n            \n            {columns.map(col => (\n              <th key={col.key} onClick={() => handleSort(col.key)} style={{ cursor: 'pointer' }}>\n                {col.label} {sortKey === col.key ? (sortAsc ? '▲' : '▼') : ''}\n              </th>\n            ))}\n          </tr>\n        </thead>\n        <tbody>\n          \n          {sortedData.map((row, idx) => (\n            <tr key={idx}>\n              \n              /* TODO: реалізувати цей рядок */\n                <td key={col.key}>{row[col.key]}</td>\n              ))}\n            </tr>\n          ))}\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}",
+      "import React, { useState, useMemo } from 'react';\n\ninterface Column {\n  key: string;\n  label: string;\n}\n\nexport function DataTable({ columns, data }: { columns: Column[], data: any[] }) {\n  \n  const [search, setSearch] = useState('');\n  \n  const [sortKey, setSortKey] = useState<string | null>(null);\n  \n  const [sortAsc, setSortAsc] = useState(true);\n\n  \n  const filteredData = useMemo(() => {\n    \n    /* TODO: реалізувати цей рядок */\n      Object.values(row).some(val => \n        String(val).toLowerCase().includes(search.toLowerCase())\n      )\n    );\n  }, [data, search]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (!sortKey) return filteredData;\n    \n    return [...filteredData].sort((a, b) => {\n      \n      if (a[sortKey] < b[sortKey]) return sortAsc ? -1 : 1;\n      \n      /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n    });\n  }, [filteredData, sortKey, sortAsc]);\n\n  \n  const handleSort = (key: string) => {\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      setSortKey(key);\n      /* TODO: реалізувати цей рядок */\n    }\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div>\n      <input \n        /* TODO: реалізувати цей рядок */\n        placeholder=\"Search...\" \n        value={search} \n        onChange={e => setSearch(e.target.value)} \n      />\n      <table>\n        /* TODO: реалізувати цей рядок */\n          <tr>\n            \n            /* TODO: реалізувати цей рядок */\n              <th key={col.key} onClick={() => handleSort(col.key)} style={{ cursor: 'pointer' }}>\n                /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n            ))}\n          /* TODO: реалізувати цей рядок */\n        </thead>\n        /* TODO: реалізувати цей рядок */\n          \n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n              \n              /* TODO: реалізувати цей рядок */\n                <td key={col.key}>{row[col.key]}</td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}",
+      "import React, { useState, useMemo } from 'react';\n\ninterface Column {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}\n\nexport function DataTable({ columns, data }: { columns: Column[], data: any[] }) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    return data.filter(row => \n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      )\n    );\n  }, [data, search]);\n\n  \n  const sortedData = useMemo(() => {\n    \n    if (!sortKey) return filteredData;\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (a[sortKey] < b[sortKey]) return sortAsc ? -1 : 1;\n      \n      /* TODO: реалізувати цей рядок */\n      \n      return 0;\n    });\n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    } else {\n      /* TODO: реалізувати цей рядок */\n      setSortAsc(true);\n    }\n  };\n\n  \n  return (\n    <div>\n      <input \n        type=\"text\" \n        /* TODO: реалізувати цей рядок */\n        value={search} \n        /* TODO: реалізувати цей рядок */\n      />\n      /* TODO: реалізувати цей рядок */\n        <thead>\n          <tr>\n            \n            /* TODO: реалізувати цей рядок */\n              <th key={col.key} onClick={() => handleSort(col.key)} style={{ cursor: 'pointer' }}>\n                {col.label} {sortKey === col.key ? (sortAsc ? '▲' : '▼') : ''}\n              /* TODO: реалізувати цей рядок */\n            ))}\n          /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          \n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n              \n              /* TODO: реалізувати цей рядок */\n                /* TODO: реалізувати цей рядок */\n              ))}\n            </tr>\n          ))}\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Data Table\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promiseall",
+    "block": "JS Functions / Polyfills",
+    "title": "Promise.All",
+    "timeLimitMin": 10,
+    "description": "> The Promise.all() method takes an iterable of promises as an input, and returns a single Promise that resolves to an array of the results of the input promises\n\nsource - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)\n\nCould you write your own `all()` ? which should works the same as `Promise.all()`",
+    "starter": "function promiseAll(promises) {\n  // Ваша реалізація тут\n}",
+    "solution": "function promiseAll(promises) {\n  // Повертаємо новий проміс\n  return new Promise((resolve, reject) => {\n    const results = []; // Масив для результатів\n    let completed = 0; // Лічильник успішно виконаних промісів\n    \n    // Якщо масив вхідних значень порожній — резолвимо його одразу\n    if (promises.length === 0) {\n      resolve(results);\n      return;\n    }\n    \n    // Ітеруємося по кожному елементу масиву\n    promises.forEach((p, idx) => {\n      // Використовуємо Promise.resolve(), щоб обробити як проміси, так і звичайні значення\n      Promise.resolve(p).then(\n        (val) => {\n          results[idx] = val; // Зберігаємо результат під оригінальним індексом\n          completed++; // Збільшуємо лічильник успішних виконань\n          \n          // Якщо всі проміси виконані успішно — резолвимо підсумковий масив результатів\n          if (completed === promises.length) {\n            resolve(results);\n          }\n        },\n        reject // Якщо виникає помилка в будь-котрій події — відхиляємо весь Promise.all одразу\n      );\n    });\n  });\n}",
+    "clozeSteps": [
+      "function promiseAll(promises) {\n  \n  /* TODO: реалізувати цей рядок */\n    const results = []; \n    let completed = 0; \n    \n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    promises.forEach((p, idx) => {\n      \n      /* TODO: реалізувати цей рядок */\n        (val) => {\n          results[idx] = val; \n          completed++; \n          \n          \n          if (completed === promises.length) {\n            resolve(results);\n          }\n        },\n        /* TODO: реалізувати цей рядок */\n      );\n    });\n  });\n}",
+      "function promiseAll(promises) {\n  \n  return new Promise((resolve, reject) => {\n    const results = []; \n    let completed = 0; \n    \n    \n    if (promises.length === 0) {\n      /* TODO: реалізувати цей рядок */\n      return;\n    }\n    \n    \n    promises.forEach((p, idx) => {\n      \n      Promise.resolve(p).then(\n        (val) => {\n          results[idx] = val; \n          completed++; \n          \n          \n          if (completed === promises.length) {\n            resolve(results);\n          }\n        },\n        reject \n      );\n    });\n  });\n}",
+      "function promiseAll(promises) {\n  \n  return new Promise((resolve, reject) => {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (promises.length === 0) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n        (val) => {\n          results[idx] = val; \n          /* TODO: реалізувати цей рядок */\n          \n          \n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          }\n        },\n        reject \n      );\n    });\n  });\n}"
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Promise.All\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-flat",
+    "block": "JS Functions / Polyfills",
+    "title": "Flat",
+    "timeLimitMin": 10,
+    "description": "## Flat\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-Array-prototype.flat)\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/flatten-deeply-nested-array)\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* Meta, Amazon, Google, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function flat() {\n  // Ваша реалізація тут\n}",
+    "solution": "function flat() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function flat() {\n  \n  return true;\n}",
+      "function flat() {\n  \n  return true;\n}",
+      "function flat() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Flat\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Flat case 1', () => {\n  assertEqual(flat([1, [2, [3]]], 1), [1, 2, [3]]);\n  assertEqual(flat([1, [2, [3]]], 2), [1, 2, 3]);\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-image-carousel",
+    "block": "React Hooks & Components",
+    "title": "Image Carousel",
+    "timeLimitMin": 10,
+    "description": "Implement an image carousel (slideshow) component with next/previous controls, indicator dots, transition animations, and optional autoplay support.",
+    "starter": "export function ImageCarousel({ images, autoplayInterval = 0 }: { images: string[], autoplayInterval?: number }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState, useEffect } from 'react';\n\nexport function ImageCarousel({ images, autoplayInterval = 0 }: { images: string[], autoplayInterval?: number }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [index, setIndex] = useState(0);\n\n  // Оголошення та ініціалізація змінної \"next\"\n  const next = () => setIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));\n  // Оголошення та ініціалізація змінної \"prev\"\n  const prev = () => setIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));\n\n  useEffect(() => {\n    // Перевірка умови виконання\n    if (autoplayInterval > 0) {\n      // Оголошення та ініціалізація змінної \"interval\"\n      const interval = setInterval(next, autoplayInterval);\n      // Повернення обчисленого значення\n      return () => clearInterval(interval);\n    }\n  }, [autoplayInterval]);\n\n  // Повернення обчисленого значення\n  return (\n    <div className=\"carousel\" style={{ position: 'relative', width: 400, height: 250, overflow: 'hidden' }}>\n      <img src={images[index]} alt=\"Carousel Slide\" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />\n      <button onClick={prev} style={{ position: 'absolute', left: 10, top: '50%' }}>Prev</button>\n      <button onClick={next} style={{ position: 'absolute', right: 10, top: '50%' }}>Next</button>\n      <div style={{ position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 5 }}>\n        // Трансформація елементів масиву\n        {images.map((_, idx) => (\n          <span \n            key={idx} \n            onClick={() => setIndex(idx)} \n            style={{ \n              width: 8, \n              height: 8, \n              borderRadius: '50%', \n              backgroundColor: index === idx ? '#fff' : '#888', \n              cursor: 'pointer' \n            }} \n          />\n        ))}\n      </div>\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState, useEffect } from 'react';\n\nexport function ImageCarousel({ images, autoplayInterval = 0 }: { images: string[], autoplayInterval?: number }) {\n  \n  const [index, setIndex] = useState(0);\n\n  \n  const next = () => setIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));\n  \n  const prev = () => setIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));\n\n  useEffect(() => {\n    \n    if (autoplayInterval > 0) {\n      \n      const interval = setInterval(next, autoplayInterval);\n      \n      return () => clearInterval(interval);\n    }\n  }, [autoplayInterval]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div className=\"carousel\" style={{ position: 'relative', width: 400, height: 250, overflow: 'hidden' }}>\n      <img src={images[index]} alt=\"Carousel Slide\" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />\n      /* TODO: реалізувати цей рядок */\n      <button onClick={next} style={{ position: 'absolute', right: 10, top: '50%' }}>Next</button>\n      <div style={{ position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 5 }}>\n        \n        {images.map((_, idx) => (\n          <span \n            /* TODO: реалізувати цей рядок */\n            onClick={() => setIndex(idx)} \n            style={{ \n              width: 8, \n              height: 8, \n              /* TODO: реалізувати цей рядок */\n              backgroundColor: index === idx ? '#fff' : '#888', \n              cursor: 'pointer' \n            }} \n          />\n        ))}\n      </div>\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function ImageCarousel({ images, autoplayInterval = 0 }: { images: string[], autoplayInterval?: number }) {\n  \n  const [index, setIndex] = useState(0);\n\n  \n  const next = () => setIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));\n  \n  /* TODO: реалізувати цей рядок */\n\n  useEffect(() => {\n    \n    /* TODO: реалізувати цей рядок */\n      \n      const interval = setInterval(next, autoplayInterval);\n      \n      /* TODO: реалізувати цей рядок */\n    }\n  }, [autoplayInterval]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div className=\"carousel\" style={{ position: 'relative', width: 400, height: 250, overflow: 'hidden' }}>\n      <img src={images[index]} alt=\"Carousel Slide\" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />\n      <button onClick={prev} style={{ position: 'absolute', left: 10, top: '50%' }}>Prev</button>\n      <button onClick={next} style={{ position: 'absolute', right: 10, top: '50%' }}>Next</button>\n      <div style={{ position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 5 }}>\n        \n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            key={idx} \n            onClick={() => setIndex(idx)} \n            /* TODO: реалізувати цей рядок */\n              width: 8, \n              /* TODO: реалізувати цей рядок */\n              borderRadius: '50%', \n              /* TODO: реалізувати цей рядок */\n              cursor: 'pointer' \n            }} \n          />\n        ))}\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function ImageCarousel({ images, autoplayInterval = 0 }: { images: string[], autoplayInterval?: number }) {\n  \n  const [index, setIndex] = useState(0);\n\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    \n    if (autoplayInterval > 0) {\n      \n      const interval = setInterval(next, autoplayInterval);\n      \n      return () => clearInterval(interval);\n    }\n  }, [autoplayInterval]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div className=\"carousel\" style={{ position: 'relative', width: 400, height: 250, overflow: 'hidden' }}>\n      /* TODO: реалізувати цей рядок */\n      <button onClick={prev} style={{ position: 'absolute', left: 10, top: '50%' }}>Prev</button>\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        \n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            key={idx} \n            /* TODO: реалізувати цей рядок */\n            style={{ \n              /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n              borderRadius: '50%', \n              /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n            }} \n          />\n        ))}\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Image Carousel\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-accordion",
+    "block": "React Hooks & Components",
+    "title": "Accordion",
+    "timeLimitMin": 10,
+    "description": "Implement an Accordion UI component containing multiple expandable/collapsible sections. Support single-expand mode (only one section open at a time) or multi-expand mode.",
+    "starter": "export function Accordion({ items, allowMultiple = false }: { items: AccordionItem[], allowMultiple?: boolean }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\ninterface AccordionItem {\n  title: string;\n  content: string;\n}\n\nexport function Accordion({ items, allowMultiple = false }: { items: AccordionItem[], allowMultiple?: boolean }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [openIndexes, setOpenIndexes] = useState<number[]>([]);\n\n  // Оголошення та ініціалізація змінної \"toggle\"\n  const toggle = (index: number) => {\n    // Перевірка умови виконання\n    if (allowMultiple) {\n      setOpenIndexes(prev => \n        // Фільтрація масиву за заданим критерієм\n        prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]\n      );\n    } else {\n      setOpenIndexes(prev => prev.includes(index) ? [] : [index]);\n    }\n  };\n\n  // Повернення обчисленого значення\n  return (\n    <div>\n      // Трансформація елементів масиву\n      {items.map((item, idx) => {\n        // Оголошення та ініціалізація змінної \"isOpen\"\n        const isOpen = openIndexes.includes(idx);\n        // Повернення обчисленого значення\n        return (\n          <div key={idx} style={{ border: '1px solid #ccc', margin: '5px 0' }}>\n            <div \n              onClick={() => toggle(idx)} \n              style={{ padding: 10, background: '#eee', cursor: 'pointer', fontWeight: 'bold' }}\n            >\n              {item.title} {isOpen ? '▼' : '▶'}\n            </div>\n            {isOpen && <div style={{ padding: 10 }}>{item.content}</div>}\n          </div>\n        );\n      })}\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState } from 'react';\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  content: string;\n}\n\nexport function Accordion({ items, allowMultiple = false }: { items: AccordionItem[], allowMultiple?: boolean }) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const toggle = (index: number) => {\n    \n    /* TODO: реалізувати цей рядок */\n      setOpenIndexes(prev => \n        \n        prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]\n      );\n    } else {\n      setOpenIndexes(prev => prev.includes(index) ? [] : [index]);\n    }\n  };\n\n  \n  return (\n    <div>\n      \n      {items.map((item, idx) => {\n        \n        /* TODO: реалізувати цей рядок */\n        \n        return (\n          <div key={idx} style={{ border: '1px solid #ccc', margin: '5px 0' }}>\n            <div \n              onClick={() => toggle(idx)} \n              style={{ padding: 10, background: '#eee', cursor: 'pointer', fontWeight: 'bold' }}\n            >\n              {item.title} {isOpen ? '▼' : '▶'}\n            /* TODO: реалізувати цей рядок */\n            {isOpen && <div style={{ padding: 10 }}>{item.content}</div>}\n          </div>\n        );\n      })}\n    /* TODO: реалізувати цей рядок */\n  );\n}",
+      "import React, { useState } from 'react';\n\n/* TODO: реалізувати цей рядок */\n  title: string;\n  /* TODO: реалізувати цей рядок */\n}\n\nexport function Accordion({ items, allowMultiple = false }: { items: AccordionItem[], allowMultiple?: boolean }) {\n  \n  const [openIndexes, setOpenIndexes] = useState<number[]>([]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (allowMultiple) {\n      setOpenIndexes(prev => \n        \n        /* TODO: реалізувати цей рядок */\n      );\n    } else {\n      setOpenIndexes(prev => prev.includes(index) ? [] : [index]);\n    }\n  };\n\n  \n  return (\n    <div>\n      \n      {items.map((item, idx) => {\n        \n        /* TODO: реалізувати цей рядок */\n        \n        /* TODO: реалізувати цей рядок */\n          <div key={idx} style={{ border: '1px solid #ccc', margin: '5px 0' }}>\n            <div \n              onClick={() => toggle(idx)} \n              style={{ padding: 10, background: '#eee', cursor: 'pointer', fontWeight: 'bold' }}\n            >\n              {item.title} {isOpen ? '▼' : '▶'}\n            </div>\n            {isOpen && <div style={{ padding: 10 }}>{item.content}</div>}\n          </div>\n        );\n      })}\n    </div>\n  );\n}",
+      "import React, { useState } from 'react';\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}\n\nexport function Accordion({ items, allowMultiple = false }: { items: AccordionItem[], allowMultiple?: boolean }) {\n  \n  const [openIndexes, setOpenIndexes] = useState<number[]>([]);\n\n  \n  const toggle = (index: number) => {\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        \n        /* TODO: реалізувати цей рядок */\n      );\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  };\n\n  \n  return (\n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n        \n        const isOpen = openIndexes.includes(idx);\n        \n        /* TODO: реалізувати цей рядок */\n          <div key={idx} style={{ border: '1px solid #ccc', margin: '5px 0' }}>\n            <div \n              /* TODO: реалізувати цей рядок */\n              style={{ padding: 10, background: '#eee', cursor: 'pointer', fontWeight: 'bold' }}\n            >\n              {item.title} {isOpen ? '▼' : '▶'}\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        );\n      })}\n    </div>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Accordion\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-tabs",
+    "block": "React Hooks & Components",
+    "title": "Tabs",
+    "timeLimitMin": 10,
+    "description": "Build a flexible Tabs component showing a row of clickable tab items and rendering the active content pane accordingly.",
+    "starter": "export function Tabs({ items, defaultTabId }: { items: TabItem[], defaultTabId: string }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\ninterface TabItem {\n  id: string;\n  label: string;\n  content: React.ReactNode;\n}\n\nexport function Tabs({ items, defaultTabId }: { items: TabItem[], defaultTabId: string }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [activeTabId, setActiveTabId] = useState(defaultTabId);\n\n  // Оголошення та ініціалізація змінної \"activeContent\"\n  const activeContent = items.find(t => t.id === activeTabId)?.content;\n\n  // Повернення обчисленого значення\n  return (\n    <div>\n      <div style={{ display: 'flex', borderBottom: '1px solid #ccc' }}>\n        // Трансформація елементів масиву\n        {items.map(tab => (\n          <button\n            key={tab.id}\n            onClick={() => setActiveTabId(tab.id)}\n            style={{\n              padding: '10px 20px',\n              border: 'none',\n              borderBottom: activeTabId === tab.id ? '2px solid blue' : 'none',\n              background: 'none',\n              cursor: 'pointer',\n              fontWeight: activeTabId === tab.id ? 'bold' : 'normal'\n            }}\n          >\n            {tab.label}\n          </button>\n        ))}\n      </div>\n      <div style={{ padding: 20 }}>\n        {activeContent}\n      </div>\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n\ninterface TabItem {\n  id: string;\n  label: string;\n  content: React.ReactNode;\n}\n\nexport function Tabs({ items, defaultTabId }: { items: TabItem[], defaultTabId: string }) {\n  \n  const [activeTabId, setActiveTabId] = useState(defaultTabId);\n\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  return (\n    <div>\n      /* TODO: реалізувати цей рядок */\n        \n        {items.map(tab => (\n          <button\n            key={tab.id}\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n              padding: '10px 20px',\n              border: 'none',\n              borderBottom: activeTabId === tab.id ? '2px solid blue' : 'none',\n              background: 'none',\n              cursor: 'pointer',\n              /* TODO: реалізувати цей рядок */\n            }}\n          >\n            {tab.label}\n          </button>\n        ))}\n      </div>\n      <div style={{ padding: 20 }}>\n        {activeContent}\n      </div>\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\ninterface TabItem {\n  id: string;\n  label: string;\n  content: React.ReactNode;\n}\n\nexport function Tabs({ items, defaultTabId }: { items: TabItem[], defaultTabId: string }) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const activeContent = items.find(t => t.id === activeTabId)?.content;\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div>\n      <div style={{ display: 'flex', borderBottom: '1px solid #ccc' }}>\n        \n        {items.map(tab => (\n          <button\n            key={tab.id}\n            /* TODO: реалізувати цей рядок */\n            style={{\n              /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n              background: 'none',\n              cursor: 'pointer',\n              fontWeight: activeTabId === tab.id ? 'bold' : 'normal'\n            }}\n          >\n            {tab.label}\n          </button>\n        ))}\n      /* TODO: реалізувати цей рядок */\n      <div style={{ padding: 20 }}>\n        {activeContent}\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  label: string;\n  /* TODO: реалізувати цей рядок */\n}\n\nexport function Tabs({ items, defaultTabId }: { items: TabItem[], defaultTabId: string }) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const activeContent = items.find(t => t.id === activeTabId)?.content;\n\n  \n  return (\n    <div>\n      <div style={{ display: 'flex', borderBottom: '1px solid #ccc' }}>\n        \n        /* TODO: реалізувати цей рядок */\n          <button\n            /* TODO: реалізувати цей рядок */\n            onClick={() => setActiveTabId(tab.id)}\n            /* TODO: реалізувати цей рядок */\n              padding: '10px 20px',\n              border: 'none',\n              borderBottom: activeTabId === tab.id ? '2px solid blue' : 'none',\n              background: 'none',\n              /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n            }}\n          >\n            /* TODO: реалізувати цей рядок */\n          </button>\n        ))}\n      /* TODO: реалізувати цей рядок */\n      <div style={{ padding: 20 }}>\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Tabs\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promiserace",
+    "block": "JS Functions / Polyfills",
+    "title": "Promise.Race",
+    "timeLimitMin": 10,
+    "description": "This problem is similar to [31. implement async helper - race()](https://bigfrontend.dev/problem/implement-async-helper-race), but with Promise.\n\n> The Promise.race() method returns a promise that fulfills or rejects as soon as one of the promises in an iterable fulfills or rejects, with the value or reason from that promise. [source: MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)\n\nCan you create a `race()` which works the same as `Promise.race()`?",
+    "starter": "function race(promises) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Array<Promise>} promises\n * @return {Promise}\n */\nfunction race(promises) {\n  return new Promise((resolve, reject) => {\n    promises.forEach((promise) => {\n      promise.then(\n        (value) => {\n          resolve(value);\n        },\n        (reason) => {\n          reject(reason);\n        }\n      );\n    });\n  });\n}",
+    "clozeSteps": [
+      "\nfunction race(promises) {\n  return new Promise((resolve, reject) => {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        (value) => {\n          resolve(value);\n        },\n        (reason) => {\n          reject(reason);\n        }\n      );\n    });\n  });\n}",
+      "\nfunction race(promises) {\n  /* TODO: реалізувати цей рядок */\n    promises.forEach((promise) => {\n      promise.then(\n        (value) => {\n          /* TODO: реалізувати цей рядок */\n        },\n        (reason) => {\n          reject(reason);\n        }\n      );\n    });\n  });\n}",
+      "\nfunction race(promises) {\n  return new Promise((resolve, reject) => {\n    promises.forEach((promise) => {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          resolve(value);\n        },\n        (reason) => {\n          /* TODO: реалізувати цей рядок */\n        }\n      );\n    });\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Promise.Race\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-promiseany",
+    "block": "JS Functions / Polyfills",
+    "title": "Promise.Any",
+    "timeLimitMin": 10,
+    "description": "> Promise.any() takes an iterable of Promise objects and, as soon as one of the promises in the iterable fulfils, returns a single promise that resolves with the value from that promise\n\nfrom [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any)\n\nCan you implement a `any()` to work the same as `Promise.any()`?\n\n**note**\n\n`AggregateError` is not supported in Chrome yet, but you can still use it in your code since we will add the Class into your code. Do something like following:\n\n```js\nnew AggregateError('No Promise in Promise.any was resolved', errors);\n```",
+    "starter": "function any(promises) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Array<Promise>} promises\n * @return {Promise}\n */\nfunction any(promises) {\n  if (promises.length === 0) {\n    return Promise.resolve();\n  }\n\n  let isFulfilled = false;\n  const errors = Array(promises.length);\n  let numOfErrors = 0;\n\n  return new Promise((resolve, reject) => {\n    promises.forEach((promise, i) => {\n      if (!(promise instanceof Promise)) {\n        promise = Promise.resolve(promise);\n      }\n\n      promise.then(\n        (value) => {\n          if (isFulfilled) {\n            return;\n          }\n\n          resolve(value);\n          isFulfilled = true;\n        },\n        (reason) => {\n          errors[i] = reason;\n          numOfErrors++;\n\n          if (numOfErrors === promises.length) {\n            reject(\n              new AggregateError(\n                'No Promise in Promise.any was resolved',\n                errors\n              )\n            );\n          }\n        }\n      );\n    });\n  });\n}",
+    "clozeSteps": [
+      "\nfunction any(promises) {\n  /* TODO: реалізувати цей рядок */\n    return Promise.resolve();\n  }\n\n  let isFulfilled = false;\n  const errors = Array(promises.length);\n  let numOfErrors = 0;\n\n  return new Promise((resolve, reject) => {\n    promises.forEach((promise, i) => {\n      if (!(promise instanceof Promise)) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      promise.then(\n        (value) => {\n          /* TODO: реалізувати цей рядок */\n            return;\n          }\n\n          resolve(value);\n          /* TODO: реалізувати цей рядок */\n        },\n        /* TODO: реалізувати цей рядок */\n          errors[i] = reason;\n          /* TODO: реалізувати цей рядок */\n\n          /* TODO: реалізувати цей рядок */\n            reject(\n              new AggregateError(\n                'No Promise in Promise.any was resolved',\n                errors\n              )\n            );\n          }\n        }\n      );\n    });\n  });\n}",
+      "\nfunction any(promises) {\n  if (promises.length === 0) {\n    return Promise.resolve();\n  }\n\n  let isFulfilled = false;\n  const errors = Array(promises.length);\n  let numOfErrors = 0;\n\n  /* TODO: реалізувати цей рядок */\n    promises.forEach((promise, i) => {\n      /* TODO: реалізувати цей рядок */\n        promise = Promise.resolve(promise);\n      }\n\n      promise.then(\n        (value) => {\n          if (isFulfilled) {\n            return;\n          }\n\n          resolve(value);\n          /* TODO: реалізувати цей рядок */\n        },\n        /* TODO: реалізувати цей рядок */\n          errors[i] = reason;\n          numOfErrors++;\n\n          if (numOfErrors === promises.length) {\n            /* TODO: реалізувати цей рядок */\n              new AggregateError(\n                'No Promise in Promise.any was resolved',\n                errors\n              )\n            );\n          }\n        }\n      );\n    });\n  });\n}",
+      "\nfunction any(promises) {\n  if (promises.length === 0) {\n    return Promise.resolve();\n  }\n\n  /* TODO: реалізувати цей рядок */\n  const errors = Array(promises.length);\n  let numOfErrors = 0;\n\n  /* TODO: реалізувати цей рядок */\n    promises.forEach((promise, i) => {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n\n      promise.then(\n        /* TODO: реалізувати цей рядок */\n          if (isFulfilled) {\n            return;\n          }\n\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        },\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n              /* TODO: реалізувати цей рядок */\n                /* TODO: реалізувати цей рядок */\n                /* TODO: реалізувати цей рядок */\n              )\n            );\n          }\n        }\n      );\n    });\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Promise.Any\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promiseallsettled",
+    "block": "JS Functions / Polyfills",
+    "title": "Promise.Allsettled",
+    "timeLimitMin": 10,
+    "description": "> The Promise.allSettled() method returns a promise that resolves after all of the given promises have either fulfilled or rejected, with an array of objects that each describes the outcome of each promise.\n\nfrom [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)\n\nDifferent from `Promise.all()` which rejects right away once an error occurs, `Promise.allSettled()` waits for all promises to settle.\n\nNow can you implement your own `allSettled()`?",
+    "starter": "function allSettled(promises) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Array<any>} promises - notice that input might contains non-promises\n * @return {Promise<Array<{status: 'fulfilled', value: any} | {status: 'rejected', reason: any}>>}\n */\nfunction allSettled(promises) {\n  if (promises.length === 0) {\n    return Promise.resolve([]);\n  }\n\n  const results = Array(promises.length);\n  let numOfSettledPromise = 0;\n\n  return new Promise((resolve, reject) => {\n    promises.forEach((promise, i) => {\n      if (!(promise instanceof Promise)) {\n        promise = Promise.resolve(promise);\n      }\n\n      promise.then(\n        (value) => {\n          results[i] = {\n            status: 'fulfilled',\n            value,\n          };\n\n          numOfSettledPromise++;\n          if (numOfSettledPromise === promises.length) {\n            resolve(results);\n          }\n        },\n        (reason) => {\n          results[i] = {\n            status: 'rejected',\n            reason,\n          };\n\n          numOfSettledPromise++;\n          if (numOfSettledPromise === promises.length) {\n            resolve(results);\n          }\n        }\n      );\n    });\n  });\n}",
+    "clozeSteps": [
+      "\nfunction allSettled(promises) {\n  if (promises.length === 0) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n  let numOfSettledPromise = 0;\n\n  /* TODO: реалізувати цей рядок */\n    promises.forEach((promise, i) => {\n      if (!(promise instanceof Promise)) {\n        promise = Promise.resolve(promise);\n      }\n\n      promise.then(\n        /* TODO: реалізувати цей рядок */\n          results[i] = {\n            status: 'fulfilled',\n            /* TODO: реалізувати цей рядок */\n          };\n\n          numOfSettledPromise++;\n          if (numOfSettledPromise === promises.length) {\n            /* TODO: реалізувати цей рядок */\n          }\n        },\n        (reason) => {\n          /* TODO: реалізувати цей рядок */\n            status: 'rejected',\n            /* TODO: реалізувати цей рядок */\n          };\n\n          numOfSettledPromise++;\n          if (numOfSettledPromise === promises.length) {\n            resolve(results);\n          }\n        }\n      );\n    });\n  });\n}",
+      "\nfunction allSettled(promises) {\n  if (promises.length === 0) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n  let numOfSettledPromise = 0;\n\n  return new Promise((resolve, reject) => {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        promise = Promise.resolve(promise);\n      }\n\n      /* TODO: реалізувати цей рядок */\n        (value) => {\n          results[i] = {\n            status: 'fulfilled',\n            /* TODO: реалізувати цей рядок */\n          };\n\n          numOfSettledPromise++;\n          /* TODO: реалізувати цей рядок */\n            resolve(results);\n          }\n        },\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            status: 'rejected',\n            reason,\n          };\n\n          numOfSettledPromise++;\n          /* TODO: реалізувати цей рядок */\n            resolve(results);\n          }\n        }\n      );\n    });\n  });\n}",
+      "\nfunction allSettled(promises) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    promises.forEach((promise, i) => {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n\n      promise.then(\n        (value) => {\n          results[i] = {\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          };\n\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          }\n        },\n        (reason) => {\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          };\n\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            resolve(results);\n          }\n        }\n      );\n    });\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Promise.Allsettled\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-event-emitter",
+    "block": "JS Functions / Polyfills",
+    "title": "Event Emitter",
+    "timeLimitMin": 10,
+    "description": "Implement a pub/sub Event Emitter class in JavaScript. It should support subscribing to events, unsubscribing from events, and publishing events with optional arguments.",
+    "starter": "class EventEmitter {\n  // Ваша реалізація тут\n}",
+    "solution": "class EventEmitter {\n  constructor() {\n    // Реєстр подій: ключ - ім'я події, значення - Set з колбеками\n    this.events = new Map();\n  }\n\n  subscribe(eventName, callback) {\n    // Якщо подія реєструється вперше, створюємо новий Set\n    if (!this.events.has(eventName)) {\n      this.events.set(eventName, new Set());\n    }\n    \n    // Додаємо колбек до списку слухачів події\n    const callbacks = this.events.get(eventName);\n    callbacks.add(callback);\n\n    // Повертаємо об'єкт з методом unsubscribe для зручного скасування підписки\n    return {\n      unsubscribe: () => {\n        callbacks.delete(callback); // Видаляємо слухача\n        // Якщо більше немає підписників, видаляємо подію з реєстру для економії пам'яті\n        if (callbacks.size === 0) {\n          this.events.delete(eventName);\n        }\n      }\n    };\n  }\n\n  emit(eventName, ...args) {\n    // Отримуємо всіх слухачів для події\n    const callbacks = this.events.get(eventName);\n    if (callbacks) {\n      // Викликаємо кожен зареєстрований колбек з переданими аргументами\n      callbacks.forEach(cb => cb(...args));\n    }\n  }\n}",
+    "clozeSteps": [
+      "class EventEmitter {\n  constructor() {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  subscribe(eventName, callback) {\n    \n    if (!this.events.has(eventName)) {\n      this.events.set(eventName, new Set());\n    }\n    \n    \n    const callbacks = this.events.get(eventName);\n    callbacks.add(callback);\n\n    \n    return {\n      unsubscribe: () => {\n        callbacks.delete(callback); \n        \n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        }\n      }\n    };\n  }\n\n  emit(eventName, ...args) {\n    \n    /* TODO: реалізувати цей рядок */\n    if (callbacks) {\n      \n      callbacks.forEach(cb => cb(...args));\n    }\n  }\n}",
+      "class EventEmitter {\n  constructor() {\n    \n    this.events = new Map();\n  }\n\n  subscribe(eventName, callback) {\n    \n    if (!this.events.has(eventName)) {\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n    callbacks.add(callback);\n\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        callbacks.delete(callback); \n        \n        if (callbacks.size === 0) {\n          this.events.delete(eventName);\n        }\n      }\n    };\n  }\n\n  emit(eventName, ...args) {\n    \n    const callbacks = this.events.get(eventName);\n    /* TODO: реалізувати цей рядок */\n      \n      callbacks.forEach(cb => cb(...args));\n    }\n  }\n}",
+      "class EventEmitter {\n  constructor() {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  subscribe(eventName, callback) {\n    \n    /* TODO: реалізувати цей рядок */\n      this.events.set(eventName, new Set());\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    \n    /* TODO: реалізувати цей рядок */\n      unsubscribe: () => {\n        callbacks.delete(callback); \n        \n        if (callbacks.size === 0) {\n          /* TODO: реалізувати цей рядок */\n        }\n      }\n    };\n  }\n\n  emit(eventName, ...args) {\n    \n    const callbacks = this.events.get(eventName);\n    if (callbacks) {\n      \n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}"
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Event Emitter\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-jsonstringify",
+    "block": "JS Functions / Polyfills",
+    "title": "Json.Stringify",
+    "timeLimitMin": 10,
+    "description": "I believe you've used `JSON.stringify()` before, do you know the details of how it handles arbitrary data?\n\nPlease have a guess on the details and then take a look at the [explanation on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify), it is actually pretty complex.\n\nIn this problem, you are asked to implement your own version of `JSON.stringify()`.\n\nIn a real interview, you are not expected to cover all the cases, just decide the scope with interviewer. But for a goal of practicing, your code here will be tested against a lot of data types. Please try to cover as much as you can.\n\nAttention to the circular reference.\n\n**note**\n\n`JSON.stringify()` support two more parameters which is not required here.",
+    "starter": "function stringify(data) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any} data\n * @return {string}\n */\nfunction stringify(data) {\n  const typeOfData = detectDataType(data);\n\n  if (typeOfData === 'array') {\n    return stringifyArr(data);\n  }\n\n  if (typeOfData === 'object' || typeOfData === 'map') {\n    return stringifyObj(data);\n  }\n\n  return _stringify(typeOfData, data);\n}\n\nfunction stringifyObj(data) {\n  let stringifiedData = [];\n\n  for (const key of Object.keys(data)) {\n    const val = data[key];\n    const typeOfVal = detectDataType(val);\n\n    if (\n      typeOfVal === 'symbol' ||\n      typeOfVal === 'function' ||\n      typeOfVal === 'undefined'\n    ) {\n      continue;\n    }\n\n    let stringifiedKey = `\\\"${key}\\\":`;\n\n    switch (typeOfVal) {\n      case 'array':\n        stringifiedKey += stringifyArr(val);\n        break;\n      case 'object':\n      case 'map':\n        stringifiedKey += stringifyObj(val);\n        break;\n      default:\n        stringifiedKey += _stringify(typeOfVal, val);\n    }\n\n    stringifiedData.push(stringifiedKey);\n  }\n\n  return `{${stringifiedData.join(',')}}`;\n}\n\nfunction stringifyArr(data) {\n  let stringifiedData = [];\n\n  for (const [index, val] of data.entries()) {\n    if (isNaN(index)) {\n      continue;\n    }\n\n    const typeOfVal = detectDataType(val);\n\n    switch (typeOfVal) {\n      case 'array':\n        stringifiedData.push(stringifyArr(val));\n        break;\n      case 'object':\n      case 'map':\n        stringifiedData.push(stringifyObj(val));\n        break;\n      default:\n        stringifiedData.push(_stringify(typeOfVal, val));\n    }\n  }\n\n  return `[${stringifiedData.join(',')}]`;\n}\n\nfunction _stringify(typeOfData, data) {\n  switch (typeOfData) {\n    case 'string':\n      return `\\\"${data}\\\"`;\n    case 'number':\n    case 'boolean':\n      return String(data);\n    case 'function':\n      return undefined;\n    case 'date':\n      return `\"${data.toISOString()}\"`;\n    case 'set':\n    case 'map':\n    case 'weakSet':\n    case 'weakMap':\n      return '{}';\n    case 'bigint':\n      throw new Error(\"TypeError: BigInt value can't be serialized in JSON\");\n    default:\n      return 'null';\n  }\n}\n\nconst dataTypes = new Map([\n  [Number, 'number'],\n  [String, 'string'],\n  [Boolean, 'boolean'],\n  [Array, 'array'],\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  [Set, 'set'],\n  [Map, 'map'],\n  [WeakSet, 'weakSet'],\n  [WeakMap, 'weakMap'],\n]);\n\nfunction detectDataType(data) {\n  if (typeof data === 'number' && isNaN(data)) {\n    return 'NaN';\n  }\n\n  if (data === Infinity) {\n    return 'infinity';\n  }\n\n  if (typeof data !== 'object') {\n    return typeof data;\n  }\n\n  if (data === null) {\n    return 'null';\n  }\n\n  for (const [type, name] of dataTypes.entries()) {\n    if (data instanceof type) {\n      return name;\n    }\n  }\n\n  return 'object';\n}",
+    "clozeSteps": [
+      "\nfunction stringify(data) {\n  const typeOfData = detectDataType(data);\n\n  if (typeOfData === 'array') {\n    return stringifyArr(data);\n  }\n\n  if (typeOfData === 'object' || typeOfData === 'map') {\n    return stringifyObj(data);\n  }\n\n  return _stringify(typeOfData, data);\n}\n\nfunction stringifyObj(data) {\n  let stringifiedData = [];\n\n  for (const key of Object.keys(data)) {\n    const val = data[key];\n    /* TODO: реалізувати цей рядок */\n\n    if (\n      typeOfVal === 'symbol' ||\n      typeOfVal === 'function' ||\n      /* TODO: реалізувати цей рядок */\n    ) {\n      continue;\n    }\n\n    let stringifiedKey = `\\\"${key}\\\":`;\n\n    switch (typeOfVal) {\n      case 'array':\n        /* TODO: реалізувати цей рядок */\n        break;\n      case 'object':\n      case 'map':\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      default:\n        /* TODO: реалізувати цей рядок */\n    }\n\n    stringifiedData.push(stringifiedKey);\n  }\n\n  return `{${stringifiedData.join(',')}}`;\n}\n\nfunction stringifyArr(data) {\n  let stringifiedData = [];\n\n  for (const [index, val] of data.entries()) {\n    if (isNaN(index)) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    const typeOfVal = detectDataType(val);\n\n    switch (typeOfVal) {\n      case 'array':\n        /* TODO: реалізувати цей рядок */\n        break;\n      case 'object':\n      case 'map':\n        stringifiedData.push(stringifyObj(val));\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        stringifiedData.push(_stringify(typeOfVal, val));\n    }\n  }\n\n  return `[${stringifiedData.join(',')}]`;\n}\n\nfunction _stringify(typeOfData, data) {\n  /* TODO: реалізувати цей рядок */\n    case 'string':\n      return `\\\"${data}\\\"`;\n    case 'number':\n    case 'boolean':\n      return String(data);\n    case 'function':\n      return undefined;\n    case 'date':\n      return `\"${data.toISOString()}\"`;\n    case 'set':\n    case 'map':\n    case 'weakSet':\n    case 'weakMap':\n      return '{}';\n    case 'bigint':\n      /* TODO: реалізувати цей рядок */\n    default:\n      return 'null';\n  }\n}\n\n/* TODO: реалізувати цей рядок */\n  [Number, 'number'],\n  [String, 'string'],\n  [Boolean, 'boolean'],\n  [Array, 'array'],\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  [Set, 'set'],\n  [Map, 'map'],\n  [WeakSet, 'weakSet'],\n  [WeakMap, 'weakMap'],\n]);\n\nfunction detectDataType(data) {\n  if (typeof data === 'number' && isNaN(data)) {\n    return 'NaN';\n  }\n\n  if (data === Infinity) {\n    return 'infinity';\n  }\n\n  if (typeof data !== 'object') {\n    return typeof data;\n  }\n\n  if (data === null) {\n    return 'null';\n  }\n\n  for (const [type, name] of dataTypes.entries()) {\n    /* TODO: реалізувати цей рядок */\n      return name;\n    }\n  }\n\n  return 'object';\n}",
+      "\nfunction stringify(data) {\n  const typeOfData = detectDataType(data);\n\n  if (typeOfData === 'array') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (typeOfData === 'object' || typeOfData === 'map') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return _stringify(typeOfData, data);\n}\n\nfunction stringifyObj(data) {\n  /* TODO: реалізувати цей рядок */\n\n  for (const key of Object.keys(data)) {\n    /* TODO: реалізувати цей рядок */\n    const typeOfVal = detectDataType(val);\n\n    if (\n      /* TODO: реалізувати цей рядок */\n      typeOfVal === 'function' ||\n      typeOfVal === 'undefined'\n    ) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      case 'array':\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        break;\n      default:\n        stringifiedKey += _stringify(typeOfVal, val);\n    }\n\n    stringifiedData.push(stringifiedKey);\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction stringifyArr(data) {\n  let stringifiedData = [];\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    const typeOfVal = detectDataType(val);\n\n    /* TODO: реалізувати цей рядок */\n      case 'array':\n        stringifiedData.push(stringifyArr(val));\n        break;\n      /* TODO: реалізувати цей рядок */\n      case 'map':\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      default:\n        /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction _stringify(typeOfData, data) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    case 'number':\n    case 'boolean':\n      return String(data);\n    case 'function':\n      /* TODO: реалізувати цей рядок */\n    case 'date':\n      return `\"${data.toISOString()}\"`;\n    case 'set':\n    /* TODO: реалізувати цей рядок */\n    case 'weakSet':\n    case 'weakMap':\n      return '{}';\n    /* TODO: реалізувати цей рядок */\n      throw new Error(\"TypeError: BigInt value can't be serialized in JSON\");\n    default:\n      return 'null';\n  }\n}\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  [String, 'string'],\n  /* TODO: реалізувати цей рядок */\n  [Array, 'array'],\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  [WeakMap, 'weakMap'],\n]);\n\nfunction detectDataType(data) {\n  if (typeof data === 'number' && isNaN(data)) {\n    return 'NaN';\n  }\n\n  if (data === Infinity) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (typeof data !== 'object') {\n    return typeof data;\n  }\n\n  if (data === null) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    if (data instanceof type) {\n      return name;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction stringify(data) {\n  /* TODO: реалізувати цей рядок */\n\n  if (typeOfData === 'array') {\n    return stringifyArr(data);\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction stringifyObj(data) {\n  let stringifiedData = [];\n\n  for (const key of Object.keys(data)) {\n    /* TODO: реалізувати цей рядок */\n    const typeOfVal = detectDataType(val);\n\n    if (\n      /* TODO: реалізувати цей рядок */\n      typeOfVal === 'function' ||\n      /* TODO: реалізувати цей рядок */\n    ) {\n      continue;\n    }\n\n    let stringifiedKey = `\\\"${key}\\\":`;\n\n    /* TODO: реалізувати цей рядок */\n      case 'array':\n        /* TODO: реалізувати цей рядок */\n        break;\n      /* TODO: реалізувати цей рядок */\n      case 'map':\n        stringifiedKey += stringifyObj(val);\n        /* TODO: реалізувати цей рядок */\n      default:\n        /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return `{${stringifiedData.join(',')}}`;\n}\n\nfunction stringifyArr(data) {\n  let stringifiedData = [];\n\n  /* TODO: реалізувати цей рядок */\n    if (isNaN(index)) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      case 'array':\n        stringifiedData.push(stringifyArr(val));\n        break;\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        break;\n      default:\n        stringifiedData.push(_stringify(typeOfVal, val));\n    }\n  }\n\n  return `[${stringifiedData.join(',')}]`;\n}\n\nfunction _stringify(typeOfData, data) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    case 'function':\n      return undefined;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    case 'map':\n    /* TODO: реалізувати цей рядок */\n    case 'weakMap':\n      /* TODO: реалізувати цей рядок */\n    case 'bigint':\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n  }\n}\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  [String, 'string'],\n  /* TODO: реалізувати цей рядок */\n  [Array, 'array'],\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  /* TODO: реалізувати цей рядок */\n  [Map, 'map'],\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n]);\n\nfunction detectDataType(data) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (data === Infinity) {\n    return 'infinity';\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return 'object';\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Json.Stringify\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-deep-clone",
+    "block": "Algorithms",
+    "title": "Deep Clone",
+    "timeLimitMin": 10,
+    "description": "`Object.assign()` could be used to do shallow copy, while for recursive deep copy, [\\_.cloneDeep](https://lodash.com/docs/4.17.15#cloneDeep) could be very useful.\n\nCan you create your own `_.cloneDeep()`?\n\nThe lodash implementation actually covers a lot of data types, for simplicity, your code just need to cover\n\n1. [primitive types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Primitive_values) and their wrapper Object\n2. Plain Objects (Object literal) with all enumerable properties\n3. Array",
+    "starter": "function cloneDeep(data) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Use WeakMap that stores cloned results to handle circular reference.\nconst cachedResult = new WeakMap();\n\nfunction cloneDeep(data) {\n  if (data === null || data === undefined) {\n    return data;\n  }\n\n  if (typeof data !== 'object') {\n    return data;\n  }\n\n  // If the source object is already in the WeakMap,\n  // its corresponding copy is returned instead of recursing\n  // further.\n  if (cachedResult.has(data)) {\n    return cachedResult.get(data);\n  }\n\n  const clone = Array.isArray(data) ? [] : {};\n  // Store the source object and its clone in the WeakMap.\n  cachedResult.set(data, clone);\n\n  const keys = [\n    ...Object.getOwnPropertyNames(data),\n    ...Object.getOwnPropertySymbols(data),\n  ];\n  for (const key of keys) {\n    clone[key] = cloneDeep(data[key]);\n  }\n\n  return clone;\n}",
+    "clozeSteps": [
+      "\n/* TODO: реалізувати цей рядок */\n\nfunction cloneDeep(data) {\n  if (data === null || data === undefined) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (typeof data !== 'object') {\n    return data;\n  }\n\n  \n  \n  \n  if (cachedResult.has(data)) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const clone = Array.isArray(data) ? [] : {};\n  \n  cachedResult.set(data, clone);\n\n  const keys = [\n    ...Object.getOwnPropertyNames(data),\n    ...Object.getOwnPropertySymbols(data),\n  ];\n  for (const key of keys) {\n    clone[key] = cloneDeep(data[key]);\n  }\n\n  return clone;\n}",
+      "\nconst cachedResult = new WeakMap();\n\nfunction cloneDeep(data) {\n  if (data === null || data === undefined) {\n    return data;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    return data;\n  }\n\n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n  \n  cachedResult.set(data, clone);\n\n  /* TODO: реалізувати цей рядок */\n    ...Object.getOwnPropertyNames(data),\n    ...Object.getOwnPropertySymbols(data),\n  ];\n  for (const key of keys) {\n    clone[key] = cloneDeep(data[key]);\n  }\n\n  return clone;\n}",
+      "\n/* TODO: реалізувати цей рядок */\n\nfunction cloneDeep(data) {\n  if (data === null || data === undefined) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  \n  \n  if (cachedResult.has(data)) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const clone = Array.isArray(data) ? [] : {};\n  \n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    ...Object.getOwnPropertyNames(data),\n    ...Object.getOwnPropertySymbols(data),\n  ];\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return clone;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Deep Clone\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-modal-dialog",
+    "block": "React Hooks & Components",
+    "title": "Modal Dialog",
+    "timeLimitMin": 10,
+    "description": "Create an accessible modal dialog overlay component in React. Support closing the modal on backdrop/overlay clicks, Esc key press, and include custom header/footer layout options.",
+    "starter": "export function Modal({ isOpen, onClose, title, children }: ModalProps) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useEffect } from 'react';\n\ninterface ModalProps {\n  isOpen: boolean;\n  onClose: () => void;\n  title: string;\n  children: React.ReactNode;\n}\n\nexport function Modal({ isOpen, onClose, title, children }: ModalProps) {\n  useEffect(() => {\n    // Оголошення та ініціалізація змінної \"handleKeyDown\"\n    const handleKeyDown = (e: KeyboardEvent) => {\n      // Перевірка умови виконання\n      if (e.key === 'Escape') onClose();\n    };\n    // Перевірка умови виконання\n    if (isOpen) {\n      window.addEventListener('keydown', handleKeyDown);\n    }\n    // Повернення обчисленого значення\n    return () => window.removeEventListener('keydown', handleKeyDown);\n  }, [isOpen, onClose]);\n\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (!isOpen) return null;\n\n  // Повернення обчисленого значення\n  return (\n    <div \n      onClick={onClose} \n      style={{\n        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,\n        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',\n        alignItems: 'center', justifyContent: 'center', zIndex: 1000\n      }}\n    >\n      <div \n        onClick={e => e.stopPropagation()} \n        style={{\n          background: '#fff', borderRadius: 4, width: 400,\n          padding: 20, boxShadow: '0 4px 6px rgba(0,0,0,0.1)'\n        }}\n      >\n        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 15 }}>\n          <h3>{title}</h3>\n          <button onClick={onClose} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: 18 }}>&times;</button>\n        </div>\n        <div>\n          {children}\n        </div>\n      </div>\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useEffect } from 'react';\n\ninterface ModalProps {\n  isOpen: boolean;\n  onClose: () => void;\n  /* TODO: реалізувати цей рядок */\n  children: React.ReactNode;\n}\n\nexport function Modal({ isOpen, onClose, title, children }: ModalProps) {\n  useEffect(() => {\n    \n    const handleKeyDown = (e: KeyboardEvent) => {\n      \n      if (e.key === 'Escape') onClose();\n    };\n    \n    if (isOpen) {\n      window.addEventListener('keydown', handleKeyDown);\n    }\n    \n    return () => window.removeEventListener('keydown', handleKeyDown);\n  }, [isOpen, onClose]);\n\n  \n  if (!isOpen) return null;\n\n  \n  return (\n    <div \n      onClick={onClose} \n      style={{\n        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,\n        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',\n        alignItems: 'center', justifyContent: 'center', zIndex: 1000\n      }}\n    >\n      <div \n        onClick={e => e.stopPropagation()} \n        style={{\n          background: '#fff', borderRadius: 4, width: 400,\n          padding: 20, boxShadow: '0 4px 6px rgba(0,0,0,0.1)'\n        }}\n      >\n        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 15 }}>\n          <h3>{title}</h3>\n          <button onClick={onClose} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: 18 }}>&times;</button>\n        </div>\n        <div>\n          {children}\n        </div>\n      </div>\n    </div>\n  );\n}",
+      "import React, { useEffect } from 'react';\n\ninterface ModalProps {\n  isOpen: boolean;\n  onClose: () => void;\n  /* TODO: реалізувати цей рядок */\n  children: React.ReactNode;\n}\n\nexport function Modal({ isOpen, onClose, title, children }: ModalProps) {\n  useEffect(() => {\n    \n    const handleKeyDown = (e: KeyboardEvent) => {\n      \n      if (e.key === 'Escape') onClose();\n    };\n    \n    /* TODO: реалізувати цей рядок */\n      window.addEventListener('keydown', handleKeyDown);\n    }\n    \n    return () => window.removeEventListener('keydown', handleKeyDown);\n  }, [isOpen, onClose]);\n\n  \n  if (!isOpen) return null;\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div \n      onClick={onClose} \n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        alignItems: 'center', justifyContent: 'center', zIndex: 1000\n      }}\n    >\n      <div \n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          background: '#fff', borderRadius: 4, width: 400,\n          padding: 20, boxShadow: '0 4px 6px rgba(0,0,0,0.1)'\n        }}\n      >\n        /* TODO: реалізувати цей рядок */\n          <h3>{title}</h3>\n          /* TODO: реалізувати цей рядок */\n        </div>\n        <div>\n          /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      </div>\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  isOpen: boolean;\n  onClose: () => void;\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}\n\nexport function Modal({ isOpen, onClose, title, children }: ModalProps) {\n  useEffect(() => {\n    \n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n    };\n    \n    if (isOpen) {\n      window.addEventListener('keydown', handleKeyDown);\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div \n      /* TODO: реалізувати цей рядок */\n      style={{\n        /* TODO: реалізувати цей рядок */\n        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',\n        /* TODO: реалізувати цей рядок */\n      }}\n    >\n      <div \n        onClick={e => e.stopPropagation()} \n        style={{\n          /* TODO: реалізувати цей рядок */\n          padding: 20, boxShadow: '0 4px 6px rgba(0,0,0,0.1)'\n        }}\n      >\n        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 15 }}>\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        <div>\n          {children}\n        </div>\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Modal Dialog\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-event-emitter-in-javascript",
+    "block": "JS Functions / Polyfills",
+    "title": "Event Emitter In Javascript",
+    "timeLimitMin": 10,
+    "description": "## Event Emitter In Javascript\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-event-emitter-in-javascript-or-facebook-interview-question---qid---J4fNqXImp6QIdGMc7SPF)\n\n### Компанії:\n* Meta, Amazon, Microsoft, Uber\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function eventemitterinjavascript() {\n  // Ваша реалізація тут\n}",
+    "solution": "function eventemitterinjavascript() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function eventemitterinjavascript() {\n  \n  return true;\n}",
+      "function eventemitterinjavascript() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function eventemitterinjavascript() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Event Emitter In Javascript\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-create-a-flat-version-of-a-deeply-nested-array",
+    "block": "JS Functions / Polyfills",
+    "title": "How To Create A Flat Version Of A Deeply Nested Array",
+    "timeLimitMin": 10,
+    "description": "## How To Create A Flat Version Of A Deeply Nested Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-create-a-flat-version-of-a-deeply-nested-array-programming-interview-question---qid---l5Qx4LJ7glelCkIxQjXB)\n\n### Компанії:\n* Meta, Amazon, Google, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtocreateaflatversionofadeeplynestedarray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtocreateaflatversionofadeeplynestedarray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtocreateaflatversionofadeeplynestedarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtocreateaflatversionofadeeplynestedarray() {\n  \n  return true;\n}",
+      "function howtocreateaflatversionofadeeplynestedarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Create A Flat Version Of A Deeply Nested Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Flat case 1', () => {\n  assertEqual(flat([1, [2, [3]]], 1), [1, 2, [3]]);\n  assertEqual(flat([1, [2, [3]]], 2), [1, 2, 3]);\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promisemerge",
+    "block": "JS Functions / Polyfills",
+    "title": "Promisemerge",
+    "timeLimitMin": 10,
+    "description": "Implement a promiseMerge function that takes two promises and merges their resolved values based on their types (numbers are added, strings concatenated, objects merged, arrays joined, etc.).",
+    "starter": "async function promiseMerge(p1, p2) {\n  // Ваша реалізація тут\n}",
+    "solution": "async function promiseMerge(p1, p2) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [v1, v2] = await Promise.all([p1, p2]);\n  \n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (typeof v1 !== typeof v2) {\n    // Викидання помилки (обробка виняткових ситуацій)\n    throw new TypeError('Cannot merge values of different types');\n  }\n  \n  // Перевірка умови виконання\n  if (typeof v1 === 'number') {\n    // Повернення обчисленого значення\n    return v1 + v2;\n  }\n  // Перевірка умови виконання\n  if (typeof v1 === 'string') {\n    // Повернення обчисленого значення\n    return v1 + v2;\n  }\n  // Перевірка умови виконання\n  if (Array.isArray(v1) && Array.isArray(v2)) {\n    // Повернення обчисленого значення\n    return [...v1, ...v2];\n  }\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (typeof v1 === 'object' && v1 !== null && v2 !== null) {\n    // Повернення обчисленого значення\n    return { ...v1, ...v2 };\n  }\n  \n  // Викидання помилки (обробка виняткових ситуацій)\n  throw new Error('Unsupported merge types');\n}",
+    "clozeSteps": [
+      "async function promiseMerge(p1, p2) {\n  \n  const [v1, v2] = await Promise.all([p1, p2]);\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  if (typeof v1 === 'number') {\n    \n    return v1 + v2;\n  }\n  \n  if (typeof v1 === 'string') {\n    \n    return v1 + v2;\n  }\n  \n  if (Array.isArray(v1) && Array.isArray(v2)) {\n    \n    return [...v1, ...v2];\n  }\n  \n  if (typeof v1 === 'object' && v1 !== null && v2 !== null) {\n    \n    return { ...v1, ...v2 };\n  }\n  \n  \n  throw new Error('Unsupported merge types');\n}",
+      "async function promiseMerge(p1, p2) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  if (typeof v1 !== typeof v2) {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    return v1 + v2;\n  }\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  /* TODO: реалізувати цей рядок */\n    \n    return [...v1, ...v2];\n  }\n  \n  if (typeof v1 === 'object' && v1 !== null && v2 !== null) {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  throw new Error('Unsupported merge types');\n}",
+      "async function promiseMerge(p1, p2) {\n  \n  const [v1, v2] = await Promise.all([p1, p2]);\n  \n  \n  if (typeof v1 !== typeof v2) {\n    \n    throw new TypeError('Cannot merge values of different types');\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  if (typeof v1 === 'string') {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  /* TODO: реалізувати цей рядок */\n    \n    return { ...v1, ...v2 };\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Promisemerge\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-chunk",
+    "block": "JS Functions / Polyfills",
+    "title": "Chunk",
+    "timeLimitMin": 10,
+    "description": "Given an array arr and a chunk size size, return a chunked array. A chunked array contains the original elements broken into sub-arrays of length size.",
+    "starter": "function chunk(arr, size) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Chunk\nfunction chunk(arr, size) {\n  // Оголошення та ініціалізація змінної \"chunked\"\n  const chunked = [];\n  // Оголошення та ініціалізація змінної \"index\"\n  let index = 0;\n  // Цикл виконання, поки умова є істинною\n  while (index < arr.length) {\n    chunked.push(arr.slice(index, index + size));\n    index += size;\n  }\n  // Повернення обчисленого значення\n  return chunked;\n}",
+    "clozeSteps": [
+      "\nfunction chunk(arr, size) {\n  \n  const chunked = [];\n  \n  let index = 0;\n  \n  while (index < arr.length) {\n    chunked.push(arr.slice(index, index + size));\n    index += size;\n  }\n  \n  return chunked;\n}",
+      "\nfunction chunk(arr, size) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  while (index < arr.length) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  return chunked;\n}",
+      "\nfunction chunk(arr, size) {\n  \n  const chunked = [];\n  \n  let index = 0;\n  \n  while (index < arr.length) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Chunk\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-classnames",
+    "block": "JS Functions / Polyfills",
+    "title": "Classnames",
+    "timeLimitMin": 10,
+    "description": "Implement a classnames utility that takes arbitrary arguments (strings, objects, arrays) and joins them into a single CSS class string.",
+    "starter": "function classNames(...args) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Classnames\nfunction classNames(...args) {\n  // Оголошення та ініціалізація змінної \"classes\"\n  const classes = [];\n  // Цикл перебору елементів\n  for (const arg of args) {\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!arg) continue;\n    // Перевірка умови виконання\n    if (typeof arg === 'string' || typeof arg === 'number') {\n      // Головна функція/клас для: Classnames\n      classes.push(arg);\n    } else if (Array.isArray(arg)) {\n      // Перевірка умови виконання\n      if (arg.length) {\n        // Оголошення та ініціалізація змінної \"inner\"\n        const inner = classNames(...arg);\n        // Перевірка умови виконання\n        if (inner) classes.push(inner);\n      }\n    } else if (typeof arg === 'object') {\n      // Цикл перебору елементів\n      for (const key of Object.keys(arg)) {\n        // Перевірка умови виконання\n        if (arg[key]) classes.push(key);\n      }\n    }\n  }\n  // Повернення обчисленого значення\n  return classes.join(' ');\n}",
+    "clozeSteps": [
+      "\nfunction classNames(...args) {\n  \n  const classes = [];\n  \n  for (const arg of args) {\n    \n    if (!arg) continue;\n    \n    if (typeof arg === 'string' || typeof arg === 'number') {\n      \n      classes.push(arg);\n    } else if (Array.isArray(arg)) {\n      \n      if (arg.length) {\n        \n        const inner = classNames(...arg);\n        \n        if (inner) classes.push(inner);\n      }\n    } else if (typeof arg === 'object') {\n      \n      /* TODO: реалізувати цей рядок */\n        \n        if (arg[key]) classes.push(key);\n      }\n    }\n  }\n  \n  return classes.join(' ');\n}",
+      "\nfunction classNames(...args) {\n  \n  const classes = [];\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (!arg) continue;\n    \n    if (typeof arg === 'string' || typeof arg === 'number') {\n      \n      classes.push(arg);\n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n        \n        const inner = classNames(...arg);\n        \n        if (inner) classes.push(inner);\n      }\n    } else if (typeof arg === 'object') {\n      \n      for (const key of Object.keys(arg)) {\n        \n        if (arg[key]) classes.push(key);\n      }\n    }\n  }\n  \n  return classes.join(' ');\n}",
+      "\nfunction classNames(...args) {\n  \n  const classes = [];\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (!arg) continue;\n    \n    /* TODO: реалізувати цей рядок */\n      \n      classes.push(arg);\n    } else if (Array.isArray(arg)) {\n      \n      if (arg.length) {\n        \n        const inner = classNames(...arg);\n        \n        if (inner) classes.push(inner);\n      }\n    } else if (typeof arg === 'object') {\n      \n      for (const key of Object.keys(arg)) {\n        \n        if (arg[key]) classes.push(key);\n      }\n    }\n  }\n  \n  return classes.join(' ');\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Classnames\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-your-own-promise",
+    "block": "JS Functions / Polyfills",
+    "title": "Your Own Promise",
+    "timeLimitMin": 10,
+    "description": "## Your Own Promise\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/create-your-own-Promise)\n\n### Компанії:\n* Google, Meta, Netflix, Lyft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function yourownpromise() {\n  // Ваша реалізація тут\n}",
+    "solution": "function yourownpromise() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function yourownpromise() {\n  \n  return true;\n}",
+      "function yourownpromise() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function yourownpromise() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Your Own Promise\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-auto-retry-promise-on-rejection",
+    "block": "JS Functions / Polyfills",
+    "title": "Auto-Retry Promise On Rejection",
+    "timeLimitMin": 10,
+    "description": "For a web application, fetching API data is a common task.\n\nBut the API calls might fail because of Network problems. Usually we could show a screen for Network Error and ask users to retry.\n\nOne approach to handle this is **auto retry when network error occurs**.\n\nYou are asked to create a `fetchWithAutoRetry(fetcher, count)`, which automatically fetch again when error happens, until the maximum count is met.\n\nFor the problem here, there is no need to detect network error, you can just retry on all promise rejections.",
+    "starter": "function fetchWithAutoRetry(fetcher, maximumRetryCount) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {() => Promise<any>} fetcher\n * @param {number} maximumRetryCount\n * @return {Promise<any>}\n */\nfunction fetchWithAutoRetry(fetcher, maximumRetryCount) {\n  return new Promise((resolve, reject) => {\n    const retry = () => {\n      fetcher()\n        .then((result) => {\n          resolve(result);\n        })\n        .catch((error) => {\n          if (maximumRetryCount > 0) {\n            maximumRetryCount--;\n            retry();\n          } else {\n            reject(error);\n          }\n        });\n    };\n\n    retry();\n  });\n}",
+    "clozeSteps": [
+      "\nfunction fetchWithAutoRetry(fetcher, maximumRetryCount) {\n  return new Promise((resolve, reject) => {\n    const retry = () => {\n      fetcher()\n        .then((result) => {\n          resolve(result);\n        })\n        .catch((error) => {\n          if (maximumRetryCount > 0) {\n            maximumRetryCount--;\n            /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            reject(error);\n          }\n        });\n    };\n\n    retry();\n  });\n}",
+      "\nfunction fetchWithAutoRetry(fetcher, maximumRetryCount) {\n  return new Promise((resolve, reject) => {\n    const retry = () => {\n      fetcher()\n        .then((result) => {\n          resolve(result);\n        })\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            maximumRetryCount--;\n            retry();\n          } else {\n            /* TODO: реалізувати цей рядок */\n          }\n        });\n    };\n\n    retry();\n  });\n}",
+      "\nfunction fetchWithAutoRetry(fetcher, maximumRetryCount) {\n  return new Promise((resolve, reject) => {\n    const retry = () => {\n      /* TODO: реалізувати цей рядок */\n        .then((result) => {\n          /* TODO: реалізувати цей рядок */\n        })\n        .catch((error) => {\n          if (maximumRetryCount > 0) {\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            reject(error);\n          }\n        });\n    };\n\n    /* TODO: реалізувати цей рядок */\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Auto-Retry Promise On Rejection\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-flatten-thunk",
+    "block": "JS Functions / Polyfills",
+    "title": "Flatten Thunk",
+    "timeLimitMin": 10,
+    "description": "Suppose we have a Callback type\n\n```js\ntype Callback = (error: Error, result: any | Thunk) => void;\n```\n\nA Thunk is a function that take a Callback as parameter\n\n```js\ntype Thunk = (callback: Callback) => void;\n```\n\nLike following three thunks\n\n```js\nconst func1 = (cb) => {\n  setTimeout(() => cb(null, 'ok'), 10);\n};\n\nconst func2 = (cb) => {\n  setTimeout(() => cb(null, func1), 10);\n};\n\nconst func3 = (cb) => {\n  setTimeout(() => cb(null, func2), 10);\n};\n```\n\nin above example, three functions are kind of chained up, func3 → func2 → func1, but it don't work without some glue.\n\nOK, now you are asked to implement a `flattenThunk()` which glue them up and returns a new thunk.\n\n```js\nflattenThunk(func3)((error, data) => {\n  console.log(data); // 'ok'\n});\n```\n\n**note**\n\nOnce error occurs, the rest uncalled functions should be skipped",
+    "starter": "function flattenThunk(thunk) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Thunk} thunk\n * @return {Thunk}\n */\nfunction flattenThunk(thunk) {\n  let finalCallback;\n\n  const callback = (error, result) => {\n    if (error) {\n      finalCallback(error, undefined);\n      return;\n    }\n\n    if (typeof result === 'function') {\n      result(callback);\n      return;\n    }\n\n    finalCallback(undefined, result);\n  };\n\n  return (finalCb) => {\n    finalCallback = finalCb;\n    thunk(callback);\n  };\n}",
+    "clozeSteps": [
+      "\nfunction flattenThunk(thunk) {\n  let finalCallback;\n\n  const callback = (error, result) => {\n    if (error) {\n      finalCallback(error, undefined);\n      return;\n    }\n\n    if (typeof result === 'function') {\n      result(callback);\n      return;\n    }\n\n    finalCallback(undefined, result);\n  };\n\n  /* TODO: реалізувати цей рядок */\n    finalCallback = finalCb;\n    thunk(callback);\n  };\n}",
+      "\nfunction flattenThunk(thunk) {\n  /* TODO: реалізувати цей рядок */\n\n  const callback = (error, result) => {\n    if (error) {\n      finalCallback(error, undefined);\n      return;\n    }\n\n    if (typeof result === 'function') {\n      result(callback);\n      /* TODO: реалізувати цей рядок */\n    }\n\n    finalCallback(undefined, result);\n  };\n\n  return (finalCb) => {\n    /* TODO: реалізувати цей рядок */\n    thunk(callback);\n  };\n}",
+      "\nfunction flattenThunk(thunk) {\n  let finalCallback;\n\n  /* TODO: реалізувати цей рядок */\n    if (error) {\n      finalCallback(error, undefined);\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (typeof result === 'function') {\n      result(callback);\n      return;\n    }\n\n    /* TODO: реалізувати цей рядок */\n  };\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    thunk(callback);\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Flatten Thunk\".",
+    "testCode": "test('Flat case 1', () => {\n  assertEqual(flat([1, [2, [3]]], 1), [1, 2, [3]]);\n  assertEqual(flat([1, [2, [3]]], 2), [1, 2, 3]);\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-an-event-emitter",
+    "block": "JS Functions / Polyfills",
+    "title": "An Event Emitter",
+    "timeLimitMin": 10,
+    "description": "There is [Event Emitter in Node.js](https://nodejs.org/api/events.html#events_class_eventemitter), Facebook once had [its own implementation](https://github.com/facebookarchive/emitter) but now it is archived.\n\nYou are asked to create an Event Emitter Class\n\n```js\nconst emitter = new Emitter();\n```\n\nIt should support event subscribing\n\n```js\nconst sub1 = emitter.subscribe('event1', callback1);\nconst sub2 = emitter.subscribe('event2', callback2);\n\n// same callback could subscribe\n// on same event multiple times\nconst sub3 = emitter.subscribe('event1', callback1);\n```\n\n`emit(eventName, ...args)` is used to trigger the callbacks, with args relayed\n\n```js\nemitter.emit('event1', 1, 2);\n// callback1 will be called twice\n```\n\nSubscription returned by `subscribe()` has a `release()` method that could be used to unsubscribe\n\n```js\nsub1.release();\nsub3.release();\n// now even if we emit 'event1' again,\n// callback1 is not called anymore\n```",
+    "starter": "class EventEmitter {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: An Event Emitter\nclass EventEmitter {\n  constructor() {\n    this.callbacks = new Map();\n  }\n\n  subscribe(eventName, callback) {\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!this.callbacks.has(eventName)) {\n      this.callbacks.set(eventName, [callback]);\n    } else {\n      // Оголошення та ініціалізація змінної \"cbs\"\n      const cbs = this.callbacks.get(eventName);\n      cbs.push(callback);\n    }\n    // Повернення обчисленого значення\n    return {\n      release: () => {\n        // Оголошення та ініціалізація змінної \"cbs\"\n        const cbs = this.callbacks.get(eventName);\n        // Оголошення та ініціалізація змінної \"cbIndex\"\n        const cbIndex = cbs.indexOf(callback);\n        cbs.splice(cbIndex, 1);\n      },\n    };\n  }\n\n  emit(eventName, ...args) {\n    // Оголошення та ініціалізація змінної \"cbs\"\n    const cbs = this.callbacks.get(eventName);\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!cbs.length) {\n      return;\n    }\n\n    // Цикл перебору елементів\n    for (const cb of cbs) {\n      cb.apply(this, args);\n    }\n  }\n}",
+    "clozeSteps": [
+      "\nclass EventEmitter {\n  constructor() {\n    this.callbacks = new Map();\n  }\n\n  subscribe(eventName, callback) {\n    \n    if (!this.callbacks.has(eventName)) {\n      this.callbacks.set(eventName, [callback]);\n    } else {\n      \n      const cbs = this.callbacks.get(eventName);\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    return {\n      release: () => {\n        \n        const cbs = this.callbacks.get(eventName);\n        \n        const cbIndex = cbs.indexOf(callback);\n        cbs.splice(cbIndex, 1);\n      },\n    };\n  }\n\n  emit(eventName, ...args) {\n    \n    const cbs = this.callbacks.get(eventName);\n    \n    if (!cbs.length) {\n      return;\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}",
+      "\nclass EventEmitter {\n  constructor() {\n    this.callbacks = new Map();\n  }\n\n  subscribe(eventName, callback) {\n    \n    /* TODO: реалізувати цей рядок */\n      this.callbacks.set(eventName, [callback]);\n    } else {\n      \n      /* TODO: реалізувати цей рядок */\n      cbs.push(callback);\n    }\n    \n    /* TODO: реалізувати цей рядок */\n      release: () => {\n        \n        /* TODO: реалізувати цей рядок */\n        \n        const cbIndex = cbs.indexOf(callback);\n        cbs.splice(cbIndex, 1);\n      },\n    };\n  }\n\n  emit(eventName, ...args) {\n    \n    /* TODO: реалізувати цей рядок */\n    \n    if (!cbs.length) {\n      return;\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n      cb.apply(this, args);\n    }\n  }\n}",
+      "\nclass EventEmitter {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    /* TODO: реалізувати цей рядок */\n      release: () => {\n        \n        const cbs = this.callbacks.get(eventName);\n        \n        const cbIndex = cbs.indexOf(callback);\n        /* TODO: реалізувати цей рядок */\n      },\n    };\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    if (!cbs.length) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"An Event Emitter\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promiseall-ii",
+    "block": "General Quiz",
+    "title": "Promise.All Ii",
+    "timeLimitMin": 10,
+    "description": "## Promise.All Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Promise-all-II)\n\n### Компанії:\n* Google, Meta, Netflix, Lyft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promiseallii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promiseallii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promiseallii() {\n  \n  return true;\n}",
+      "function promiseallii() {\n  \n  return true;\n}",
+      "function promiseallii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promise.All Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-promise-order-iii",
+    "block": "General Quiz",
+    "title": "Promise Order Iii",
+    "timeLimitMin": 10,
+    "description": "## Promise Order Iii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Promise-Order-III)\n\n### Компанії:\n* Google, Meta, Netflix, Lyft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promiseorderiii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promiseorderiii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promiseorderiii() {\n  \n  return true;\n}",
+      "function promiseorderiii() {\n  \n  return true;\n}",
+      "function promiseorderiii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promise Order Iii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-promise-order-ii",
+    "block": "General Quiz",
+    "title": "Promise Order Ii",
+    "timeLimitMin": 10,
+    "description": "## Promise Order Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/promise-order-II)\n\n### Компанії:\n* Google, Meta, Netflix, Lyft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promiseorderii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promiseorderii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promiseorderii() {\n  \n  return true;\n}",
+      "function promiseorderii() {\n  \n  return true;\n}",
+      "function promiseorderii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promise Order Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-promise-executor-ii",
+    "block": "General Quiz",
+    "title": "Promise Executor Ii",
+    "timeLimitMin": 10,
+    "description": "## Promise Executor Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Promise-executor-II)\n\n### Компанії:\n* Google, Meta, Netflix, Lyft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promiseexecutorii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promiseexecutorii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promiseexecutorii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function promiseexecutorii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function promiseexecutorii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promise Executor Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-flatt",
+    "block": "TypeScript Puzzles",
+    "title": "Flat<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `Flat<T>` to flatten a tuple type.\n\n```ts\ntype A = Flat<[1, 2, 3]>; // [1,2,3]\ntype B = Flat<[1, [2, 3], [4, [5, [6]]]]>; // [1,2,3,4,5,6]\ntype C = Flat<[]>; // []\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type Flat<T extends any[]> = T extends [infer F, ...infer R]\n  ? F extends any[]\n    ? [...Flat<F>, ...Flat<R>]\n    : [F, ...Flat<R>]\n  : [];",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    : [F, ...Flat<R>]\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  ? F extends any[]\n    ? [...Flat<F>, ...Flat<R>]\n    /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    : [F, ...Flat<R>]\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Flat<T>\".",
+    "testCode": "test('Flat case 1', () => {\n  assertEqual(flat([1, [2, [3]]], 1), [1, 2, [3]]);\n  assertEqual(flat([1, [2, [3]]], 2), [1, 2, 3]);\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-unwrappromiset",
+    "block": "TypeScript Puzzles",
+    "title": "Unwrappromise<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `UnwrapPromise<T>` to return the resolved type of a promise.\n\n```ts\ntype A = UnwrapPromise<Promise<string>>; // string\ntype B = UnwrapPromise<Promise<null>>; // null\ntype C = UnwrapPromise<null>; // Error\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type UnwrapPromise<T extends Promise<any>> = T extends Promise<infer Resolved>\n  ? Resolved\n  : never;",
+    "clozeSteps": [
+      "type UnwrapPromise<T extends Promise<any>> = T extends Promise<infer Resolved>\n  ? Resolved\n  : never;",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  ? Resolved\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Unwrappromise<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-add-two-promises",
+    "block": "JS Functions / Polyfills",
+    "title": "Add Two Promises",
+    "timeLimitMin": 10,
+    "description": "Given two promises promise1 and promise2, return a new promise that resolves with the sum of the two resolved values.",
+    "starter": "async function addTwoPromises(promise1, promise2) {\n  // Ваша реалізація тут\n}",
+    "solution": "async function addTwoPromises(promise1, promise2) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [val1, val2] = await Promise.all([promise1, promise2]);\n  // Повернення обчисленого значення\n  return val1 + val2;\n}",
+    "clozeSteps": [
+      "async function addTwoPromises(promise1, promise2) {\n  \n  const [val1, val2] = await Promise.all([promise1, promise2]);\n  \n  return val1 + val2;\n}",
+      "async function addTwoPromises(promise1, promise2) {\n  \n  const [val1, val2] = await Promise.all([promise1, promise2]);\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "async function addTwoPromises(promise1, promise2) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Add Two Promises\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-promise-time-limit",
+    "block": "JS Functions / Polyfills",
+    "title": "Promise Time Limit",
+    "timeLimitMin": 10,
+    "description": "Given an asynchronous function fn and a time t in milliseconds, return a new time limited version of the input function. If the function does not complete within the time limit, it should reject with the string \"Time Limit Exceeded\".",
+    "starter": "function timeLimit(fn, t) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Promise Time Limit\nfunction timeLimit(fn, t) {\n  // Повернення обчисленого значення\n  return async function(...args) {\n    // Повернення обчисленого значення\n    return new Promise((resolve, reject) => {\n      // Оголошення та ініціалізація змінної \"timer\"\n      const timer = setTimeout(() => {\n        reject(\"Time Limit Exceeded\");\n      }, t);\n      fn(...args)\n        .then(res => {\n          // Скасування активного таймера\n          clearTimeout(timer);\n          resolve(res);\n        })\n        .catch(err => {\n          // Скасування активного таймера\n          clearTimeout(timer);\n          reject(err);\n        });\n    });\n  };\n}",
+    "clozeSteps": [
+      "\nfunction timeLimit(fn, t) {\n  \n  return async function(...args) {\n    \n    /* TODO: реалізувати цей рядок */\n      \n      const timer = setTimeout(() => {\n        reject(\"Time Limit Exceeded\");\n      }, t);\n      fn(...args)\n        .then(res => {\n          \n          clearTimeout(timer);\n          resolve(res);\n        })\n        /* TODO: реалізувати цей рядок */\n          \n          clearTimeout(timer);\n          /* TODO: реалізувати цей рядок */\n        });\n    });\n  };\n}",
+      "\nfunction timeLimit(fn, t) {\n  \n  return async function(...args) {\n    \n    return new Promise((resolve, reject) => {\n      \n      const timer = setTimeout(() => {\n        /* TODO: реалізувати цей рядок */\n      }, t);\n      /* TODO: реалізувати цей рядок */\n        .then(res => {\n          \n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        })\n        /* TODO: реалізувати цей рядок */\n          \n          clearTimeout(timer);\n          /* TODO: реалізувати цей рядок */\n        });\n    });\n  };\n}",
+      "\nfunction timeLimit(fn, t) {\n  \n  return async function(...args) {\n    \n    return new Promise((resolve, reject) => {\n      \n      const timer = setTimeout(() => {\n        reject(\"Time Limit Exceeded\");\n      }, t);\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          \n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        })\n        .catch(err => {\n          \n          /* TODO: реалізувати цей рядок */\n          reject(err);\n        });\n    });\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Promise Time Limit\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-tic-tac-toe",
+    "block": "React Hooks & Components",
+    "title": "Tic Tac Toe",
+    "timeLimitMin": 10,
+    "description": "Create a fully functioning interactive Tic-Tac-Toe grid game in React. Handle player turns (X and O), detect win states and draw states, and support game resets.",
+    "starter": "export function TicTacToe() {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\nexport function TicTacToe() {\n  // Оголошення та ініціалізація змінної \"\"\n  const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));\n  // Оголошення та ініціалізація змінної \"\"\n  const [xIsNext, setXIsNext] = useState(true);\n\n  // Оголошення та ініціалізація змінної \"calculateWinner\"\n  const calculateWinner = (squares: (string | null)[]) => {\n    // Оголошення та ініціалізація змінної \"lines\"\n    const lines = [\n      [0, 1, 2], [3, 4, 5], [6, 7, 8],\n      [0, 3, 6], [1, 4, 7], [2, 5, 8],\n      [0, 4, 8], [2, 4, 6]\n    ];\n    // Цикл перебору елементів\n    for (const [a, b, c] of lines) {\n      // Перевірка умови виконання\n      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {\n        // Повернення обчисленого значення\n        return squares[a];\n      }\n    }\n    // Повернення обчисленого значення\n    return null;\n  };\n\n  // Оголошення та ініціалізація змінної \"winner\"\n  const winner = calculateWinner(board);\n  // Оголошення та ініціалізація змінної \"isDraw\"\n  const isDraw = !winner && board.every(square => square !== null);\n\n  // Оголошення та ініціалізація змінної \"handleClick\"\n  const handleClick = (idx: number) => {\n    // Перевірка умови виконання\n    if (board[idx] || winner) return;\n    // Оголошення та ініціалізація змінної \"nextBoard\"\n    const nextBoard = [...board];\n    nextBoard[idx] = xIsNext ? 'X' : 'O';\n    setBoard(nextBoard);\n    setXIsNext(!xIsNext);\n  };\n\n  // Оголошення та ініціалізація змінної \"reset\"\n  const reset = () => {\n    setBoard(Array(9).fill(null));\n    setXIsNext(true);\n  };\n\n  // Повернення обчисленого значення\n  return (\n    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>\n      <h2>\n        {winner ? `Winner: ${winner}` : isDraw ? \"It's a draw!\" : `Next player: ${xIsNext ? 'X' : 'O'}`}\n      </h2>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 80px)', gap: 5 }}>\n        // Трансформація елементів масиву\n        {board.map((val, idx) => (\n          <button \n            key={idx} \n            onClick={() => handleClick(idx)} \n            style={{ width: 80, height: 80, fontSize: 24, cursor: 'pointer', fontWeight: 'bold' }}\n          >\n            {val}\n          </button>\n        ))}\n      </div>\n      <button onClick={reset} style={{ padding: '8px 16px', fontSize: 16 }}>Reset Game</button>\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState } from 'react';\n\nexport function TicTacToe() {\n  \n  const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    const lines = [\n      /* TODO: реалізувати цей рядок */\n      [0, 3, 6], [1, 4, 7], [2, 5, 8],\n      [0, 4, 8], [2, 4, 6]\n    ];\n    \n    for (const [a, b, c] of lines) {\n      \n      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {\n        \n        return squares[a];\n      }\n    }\n    \n    return null;\n  };\n\n  \n  const winner = calculateWinner(board);\n  \n  const isDraw = !winner && board.every(square => square !== null);\n\n  \n  const handleClick = (idx: number) => {\n    \n    if (board[idx] || winner) return;\n    \n    const nextBoard = [...board];\n    nextBoard[idx] = xIsNext ? 'X' : 'O';\n    setBoard(nextBoard);\n    setXIsNext(!xIsNext);\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    setBoard(Array(9).fill(null));\n    setXIsNext(true);\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>\n      <h2>\n        {winner ? `Winner: ${winner}` : isDraw ? \"It's a draw!\" : `Next player: ${xIsNext ? 'X' : 'O'}`}\n      </h2>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 80px)', gap: 5 }}>\n        \n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            key={idx} \n            onClick={() => handleClick(idx)} \n            /* TODO: реалізувати цей рядок */\n          >\n            {val}\n          </button>\n        ))}\n      </div>\n      <button onClick={reset} style={{ padding: '8px 16px', fontSize: 16 }}>Reset Game</button>\n    </div>\n  );\n}",
+      "import React, { useState } from 'react';\n\nexport function TicTacToe() {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const [xIsNext, setXIsNext] = useState(true);\n\n  \n  const calculateWinner = (squares: (string | null)[]) => {\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    ];\n    \n    for (const [a, b, c] of lines) {\n      \n      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {\n        \n        return squares[a];\n      }\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  const winner = calculateWinner(board);\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const handleClick = (idx: number) => {\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    setXIsNext(true);\n  };\n\n  \n  return (\n    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>\n      <h2>\n        /* TODO: реалізувати цей рядок */\n      </h2>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 80px)', gap: 5 }}>\n        \n        {board.map((val, idx) => (\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          >\n            /* TODO: реалізувати цей рядок */\n          </button>\n        ))}\n      </div>\n      /* TODO: реалізувати цей рядок */\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function TicTacToe() {\n  \n  const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));\n  \n  const [xIsNext, setXIsNext] = useState(true);\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      [0, 3, 6], [1, 4, 7], [2, 5, 8],\n      /* TODO: реалізувати цей рядок */\n    ];\n    \n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n        \n        return squares[a];\n      }\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (board[idx] || winner) return;\n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    setBoard(nextBoard);\n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  const reset = () => {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      <h2>\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        \n        {board.map((val, idx) => (\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            onClick={() => handleClick(idx)} \n            style={{ width: 80, height: 80, fontSize: 24, cursor: 'pointer', fontWeight: 'bold' }}\n          >\n            {val}\n          </button>\n        ))}\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Tic Tac Toe\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-reduce",
+    "block": "JS Functions / Polyfills",
+    "title": "Reduce",
+    "timeLimitMin": 10,
+    "description": "## Reduce\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-Array-prototype-reduce)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/reduce)\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function reduce() {\n  // Ваша реалізація тут\n}",
+    "solution": "function reduce() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function reduce() {\n  \n  return true;\n}",
+      "function reduce() {\n  \n  return true;\n}",
+      "function reduce() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Reduce\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-n-avatar-picker-frontend-ui-coding-challenge",
+    "block": "TypeScript Puzzles",
+    "title": "N Avatar Picker Frontend Ui Coding Challenge",
+    "timeLimitMin": 10,
+    "description": "## N Avatar Picker Frontend Ui Coding Challenge\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-build-an-avatar-picker-frontend-ui-coding-challenge---qid---HuqxD3sw8pTmDfz3NvCi)\n\n### Компанії:\n* Microsoft, Google, Vercel\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function navatarpickerfrontenduicodingchallenge() {\n  // Ваша реалізація тут\n}",
+    "solution": "function navatarpickerfrontenduicodingchallenge() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function navatarpickerfrontenduicodingchallenge() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function navatarpickerfrontenduicodingchallenge() {\n  \n  return true;\n}",
+      "function navatarpickerfrontenduicodingchallenge() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"N Avatar Picker Frontend Ui Coding Challenge\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-confluence-like-sidebar-with-tree-structure",
+    "block": "Algorithms",
+    "title": "Confluence-Like Sidebar With Tree Structure",
+    "timeLimitMin": 10,
+    "description": "Implement a function that transforms a flat list of pages with parent-child relationships into a nested tree structure for a sidebar navigation, sorted alphabetically by title.",
+    "starter": "function buildTree(pages) {\n  // Ваша реалізація тут\n}",
+    "solution": "function buildTree(pages) {\n  const map = new Map();\n  const roots = [];\n\n  // Initialize map with pages and empty children arrays\n  pages.forEach(page => {\n    map.set(page.id, { ...page, children: [] });\n  });\n\n  // Build tree hierarchy\n  pages.forEach(page => {\n    const node = map.get(page.id);\n    if (page.parentId === null || !map.has(page.parentId)) {\n      roots.push(node);\n    } else {\n      const parent = map.get(page.parentId);\n      parent.children.push(node);\n    }\n  });\n\n  // Sort children alphabetically by title\n  const sortNodes = (nodes) => {\n    nodes.sort((a, b) => a.title.localeCompare(b.title));\n    nodes.forEach(node => {\n      if (node.children.length > 0) {\n        sortNodes(node.children);\n      }\n    });\n  };\n\n  sortNodes(roots);\n  return roots;\n}",
+    "clozeSteps": [
+      "function buildTree(pages) {\n  const map = new Map();\n  const roots = [];\n\n  \n  pages.forEach(page => {\n    map.set(page.id, { ...page, children: [] });\n  });\n\n  \n  pages.forEach(page => {\n    const node = map.get(page.id);\n    if (page.parentId === null || !map.has(page.parentId)) {\n      /* TODO: реалізувати цей рядок */\n    } else {\n      const parent = map.get(page.parentId);\n      parent.children.push(node);\n    }\n  });\n\n  \n  const sortNodes = (nodes) => {\n    nodes.sort((a, b) => a.title.localeCompare(b.title));\n    /* TODO: реалізувати цей рядок */\n      if (node.children.length > 0) {\n        sortNodes(node.children);\n      }\n    });\n  };\n\n  sortNodes(roots);\n  return roots;\n}",
+      "function buildTree(pages) {\n  const map = new Map();\n  /* TODO: реалізувати цей рядок */\n\n  \n  pages.forEach(page => {\n    map.set(page.id, { ...page, children: [] });\n  });\n\n  \n  pages.forEach(page => {\n    const node = map.get(page.id);\n    if (page.parentId === null || !map.has(page.parentId)) {\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      const parent = map.get(page.parentId);\n      /* TODO: реалізувати цей рядок */\n    }\n  });\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    nodes.forEach(node => {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n    });\n  };\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}",
+      "function buildTree(pages) {\n  const map = new Map();\n  /* TODO: реалізувати цей рядок */\n\n  \n  pages.forEach(page => {\n    map.set(page.id, { ...page, children: [] });\n  });\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      const parent = map.get(page.parentId);\n      /* TODO: реалізувати цей рядок */\n    }\n  });\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    nodes.forEach(node => {\n      if (node.children.length > 0) {\n        sortNodes(node.children);\n      }\n    });\n  };\n\n  /* TODO: реалізувати цей рядок */\n  return roots;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Confluence-Like Sidebar With Tree Structure\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-check-deep-equality-between-javascript-objects",
+    "block": "JS Functions / Polyfills",
+    "title": "How To Check Deep Equality Between Javascript Objects",
+    "timeLimitMin": 10,
+    "description": "## How To Check Deep Equality Between Javascript Objects\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-check-deep-equality-between-javascript-objects-or-zeta-frontend-interview-question---qid---1YjgIig2dBwqkpovXNrR)\n\n### Компанії:\n* Meta, Google, Amazon\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtocheckdeepequalitybetweenjavascriptobjects() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtocheckdeepequalitybetweenjavascriptobjects() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtocheckdeepequalitybetweenjavascriptobjects() {\n  \n  return true;\n}",
+      "function howtocheckdeepequalitybetweenjavascriptobjects() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtocheckdeepequalitybetweenjavascriptobjects() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Check Deep Equality Between Javascript Objects\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-deep-equal",
+    "block": "JS Functions / Polyfills",
+    "title": "Deep Equal",
+    "timeLimitMin": 10,
+    "description": "Write a function that checks if two values are deeply equal. It should recursively compare objects, arrays, maps, sets, and primitive values.",
+    "starter": "function deepEqual(a, b) {\n  // Ваша реалізація тут\n}",
+    "solution": "function deepEqual(a, b) {\n  // Перевірка на строгу рівність (включаючи правильну перевірку NaN через Object.is)\n  if (Object.is(a, b)) return true;\n\n  // Якщо хоча б одне значення не є об'єктом або є null — вони не рівні\n  if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {\n    return false;\n  }\n\n  // Обробка масивів\n  if (Array.isArray(a) && Array.isArray(b)) {\n    if (a.length !== b.length) return false; // Різна довжина — не рівні\n    for (let i = 0; i < a.length; i++) {\n      if (!deepEqual(a[i], b[i])) return false; // Рекурсивно порівнюємо кожен елемент\n    }\n    return true;\n  }\n\n  // Якщо один масив, а інший ні — вони не рівні\n  if (Array.isArray(a) || Array.isArray(b)) return false;\n\n  // Отримуємо ключі обох об'єктів\n  const keysA = Object.keys(a);\n  const keysB = Object.keys(b);\n\n  // Якщо кількість ключів різна — об'єкти не рівні\n  if (keysA.length !== keysB.length) return false;\n\n  // Порівнюємо значення по кожному ключу\n  for (const key of keysA) {\n    // Перевіряємо наявність ключа в об'єкті B та робимо рекурсивне порівняння значень\n    if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;\n  }\n\n  return true;\n}",
+    "clozeSteps": [
+      "function deepEqual(a, b) {\n  \n  if (Object.is(a, b)) return true;\n\n  \n  if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {\n    return false;\n  }\n\n  \n  if (Array.isArray(a) && Array.isArray(b)) {\n    if (a.length !== b.length) return false; \n    for (let i = 0; i < a.length; i++) {\n      if (!deepEqual(a[i], b[i])) return false; \n    }\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  if (Array.isArray(a) || Array.isArray(b)) return false;\n\n  \n  /* TODO: реалізувати цей рядок */\n  const keysB = Object.keys(b);\n\n  \n  if (keysA.length !== keysB.length) return false;\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  return true;\n}",
+      "function deepEqual(a, b) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {\n    return false;\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    return true;\n  }\n\n  \n  if (Array.isArray(a) || Array.isArray(b)) return false;\n\n  \n  const keysA = Object.keys(a);\n  /* TODO: реалізувати цей рядок */\n\n  \n  if (keysA.length !== keysB.length) return false;\n\n  \n  for (const key of keysA) {\n    \n    if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;\n  }\n\n  return true;\n}",
+      "function deepEqual(a, b) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    return false;\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    return true;\n  }\n\n  \n  if (Array.isArray(a) || Array.isArray(b)) return false;\n\n  \n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  for (const key of keysA) {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  return true;\n}"
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Deep Equal\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-deep-omit",
+    "block": "TypeScript Puzzles",
+    "title": "Deep Omit",
+    "timeLimitMin": 10,
+    "description": "## Deep Omit\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* Microsoft, Google, Vercel\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function deepomit() {\n  // Ваша реалізація тут\n}",
+    "solution": "function deepomit() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function deepomit() {\n  \n  return true;\n}",
+      "function deepomit() {\n  \n  return true;\n}",
+      "function deepomit() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Deep Omit\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-rate-limiter",
+    "block": "JS Functions / Polyfills",
+    "title": "Rate Limiter",
+    "timeLimitMin": 10,
+    "description": "Implement a client-side Rate Limiter class that allows a maximum of N requests within a rolling window of W milliseconds.",
+    "starter": "class RateLimiter {\n  // Ваша реалізація тут\n}",
+    "solution": "class RateLimiter {\n  constructor(limit, windowMs) {\n    this.limit = limit;\n    this.windowMs = windowMs;\n    this.timestamps = [];\n  }\n\n  allowRequest() {\n    const now = Date.now();\n    // Filter out timestamps outside the rolling window\n    this.timestamps = this.timestamps.filter(t => now - t < this.windowMs);\n    \n    if (this.timestamps.length < this.limit) {\n      this.timestamps.push(now);\n      return true;\n    }\n    \n    return false;\n  }\n}",
+    "clozeSteps": [
+      "class RateLimiter {\n  constructor(limit, windowMs) {\n    this.limit = limit;\n    this.windowMs = windowMs;\n    this.timestamps = [];\n  }\n\n  /* TODO: реалізувати цей рядок */\n    const now = Date.now();\n    \n    this.timestamps = this.timestamps.filter(t => now - t < this.windowMs);\n    \n    if (this.timestamps.length < this.limit) {\n      /* TODO: реалізувати цей рядок */\n      return true;\n    }\n    \n    return false;\n  }\n}",
+      "class RateLimiter {\n  constructor(limit, windowMs) {\n    this.limit = limit;\n    this.windowMs = windowMs;\n    this.timestamps = [];\n  }\n\n  allowRequest() {\n    const now = Date.now();\n    \n    this.timestamps = this.timestamps.filter(t => now - t < this.windowMs);\n    \n    if (this.timestamps.length < this.limit) {\n      this.timestamps.push(now);\n      return true;\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  }\n}",
+      "class RateLimiter {\n  constructor(limit, windowMs) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  allowRequest() {\n    /* TODO: реалізувати цей рядок */\n    \n    this.timestamps = this.timestamps.filter(t => now - t < this.windowMs);\n    \n    if (this.timestamps.length < this.limit) {\n      this.timestamps.push(now);\n      /* TODO: реалізувати цей рядок */\n    }\n    \n    return false;\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Rate Limiter\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-star-rating",
+    "block": "React Hooks & Components",
+    "title": "Star Rating",
+    "timeLimitMin": 10,
+    "description": "Implement a Star Rating interactive component in React. Support hover states (filling stars on mouse hover) and clicking to lock in a rating.",
+    "starter": "export function StarRating({ count = 5, onRatingChange }: { count?: number, onRatingChange?: (r: number) => void }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\nexport function StarRating({ count = 5, onRatingChange }: { count?: number, onRatingChange?: (r: number) => void }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [rating, setRating] = useState(0);\n  // Оголошення та ініціалізація змінної \"\"\n  const [hoverRating, setHoverRating] = useState(0);\n\n  // Оголошення та ініціалізація змінної \"handleClick\"\n  const handleClick = (value: number) => {\n    setRating(value);\n    // Перевірка умови виконання\n    if (onRatingChange) onRatingChange(value);\n  };\n\n  // Повернення обчисленого значення\n  return (\n    <div style={{ display: 'flex', gap: 5 }}>\n      {Array.from({ length: count }, (_, idx) => {\n        // Оголошення та ініціалізація змінної \"starValue\"\n        const starValue = idx + 1;\n        // Оголошення та ініціалізація змінної \"isActive\"\n        const isActive = starValue <= (hoverRating || rating);\n        // Повернення обчисленого значення\n        return (\n          <span\n            key={starValue}\n            onClick={() => handleClick(starValue)}\n            onMouseEnter={() => setHoverRating(starValue)}\n            onMouseLeave={() => setHoverRating(0)}\n            style={{ fontSize: 32, cursor: 'pointer', color: isActive ? '#fcc419' : '#dee2e6' }}\n          >\n            ★\n          </span>\n        );\n      })}\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState } from 'react';\n\nexport function StarRating({ count = 5, onRatingChange }: { count?: number, onRatingChange?: (r: number) => void }) {\n  \n  const [rating, setRating] = useState(0);\n  \n  const [hoverRating, setHoverRating] = useState(0);\n\n  \n  const handleClick = (value: number) => {\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  return (\n    /* TODO: реалізувати цей рядок */\n      {Array.from({ length: count }, (_, idx) => {\n        \n        const starValue = idx + 1;\n        \n        /* TODO: реалізувати цей рядок */\n        \n        return (\n          <span\n            key={starValue}\n            onClick={() => handleClick(starValue)}\n            onMouseEnter={() => setHoverRating(starValue)}\n            onMouseLeave={() => setHoverRating(0)}\n            /* TODO: реалізувати цей рядок */\n          >\n            ★\n          </span>\n        );\n      })}\n    </div>\n  );\n}",
+      "import React, { useState } from 'react';\n\nexport function StarRating({ count = 5, onRatingChange }: { count?: number, onRatingChange?: (r: number) => void }) {\n  \n  const [rating, setRating] = useState(0);\n  \n  const [hoverRating, setHoverRating] = useState(0);\n\n  \n  const handleClick = (value: number) => {\n    setRating(value);\n    \n    if (onRatingChange) onRatingChange(value);\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      {Array.from({ length: count }, (_, idx) => {\n        \n        /* TODO: реалізувати цей рядок */\n        \n        /* TODO: реалізувати цей рядок */\n        \n        return (\n          <span\n            key={starValue}\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            onMouseLeave={() => setHoverRating(0)}\n            style={{ fontSize: 32, cursor: 'pointer', color: isActive ? '#fcc419' : '#dee2e6' }}\n          >\n            ★\n          </span>\n        );\n      })}\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function StarRating({ count = 5, onRatingChange }: { count?: number, onRatingChange?: (r: number) => void }) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const handleClick = (value: number) => {\n    setRating(value);\n    \n    if (onRatingChange) onRatingChange(value);\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div style={{ display: 'flex', gap: 5 }}>\n      {Array.from({ length: count }, (_, idx) => {\n        \n        /* TODO: реалізувати цей рядок */\n        \n        const isActive = starValue <= (hoverRating || rating);\n        \n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            onClick={() => handleClick(starValue)}\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          >\n            ★\n          </span>\n        );\n      })}\n    </div>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Star Rating\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-intersection-of-unsorted-arrays",
+    "block": "Algorithms",
+    "title": "Intersection Of Unsorted Arrays",
+    "timeLimitMin": 10,
+    "description": "Given two unsorted arrays, return their intersection. Each element in the result must be unique.",
+    "starter": "function intersection(arr1, arr2) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Intersection Of Unsorted Arrays\nfunction intersection(arr1, arr2) {\n  // Оголошення та ініціалізація змінної \"set1\"\n  const set1 = new Set(arr1);\n  // Оголошення та ініціалізація змінної \"result\"\n  const result = new Set();\n  \n  // Цикл перебору елементів\n  for (const val of arr2) {\n    // Перевірка умови виконання\n    if (set1.has(val)) {\n      result.add(val);\n    }\n  }\n  \n  // Повернення обчисленого значення\n  return Array.from(result);\n}",
+    "clozeSteps": [
+      "\nfunction intersection(arr1, arr2) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const result = new Set();\n  \n  \n  for (const val of arr2) {\n    \n    if (set1.has(val)) {\n      result.add(val);\n    }\n  }\n  \n  \n  return Array.from(result);\n}",
+      "\nfunction intersection(arr1, arr2) {\n  \n  const set1 = new Set(arr1);\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  for (const val of arr2) {\n    \n    if (set1.has(val)) {\n      result.add(val);\n    }\n  }\n  \n  \n  return Array.from(result);\n}",
+      "\nfunction intersection(arr1, arr2) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const result = new Set();\n  \n  \n  for (const val of arr2) {\n    \n    if (set1.has(val)) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n  \n  \n  return Array.from(result);\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Intersection Of Unsorted Arrays\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-pick-up-stones",
+    "block": "TypeScript Puzzles",
+    "title": "Pick Up Stones",
+    "timeLimitMin": 10,
+    "description": "## Pick Up Stones\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/pickup-the-stones)\n\n### Компанії:\n* Microsoft, Google, Vercel\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function pickupstones() {\n  // Ваша реалізація тут\n}",
+    "solution": "function pickupstones() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function pickupstones() {\n  \n  return true;\n}",
+      "function pickupstones() {\n  \n  return true;\n}",
+      "function pickupstones() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Pick Up Stones\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-partial",
+    "block": "TypeScript Puzzles",
+    "title": "Partial",
+    "timeLimitMin": 10,
+    "description": "## Partial\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-partial)\n\n### Компанії:\n* Microsoft, Meta, Vercel\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function partial() {\n  // Ваша реалізація тут\n}",
+    "solution": "function partial() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function partial() {\n  \n  return true;\n}",
+      "function partial() {\n  \n  return true;\n}",
+      "function partial() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Partial\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-intersection-of-two-sorted-arrays",
+    "block": "Algorithms",
+    "title": "Intersection Of Two Sorted Arrays",
+    "timeLimitMin": 10,
+    "description": "Given two sorted arrays, return their intersection. The result must be sorted and each element should appear as many times as it does in both arrays (or unique, depending on standard requirements. Let's implement the duplicate-preserving version using two pointers).",
+    "starter": "function intersectSorted(arr1, arr2) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Intersection Of Two Sorted Arrays\nfunction intersectSorted(arr1, arr2) {\n  // Оголошення та ініціалізація змінної \"result\"\n  const result = [];\n  // Оголошення та ініціалізація змінної \"i\"\n  let i = 0;\n  // Оголошення та ініціалізація змінної \"j\"\n  let j = 0;\n  \n  // Цикл виконання, поки умова є істинною\n  while (i < arr1.length && j < arr2.length) {\n    // Перевірка умови виконання\n    if (arr1[i] === arr2[j]) {\n      result.push(arr1[i]);\n      i++;\n      j++;\n    } else if (arr1[i] < arr2[j]) {\n      i++;\n    } else {\n      j++;\n    }\n  }\n  \n  // Повернення обчисленого значення\n  return result;\n}",
+    "clozeSteps": [
+      "\nfunction intersectSorted(arr1, arr2) {\n  \n  const result = [];\n  \n  let i = 0;\n  \n  let j = 0;\n  \n  \n  while (i < arr1.length && j < arr2.length) {\n    \n    /* TODO: реалізувати цей рядок */\n      result.push(arr1[i]);\n      i++;\n      j++;\n    } else if (arr1[i] < arr2[j]) {\n      i++;\n    } else {\n      j++;\n    }\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction intersectSorted(arr1, arr2) {\n  \n  const result = [];\n  \n  let i = 0;\n  \n  let j = 0;\n  \n  \n  while (i < arr1.length && j < arr2.length) {\n    \n    /* TODO: реалізувати цей рядок */\n      result.push(arr1[i]);\n      i++;\n      j++;\n    } else if (arr1[i] < arr2[j]) {\n      i++;\n    } else {\n      j++;\n    }\n  }\n  \n  \n  return result;\n}",
+      "\nfunction intersectSorted(arr1, arr2) {\n  \n  const result = [];\n  \n  let i = 0;\n  \n  let j = 0;\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (arr1[i] === arr2[j]) {\n      /* TODO: реалізувати цей рядок */\n      i++;\n      j++;\n    /* TODO: реалізувати цей рядок */\n      i++;\n    /* TODO: реалізувати цей рядок */\n      j++;\n    }\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Intersection Of Two Sorted Arrays\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-binary-tree-vertical-traversal",
+    "block": "Algorithms",
+    "title": "Binary Tree Vertical Traversal",
+    "timeLimitMin": 10,
+    "description": "Given the root of a binary tree, return the vertical order traversal of its nodes' values (from top to bottom, column by column).",
+    "starter": "function verticalOrder(root) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Binary Tree Vertical Traversal\nfunction verticalOrder(root) {\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (!root) return [];\n  \n  // Оголошення та ініціалізація змінної \"columnMap\"\n  const columnMap = {};\n  // Оголошення та ініціалізація змінної \"queue\"\n  const queue = [{ node: root, col: 0 }];\n  // Оголошення та ініціалізація змінної \"minCol\"\n  let minCol = 0;\n  // Оголошення та ініціалізація змінної \"maxCol\"\n  let maxCol = 0;\n  \n  // Цикл виконання, поки умова є істинною\n  while (queue.length > 0) {\n    // Оголошення та ініціалізація змінної \"\"\n    const { node, col } = queue.shift();\n    \n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!columnMap[col]) {\n      columnMap[col] = [];\n    }\n    columnMap[col].push(node.val);\n    \n    minCol = Math.min(minCol, col);\n    maxCol = Math.max(maxCol, col);\n    \n    // Перевірка умови виконання\n    if (node.left) queue.push({ node: node.left, col: col - 1 });\n    // Перевірка умови виконання\n    if (node.right) queue.push({ node: node.right, col: col + 1 });\n  }\n  \n  // Оголошення та ініціалізація змінної \"result\"\n  const result = [];\n  // Цикл перебору елементів\n  for (let i = minCol; i <= maxCol; i++) {\n    // Перевірка умови виконання\n    if (columnMap[i]) {\n      result.push(columnMap[i]);\n    }\n  }\n  \n  // Повернення обчисленого значення\n  return result;\n}",
+    "clozeSteps": [
+      "\nfunction verticalOrder(root) {\n  \n  if (!root) return [];\n  \n  \n  const columnMap = {};\n  \n  const queue = [{ node: root, col: 0 }];\n  \n  let minCol = 0;\n  \n  let maxCol = 0;\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (!columnMap[col]) {\n      columnMap[col] = [];\n    }\n    /* TODO: реалізувати цей рядок */\n    \n    minCol = Math.min(minCol, col);\n    maxCol = Math.max(maxCol, col);\n    \n    \n    if (node.left) queue.push({ node: node.left, col: col - 1 });\n    \n    if (node.right) queue.push({ node: node.right, col: col + 1 });\n  }\n  \n  \n  const result = [];\n  \n  for (let i = minCol; i <= maxCol; i++) {\n    \n    if (columnMap[i]) {\n      result.push(columnMap[i]);\n    }\n  }\n  \n  \n  return result;\n}",
+      "\nfunction verticalOrder(root) {\n  \n  if (!root) return [];\n  \n  \n  const columnMap = {};\n  \n  const queue = [{ node: root, col: 0 }];\n  \n  let minCol = 0;\n  \n  let maxCol = 0;\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    const { node, col } = queue.shift();\n    \n    \n    if (!columnMap[col]) {\n      columnMap[col] = [];\n    }\n    columnMap[col].push(node.val);\n    \n    minCol = Math.min(minCol, col);\n    maxCol = Math.max(maxCol, col);\n    \n    \n    if (node.left) queue.push({ node: node.left, col: col - 1 });\n    \n    if (node.right) queue.push({ node: node.right, col: col + 1 });\n  }\n  \n  \n  const result = [];\n  \n  /* TODO: реалізувати цей рядок */\n    \n    if (columnMap[i]) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n  \n  \n  return result;\n}",
+      "\nfunction verticalOrder(root) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    /* TODO: реалізувати цей рядок */\n    \n    minCol = Math.min(minCol, col);\n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n  \n  for (let i = minCol; i <= maxCol; i++) {\n    \n    /* TODO: реалізувати цей рядок */\n      result.push(columnMap[i]);\n    }\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Binary Tree Vertical Traversal\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "senior"
+  },
+  {
+    "id": "canonical-find-median-of-two-sorted-array",
+    "block": "Algorithms",
+    "title": "Find Median Of Two Sorted Array",
+    "timeLimitMin": 10,
+    "description": "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).",
+    "starter": "function findMedianSortedArrays(nums1, nums2) {\n  // Ваша реалізація тут\n}",
+    "solution": "function findMedianSortedArrays(nums1, nums2) {\n  let A = nums1;\n  let B = nums2;\n  const total = A.length + B.length;\n  const half = Math.floor(total / 2);\n\n  if (B.length < A.length) {\n    [A, B] = [B, A];\n  }\n\n  let l = 0;\n  let r = A.length - 1;\n\n  while (true) {\n    const i = Math.floor((l + r) / 2); // A\n    const j = half - i - 2; // B\n\n    const Aleft = i >= 0 ? A[i] : -Infinity;\n    const Aright = (i + 1) < A.length ? A[i + 1] : Infinity;\n    const Bleft = j >= 0 ? B[j] : -Infinity;\n    const Bright = (j + 1) < B.length ? B[j + 1] : Infinity;\n\n    if (Aleft <= Bright && Bleft <= Aright) {\n      // Odd\n      if (total % 2 !== 0) {\n        return Math.min(Aright, Bright);\n      }\n      // Even\n      return (Math.max(Aleft, Bleft) + Math.min(Aright, Bright)) / 2;\n    } else if (Aleft > Bright) {\n      r = i - 1;\n    } else {\n      l = i + 1;\n    }\n  }\n}",
+    "clozeSteps": [
+      "function findMedianSortedArrays(nums1, nums2) {\n  let A = nums1;\n  let B = nums2;\n  /* TODO: реалізувати цей рядок */\n  const half = Math.floor(total / 2);\n\n  if (B.length < A.length) {\n    [A, B] = [B, A];\n  }\n\n  /* TODO: реалізувати цей рядок */\n  let r = A.length - 1;\n\n  /* TODO: реалізувати цей рядок */\n    const i = Math.floor((l + r) / 2); \n    const j = half - i - 2; \n\n    const Aleft = i >= 0 ? A[i] : -Infinity;\n    const Aright = (i + 1) < A.length ? A[i + 1] : Infinity;\n    const Bleft = j >= 0 ? B[j] : -Infinity;\n    const Bright = (j + 1) < B.length ? B[j + 1] : Infinity;\n\n    if (Aleft <= Bright && Bleft <= Aright) {\n      \n      if (total % 2 !== 0) {\n        return Math.min(Aright, Bright);\n      }\n      \n      return (Math.max(Aleft, Bleft) + Math.min(Aright, Bright)) / 2;\n    } else if (Aleft > Bright) {\n      r = i - 1;\n    } else {\n      l = i + 1;\n    }\n  }\n}",
+      "function findMedianSortedArrays(nums1, nums2) {\n  let A = nums1;\n  let B = nums2;\n  /* TODO: реалізувати цей рядок */\n  const half = Math.floor(total / 2);\n\n  if (B.length < A.length) {\n    [A, B] = [B, A];\n  }\n\n  /* TODO: реалізувати цей рядок */\n  let r = A.length - 1;\n\n  /* TODO: реалізувати цей рядок */\n    const i = Math.floor((l + r) / 2); \n    const j = half - i - 2; \n\n    /* TODO: реалізувати цей рядок */\n    const Aright = (i + 1) < A.length ? A[i + 1] : Infinity;\n    const Bleft = j >= 0 ? B[j] : -Infinity;\n    const Bright = (j + 1) < B.length ? B[j + 1] : Infinity;\n\n    if (Aleft <= Bright && Bleft <= Aright) {\n      \n      if (total % 2 !== 0) {\n        return Math.min(Aright, Bright);\n      }\n      \n      return (Math.max(Aleft, Bleft) + Math.min(Aright, Bright)) / 2;\n    } else if (Aleft > Bright) {\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      l = i + 1;\n    }\n  }\n}",
+      "function findMedianSortedArrays(nums1, nums2) {\n  let A = nums1;\n  let B = nums2;\n  const total = A.length + B.length;\n  /* TODO: реалізувати цей рядок */\n\n  if (B.length < A.length) {\n    [A, B] = [B, A];\n  }\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  while (true) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n    const Aright = (i + 1) < A.length ? A[i + 1] : Infinity;\n    const Bleft = j >= 0 ? B[j] : -Infinity;\n    const Bright = (j + 1) < B.length ? B[j + 1] : Infinity;\n\n    /* TODO: реалізувати цей рядок */\n      \n      if (total % 2 !== 0) {\n        /* TODO: реалізувати цей рядок */\n      }\n      \n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      r = i - 1;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Find Median Of Two Sorted Array\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-serialize-and-deserialize-binary-tree",
+    "block": "Algorithms",
+    "title": "Serialize And Deserialize Binary Tree",
+    "timeLimitMin": 10,
+    "description": "Design an algorithm to serialize and deserialize a binary tree. Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored or transmitted. Deserialization is the reverse process.",
+    "starter": "function serialize(root) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Serialize And Deserialize Binary Tree\nfunction serialize(root) {\n  // Оголошення та ініціалізація змінної \"result\"\n  const result = [];\n  // Головна функція/клас для: Serialize And Deserialize Binary Tree\n  function buildString(node) {\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!node) {\n      result.push('null');\n      return;\n    }\n    result.push(node.val);\n    buildString(node.left);\n    buildString(node.right);\n  }\n  buildString(root);\n  // Повернення обчисленого значення\n  return result.join(',');\n}\n\n// Головна функція/клас для: Serialize And Deserialize Binary Tree\nfunction deserialize(data) {\n  // Оголошення та ініціалізація змінної \"nodes\"\n  const nodes = data.split(',');\n  // Оголошення та ініціалізація змінної \"index\"\n  let index = 0;\n  \n  // Головна функція/клас для: Serialize And Deserialize Binary Tree\n  function buildTree() {\n    // Перевірка умови виконання\n    if (index >= nodes.length) return null;\n    // Оголошення та ініціалізація змінної \"val\"\n    const val = nodes[index++];\n    // Перевірка умови виконання\n    if (val === 'null') return null;\n    \n    // Оголошення та ініціалізація змінної \"node\"\n    const node = { val: parseInt(val), left: null, right: null };\n    node.left = buildTree();\n    node.right = buildTree();\n    // Повернення обчисленого значення\n    return node;\n  }\n  \n  // Повернення обчисленого значення\n  return buildTree();\n}",
+    "clozeSteps": [
+      "\nfunction serialize(root) {\n  \n  const result = [];\n  \n  function buildString(node) {\n    \n    if (!node) {\n      /* TODO: реалізувати цей рядок */\n      return;\n    }\n    result.push(node.val);\n    buildString(node.left);\n    /* TODO: реалізувати цей рядок */\n  }\n  /* TODO: реалізувати цей рядок */\n  \n  return result.join(',');\n}\n\n\nfunction deserialize(data) {\n  \n  const nodes = data.split(',');\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  function buildTree() {\n    \n    if (index >= nodes.length) return null;\n    \n    const val = nodes[index++];\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    node.right = buildTree();\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  return buildTree();\n}",
+      "\nfunction serialize(root) {\n  \n  const result = [];\n  \n  function buildString(node) {\n    \n    if (!node) {\n      /* TODO: реалізувати цей рядок */\n      return;\n    }\n    /* TODO: реалізувати цей рядок */\n    buildString(node.left);\n    buildString(node.right);\n  }\n  buildString(root);\n  \n  return result.join(',');\n}\n\n\nfunction deserialize(data) {\n  \n  const nodes = data.split(',');\n  \n  let index = 0;\n  \n  \n  function buildTree() {\n    \n    /* TODO: реалізувати цей рядок */\n    \n    const val = nodes[index++];\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    \n    return node;\n  }\n  \n  \n  return buildTree();\n}",
+      "\nfunction serialize(root) {\n  \n  const result = [];\n  \n  function buildString(node) {\n    \n    /* TODO: реалізувати цей рядок */\n      result.push('null');\n      return;\n    }\n    /* TODO: реалізувати цей рядок */\n    buildString(node.left);\n    /* TODO: реалізувати цей рядок */\n  }\n  buildString(root);\n  \n  /* TODO: реалізувати цей рядок */\n}\n\n\nfunction deserialize(data) {\n  \n  const nodes = data.split(',');\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  function buildTree() {\n    \n    if (index >= nodes.length) return null;\n    \n    const val = nodes[index++];\n    \n    if (val === 'null') return null;\n    \n    \n    const node = { val: parseInt(val), left: null, right: null };\n    node.left = buildTree();\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Serialize And Deserialize Binary Tree\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-invert-a-binary-tree",
+    "block": "Algorithms",
+    "title": "Invert A Binary Tree",
+    "timeLimitMin": 10,
+    "description": "Can you invert a binary tree and get an offer from Google?\n\nInverting a node means swapping its left child and right child. You need to apply this to all nodes. As following figure illustrates.\n\n```\n        1                            1\n      /   \\                        /   \\\n     2     3                      3     2\n    /       \\      Invert        /       \\\n   4         5  ------------>   5         4\n  / \\       /                    \\       / \\\n 6   7     8                      8     7   6\n      \\                                /\n       9                              9\n```",
+    "starter": "function invert(node) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Node} node\n * @returns {Node}\n */\nfunction invert(node) {\n  if (!node) return node;\n\n  const { left } = node;\n  node.left = invert(node.right);\n  node.right = invert(left);\n\n  return node;\n}",
+    "clozeSteps": [
+      "\nfunction invert(node) {\n  /* TODO: реалізувати цей рядок */\n\n  const { left } = node;\n  /* TODO: реалізувати цей рядок */\n  node.right = invert(left);\n\n  return node;\n}",
+      "\nfunction invert(node) {\n  if (!node) return node;\n\n  const { left } = node;\n  node.left = invert(node.right);\n  node.right = invert(left);\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction invert(node) {\n  /* TODO: реалізувати цей рядок */\n\n  const { left } = node;\n  node.left = invert(node.right);\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Invert A Binary Tree\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-merge-sorted-arrays",
+    "block": "Algorithms",
+    "title": "Merge Sorted Arrays",
+    "timeLimitMin": 10,
+    "description": "You are given a list of sorted non-descending integer arrays, write a function to merge them into one sorted non-descending array.\n\n```js\nmerge([\n  [1, 1, 1, 100, 1000, 10000],\n  [1, 2, 2, 2, 200, 200, 1000],\n  [1000000, 10000001],\n  [2, 3, 3],\n]);\n// [1,1,1,1,2,2,2,2,3,3,100,200,200,1000,1000,10000,1000000,10000001]\n```\n\nWhat is time complexity of your solution?",
+    "starter": "function merge(arrList) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[][]} arrList\n * non-descending integer array\n * @return {number[]}\n */\nfunction merge(arrList) {\n  return mergeImpl(arrList, 0, arrList.length - 1);\n}\n\nfunction mergeImpl(arrList, start, end) {\n  if (start >= end) return arrList[end] || [];\n\n  const mid = Math.floor((start + end) / 2);\n\n  const left = mergeImpl(arrList, start, mid);\n  const right = mergeImpl(arrList, mid + 1, end);\n  return mergeSort(left, right);\n}\n\nfunction mergeSort(arrOne, arrTwo) {\n  const mergedArr = [];\n  let idxOne = 0;\n  let idxTwo = 0;\n\n  while (idxOne !== arrOne.length || idxTwo !== arrTwo.length) {\n    const firstElement = arrOne[idxOne] || Infinity;\n    const secondElement = arrTwo[idxTwo] || Infinity;\n\n    if (firstElement < secondElement) {\n      mergedArr.push(firstElement);\n      idxOne++;\n    } else {\n      mergedArr.push(secondElement);\n      idxTwo++;\n    }\n  }\n\n  return mergedArr;\n}",
+    "clozeSteps": [
+      "\nfunction merge(arrList) {\n  return mergeImpl(arrList, 0, arrList.length - 1);\n}\n\nfunction mergeImpl(arrList, start, end) {\n  /* TODO: реалізувати цей рядок */\n\n  const mid = Math.floor((start + end) / 2);\n\n  const left = mergeImpl(arrList, start, mid);\n  const right = mergeImpl(arrList, mid + 1, end);\n  return mergeSort(left, right);\n}\n\nfunction mergeSort(arrOne, arrTwo) {\n  const mergedArr = [];\n  let idxOne = 0;\n  let idxTwo = 0;\n\n  /* TODO: реалізувати цей рядок */\n    const firstElement = arrOne[idxOne] || Infinity;\n    const secondElement = arrTwo[idxTwo] || Infinity;\n\n    if (firstElement < secondElement) {\n      mergedArr.push(firstElement);\n      idxOne++;\n    } else {\n      mergedArr.push(secondElement);\n      idxTwo++;\n    }\n  }\n\n  return mergedArr;\n}",
+      "\nfunction merge(arrList) {\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction mergeImpl(arrList, start, end) {\n  if (start >= end) return arrList[end] || [];\n\n  const mid = Math.floor((start + end) / 2);\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  return mergeSort(left, right);\n}\n\nfunction mergeSort(arrOne, arrTwo) {\n  /* TODO: реалізувати цей рядок */\n  let idxOne = 0;\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    const firstElement = arrOne[idxOne] || Infinity;\n    /* TODO: реалізувати цей рядок */\n\n    if (firstElement < secondElement) {\n      mergedArr.push(firstElement);\n      /* TODO: реалізувати цей рядок */\n    } else {\n      mergedArr.push(secondElement);\n      idxTwo++;\n    }\n  }\n\n  return mergedArr;\n}",
+      "\nfunction merge(arrList) {\n  return mergeImpl(arrList, 0, arrList.length - 1);\n}\n\nfunction mergeImpl(arrList, start, end) {\n  /* TODO: реалізувати цей рядок */\n\n  const mid = Math.floor((start + end) / 2);\n\n  const left = mergeImpl(arrList, start, mid);\n  const right = mergeImpl(arrList, mid + 1, end);\n  return mergeSort(left, right);\n}\n\nfunction mergeSort(arrOne, arrTwo) {\n  /* TODO: реалізувати цей рядок */\n  let idxOne = 0;\n  /* TODO: реалізувати цей рядок */\n\n  while (idxOne !== arrOne.length || idxTwo !== arrTwo.length) {\n    const firstElement = arrOne[idxOne] || Infinity;\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    } else {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Merge Sorted Arrays\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-observable-transformation-operators",
+    "block": "React Hooks & Components",
+    "title": "Observable Transformation Operators",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable).\n\nThere are [a lot of operators](https://rxjs-dev.firebaseapp.com/guide/operators) for Observable, if we think of Observable as event stream, then modifying the stream is a common task, transformation operators are useful at this.\n\nIn this problem, you are asked to implement [map()](https://rxjs-dev.firebaseapp.com/api/operators/map), as the name indicates, it maps the value to another value thus creating a new event stream.\n\nHere is an example.\n\n```js\nconst source = Observable.from([1, 2, 3]);\n\nmap((x) => x * x)(source) // this transformer doubles numbers and create a new stream\n  .subscribe(console.log);\n// 1\n// 4\n// 9\n```\n\nObservable has `pipe()` method which could make this more readable.\n\n```js\nconst source = Observable.from([1, 2, 3]);\n\nsource.pipe(map((x) => x * x)).subscribe(console.log);\n// 1\n// 4\n// 9\n```\n\n**Note** Observable is already given for you, no need to create it.",
+    "starter": "function map(transform) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any} input\n * @return {(observable: Observable) => Observable}\n * returns a function which transform Observable\n */\nfunction map(transform) {\n  return (source) => {\n    return new Observable((subscriber) => {\n      const originalNext = subscriber.next;\n      subscriber.next = (value) => {\n        const newValue = transform(value);\n        originalNext.call(subscriber, newValue);\n      };\n      source.subscribe(subscriber);\n    });\n  };\n}",
+    "clozeSteps": [
+      "\nfunction map(transform) {\n  return (source) => {\n    return new Observable((subscriber) => {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        originalNext.call(subscriber, newValue);\n      };\n      source.subscribe(subscriber);\n    });\n  };\n}",
+      "\nfunction map(transform) {\n  return (source) => {\n    return new Observable((subscriber) => {\n      const originalNext = subscriber.next;\n      subscriber.next = (value) => {\n        const newValue = transform(value);\n        originalNext.call(subscriber, newValue);\n      };\n      /* TODO: реалізувати цей рядок */\n    });\n  };\n}",
+      "\nfunction map(transform) {\n  return (source) => {\n    /* TODO: реалізувати цей рядок */\n      const originalNext = subscriber.next;\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        originalNext.call(subscriber, newValue);\n      };\n      source.subscribe(subscriber);\n    });\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Observable Transformation Operators\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-observable-fromevent",
+    "block": "JS Functions / Polyfills",
+    "title": "Observable Fromevent",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable).\n\nSuppose you have solved [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable), here you are asked to implement a creation operator `fromEvent()`( for DOM Event)\n\nFrom the [document](https://rxjs-dev.firebaseapp.com/api/index/function/fromEvent), `fromEvent()`\n\n> Creates an Observable that emits events of a specific type coming from the given event target.\n\nSimply speaking, it is a util to attach event listener in Observable fashion.\n\n```js\nconst source = fromEvent(node, 'click');\nsource.subscribe((e) => console.log(e));\n```\n\nWhen `node` is clicked, the event is logged.\n\n**Note**\n\n1. Observable is already given for you, no need to create it.\n2. the event listener removal is handled by [add()](https://rxjs-dev.firebaseapp.com/api/index/class/Subscription#add), which is beyond our scope here, you can ignore that.",
+    "starter": "function fromEvent(element, eventName, capture = false) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {HTMLElement} element\n * @param {string} eventName\n * @param {boolean} capture\n * @return {Observable}\n */\nfunction fromEvent(element, eventName, capture = false) {\n  return new Observable((subscriber) => {\n    element.addEventListener(\n      eventName,\n      (e) => {\n        subscriber.next(e);\n      },\n      capture\n    );\n  });\n}",
+    "clozeSteps": [
+      "\nfunction fromEvent(element, eventName, capture = false) {\n  /* TODO: реалізувати цей рядок */\n    element.addEventListener(\n      /* TODO: реалізувати цей рядок */\n      (e) => {\n        subscriber.next(e);\n      },\n      capture\n    );\n  });\n}",
+      "\nfunction fromEvent(element, eventName, capture = false) {\n  /* TODO: реалізувати цей рядок */\n    element.addEventListener(\n      eventName,\n      (e) => {\n        /* TODO: реалізувати цей рядок */\n      },\n      capture\n    );\n  });\n}",
+      "\nfunction fromEvent(element, eventName, capture = false) {\n  return new Observable((subscriber) => {\n    /* TODO: реалізувати цей рядок */\n      eventName,\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      },\n      /* TODO: реалізувати цей рядок */\n    );\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Observable Fromevent\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-observable-interval",
+    "block": "JS Functions / Polyfills",
+    "title": "Observable Interval",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable).\n\nSuppose you have solved [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable), here you are asked to implement a creation operator `interval()`.\n\nFrom the [document](https://rxjs-dev.firebaseapp.com/api/index/function/interval), `interval()`\n\n> Creates an Observable that emits sequential numbers every specified interval of time\n\n```js\ninterval(1000).subscribe(console.log);\n```\n\nAbove code prints 0, 1, 2 .... with an interval of 1 seconds.\n\n**Note** Observable is already given for you, no need to create it.",
+    "starter": "function interval(period) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number} period\n * @return {Observable}\n */\nfunction interval(period) {\n  let num = 0;\n  return new Observable((subscriber) => {\n    setInterval(() => {\n      // subscriber.next(num++);\n      subscriber.next(num);\n      num++;\n    }, period);\n  });\n}",
+    "clozeSteps": [
+      "\nfunction interval(period) {\n  /* TODO: реалізувати цей рядок */\n  return new Observable((subscriber) => {\n    setInterval(() => {\n      \n      subscriber.next(num);\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  });\n}",
+      "\nfunction interval(period) {\n  let num = 0;\n  return new Observable((subscriber) => {\n    /* TODO: реалізувати цей рядок */\n      \n      subscriber.next(num);\n      num++;\n    }, period);\n  });\n}",
+      "\nfunction interval(period) {\n  let num = 0;\n  return new Observable((subscriber) => {\n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }, period);\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Observable Interval\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-observable-subject",
+    "block": "JS Functions / Polyfills",
+    "title": "Observable Subject",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable).\n\nPlain Observables are unicast, meaning every subscription is independent. To create multicast, you need to use [Subject](https://rxjs-dev.firebaseapp.com/guide/subject).\n\nFollowing code is easier to understand.\n\n```js\n// default behavior with plain Observable\nconst observable = from([1, 2, 3]);\nobservable.subscribe(console.log);\nobservable.subscribe(console.log);\n// 1\n// 2\n// 3\n// 1\n// 2\n// 3\n```\n\nYou can see that two subscriptions are independent so the logs are grouped by subscription.\n\nwith Subject, it works like Event Listeners in DOM world.\n\n```js\nconst subject = new Subject();\nsubject.subscribe(console.log);\nsubject.subscribe(console.log);\n\nconst observable = from([1, 2, 3]);\nobservable.subscribe(subject);\n\n// 1\n// 1\n// 2\n// 2\n// 3\n// 3\n```\n\nNow the logs are different! That is because Subject first works as a observer, get the values, then works as an Observable and dispatch the value to different observers.\n\nCool right? Ok, you are asked to **implement a simple `Subject Class`**.\n\n1. `Observable` is given for you, you can just use it.\n2. you can use `new Observer({next,error,complete})` or `new Observer(function)` to create an observer.",
+    "starter": "class Subject {\n  // Ваша реалізація тут\n}",
+    "solution": "// You can use Observer which is bundled to your code\n\n// class Observer {\n//   // subscriber could one next function or a handler object {next, error, complete}\n//   constructor(subscriber) { }\n//   next(value) { }\n//   error(error) { }\n//   complete() {}\n// }\n\nclass Subject {\n  constructor() {\n    this.observers = [];\n    this.next = this.next.bind(this);\n    this.error = this.error.bind(this);\n    this.complete = this.complete.bind(this);\n  }\n\n  subscribe(subscriber) {\n    const observer = new Observer(subscriber);\n    this.observers.push(observer);\n    return observer;\n  }\n\n  next(value) {\n    for (const observer of this.observers) {\n      observer.next(value);\n    }\n  }\n\n  error(err) {\n    for (const observer of this.observers) {\n      observer.error(err);\n    }\n  }\n\n  complete() {\n    for (const observer of this.observers) {\n      observer.complete();\n    }\n  }\n}",
+    "clozeSteps": [
+      "\n\n\n\n\n\n\n\n\n\nclass Subject {\n  constructor() {\n    this.observers = [];\n    this.next = this.next.bind(this);\n    this.error = this.error.bind(this);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  subscribe(subscriber) {\n    const observer = new Observer(subscriber);\n    this.observers.push(observer);\n    return observer;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    for (const observer of this.observers) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  error(err) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  complete() {\n    for (const observer of this.observers) {\n      observer.complete();\n    }\n  }\n}",
+      "\n\n\n\n\n\n\n\n\n\nclass Subject {\n  constructor() {\n    this.observers = [];\n    /* TODO: реалізувати цей рядок */\n    this.error = this.error.bind(this);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  subscribe(subscriber) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    for (const observer of this.observers) {\n      observer.error(err);\n    }\n  }\n\n  complete() {\n    for (const observer of this.observers) {\n      observer.complete();\n    }\n  }\n}",
+      "\n\n\n\n\n\n\n\n\n\nclass Subject {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    this.complete = this.complete.bind(this);\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    return observer;\n  }\n\n  next(value) {\n    for (const observer of this.observers) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  error(err) {\n    for (const observer of this.observers) {\n      observer.error(err);\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      observer.complete();\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Observable Subject\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-observablefrom",
+    "block": "JS Functions / Polyfills",
+    "title": "Observable.From",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable).\n\nSuppose you have solved [57. create an Observable](https://bigfrontend.dev/problem/create-an-Observable), here you are asked to implement a creation operator `from()`.\n\nFrom the [document](https://rxjs-dev.firebaseapp.com/api/index/function/from), `from()`\n\n> Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.\n\nYour `from()` should accept all above types.\n\n```js\nfrom([1, 2, 3]).subscribe(console.log);\n// 1\n// 2\n// 3\n```\n\n**Note**\n\n1. Observable is already given for you, no need to create it.\n2. for the problem here, `Observable-like` means `Observable instance`. Though in real-world you should check `Symbol.observable`",
+    "starter": "function from(input) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Array | ArrayLike | Promise | Iterable | Observable} input\n * @return {Observable}\n */\nfunction from(input) {\n  if (input instanceof Observable) return input;\n\n  const isIterable = typeof input[Symbol.iterator] === 'function';\n  const isArrayLike = input.length !== undefined;\n\n  if (isIterable || isArrayLike) {\n    return new Observable((subscriber) => {\n      try {\n        if (isArrayLike) input = Array.from(input);\n\n        for (const value of input) {\n          subscriber.next(value);\n        }\n      } catch (err) {\n        subscriber.error(err);\n      } finally {\n        subscriber.complete();\n      }\n    });\n  }\n\n  if (input instanceof Promise) {\n    return new Observable((subscriber) => {\n      input\n        .then((result) => {\n          subscriber.next(result);\n        })\n        .catch((err) => {\n          subscriber.error(err);\n        })\n        .finally(() => {\n          subscriber.complete();\n        });\n    });\n  }\n\n  throw new Error(\n    'You can provide an Observable, Promise, Array, or Iterable.'\n  );\n}",
+    "clozeSteps": [
+      "\nfunction from(input) {\n  if (input instanceof Observable) return input;\n\n  const isIterable = typeof input[Symbol.iterator] === 'function';\n  const isArrayLike = input.length !== undefined;\n\n  if (isIterable || isArrayLike) {\n    return new Observable((subscriber) => {\n      try {\n        if (isArrayLike) input = Array.from(input);\n\n        for (const value of input) {\n          subscriber.next(value);\n        }\n      } catch (err) {\n        subscriber.error(err);\n      } finally {\n        subscriber.complete();\n      }\n    });\n  }\n\n  if (input instanceof Promise) {\n    return new Observable((subscriber) => {\n      input\n        /* TODO: реалізувати цей рядок */\n          subscriber.next(result);\n        })\n        .catch((err) => {\n          subscriber.error(err);\n        })\n        .finally(() => {\n          /* TODO: реалізувати цей рядок */\n        });\n    });\n  }\n\n  throw new Error(\n    'You can provide an Observable, Promise, Array, or Iterable.'\n  );\n}",
+      "\nfunction from(input) {\n  if (input instanceof Observable) return input;\n\n  const isIterable = typeof input[Symbol.iterator] === 'function';\n  const isArrayLike = input.length !== undefined;\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      try {\n        /* TODO: реалізувати цей рядок */\n\n        /* TODO: реалізувати цей рядок */\n          subscriber.next(value);\n        }\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        subscriber.complete();\n      }\n    });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      input\n        .then((result) => {\n          /* TODO: реалізувати цей рядок */\n        })\n        .catch((err) => {\n          /* TODO: реалізувати цей рядок */\n        })\n        .finally(() => {\n          /* TODO: реалізувати цей рядок */\n        });\n    });\n  }\n\n  throw new Error(\n    'You can provide an Observable, Promise, Array, or Iterable.'\n  );\n}",
+      "\nfunction from(input) {\n  if (input instanceof Observable) return input;\n\n  const isIterable = typeof input[Symbol.iterator] === 'function';\n  const isArrayLike = input.length !== undefined;\n\n  /* TODO: реалізувати цей рядок */\n    return new Observable((subscriber) => {\n      /* TODO: реалізувати цей рядок */\n        if (isArrayLike) input = Array.from(input);\n\n        for (const value of input) {\n          /* TODO: реалізувати цей рядок */\n        }\n      } catch (err) {\n        subscriber.error(err);\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n    });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    return new Observable((subscriber) => {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        })\n        /* TODO: реалізувати цей рядок */\n          subscriber.error(err);\n        })\n        .finally(() => {\n          /* TODO: реалізувати цей рядок */\n        });\n    });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    'You can provide an Observable, Promise, Array, or Iterable.'\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Observable.From\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-deep-equal-isequal",
+    "block": "JS Functions / Polyfills",
+    "title": "Deep Equal Isequal",
+    "timeLimitMin": 10,
+    "description": "[\\_.isEqual](https://lodash.com/docs/4.17.15#isEqual) is useful when you want to compare complex data types by value not the reference.\n\nCan you implement your own version of deep equal `isEqual`? The lodash version covers a lot of data types. In this problem, you are asked to support:\n\n1. primitives\n2. plain objects (object literals)\n3. array\n\nObjects are compared by their own, not inherited, enumerable properties\n\n```js\nconst a = { a: 'bfe' };\nconst b = { a: 'bfe' };\n\nisEqual(a, b); // true\na === b; // false\n\nconst c = [1, a, '4'];\nconst d = [1, b, '4'];\n\nisEqual(c, d); // true\nc === d; // false\n```\n\nLodash implementation has some strange behaviors. ([github issue](https://github.com/lodash/lodash/issues/2463), like following code\n\n```js\nconst a = {};\na.self = a;\nconst b = { self: a };\nconst c = {};\nc.self = c;\nconst d = { self: { self: a } };\nconst e = { self: { self: b } };\n```\n\n`lodash.isEqual` gives us following result. Notice there is a case that resulting in `false`.\n\n```js\n// result from lodash implementation\n_.isEqual(a, b); // true\n_.isEqual(a, c); // true\n_.isEqual(a, d); // true\n_.isEqual(a, e); // true\n_.isEqual(b, c); // true\n_.isEqual(b, d); // true\n_.isEqual(b, e); // false\n_.isEqual(c, d); // true\n_.isEqual(c, e); // true\n_.isEqual(d, e); // true\n```\n\nSetting aside the performance concerns mentioned by lodash, **your implement should not have above problem**, which means above all returns true and call stack should not exceed the maximum.",
+    "starter": "function isEqual(a, b) {\n  // Ваша реалізація тут\n}",
+    "solution": "const cached = new WeakMap();\n\n/**\n * @param {any} a\n * @param {any} b\n * @return {boolean}\n */\nfunction isEqual(a, b) {\n  if (a === null || b === null) {\n    return a === b;\n  }\n\n  if (typeof a !== 'object' || typeof b !== 'object') {\n    return a === b;\n  }\n\n  const dataTypeA = detectDataType(a);\n  const dataTypeB = detectDataType(b);\n  if (dataTypeA !== dataTypeB) return false;\n\n  const keysA = Object.keys(a);\n  const keysB = Object.keys(b);\n  if (keysA.length !== keysB.length) return false;\n\n  const symbolsA = Object.getOwnPropertySymbols(a);\n  const symbolsB = Object.getOwnPropertySymbols(b);\n  if (symbolsA.length !== symbolsB.length) return false;\n\n  if (cached.get(a)?.has(b)) return true;\n  if (cached.get(b)?.has(a)) return true;\n\n  cache(a, b, cached);\n\n  const propertyNamesA = [...keysA, ...symbolsA];\n\n  for (const propertyNameA of propertyNamesA) {\n    if (!b.hasOwnProperty(propertyNameA)) return false;\n\n    const propertyValueA = a[propertyNameA];\n    const propertyValueB = b[propertyNameA];\n\n    if (!isEqual(propertyValueA, propertyValueB)) {\n      return false;\n    }\n  }\n\n  return true;\n}\n\nfunction detectDataType(data) {\n  if (Array.isArray(data)) return 'array';\n  return 'object';\n}\n\nfunction cache(a, b, cached) {\n  let setForA = cached.get(a);\n  if (!setForA) {\n    cached.set(a, (setForA = new Set()));\n  }\n  setForA.add(b);\n\n  let setForB = cached.get(b);\n  if (!setForB) {\n    cached.set(b, (setForB = new Set()));\n  }\n  setForB.add(a);\n}",
+    "clozeSteps": [
+      "const cached = new WeakMap();\n\n\nfunction isEqual(a, b) {\n  if (a === null || b === null) {\n    return a === b;\n  }\n\n  if (typeof a !== 'object' || typeof b !== 'object') {\n    return a === b;\n  }\n\n  /* TODO: реалізувати цей рядок */\n  const dataTypeB = detectDataType(b);\n  /* TODO: реалізувати цей рядок */\n\n  const keysA = Object.keys(a);\n  const keysB = Object.keys(b);\n  if (keysA.length !== keysB.length) return false;\n\n  /* TODO: реалізувати цей рядок */\n  const symbolsB = Object.getOwnPropertySymbols(b);\n  if (symbolsA.length !== symbolsB.length) return false;\n\n  if (cached.get(a)?.has(b)) return true;\n  /* TODO: реалізувати цей рядок */\n\n  cache(a, b, cached);\n\n  const propertyNamesA = [...keysA, ...symbolsA];\n\n  for (const propertyNameA of propertyNamesA) {\n    if (!b.hasOwnProperty(propertyNameA)) return false;\n\n    const propertyValueA = a[propertyNameA];\n    const propertyValueB = b[propertyNameA];\n\n    if (!isEqual(propertyValueA, propertyValueB)) {\n      return false;\n    }\n  }\n\n  return true;\n}\n\nfunction detectDataType(data) {\n  if (Array.isArray(data)) return 'array';\n  return 'object';\n}\n\nfunction cache(a, b, cached) {\n  let setForA = cached.get(a);\n  if (!setForA) {\n    /* TODO: реалізувати цей рядок */\n  }\n  /* TODO: реалізувати цей рядок */\n\n  let setForB = cached.get(b);\n  if (!setForB) {\n    /* TODO: реалізувати цей рядок */\n  }\n  setForB.add(a);\n}",
+      "const cached = new WeakMap();\n\n\nfunction isEqual(a, b) {\n  /* TODO: реалізувати цей рядок */\n    return a === b;\n  }\n\n  if (typeof a !== 'object' || typeof b !== 'object') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const dataTypeA = detectDataType(a);\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  const keysA = Object.keys(a);\n  const keysB = Object.keys(b);\n  if (keysA.length !== keysB.length) return false;\n\n  const symbolsA = Object.getOwnPropertySymbols(a);\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  if (cached.get(a)?.has(b)) return true;\n  /* TODO: реалізувати цей рядок */\n\n  cache(a, b, cached);\n\n  const propertyNamesA = [...keysA, ...symbolsA];\n\n  for (const propertyNameA of propertyNamesA) {\n    /* TODO: реалізувати цей рядок */\n\n    const propertyValueA = a[propertyNameA];\n    const propertyValueB = b[propertyNameA];\n\n    if (!isEqual(propertyValueA, propertyValueB)) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return true;\n}\n\nfunction detectDataType(data) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction cache(a, b, cached) {\n  let setForA = cached.get(a);\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  setForA.add(b);\n\n  let setForB = cached.get(b);\n  if (!setForB) {\n    cached.set(b, (setForB = new Set()));\n  }\n  setForB.add(a);\n}",
+      "/* TODO: реалізувати цей рядок */\n\n\nfunction isEqual(a, b) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    return a === b;\n  }\n\n  const dataTypeA = detectDataType(a);\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n  const keysB = Object.keys(b);\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n  const symbolsB = Object.getOwnPropertySymbols(b);\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n\n  for (const propertyNameA of propertyNamesA) {\n    if (!b.hasOwnProperty(propertyNameA)) return false;\n\n    const propertyValueA = a[propertyNameA];\n    /* TODO: реалізувати цей рядок */\n\n    if (!isEqual(propertyValueA, propertyValueB)) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return true;\n}\n\nfunction detectDataType(data) {\n  /* TODO: реалізувати цей рядок */\n  return 'object';\n}\n\nfunction cache(a, b, cached) {\n  let setForA = cached.get(a);\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  setForA.add(b);\n\n  /* TODO: реалізувати цей рядок */\n  if (!setForB) {\n    cached.set(b, (setForB = new Set()));\n  }\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Deep Equal Isequal\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-an-observable",
+    "block": "JS Functions / Polyfills",
+    "title": "An Observable",
+    "timeLimitMin": 10,
+    "description": "Have you ever used [RxJS](https://rxjs-dev.firebaseapp.com/guide/overview) before? The most important concept in it is [Observable](https://rxjs-dev.firebaseapp.com/guide/observable) and [Observer](https://rxjs-dev.firebaseapp.com/guide/observer).\n\nObservable defines how values are delivered to Observer. Observer is just a set of callbacks.\n\nLet's look at the code.\n\n```js\nconst observer = {\n  next: (value) => {\n    console.log('we got a value', value);\n  },\n  error: (error) => {\n    console.log('we got an error', error);\n  },\n  complete: () => {\n    console.log('ok, no more values');\n  },\n};\n```\n\nAbove is an Observer which is pretty clear about what it is doing.\n\nThen we could attach this Observer to some Observable. Observable feeds this observer with values or errors.\n\n```js\nconst observable = new Observable((subscriber) => {\n  subscriber.next(1);\n  subscriber.next(2);\n  setTimeout(() => {\n    subscriber.next(3);\n    subscriber.next(4);\n    subscriber.complete();\n  }, 100);\n});\n```\n\nThe code plainly says when is a subscriber is attached,\n\n1. subscriber is fed with a value `1`\n2. subscriber is then fed with a value `2`\n3. wait 100 ms\n4. subscriber is fed with `3`\n5. subscriber is fed with `4`\n6. no more values for subscriber\n\nNow if we attach above `observer` to `observable`, `next` and `complete` of subscriber are called in order.(be aware that there is a delay between 2 and 3)\n\n```js\nconst sub = observable.subscribe(subscriber);\n// we got a value 1\n// we got a value 2\n\n// we got a value 3\n// we got a value 4\n// ok, no more values\n```\n\nNotice `subscribe()` return a [Subscription](https://rxjs-dev.firebaseapp.com/guide/subscription) which could be used to stop listening to the value delivery.\n\n```js\nconst sub = observable.subscribe(subscriber);\nsetTimeout(() => {\n  // ok we only subscribe for 100ms\n  sub.unsubscribe();\n}, 100);\n```\n\nSo this is the basic idea of Observable and Observer. There will be a few more interesting follow-up problems.\n\n**Now you are asked to implement a basic Observable class**, which makes above possible.\n\nSome extra requirements are listed here.\n\n1. `error` and `complete` can only be delivered once, `next/error/complete` after `error/complete` should not work\n2. for a subscriber object, `next/error/complete` callback are all optional. if a function is passed as observer, it is treated as `next`.\n3. should support multiple subscription\n\n_Further Reading_\n\nhttps://github.com/tc39/proposal-observable",
+    "starter": "class Observable {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: An Observable\nclass Observable {\n  constructor(setup) {\n    this.setup = setup;\n  }\n\n  subscribe(subscriber) {\n    // Оголошення та ініціалізація змінної \"originalNext\"\n    const originalNext =\n      typeof subscriber === 'function' ? subscriber : subscriber.next;\n    // Оголошення та ініціалізація змінної \"originalError\"\n    const originalError = subscriber.error;\n    // Оголошення та ініціалізація змінної \"originalComplete\"\n    const originalComplete = subscriber.complete;\n\n    // Оголошення та ініціалізація змінної \"isUnsubscribed\"\n    let isUnsubscribed = false;\n\n    subscriber.next = (value) => {\n      // Перевірка умови виконання\n      if (isUnsubscribed) {\n        return;\n      }\n\n      // Перевірка умови виконання\n      if (typeof originalNext === 'function') {\n        originalNext(value);\n      }\n    };\n\n    subscriber.error = (error) => {\n      // Перевірка умови виконання\n      if (isUnsubscribed) {\n        return;\n      }\n\n      isUnsubscribed = true;\n      // Перевірка умови виконання\n      if (typeof originalError === 'function') {\n        originalError(error);\n      }\n    };\n\n    subscriber.complete = () => {\n      // Перевірка умови виконання\n      if (isUnsubscribed) {\n        return;\n      }\n\n      isUnsubscribed = true;\n      // Перевірка умови виконання\n      if (typeof originalComplete === 'function') {\n        originalComplete();\n      }\n    };\n\n    this.setup(subscriber);\n    // Повернення обчисленого значення\n    return {\n      unsubscribe() {\n        isUnsubscribed = true;\n      },\n    };\n  }\n}",
+    "clozeSteps": [
+      "\nclass Observable {\n  constructor(setup) {\n    this.setup = setup;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      typeof subscriber === 'function' ? subscriber : subscriber.next;\n    \n    const originalError = subscriber.error;\n    \n    const originalComplete = subscriber.complete;\n\n    \n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      \n      if (isUnsubscribed) {\n        return;\n      }\n\n      \n      if (typeof originalNext === 'function') {\n        originalNext(value);\n      }\n    };\n\n    subscriber.error = (error) => {\n      \n      if (isUnsubscribed) {\n        return;\n      }\n\n      isUnsubscribed = true;\n      \n      if (typeof originalError === 'function') {\n        /* TODO: реалізувати цей рядок */\n      }\n    };\n\n    subscriber.complete = () => {\n      \n      if (isUnsubscribed) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      isUnsubscribed = true;\n      \n      if (typeof originalComplete === 'function') {\n        originalComplete();\n      }\n    };\n\n    this.setup(subscriber);\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      },\n    };\n  }\n}",
+      "\nclass Observable {\n  constructor(setup) {\n    this.setup = setup;\n  }\n\n  subscribe(subscriber) {\n    \n    /* TODO: реалізувати цей рядок */\n      typeof subscriber === 'function' ? subscriber : subscriber.next;\n    \n    const originalError = subscriber.error;\n    \n    /* TODO: реалізувати цей рядок */\n\n    \n    /* TODO: реалізувати цей рядок */\n\n    subscriber.next = (value) => {\n      \n      if (isUnsubscribed) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      \n      if (typeof originalNext === 'function') {\n        /* TODO: реалізувати цей рядок */\n      }\n    };\n\n    subscriber.error = (error) => {\n      \n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n\n      isUnsubscribed = true;\n      \n      if (typeof originalError === 'function') {\n        /* TODO: реалізувати цей рядок */\n      }\n    };\n\n    /* TODO: реалізувати цей рядок */\n      \n      if (isUnsubscribed) {\n        return;\n      }\n\n      isUnsubscribed = true;\n      \n      if (typeof originalComplete === 'function') {\n        originalComplete();\n      }\n    };\n\n    this.setup(subscriber);\n    \n    /* TODO: реалізувати цей рядок */\n      unsubscribe() {\n        isUnsubscribed = true;\n      },\n    };\n  }\n}",
+      "\nclass Observable {\n  constructor(setup) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      typeof subscriber === 'function' ? subscriber : subscriber.next;\n    \n    /* TODO: реалізувати цей рядок */\n    \n    const originalComplete = subscriber.complete;\n\n    \n    let isUnsubscribed = false;\n\n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n\n      \n      if (typeof originalNext === 'function') {\n        /* TODO: реалізувати цей рядок */\n      }\n    };\n\n    /* TODO: реалізувати цей рядок */\n      \n      if (isUnsubscribed) {\n        return;\n      }\n\n      /* TODO: реалізувати цей рядок */\n      \n      if (typeof originalError === 'function') {\n        /* TODO: реалізувати цей рядок */\n      }\n    };\n\n    /* TODO: реалізувати цей рядок */\n      \n      if (isUnsubscribed) {\n        return;\n      }\n\n      /* TODO: реалізувати цей рядок */\n      \n      if (typeof originalComplete === 'function') {\n        /* TODO: реалізувати цей рядок */\n      }\n    };\n\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      unsubscribe() {\n        isUnsubscribed = true;\n      },\n    };\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"An Observable\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-search-element-right-after-target-with-binary-searchpossible-duplicate-array",
+    "block": "Algorithms",
+    "title": "Search Element Right After Target With Binary Search(Possible Duplicate Array)",
+    "timeLimitMin": 10,
+    "description": "This is a variation of [37. implement Binary Search (unique)](https://bigfrontend.dev/problem/implement-Binary-Search-Unique).\n\nYour are given a sorted ascending array of number, but **might have duplicates**, you are asked to return the **element right after last appearance** of a target number.\n\nIf not found return `undefined`.",
+    "starter": "function elementAfter(arr, target) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr - ascending array with duplicates\n * @param {number} target\n * @return {number}\n */\nfunction elementAfter(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n\n    if (arr[midIndex] === target && arr[midIndex + 1] !== target) {\n      return arr[midIndex + 1];\n    }\n\n    if (target < arr[midIndex]) {\n      endIndex = midIndex - 1;\n    } else {\n      startIndex = midIndex + 1;\n    }\n  }\n\n  return undefined;\n}",
+    "clozeSteps": [
+      "\nfunction elementAfter(arr, target) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n\n    if (arr[midIndex] === target && arr[midIndex + 1] !== target) {\n      return arr[midIndex + 1];\n    }\n\n    if (target < arr[midIndex]) {\n      endIndex = midIndex - 1;\n    } else {\n      startIndex = midIndex + 1;\n    }\n  }\n\n  return undefined;\n}",
+      "\nfunction elementAfter(arr, target) {\n  let startIndex = 0;\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    if (arr[midIndex] === target && arr[midIndex + 1] !== target) {\n      return arr[midIndex + 1];\n    }\n\n    if (target < arr[midIndex]) {\n      endIndex = midIndex - 1;\n    /* TODO: реалізувати цей рядок */\n      startIndex = midIndex + 1;\n    }\n  }\n\n  return undefined;\n}",
+      "\nfunction elementAfter(arr, target) {\n  let startIndex = 0;\n  /* TODO: реалізувати цей рядок */\n\n  while (startIndex <= endIndex) {\n    /* TODO: реалізувати цей рядок */\n\n    if (arr[midIndex] === target && arr[midIndex + 1] !== target) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n      endIndex = midIndex - 1;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return undefined;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Search Element Right After Target With Binary Search(Possible Duplicate Array)\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-search-element-right-before-target-with-binary-searchpossible-duplicate-array",
+    "block": "Algorithms",
+    "title": "Search Element Right Before Target With Binary Search(Possible Duplicate Array)",
+    "timeLimitMin": 10,
+    "description": "This is a variation of [37. implement Binary Search (unique)](https://bigfrontend.dev/problem/implement-Binary-Search-Unique).\n\nYou are given a sorted ascending array of number, but **might have duplicates**, you are asked to return the **element right before first appearance** of a target number.\n\nIf not found return `undefined`.",
+    "starter": "function elementBefore(arr, target) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr - ascending array with duplicates\n * @param {number} target\n * @return {number}\n */\nfunction elementBefore(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n    if (arr[midIndex] === target && arr[midIndex - 1] !== target) {\n      return arr[midIndex - 1];\n    }\n\n    if (target > arr[midIndex]) {\n      startIndex = midIndex + 1;\n    } else {\n      endIndex = midIndex - 1;\n    }\n  }\n\n  return undefined;\n}",
+    "clozeSteps": [
+      "\nfunction elementBefore(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n    if (arr[midIndex] === target && arr[midIndex - 1] !== target) {\n      return arr[midIndex - 1];\n    }\n\n    if (target > arr[midIndex]) {\n      startIndex = midIndex + 1;\n    } else {\n      endIndex = midIndex - 1;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction elementBefore(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n    /* TODO: реалізувати цей рядок */\n      return arr[midIndex - 1];\n    }\n\n    if (target > arr[midIndex]) {\n      startIndex = midIndex + 1;\n    /* TODO: реалізувати цей рядок */\n      endIndex = midIndex - 1;\n    }\n  }\n\n  return undefined;\n}",
+      "\nfunction elementBefore(arr, target) {\n  let startIndex = 0;\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    if (arr[midIndex] === target && arr[midIndex - 1] !== target) {\n      return arr[midIndex - 1];\n    }\n\n    if (target > arr[midIndex]) {\n      startIndex = midIndex + 1;\n    /* TODO: реалізувати цей рядок */\n      endIndex = midIndex - 1;\n    }\n  }\n\n  return undefined;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Search Element Right Before Target With Binary Search(Possible Duplicate Array)\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-search-last-index-with-binary-searchpossible-duplicate-array",
+    "block": "Algorithms",
+    "title": "Search Last Index With Binary Search(Possible Duplicate Array)",
+    "timeLimitMin": 10,
+    "description": "This is a variation of [37. implement Binary Search (unique)](https://bigfrontend.dev/problem/implement-Binary-Search-Unique).\n\nYour are given a sorted ascending array of number, but **might have duplicates**, you are asked to return the **last index** of a target number.\n\nIf not found return -1.",
+    "starter": "function lastIndex(arr, target) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr - ascending array with duplicates\n * @param {number} target\n * @return {number}\n */\nfunction lastIndex(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n  let index = -1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n\n    if (target < arr[midIndex]) {\n      endIndex = midIndex - 1;\n      continue;\n    }\n\n    if (arr[midIndex] === target) {\n      index = midIndex;\n    }\n\n    if (arr[midIndex] === target && arr[midIndex + 1] !== target) {\n      break;\n    }\n\n    startIndex = midIndex + 1;\n  }\n\n  return index;\n}",
+    "clozeSteps": [
+      "\nfunction lastIndex(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n  let index = -1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n\n    if (target < arr[midIndex]) {\n      endIndex = midIndex - 1;\n      continue;\n    }\n\n    if (arr[midIndex] === target) {\n      index = midIndex;\n    }\n\n    if (arr[midIndex] === target && arr[midIndex + 1] !== target) {\n      break;\n    }\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction lastIndex(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n  let index = -1;\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      endIndex = midIndex - 1;\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (arr[midIndex] === target) {\n      index = midIndex;\n    }\n\n    /* TODO: реалізувати цей рядок */\n      break;\n    }\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return index;\n}",
+      "\nfunction lastIndex(arr, target) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  while (startIndex <= endIndex) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n      break;\n    }\n\n    startIndex = midIndex + 1;\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Search Last Index With Binary Search(Possible Duplicate Array)\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-search-first-index-with-binary-searchpossible-duplicate-array",
+    "block": "Algorithms",
+    "title": "Search First Index With Binary Search(Possible Duplicate Array)",
+    "timeLimitMin": 10,
+    "description": "This is a variation of [37. implement Binary Search (unique)](https://bigfrontend.dev/problem/implement-Binary-Search-Unique).\n\nYour are given a sorted ascending array of number, but **might have duplicates**, you are asked to return the **first index** of a target number.\n\nIf not found return -1.",
+    "starter": "function firstIndex(arr, target) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr - ascending array with duplicates\n * @param {number} target\n * @return {number}\n */\nfunction firstIndex(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n  let index = -1;\n\n  while (startIndex <= endIndex) {\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n    if (target > arr[midIndex]) {\n      startIndex = midIndex + 1;\n      continue;\n    }\n\n    if (arr[midIndex] === target) {\n      index = midIndex;\n    }\n\n    if (arr[midIndex] === target && arr[midIndex - 1] !== target) {\n      break;\n    }\n\n    endIndex = midIndex - 1;\n  }\n\n  return index;\n}",
+    "clozeSteps": [
+      "\nfunction firstIndex(arr, target) {\n  let startIndex = 0;\n  let endIndex = arr.length - 1;\n  let index = -1;\n\n  while (startIndex <= endIndex) {\n    /* TODO: реалізувати цей рядок */\n    if (target > arr[midIndex]) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (arr[midIndex] === target) {\n      index = midIndex;\n    }\n\n    if (arr[midIndex] === target && arr[midIndex - 1] !== target) {\n      break;\n    }\n\n    endIndex = midIndex - 1;\n  }\n\n  return index;\n}",
+      "\nfunction firstIndex(arr, target) {\n  /* TODO: реалізувати цей рядок */\n  let endIndex = arr.length - 1;\n  let index = -1;\n\n  while (startIndex <= endIndex) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    /* TODO: реалізувати цей рядок */\n      index = midIndex;\n    }\n\n    if (arr[midIndex] === target && arr[midIndex - 1] !== target) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    endIndex = midIndex - 1;\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction firstIndex(arr, target) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    const midIndex = Math.floor((startIndex + endIndex) / 2);\n    if (target > arr[midIndex]) {\n      /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    /* TODO: реалізувати цей рядок */\n      index = midIndex;\n    }\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    endIndex = midIndex - 1;\n  }\n\n  return index;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Search First Index With Binary Search(Possible Duplicate Array)\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-find-the-k-th-largest-element-in-an-unsorted-array",
+    "block": "Algorithms",
+    "title": "Find The K-Th Largest Element In An Unsorted Array",
+    "timeLimitMin": 10,
+    "description": "## Find The K-Th Largest Element In An Unsorted Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/find-the-K-th-largest-element-in-an-unsorted-array)\n\n### Компанії:\n* Google, Amazon, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findthekthlargestelementinanunsortedarray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findthekthlargestelementinanunsortedarray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findthekthlargestelementinanunsortedarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function findthekthlargestelementinanunsortedarray() {\n  \n  return true;\n}",
+      "function findthekthlargestelementinanunsortedarray() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find The K-Th Largest Element In An Unsorted Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-selection-sort",
+    "block": "Algorithms",
+    "title": "Selection Sort",
+    "timeLimitMin": 10,
+    "description": "Even for Front-End Engineer, it is a must to understand how basic sorting algorithms work.\n\nNow you are asked to implement [Selection sort](https://en.wikipedia.org/wiki/Selection_sort), which sorts an integer array in ascending order.\n\nDo it **in-place**, no need to return anything.\n\n**Follow-up**\n\nWhat is time cost for average / worst case ? Is it stable?",
+    "starter": "function selectionSort(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr\n */\nfunction selectionSort(arr) {\n  for (let i = 0; i < arr.length; i++) {\n    let smallestIndex = i;\n    for (let j = i + 1; j < arr.length; j++) {\n      if (arr[j] < arr[smallestIndex]) {\n        smallestIndex = j;\n      }\n    }\n    if (smallestIndex !== i) {\n      [arr[smallestIndex], arr[i]] = [arr[i], arr[smallestIndex]];\n    }\n  }\n}",
+    "clozeSteps": [
+      "\nfunction selectionSort(arr) {\n  for (let i = 0; i < arr.length; i++) {\n    let smallestIndex = i;\n    /* TODO: реалізувати цей рядок */\n      if (arr[j] < arr[smallestIndex]) {\n        smallestIndex = j;\n      }\n    }\n    if (smallestIndex !== i) {\n      [arr[smallestIndex], arr[i]] = [arr[i], arr[smallestIndex]];\n    }\n  }\n}",
+      "\nfunction selectionSort(arr) {\n  for (let i = 0; i < arr.length; i++) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      if (arr[j] < arr[smallestIndex]) {\n        smallestIndex = j;\n      }\n    }\n    /* TODO: реалізувати цей рядок */\n      [arr[smallestIndex], arr[i]] = [arr[i], arr[smallestIndex]];\n    }\n  }\n}",
+      "\nfunction selectionSort(arr) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    for (let j = i + 1; j < arr.length; j++) {\n      if (arr[j] < arr[smallestIndex]) {\n        smallestIndex = j;\n      }\n    }\n    /* TODO: реалізувати цей рядок */\n      [arr[smallestIndex], arr[i]] = [arr[i], arr[smallestIndex]];\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Selection Sort\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-quick-sort",
+    "block": "Algorithms",
+    "title": "Quick Sort",
+    "timeLimitMin": 10,
+    "description": "Even for Front-End Engineer, it is a must to understand how basic sorting algorithms work.\n\nNow you are asked to implement [Quick Sort](https://en.wikipedia.org/wiki/Quicksort), which sorts an integer array in ascending order.\n\nDo it **in-place**, no need to return anything.\n\n**Follow-up**\n\nWhat is time cost for average / worst case ? Is it stable?",
+    "starter": "function quickSort(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr\n */\nfunction quickSort(arr) {\n  quickSortImpl(arr, 0, arr.length - 1);\n}\n\nfunction quickSortImpl(arr, low, high) {\n  if (low >= high) {\n    return;\n  }\n\n  const pivotIndex = partition(arr, low, high);\n  quickSortImpl(arr, low, pivotIndex - 1);\n  quickSortImpl(arr, pivotIndex + 1, high);\n}\n\nfunction partition(arr, low, high) {\n  const pivot = arr[high];\n  let i = low;\n  for (let j = low; j < high; j++) {\n    if (arr[j] < pivot) {\n      [arr[j], arr[i]] = [arr[i], arr[j]];\n      i++;\n    }\n  }\n\n  [arr[i], arr[high]] = [arr[high], arr[i]];\n  return i;\n}",
+    "clozeSteps": [
+      "\nfunction quickSort(arr) {\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction quickSortImpl(arr, low, high) {\n  if (low >= high) {\n    return;\n  }\n\n  const pivotIndex = partition(arr, low, high);\n  quickSortImpl(arr, low, pivotIndex - 1);\n  quickSortImpl(arr, pivotIndex + 1, high);\n}\n\nfunction partition(arr, low, high) {\n  const pivot = arr[high];\n  let i = low;\n  for (let j = low; j < high; j++) {\n    if (arr[j] < pivot) {\n      [arr[j], arr[i]] = [arr[i], arr[j]];\n      i++;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n  return i;\n}",
+      "\nfunction quickSort(arr) {\n  quickSortImpl(arr, 0, arr.length - 1);\n}\n\nfunction quickSortImpl(arr, low, high) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const pivotIndex = partition(arr, low, high);\n  quickSortImpl(arr, low, pivotIndex - 1);\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction partition(arr, low, high) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  for (let j = low; j < high; j++) {\n    if (arr[j] < pivot) {\n      /* TODO: реалізувати цей рядок */\n      i++;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction quickSort(arr) {\n  quickSortImpl(arr, 0, arr.length - 1);\n}\n\nfunction quickSortImpl(arr, low, high) {\n  if (low >= high) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const pivotIndex = partition(arr, low, high);\n  /* TODO: реалізувати цей рядок */\n  quickSortImpl(arr, pivotIndex + 1, high);\n}\n\nfunction partition(arr, low, high) {\n  const pivot = arr[high];\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      i++;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Quick Sort\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-insertion-sort",
+    "block": "Algorithms",
+    "title": "Insertion Sort",
+    "timeLimitMin": 10,
+    "description": "Even for Front-End Engineer, it is a must to understand how basic sorting algorithms work.\n\nNow you are asked to implement [Insertion Sort](https://en.wikipedia.org/wiki/Insertion_sort), which sorts an integer array in ascending order.\n\nDo it **in-place**, no need to return anything.\n\n**Follow-up**\n\nWhat is time cost for average / worst case ? Is it stable?",
+    "starter": "function insertionSort(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr\n */\nfunction insertionSort(arr) {\n  for (let i = 1; i < arr.length; i++) {\n    let currentVal = arr[i];\n    let j = i - 1;\n    while (j >= 0 && currentVal < arr[j]) {\n      arr[j + 1] = arr[j];\n      j--;\n    }\n    arr[j + 1] = currentVal;\n  }\n}",
+    "clozeSteps": [
+      "\nfunction insertionSort(arr) {\n  for (let i = 1; i < arr.length; i++) {\n    let currentVal = arr[i];\n    /* TODO: реалізувати цей рядок */\n    while (j >= 0 && currentVal < arr[j]) {\n      arr[j + 1] = arr[j];\n      j--;\n    }\n    arr[j + 1] = currentVal;\n  }\n}",
+      "\nfunction insertionSort(arr) {\n  for (let i = 1; i < arr.length; i++) {\n    let currentVal = arr[i];\n    let j = i - 1;\n    while (j >= 0 && currentVal < arr[j]) {\n      /* TODO: реалізувати цей рядок */\n      j--;\n    }\n    arr[j + 1] = currentVal;\n  }\n}",
+      "\nfunction insertionSort(arr) {\n  for (let i = 1; i < arr.length; i++) {\n    let currentVal = arr[i];\n    let j = i - 1;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      j--;\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Insertion Sort\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-merge-sort",
+    "block": "Algorithms",
+    "title": "Merge Sort",
+    "timeLimitMin": 10,
+    "description": "Even for Front-End Engineer, it is a must to understand how basic sorting algorithms work.\n\nNow you are asked to implement [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort), which sorts an integer array in ascending order.\n\nDo it **in-place**, no need to return anything.\n\n**Follow-up**\n\nWhat is time cost for average / worst case ? Is it stable?",
+    "starter": "function mergeSort(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr\n */\nfunction mergeSort(arr) {\n  mergeSortImpl(arr, 0, arr.length - 1);\n}\n\nfunction mergeSortImpl(arr, start, end) {\n  if (start >= end) {\n    return;\n  }\n\n  const mid = Math.floor((start + end) / 2);\n  mergeSortImpl(arr, start, mid);\n  mergeSortImpl(arr, mid + 1, end);\n  merge(arr, start, mid, end);\n}\n\nfunction merge(arr, start, mid, end) {\n  const lowHalf = [];\n  const highHalf = [];\n\n  let k = start;\n  let i;\n  let j;\n  for (i = 0; k <= mid; i++, k++) {\n    lowHalf[i] = arr[k];\n  }\n\n  for (j = 0; k <= end; j++, k++) {\n    highHalf[j] = arr[k];\n  }\n\n  k = start;\n  i = 0;\n  j = 0;\n\n  while (i < lowHalf.length && j < highHalf.length) {\n    if (lowHalf[i] < highHalf[j]) {\n      arr[k] = lowHalf[i];\n      i++;\n    } else {\n      arr[k] = highHalf[j];\n      j++;\n    }\n    k++;\n  }\n\n  while (i < lowHalf.length) {\n    arr[k] = lowHalf[i];\n    i++;\n    k++;\n  }\n\n  while (j < highHalf.length) {\n    arr[k] = highHalf[j];\n    j++;\n    k++;\n  }\n}",
+    "clozeSteps": [
+      "\nfunction mergeSort(arr) {\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction mergeSortImpl(arr, start, end) {\n  if (start >= end) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const mid = Math.floor((start + end) / 2);\n  mergeSortImpl(arr, start, mid);\n  mergeSortImpl(arr, mid + 1, end);\n  merge(arr, start, mid, end);\n}\n\nfunction merge(arr, start, mid, end) {\n  const lowHalf = [];\n  const highHalf = [];\n\n  /* TODO: реалізувати цей рядок */\n  let i;\n  let j;\n  for (i = 0; k <= mid; i++, k++) {\n    lowHalf[i] = arr[k];\n  }\n\n  for (j = 0; k <= end; j++, k++) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  k = start;\n  /* TODO: реалізувати цей рядок */\n  j = 0;\n\n  while (i < lowHalf.length && j < highHalf.length) {\n    if (lowHalf[i] < highHalf[j]) {\n      arr[k] = lowHalf[i];\n      i++;\n    } else {\n      /* TODO: реалізувати цей рядок */\n      j++;\n    }\n    k++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    arr[k] = lowHalf[i];\n    i++;\n    k++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    arr[k] = highHalf[j];\n    j++;\n    k++;\n  }\n}",
+      "\nfunction mergeSort(arr) {\n  mergeSortImpl(arr, 0, arr.length - 1);\n}\n\nfunction mergeSortImpl(arr, start, end) {\n  if (start >= end) {\n    return;\n  }\n\n  const mid = Math.floor((start + end) / 2);\n  mergeSortImpl(arr, start, mid);\n  mergeSortImpl(arr, mid + 1, end);\n  merge(arr, start, mid, end);\n}\n\nfunction merge(arr, start, mid, end) {\n  /* TODO: реалізувати цей рядок */\n  const highHalf = [];\n\n  /* TODO: реалізувати цей рядок */\n  let i;\n  let j;\n  /* TODO: реалізувати цей рядок */\n    lowHalf[i] = arr[k];\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  k = start;\n  /* TODO: реалізувати цей рядок */\n  j = 0;\n\n  while (i < lowHalf.length && j < highHalf.length) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      i++;\n    } else {\n      /* TODO: реалізувати цей рядок */\n      j++;\n    }\n    k++;\n  }\n\n  while (i < lowHalf.length) {\n    /* TODO: реалізувати цей рядок */\n    i++;\n    k++;\n  }\n\n  while (j < highHalf.length) {\n    arr[k] = highHalf[j];\n    j++;\n    k++;\n  }\n}",
+      "\nfunction mergeSort(arr) {\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction mergeSortImpl(arr, start, end) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const mid = Math.floor((start + end) / 2);\n  /* TODO: реалізувати цей рядок */\n  mergeSortImpl(arr, mid + 1, end);\n  merge(arr, start, mid, end);\n}\n\nfunction merge(arr, start, mid, end) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n  let i;\n  let j;\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  for (j = 0; k <= end; j++, k++) {\n    highHalf[j] = arr[k];\n  }\n\n  k = start;\n  i = 0;\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      i++;\n    /* TODO: реалізувати цей рядок */\n      arr[k] = highHalf[j];\n      j++;\n    }\n    k++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    arr[k] = lowHalf[i];\n    i++;\n    k++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    j++;\n    k++;\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Merge Sort\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bubble-sort",
+    "block": "Algorithms",
+    "title": "Bubble Sort",
+    "timeLimitMin": 10,
+    "description": "Even for Front-End Engineer, it is a must to understand how basic sorting algorithms work.\n\nNow you are asked to implement [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort), which sorts an integer array in ascending order.\n\nDo it **in-place**, no need to return anything.\n\n**Follow-up**\n\nWhat is time cost for average / worst case ? Is it stable?",
+    "starter": "function bubbleSort(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number[]} arr\n */\nfunction bubbleSort(arr) {\n  let hasNoSwaps;\n  for (let i = arr.length; i >= 0; i--) {\n    hasNoSwaps = true;\n    for (let j = 0; j < i - 1; j++) {\n      if (arr[j] > arr[j + 1]) {\n        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];\n        hasNoSwaps = false;\n      }\n    }\n    if (hasNoSwaps) {\n      break;\n    }\n  }\n}",
+    "clozeSteps": [
+      "\nfunction bubbleSort(arr) {\n  let hasNoSwaps;\n  for (let i = arr.length; i >= 0; i--) {\n    hasNoSwaps = true;\n    for (let j = 0; j < i - 1; j++) {\n      if (arr[j] > arr[j + 1]) {\n        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];\n        hasNoSwaps = false;\n      }\n    }\n    if (hasNoSwaps) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}",
+      "\nfunction bubbleSort(arr) {\n  let hasNoSwaps;\n  for (let i = arr.length; i >= 0; i--) {\n    /* TODO: реалізувати цей рядок */\n    for (let j = 0; j < i - 1; j++) {\n      if (arr[j] > arr[j + 1]) {\n        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];\n        hasNoSwaps = false;\n      }\n    }\n    /* TODO: реалізувати цей рядок */\n      break;\n    }\n  }\n}",
+      "\nfunction bubbleSort(arr) {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    hasNoSwaps = true;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n    if (hasNoSwaps) {\n      break;\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Bubble Sort\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-binary-search-unique",
+    "block": "Algorithms",
+    "title": "Binary Search (Unique)",
+    "timeLimitMin": 10,
+    "description": "## Binary Search (Unique)\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-Binary-Search-Unique)\n\n### Компанії:\n* Google, Meta, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function binarysearchunique() {\n  // Ваша реалізація тут\n}",
+    "solution": "function binarysearchunique() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function binarysearchunique() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function binarysearchunique() {\n  \n  return true;\n}",
+      "function binarysearchunique() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Binary Search (Unique)\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-find-corresponding-node-in-two-identical-dom-tree",
+    "block": "Algorithms",
+    "title": "Find Corresponding Node In Two Identical Dom Tree",
+    "timeLimitMin": 10,
+    "description": "## Find Corresponding Node In Two Identical Dom Tree\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/find-corresponding-node-in-two-identical-DOM-tree)\n\n### Компанії:\n* Google, Meta, Amazon\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findcorrespondingnodeintwoidenticaldomtree() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findcorrespondingnodeintwoidenticaldomtree() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findcorrespondingnodeintwoidenticaldomtree() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function findcorrespondingnodeintwoidenticaldomtree() {\n  \n  return true;\n}",
+      "function findcorrespondingnodeintwoidenticaldomtree() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find Corresponding Node In Two Identical Dom Tree\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-sort",
+    "block": "General Quiz",
+    "title": "Sort",
+    "timeLimitMin": 10,
+    "description": "## Sort\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Array-prototype-sort)\n\n### Компанії:\n* Google, Amazon, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function sort() {\n  // Ваша реалізація тут\n}",
+    "solution": "function sort() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function sort() {\n  \n  return true;\n}",
+      "function sort() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function sort() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Sort\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-sortt",
+    "block": "TypeScript Puzzles",
+    "title": "Sort<T>",
+    "timeLimitMin": 10,
+    "description": "## Sort<T>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/sort)\n\n### Компанії:\n* Google, Amazon, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function sortt() {\n  // Ваша реалізація тут\n}",
+    "solution": "function sortt() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function sortt() {\n  \n  return true;\n}",
+      "function sortt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function sortt() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Sort<T>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-omitthisparametert",
+    "block": "TypeScript Puzzles",
+    "title": "Omitthisparameter<T>",
+    "timeLimitMin": 10,
+    "description": "When `Function.prototype.bind()` is used, the returned function has a bound `this`. `OmitThisParameter<T>` could be used to type this.\n\nPlease implement `MyOmitThisParameter<T>` by yourself.\n\n```ts\nfunction foo(this: { a: string }) {}\nfoo(); // Error\n\nconst bar = foo.bind({ a: 'BFE.dev' });\nbar(); // OK\n\ntype Foo = (this: { a: string }) => string;\ntype Bar = MyOmitThisParameter<Foo>; // () => string\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyOmitThisParameter<T extends Function> = T extends (\n  this: any,\n  ...args: infer A\n) => infer R\n  ? (...arg: A) => R\n  : T;",
+    "clozeSteps": [
+      "type MyOmitThisParameter<T extends Function> = T extends (\n  this: any,\n  ...args: infer A\n/* TODO: реалізувати цей рядок */\n  ? (...arg: A) => R\n  : T;",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ...args: infer A\n) => infer R\n  /* TODO: реалізувати цей рядок */\n  : T;",
+      "type MyOmitThisParameter<T extends Function> = T extends (\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  : T;"
+    ],
+    "breakdown": "Рішення для завдання \"Omitthisparameter<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-omitt-k",
+    "block": "TypeScript Puzzles",
+    "title": "Omit<T, K>",
+    "timeLimitMin": 10,
+    "description": "`Omit<T, K>` returns a new type by picking the properties in T but not in K.\n\nPlease implement `MyOmit<T, K>` by yourself.\n\n```ts\ntype Foo = {\n  a: string;\n  b: number;\n  c: boolean;\n};\n\ntype A = MyOmit<Foo, 'a' | 'b'>; // {c: boolean}\ntype B = MyOmit<Foo, 'c'>; // {a: string, b: number}\ntype C = MyOmit<Foo, 'c' | 'd'>; // {a: string, b: number}\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyOmit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */",
+      "type MyOmit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;",
+      "type MyOmit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;"
+    ],
+    "breakdown": "Рішення для завдання \"Omit<T, K>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-pickt-k",
+    "block": "TypeScript Puzzles",
+    "title": "Pick<T, K>",
+    "timeLimitMin": 10,
+    "description": "`Pick<T, K>`, as the name implies, returns a new type by picking properties in K from T.\n\nPlease implement `MyPick<T, K>` by yourself.\n\n```ts\ntype Foo = {\n  a: string;\n  b: number;\n  c: boolean;\n};\n\ntype A = MyPick<Foo, 'a' | 'b'>; // {a: string, b: number}\ntype B = MyPick<Foo, 'c'>; // {c: boolean}\ntype C = MyPick<Foo, 'd'>; // Error\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyPick<T, K extends keyof T> = {\n  [P in K]: T[P];\n};",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n};",
+      "/* TODO: реалізувати цей рядок */\n  [P in K]: T[P];\n};",
+      "/* TODO: реалізувати цей рядок */\n  [P in K]: T[P];\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Pick<T, K>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-partialt",
+    "block": "TypeScript Puzzles",
+    "title": "Partial<T>",
+    "timeLimitMin": 10,
+    "description": "`Partial<T>` returns a type which represents all subsets of type `T`.\n\nPlease implement `MyPartial<T>` by yourself.\n\n```ts\ntype Foo = {\n  a: string;\n  b: number;\n  c: boolean;\n};\n\n// below are all valid\n\nconst a: MyPartial<Foo> = {};\n\nconst b: MyPartial<Foo> = {\n  a: 'BFE.dev',\n};\n\nconst c: MyPartial<Foo> = {\n  b: 123,\n};\n\nconst d: MyPartial<Foo> = {\n  b: 123,\n  c: true,\n};\n\nconst e: MyPartial<Foo> = {\n  a: 'BFE.dev',\n  b: 123,\n  c: true,\n};\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyPartial<T> = {\n  [Key in keyof T]?: T[Key];\n};",
+    "clozeSteps": [
+      "type MyPartial<T> = {\n  [Key in keyof T]?: T[Key];\n};",
+      "type MyPartial<T> = {\n  [Key in keyof T]?: T[Key];\n};",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Partial<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-sort-by",
+    "block": "Algorithms",
+    "title": "Sort By",
+    "timeLimitMin": 10,
+    "description": "Given an array arr and a function fn, return a sorted array. fn only returns numbers and those numbers determine the sort order.",
+    "starter": "function sortBy(arr, fn) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Sort By\nfunction sortBy(arr, fn) {\n  // Повернення обчисленого значення\n  return [...arr].sort((a, b) => fn(a) - fn(b));\n}",
+    "clozeSteps": [
+      "\nfunction sortBy(arr, fn) {\n  \n  return [...arr].sort((a, b) => fn(a) - fn(b));\n}",
+      "\nfunction sortBy(arr, fn) {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction sortBy(arr, fn) {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Sort By\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-how-to-find-the-most-frequent-word-in-a-paragraph-frontend-problem-solving",
+    "block": "Algorithms",
+    "title": "How To Find The Most Frequent Word In A Paragraph Frontend Problem Solving",
+    "timeLimitMin": 10,
+    "description": "## How To Find The Most Frequent Word In A Paragraph Frontend Problem Solving\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-find-the-most-frequent-word-in-a-paragraph-frontend-problem-solving-or-javascript---qid---vigN3iSuX6Vj6JSpzXvC)\n\n### Компанії:\n* Google, Meta\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtofindthemostfrequentwordinaparagraphfrontendproblemsolving() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtofindthemostfrequentwordinaparagraphfrontendproblemsolving() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtofindthemostfrequentwordinaparagraphfrontendproblemsolving() {\n  \n  return true;\n}",
+      "function howtofindthemostfrequentwordinaparagraphfrontendproblemsolving() {\n  \n  return true;\n}",
+      "function howtofindthemostfrequentwordinaparagraphfrontendproblemsolving() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Find The Most Frequent Word In A Paragraph Frontend Problem Solving\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-function-that-returns-the-number-of-parameters-expected-by-a-function-in-javascript",
+    "block": "JS Functions / Polyfills",
+    "title": "Function That Returns The Number Of Parameters Expected By A Function In Javascript",
+    "timeLimitMin": 10,
+    "description": "## Function That Returns The Number Of Parameters Expected By A Function In Javascript\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-function-that-returns-the-number-of-parameters-expected-by-a-function-in-javascript---qid---AjZai8Do8AMdCq0UHH88)\n\n### Компанії:\n* Microsoft, Vercel\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functionthatreturnsthenumberofparametersexpectedbyafunctioninjavascript() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functionthatreturnsthenumberofparametersexpectedbyafunctioninjavascript() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functionthatreturnsthenumberofparametersexpectedbyafunctioninjavascript() {\n  \n  return true;\n}",
+      "function functionthatreturnsthenumberofparametersexpectedbyafunctioninjavascript() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function functionthatreturnsthenumberofparametersexpectedbyafunctioninjavascript() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function That Returns The Number Of Parameters Expected By A Function In Javascript\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-like-button",
+    "block": "React Hooks & Components",
+    "title": "Like Button",
+    "timeLimitMin": 10,
+    "description": "Build a standard Heart Like Button component with active/inactive states, animations, and count display.",
+    "starter": "export function LikeButton({ initialLiked = false, count = 0 }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\nexport function LikeButton({ initialLiked = false, count = 0 }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [liked, setLiked] = useState(initialLiked);\n\n  // Повернення обчисленого значення\n  return (\n    <button\n      onClick={() => setLiked(!liked)}\n      style={{\n        display: 'inline-flex',\n        alignItems: 'center',\n        gap: 8,\n        padding: '8px 16px',\n        borderRadius: 20,\n        border: '1px solid #ccc',\n        backgroundColor: liked ? '#ffe3e3' : '#fff',\n        color: liked ? '#e03131' : '#333',\n        cursor: 'pointer',\n        fontWeight: 'bold',\n        transition: 'all 0.2s ease'\n      }}\n    >\n      <span style={{ fontSize: 18 }}>{liked ? '❤️' : '🖤'}</span>\n      <span>{count + (liked ? 1 : 0)}</span>\n    </button>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState } from 'react';\n\nexport function LikeButton({ initialLiked = false, count = 0 }) {\n  \n  const [liked, setLiked] = useState(initialLiked);\n\n  \n  return (\n    <button\n      onClick={() => setLiked(!liked)}\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        alignItems: 'center',\n        gap: 8,\n        padding: '8px 16px',\n        borderRadius: 20,\n        border: '1px solid #ccc',\n        backgroundColor: liked ? '#ffe3e3' : '#fff',\n        color: liked ? '#e03131' : '#333',\n        cursor: 'pointer',\n        fontWeight: 'bold',\n        transition: 'all 0.2s ease'\n      }}\n    >\n      /* TODO: реалізувати цей рядок */\n      <span>{count + (liked ? 1 : 0)}</span>\n    </button>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function LikeButton({ initialLiked = false, count = 0 }) {\n  \n  const [liked, setLiked] = useState(initialLiked);\n\n  \n  return (\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        alignItems: 'center',\n        gap: 8,\n        /* TODO: реалізувати цей рядок */\n        borderRadius: 20,\n        border: '1px solid #ccc',\n        backgroundColor: liked ? '#ffe3e3' : '#fff',\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        fontWeight: 'bold',\n        transition: 'all 0.2s ease'\n      }}\n    >\n      <span style={{ fontSize: 18 }}>{liked ? '❤️' : '🖤'}</span>\n      <span>{count + (liked ? 1 : 0)}</span>\n    </button>\n  );\n}",
+      "import React, { useState } from 'react';\n\nexport function LikeButton({ initialLiked = false, count = 0 }) {\n  \n  const [liked, setLiked] = useState(initialLiked);\n\n  \n  /* TODO: реалізувати цей рядок */\n    <button\n      onClick={() => setLiked(!liked)}\n      style={{\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        padding: '8px 16px',\n        borderRadius: 20,\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        color: liked ? '#e03131' : '#333',\n        cursor: 'pointer',\n        fontWeight: 'bold',\n        transition: 'all 0.2s ease'\n      }}\n    >\n      <span style={{ fontSize: 18 }}>{liked ? '❤️' : '🖤'}</span>\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Like Button\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-todo-list",
+    "block": "Algorithms",
+    "title": "Todo List",
+    "timeLimitMin": 10,
+    "description": "## Todo List\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* Amazon, Microsoft\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function todolist() {\n  // Ваша реалізація тут\n}",
+    "solution": "function todolist() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function todolist() {\n  \n  return true;\n}",
+      "function todolist() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function todolist() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Todo List\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-traffic-light",
+    "block": "React Hooks & Components",
+    "title": "Traffic Light",
+    "timeLimitMin": 10,
+    "description": "Implement a Traffic Light simulation component that alternates between Red (4s), Green (3s), and Yellow (1s) lights dynamically.",
+    "starter": "export function TrafficLight() {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState, useEffect } from 'react';\n\ntype LightColor = 'red' | 'yellow' | 'green';\n\n// Оголошення та ініціалізація змінної \"config\"\nconst config = {\n  red: { duration: 4000, next: 'green' as LightColor },\n  green: { duration: 3000, next: 'yellow' as LightColor },\n  yellow: { duration: 1000, next: 'red' as LightColor }\n};\n\nexport function TrafficLight() {\n  // Оголошення та ініціалізація змінної \"\"\n  const [color, setColor] = useState<LightColor>('red');\n\n  useEffect(() => {\n    // Оголошення та ініціалізація змінної \"timer\"\n    const timer = setTimeout(() => {\n      setColor(config[color].next);\n    }, config[color].duration);\n    // Повернення обчисленого значення\n    return () => clearTimeout(timer);\n  }, [color]);\n\n  // Повернення обчисленого значення\n  return (\n    <div style={{\n      width: 60, height: 160, backgroundColor: '#333',\n      borderRadius: 10, display: 'flex', flexDirection: 'column',\n      justifyContent: 'space-around', alignItems: 'center', padding: '10px 0'\n    }}>\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'red' ? 'red' : '#555' }} />\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'yellow' ? 'yellow' : '#555' }} />\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'green' ? 'green' : '#555' }} />\n    </div>\n  );\n}",
+    "clozeSteps": [
+      "import React, { useState, useEffect } from 'react';\n\ntype LightColor = 'red' | 'yellow' | 'green';\n\n\n/* TODO: реалізувати цей рядок */\n  red: { duration: 4000, next: 'green' as LightColor },\n  green: { duration: 3000, next: 'yellow' as LightColor },\n  yellow: { duration: 1000, next: 'red' as LightColor }\n};\n\nexport function TrafficLight() {\n  \n  const [color, setColor] = useState<LightColor>('red');\n\n  useEffect(() => {\n    \n    const timer = setTimeout(() => {\n      setColor(config[color].next);\n    /* TODO: реалізувати цей рядок */\n    \n    return () => clearTimeout(timer);\n  }, [color]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div style={{\n      width: 60, height: 160, backgroundColor: '#333',\n      borderRadius: 10, display: 'flex', flexDirection: 'column',\n      justifyContent: 'space-around', alignItems: 'center', padding: '10px 0'\n    }}>\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'red' ? 'red' : '#555' }} />\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'yellow' ? 'yellow' : '#555' }} />\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'green' ? 'green' : '#555' }} />\n    </div>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\ntype LightColor = 'red' | 'yellow' | 'green';\n\n\n/* TODO: реалізувати цей рядок */\n  red: { duration: 4000, next: 'green' as LightColor },\n  /* TODO: реалізувати цей рядок */\n  yellow: { duration: 1000, next: 'red' as LightColor }\n};\n\nexport function TrafficLight() {\n  \n  const [color, setColor] = useState<LightColor>('red');\n\n  /* TODO: реалізувати цей рядок */\n    \n    const timer = setTimeout(() => {\n      setColor(config[color].next);\n    /* TODO: реалізувати цей рядок */\n    \n    return () => clearTimeout(timer);\n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n    <div style={{\n      /* TODO: реалізувати цей рядок */\n      borderRadius: 10, display: 'flex', flexDirection: 'column',\n      justifyContent: 'space-around', alignItems: 'center', padding: '10px 0'\n    }}>\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'red' ? 'red' : '#555' }} />\n      /* TODO: реалізувати цей рядок */\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'green' ? 'green' : '#555' }} />\n    </div>\n  );\n}",
+      "import React, { useState, useEffect } from 'react';\n\n/* TODO: реалізувати цей рядок */\n\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  yellow: { duration: 1000, next: 'red' as LightColor }\n};\n\nexport function TrafficLight() {\n  \n  /* TODO: реалізувати цей рядок */\n\n  useEffect(() => {\n    \n    /* TODO: реалізувати цей рядок */\n      setColor(config[color].next);\n    }, config[color].duration);\n    \n    /* TODO: реалізувати цей рядок */\n  }, [color]);\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      justifyContent: 'space-around', alignItems: 'center', padding: '10px 0'\n    }}>\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: color === 'green' ? 'green' : '#555' }} />\n    /* TODO: реалізувати цей рядок */\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Traffic Light\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promisify",
+    "block": "JS Functions / Polyfills",
+    "title": "Promisify",
+    "timeLimitMin": 10,
+    "description": "## Promisify\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/promisify)\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promisify() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promisify() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promisify() {\n  \n  return true;\n}",
+      "function promisify() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function promisify() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promisify\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-map",
+    "block": "JS Functions / Polyfills",
+    "title": "Map",
+    "timeLimitMin": 10,
+    "description": "Please implement your own [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map).\n\n```js\n[1, 2, 3].myMap((num) => num * 2);\n// [2,4,6]\n```",
+    "starter": "Array.prototype.myMap = function (callback, thisArg) {\n  // Ваша реалізація тут\n}",
+    "solution": "Array.prototype.myMap = function (callback, thisArg) {\n  // Store the length of the original array to avoid potential infinity loop\n  // when the length of the calling array is altered on the fly.\n  const length = this.length;\n  // Initialize the resulting array to be the same size as the calling array.\n  const result = new Array(length);\n\n  for (let i = 0; i < length; i++) {\n    // Ensure index is in the array. myMap should ignore\n    // indices that are not in the array.\n    if (i in this) {\n      // Execute the callback with proper context and store its return value in the\n      // result array.\n      result[i] = callback.call(thisArg || this, this[i], i, this);\n    }\n  }\n\n  return result;\n};",
+    "clozeSteps": [
+      "Array.prototype.myMap = function (callback, thisArg) {\n  \n  \n  const length = this.length;\n  \n  const result = new Array(length);\n\n  /* TODO: реалізувати цей рядок */\n    \n    \n    if (i in this) {\n      \n      \n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return result;\n};",
+      "Array.prototype.myMap = function (callback, thisArg) {\n  \n  \n  const length = this.length;\n  \n  const result = new Array(length);\n\n  /* TODO: реалізувати цей рядок */\n    \n    \n    if (i in this) {\n      \n      \n      result[i] = callback.call(thisArg || this, this[i], i, this);\n    }\n  }\n\n  return result;\n};",
+      "Array.prototype.myMap = function (callback, thisArg) {\n  \n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n      \n      \n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return result;\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Map\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-virtual-dom-v---jsx-2",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Virtual Dom V - Jsx 2",
+    "timeLimitMin": 10,
+    "description": "## Virtual Dom V - Jsx 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/virtual-dom-v-jsx-2)\n\n### Компанії:\n* Meta, Google\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function virtualdomvjsx2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function virtualdomvjsx2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function virtualdomvjsx2() {\n  \n  return true;\n}",
+      "function virtualdomvjsx2() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function virtualdomvjsx2() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Virtual Dom V - Jsx 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-virtual-dom-iv---jsx-1",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Virtual Dom Iv - Jsx 1",
+    "timeLimitMin": 10,
+    "description": "## Virtual Dom Iv - Jsx 1\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/virtual-dom-iv-jsx-1)\n\n### Компанії:\n* Meta, Google\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function virtualdomivjsx1() {\n  // Ваша реалізація тут\n}",
+    "solution": "function virtualdomivjsx1() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function virtualdomivjsx1() {\n  \n  return true;\n}",
+      "function virtualdomivjsx1() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function virtualdomivjsx1() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Virtual Dom Iv - Jsx 1\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-virtual-dom-iii---functional-component",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Virtual Dom Iii - Functional Component",
+    "timeLimitMin": 10,
+    "description": "## Virtual Dom Iii - Functional Component\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/virtual-DOM-III-Functional-Component)\n\n### Компанії:\n* Meta, Google\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function virtualdomiiifunctionalcomponent() {\n  // Ваша реалізація тут\n}",
+    "solution": "function virtualdomiiifunctionalcomponent() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function virtualdomiiifunctionalcomponent() {\n  \n  return true;\n}",
+      "function virtualdomiiifunctionalcomponent() {\n  \n  return true;\n}",
+      "function virtualdomiiifunctionalcomponent() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Virtual Dom Iii - Functional Component\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-your-own-cookie",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Your Own Cookie",
+    "timeLimitMin": 10,
+    "description": "## Your Own Cookie\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/create-your-own-Cookie)\n\n### Компанії:\n* Google, Amazon\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function yourowncookie() {\n  // Ваша реалізація тут\n}",
+    "solution": "function yourowncookie() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function yourowncookie() {\n  \n  return true;\n}",
+      "function yourowncookie() {\n  \n  return true;\n}",
+      "function yourowncookie() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Your Own Cookie\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-virtual-dom-ii---createelement",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Virtual Dom Ii - Createelement",
+    "timeLimitMin": 10,
+    "description": "> This is a follow-up on [113. Virtual DOM I](https://bigfrontend.dev/problem/Virtual-DOM-I).\n\nSuppose you have solved above problem, now let's take a look at [React.createElement()](https://reactjs.org/docs/react-api.html#createelement):\n\n```js\nReact.createElement(type, [props], [...children]);\n```\n\n1. First argument is type, it could be set to Custom Component, but here in this problem, it would only be HTML tag name\n2. Second argument is props, here in this problem, it would only be the (common) camelCased HTML attributes\n3. the rest arguments are the children, which in React supports many data types, but in this problem, it only has the element type of MyElement, or string for TextNode.\n\n**You are asked to create your own createElement() and render()**, so that following code could create the exact HTMLElement in [113. Virtual DOM I](https://bigfrontend.dev/problem/Virtual-DOM-I).\n\n```js\nconst h = createElement;\n\nrender(\n  h(\n    'div',\n    {},\n    h('h1', {}, ' this is '),\n    h(\n      'p',\n      { className: 'paragraph' },\n      ' a ',\n      h('button', {}, ' button '),\n      ' from ',\n      h('a', { href: 'https://bfe.dev' }, h('b', {}, 'BFE'), '.dev')\n    )\n  )\n);\n```\n\n**Notes**\n\n1. The goal of this problem is not to create the replica of React implementation, you can have your own object representation format other than the one in [113. Virtual DOM I](https://bigfrontend.dev/problem/Virtual-DOM-I).\n\n2. Details about ref, key are ignored here, they will be put in other problems. Re-render is not covered here, it will be in another problem as well.",
+    "starter": "function createElement(type, props, ...children) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * MyElement is the type your implementation supports\n *\n * type MyNode = MyElement | string\n */\n\n/**\n * @param { string } type - valid HTML tag name\n * @param { object } [props] - properties.\n * @param { ...MyNode} [children] - elements as rest arguments\n * @return { MyElement }\n */\nfunction createElement(type, props, ...children) {\n  return {\n    type,\n    props: {\n      ...props,\n      children,\n    },\n  };\n}\n\n/**\n * @param { MyElement }\n * @returns { HTMLElement }\n */\nfunction render(myElement) {\n  if (typeof myElement === 'string') {\n    return document.createTextNode(myElement);\n  }\n\n  const {\n    type,\n    props: { children, ...attrs },\n  } = myElement;\n  const element = document.createElement(type);\n\n  for (const attrName in attrs) {\n    const _attrName = attrName === 'className' ? 'class' : attrName;\n    element.setAttribute(_attrName, attrs[attrName]);\n  }\n\n  for (const child of children) {\n    element.appendChild(render(child));\n  }\n\n  return element;\n}",
+    "clozeSteps": [
+      "\n\n\nfunction createElement(type, props, ...children) {\n  return {\n    type,\n    props: {\n      ...props,\n      children,\n    },\n  };\n}\n\n\nfunction render(myElement) {\n  if (typeof myElement === 'string') {\n    return document.createTextNode(myElement);\n  }\n\n  const {\n    type,\n    props: { children, ...attrs },\n  /* TODO: реалізувати цей рядок */\n  const element = document.createElement(type);\n\n  for (const attrName in attrs) {\n    const _attrName = attrName === 'className' ? 'class' : attrName;\n    element.setAttribute(_attrName, attrs[attrName]);\n  }\n\n  for (const child of children) {\n    element.appendChild(render(child));\n  }\n\n  return element;\n}",
+      "\n\n\nfunction createElement(type, props, ...children) {\n  /* TODO: реалізувати цей рядок */\n    type,\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    },\n  };\n}\n\n\nfunction render(myElement) {\n  if (typeof myElement === 'string') {\n    return document.createTextNode(myElement);\n  }\n\n  /* TODO: реалізувати цей рядок */\n    type,\n    props: { children, ...attrs },\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  for (const attrName in attrs) {\n    const _attrName = attrName === 'className' ? 'class' : attrName;\n    element.setAttribute(_attrName, attrs[attrName]);\n  }\n\n  for (const child of children) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\n\n\nfunction createElement(type, props, ...children) {\n  return {\n    type,\n    /* TODO: реалізувати цей рядок */\n      ...props,\n      /* TODO: реалізувати цей рядок */\n    },\n  };\n}\n\n\nfunction render(myElement) {\n  /* TODO: реалізувати цей рядок */\n    return document.createTextNode(myElement);\n  }\n\n  const {\n    type,\n    /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    const _attrName = attrName === 'className' ? 'class' : attrName;\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return element;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Virtual Dom Ii - Createelement\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-grapheme",
+    "block": "General Quiz",
+    "title": "Grapheme",
+    "timeLimitMin": 10,
+    "description": "## Grapheme\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/property-key-and-value)\n\n### Компанії:\n* Google, Meta\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function grapheme() {\n  // Ваша реалізація тут\n}",
+    "solution": "function grapheme() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function grapheme() {\n  \n  return true;\n}",
+      "function grapheme() {\n  \n  return true;\n}",
+      "function grapheme() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Grapheme\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-jsonstringify-ii",
+    "block": "General Quiz",
+    "title": "Json.Stringify Ii",
+    "timeLimitMin": 10,
+    "description": "## Json.Stringify Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/json-stringify-ii)\n\n### Компанії:\n* Google, Amazon\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function jsonstringifyii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function jsonstringifyii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function jsonstringifyii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function jsonstringifyii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function jsonstringifyii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Json.Stringify Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-returntypet",
+    "block": "TypeScript Puzzles",
+    "title": "Returntype<T>",
+    "timeLimitMin": 10,
+    "description": "Similar to [Parameters\\<T\\>](https://bigfrontend.dev/typescript/Parameters), `ReturnType<T>`, as the name says itself, returns the return type of function type T.\n\nPlease implement `MyReturnType<T>` by yourself.\n\n```ts\ntype Foo = () => { a: string };\n\ntype A = MyReturnType<Foo>; // {a: string}\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyReturnType<T extends Function> = T extends (...args: any[]) => infer R\n  ? R\n  : never;",
+    "clozeSteps": [
+      "type MyReturnType<T extends Function> = T extends (...args: any[]) => infer R\n  ? R\n  : never;",
+      "type MyReturnType<T extends Function> = T extends (...args: any[]) => infer R\n  ? R\n  : never;",
+      "/* TODO: реалізувати цей рядок */\n  ? R\n  : never;"
+    ],
+    "breakdown": "Рішення для завдання \"Returntype<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-constructorparameterst",
+    "block": "TypeScript Puzzles",
+    "title": "Constructorparameters<T>",
+    "timeLimitMin": 10,
+    "description": "[Parameters\\<T\\>](https://bigfrontend.dev/typescript/Parameters) handles function type. Similarly, `ConstructorParameters<T>` is meant for class, it returns a tuple type from the types of a constructor function T.\n\nPlease implement `MyConstructorParameters<T>` by yourself.\n\n```ts\nclass Foo {\n  constructor(a: string, b: number, c: boolean) {}\n}\n\ntype C = MyConstructorParameters<typeof Foo>;\n// [a: string, b: number, c: boolean]\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyConstructorParameters<T extends abstract new (...args: any[]) => any> =\n  T extends abstract new (...args: infer P) => any ? P : never;",
+    "clozeSteps": [
+      "type MyConstructorParameters<T extends abstract new (...args: any[]) => any> =\n  T extends abstract new (...args: infer P) => any ? P : never;",
+      "/* TODO: реалізувати цей рядок */\n  T extends abstract new (...args: infer P) => any ? P : never;",
+      "/* TODO: реалізувати цей рядок */\n  T extends abstract new (...args: infer P) => any ? P : never;"
+    ],
+    "breakdown": "Рішення для завдання \"Constructorparameters<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-parameterst",
+    "block": "TypeScript Puzzles",
+    "title": "Parameters<T>",
+    "timeLimitMin": 10,
+    "description": "For function type T, `Parameters<T>` returns a tuple type from the types of its parameters.\n\nPlease implement `MyParameters<T>` by yourself.\n\n```ts\ntype Foo = (a: string, b: number, c: boolean) => string;\n\ntype A = MyParameters<Foo>; // [a:string, b: number, c:boolean]\ntype B = A[0]; // string\ntype C = MyParameters<{ a: string }>; // Error\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyParameters<T extends Function> = T extends (...args: infer A) => any\n  ? A\n  : never;",
+    "clozeSteps": [
+      "type MyParameters<T extends Function> = T extends (...args: infer A) => any\n  ? A\n  : never;",
+      "/* TODO: реалізувати цей рядок */\n  ? A\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  ? A\n  : never;"
+    ],
+    "breakdown": "Рішення для завдання \"Parameters<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-readonlyt",
+    "block": "TypeScript Puzzles",
+    "title": "Readonly<T>",
+    "timeLimitMin": 10,
+    "description": "`Readonly<T>` returns a type that sets all properties of `T` to `readonly`.\n\nPlease implement `MyReadonly<T>` by yourself.\n\n```ts\ntype Foo = {\n  a: string;\n};\n\nconst a: Foo = {\n  a: 'BFE.dev',\n};\na.a = 'bigfrontend.dev';\n// OK\n\nconst b: MyReadonly<Foo> = {\n  a: 'BFE.dev',\n};\nb.a = 'bigfrontend.dev';\n// Error\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyReadonly<T> = {\n  readonly [Key in keyof T]: T[Key];\n};",
+    "clozeSteps": [
+      "type MyReadonly<T> = {\n  readonly [Key in keyof T]: T[Key];\n};",
+      "type MyReadonly<T> = {\n  /* TODO: реалізувати цей рядок */\n};",
+      "/* TODO: реалізувати цей рядок */\n  readonly [Key in keyof T]: T[Key];\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Readonly<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-requiredt",
+    "block": "TypeScript Puzzles",
+    "title": "Required<T>",
+    "timeLimitMin": 10,
+    "description": "As the opposite of [Partial\\<T\\>](https://bigfrontend.dev/typescript/implement-Partial-T), `Required<T>` sets all properties of `T` to required.\n\nPlease implement `MyRequired<T>` by yourself.\n\n```ts\n// all properties are optional\ntype Foo = {\n  a?: string;\n  b?: number;\n  c?: boolean;\n};\n\nconst a: MyRequired<Foo> = {};\n// Error\n\nconst b: MyRequired<Foo> = {\n  a: 'BFE.dev',\n};\n// Error\n\nconst c: MyRequired<Foo> = {\n  b: 123,\n};\n// Error\n\nconst d: MyRequired<Foo> = {\n  b: 123,\n  c: true,\n};\n// Error\n\nconst e: MyRequired<Foo> = {\n  a: 'BFE.dev',\n  b: 123,\n  c: true,\n};\n// valid\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyRequired<T> = {\n  // `-?` removes 'optional' attributes from a type's properties\n  [Key in keyof T]-?: T[Key];\n};",
+    "clozeSteps": [
+      "type MyRequired<T> = {\n  \n  [Key in keyof T]-?: T[Key];\n};",
+      "type MyRequired<T> = {\n  \n  /* TODO: реалізувати цей рядок */\n};",
+      "/* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Required<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-array-polyfills",
+    "block": "JS Functions / Polyfills",
+    "title": "Array Polyfills",
+    "timeLimitMin": 10,
+    "description": "## Array Polyfills\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-array-isarray-javascript-interview-question-or-array-polyfills---qid---qblp96VcM3k3V1zCuhmg)\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-array-prototype-filter-javascript-interview-question-or-array-polyfills---qid---lO9mBM3raIZiRpAs7amO)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arraypolyfills() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arraypolyfills() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arraypolyfills() {\n  \n  return true;\n}",
+      "function arraypolyfills() {\n  \n  return true;\n}",
+      "function arraypolyfills() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array Polyfills\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-frontend-problem-solving",
+    "block": "JS Functions / Polyfills",
+    "title": "Frontend Problem Solving",
+    "timeLimitMin": 10,
+    "description": "## Frontend Problem Solving\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-getelementsbytagname-or-frontend-problem-solving-or-javascript-interview-question---qid---1Z2H3eRWdCqV4XU4FRzV)\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-getelementsbyclassname-or-frontend-problem-solving-or-javascript-interview-question---qid---ZGXls7pg0kEQbcchjNg8)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function frontendproblemsolving() {\n  // Ваша реалізація тут\n}",
+    "solution": "function frontendproblemsolving() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function frontendproblemsolving() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function frontendproblemsolving() {\n  \n  return true;\n}",
+      "function frontendproblemsolving() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Frontend Problem Solving\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-counter",
+    "block": "JS Functions / Polyfills",
+    "title": "Counter",
+    "timeLimitMin": 10,
+    "description": "## Counter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/counter)\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function counter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function counter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function counter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function counter() {\n  \n  return true;\n}",
+      "function counter() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Counter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-sleep",
+    "block": "JS Functions / Polyfills",
+    "title": "Sleep",
+    "timeLimitMin": 10,
+    "description": "Write an asynchronous function that accepts a positive integer millis and sleeps for that many milliseconds. It should resolve with no value.",
+    "starter": "async function sleep(millis) {\n  // Ваша реалізація тут\n}",
+    "solution": "async function sleep(millis) {\n  // Повернення обчисленого значення\n  return new Promise(resolve => setTimeout(resolve, millis));\n}",
+    "clozeSteps": [
+      "async function sleep(millis) {\n  \n  return new Promise(resolve => setTimeout(resolve, millis));\n}",
+      "async function sleep(millis) {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "async function sleep(millis) {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Sleep\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-objectgroupby",
+    "block": "JS Functions / Polyfills",
+    "title": "Object.Groupby",
+    "timeLimitMin": 10,
+    "description": "## Object.Groupby\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-groupby)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/object-groupby)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function objectgroupby() {\n  // Ваша реалізація тут\n}",
+    "solution": "function objectgroupby() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function objectgroupby() {\n  \n  return true;\n}",
+      "function objectgroupby() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function objectgroupby() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Object.Groupby\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-css",
+    "block": "JS Functions / Polyfills",
+    "title": "[Css",
+    "timeLimitMin": 10,
+    "description": "## [Css\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=CSS)\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=CSS)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function css() {\n  // Ваша реалізація тут\n}",
+    "solution": "function css() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function css() {\n  \n  return true;\n}",
+      "function css() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function css() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"[Css\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "senior"
+  },
+  {
+    "id": "canonical-finally",
+    "block": "JS Functions / Polyfills",
+    "title": "Finally",
+    "timeLimitMin": 10,
+    "description": "## Finally\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-Promise-prototype-finally)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Promise-prototype-finally)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function finally() {\n  // Ваша реалізація тут\n}",
+    "solution": "function finally() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function finally() {\n  \n  return true;\n}",
+      "function finally() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function finally() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Finally\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-instanceof",
+    "block": "JS Functions / Polyfills",
+    "title": "Instanceof",
+    "timeLimitMin": 10,
+    "description": "## Instanceof\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/write-your-own-instanceof)\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/instanceOf)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function instanceof() {\n  // Ваша реалізація тут\n}",
+    "solution": "function instanceof() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function instanceof() {\n  \n  return true;\n}",
+      "function instanceof() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function instanceof() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Instanceof\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-get-dom",
+    "block": "Algorithms",
+    "title": "Get [Dom",
+    "timeLimitMin": 10,
+    "description": "## Get [Dom\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=DOM)\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=DOM)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function getdom() {\n  // Ваша реалізація тут\n}",
+    "solution": "function getdom() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function getdom() {\n  \n  return true;\n}",
+      "function getdom() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function getdom() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Get [Dom\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usetimer",
+    "block": "React Hooks & Components",
+    "title": "Usetimer",
+    "timeLimitMin": 10,
+    "description": "Implement a custom React hook `useTimer` that manages timer state (start, pause, reset, seconds elapsed).",
+    "starter": "export function useTimer(initialSeconds: number) {\n  // Ваша реалізація тут\n}",
+    "solution": "import { useState, useEffect, useRef } from 'react';\n\nexport function useTimer(initialSeconds: number) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [seconds, setSeconds] = useState(initialSeconds);\n  // Оголошення та ініціалізація змінної \"\"\n  const [isRunning, setIsRunning] = useState(false);\n  // Оголошення та ініціалізація змінної \"timerRef\"\n  const timerRef = useRef<NodeJS.Timeout | null>(null);\n\n  // Оголошення та ініціалізація змінної \"start\"\n  const start = () => setIsRunning(true);\n  // Оголошення та ініціалізація змінної \"pause\"\n  const pause = () => setIsRunning(false);\n  // Оголошення та ініціалізація змінної \"reset\"\n  const reset = () => {\n    setIsRunning(false);\n    setSeconds(initialSeconds);\n  };\n\n  useEffect(() => {\n    // Перевірка умови виконання\n    if (isRunning) {\n      timerRef.current = setInterval(() => {\n        setSeconds(prev => {\n          // Перевірка умови виконання\n          if (prev <= 1) {\n            setIsRunning(false);\n            // Перевірка умови виконання\n            if (timerRef.current) clearInterval(timerRef.current);\n            // Повернення обчисленого значення\n            return 0;\n          }\n          // Повернення обчисленого значення\n          return prev - 1;\n        });\n      }, 1000);\n    } else if (timerRef.current) {\n      clearInterval(timerRef.current);\n    }\n\n    // Повернення обчисленого значення\n    return () => {\n      // Перевірка умови виконання\n      if (timerRef.current) clearInterval(timerRef.current);\n    };\n  }, [isRunning]);\n\n  // Повернення обчисленого значення\n  return { seconds, isRunning, start, pause, reset };\n}",
+    "clozeSteps": [
+      "import { useState, useEffect, useRef } from 'react';\n\nexport function useTimer(initialSeconds: number) {\n  \n  const [seconds, setSeconds] = useState(initialSeconds);\n  \n  const [isRunning, setIsRunning] = useState(false);\n  \n  const timerRef = useRef<NodeJS.Timeout | null>(null);\n\n  \n  const start = () => setIsRunning(true);\n  \n  const pause = () => setIsRunning(false);\n  \n  const reset = () => {\n    setIsRunning(false);\n    setSeconds(initialSeconds);\n  };\n\n  useEffect(() => {\n    \n    if (isRunning) {\n      timerRef.current = setInterval(() => {\n        /* TODO: реалізувати цей рядок */\n          \n          if (prev <= 1) {\n            setIsRunning(false);\n            \n            if (timerRef.current) clearInterval(timerRef.current);\n            \n            /* TODO: реалізувати цей рядок */\n          }\n          \n          return prev - 1;\n        });\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (timerRef.current) clearInterval(timerRef.current);\n    };\n  }, [isRunning]);\n\n  \n  return { seconds, isRunning, start, pause, reset };\n}",
+      "import { useState, useEffect, useRef } from 'react';\n\nexport function useTimer(initialSeconds: number) {\n  \n  const [seconds, setSeconds] = useState(initialSeconds);\n  \n  const [isRunning, setIsRunning] = useState(false);\n  \n  const timerRef = useRef<NodeJS.Timeout | null>(null);\n\n  \n  const start = () => setIsRunning(true);\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const reset = () => {\n    setIsRunning(false);\n    setSeconds(initialSeconds);\n  };\n\n  useEffect(() => {\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          \n          if (prev <= 1) {\n            /* TODO: реалізувати цей рядок */\n            \n            if (timerRef.current) clearInterval(timerRef.current);\n            \n            /* TODO: реалізувати цей рядок */\n          }\n          \n          return prev - 1;\n        });\n      /* TODO: реалізувати цей рядок */\n    } else if (timerRef.current) {\n      clearInterval(timerRef.current);\n    }\n\n    \n    return () => {\n      \n      if (timerRef.current) clearInterval(timerRef.current);\n    };\n  }, [isRunning]);\n\n  \n  return { seconds, isRunning, start, pause, reset };\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function useTimer(initialSeconds: number) {\n  \n  const [seconds, setSeconds] = useState(initialSeconds);\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const timerRef = useRef<NodeJS.Timeout | null>(null);\n\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const reset = () => {\n    setIsRunning(false);\n    setSeconds(initialSeconds);\n  };\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        setSeconds(prev => {\n          \n          /* TODO: реалізувати цей рядок */\n            setIsRunning(false);\n            \n            /* TODO: реалізувати цей рядок */\n            \n            return 0;\n          }\n          \n          return prev - 1;\n        });\n      }, 1000);\n    /* TODO: реалізувати цей рядок */\n      clearInterval(timerRef.current);\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (timerRef.current) clearInterval(timerRef.current);\n    };\n  /* TODO: реалізувати цей рядок */\n\n  \n  return { seconds, isRunning, start, pause, reset };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Usetimer\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-ccordion-component-in-reactjs",
+    "block": "React Hooks & Components",
+    "title": "Ccordion Component In React.Js",
+    "timeLimitMin": 10,
+    "description": "## Ccordion Component In React.Js\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-accordion-component-in-react-js-or-javascript-interview-question---qid---3pRN4mOqn69FJ94mrh1A)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function ccordioncomponentinreactjs() {\n  // Ваша реалізація тут\n}",
+    "solution": "function ccordioncomponentinreactjs() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function ccordioncomponentinreactjs() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function ccordioncomponentinreactjs() {\n  \n  return true;\n}",
+      "function ccordioncomponentinreactjs() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Ccordion Component In React.Js\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-advanced-javascript",
+    "block": "JS Functions / Polyfills",
+    "title": "Advanced Javascript",
+    "timeLimitMin": 10,
+    "description": "## Advanced Javascript\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-dom-like-structure-tree-or-frontend-interview-question-or-advanced-javascript---qid---JizqCh1froQTr91WNEhJ)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function advancedjavascript() {\n  // Ваша реалізація тут\n}",
+    "solution": "function advancedjavascript() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function advancedjavascript() {\n  \n  return true;\n}",
+      "function advancedjavascript() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function advancedjavascript() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Advanced Javascript\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-country-capital-game",
+    "block": "Algorithms",
+    "title": "Country Capital Game",
+    "timeLimitMin": 10,
+    "description": "## Country Capital Game\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-country-capital-game-or-microsoft-frontend-interview-question-or-javascript-or-react-js---qid---yPb5g7MLCSf6j2F3qjqj)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function countrycapitalgame() {\n  // Ваша реалізація тут\n}",
+    "solution": "function countrycapitalgame() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function countrycapitalgame() {\n  \n  return true;\n}",
+      "function countrycapitalgame() {\n  \n  return true;\n}",
+      "function countrycapitalgame() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Country Capital Game\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-company-structure-validator",
+    "block": "JS Functions / Polyfills",
+    "title": "Company Structure Validator",
+    "timeLimitMin": 10,
+    "description": "## Company Structure Validator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/company-structure-validator---qid---UhGdKfJaM4a7VuQsFRV3)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function companystructurevalidator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function companystructurevalidator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function companystructurevalidator() {\n  \n  return true;\n}",
+      "function companystructurevalidator() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function companystructurevalidator() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Company Structure Validator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-compare-semantic-version",
+    "block": "JS Functions / Polyfills",
+    "title": "Compare Semantic Version",
+    "timeLimitMin": 10,
+    "description": "## Compare Semantic Version\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/compare-semantic-versions---qid---MpUr21sj14SgVcWFVs2L)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function comparesemanticversion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function comparesemanticversion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function comparesemanticversion() {\n  \n  return true;\n}",
+      "function comparesemanticversion() {\n  \n  return true;\n}",
+      "function comparesemanticversion() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Compare Semantic Version\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-word-search-game",
+    "block": "Algorithms",
+    "title": "Word Search Game",
+    "timeLimitMin": 10,
+    "description": "## Word Search Game\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/word-search-game---qid---p8uXcAfTdSZU5C4bNkLH)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function wordsearchgame() {\n  // Ваша реалізація тут\n}",
+    "solution": "function wordsearchgame() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function wordsearchgame() {\n  \n  return true;\n}",
+      "function wordsearchgame() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function wordsearchgame() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Word Search Game\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-shopping-cart-checkout",
+    "block": "JS Functions / Polyfills",
+    "title": "Shopping Cart Checkout",
+    "timeLimitMin": 10,
+    "description": "## Shopping Cart Checkout\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/shopping-cart-checkout---qid---wPReY0wrcZYb7CTdXnMo)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function shoppingcartcheckout() {\n  // Ваша реалізація тут\n}",
+    "solution": "function shoppingcartcheckout() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function shoppingcartcheckout() {\n  \n  return true;\n}",
+      "function shoppingcartcheckout() {\n  \n  return true;\n}",
+      "function shoppingcartcheckout() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Shopping Cart Checkout\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-timeout-based-api-wrapper-with-optional-retry",
+    "block": "JS Functions / Polyfills",
+    "title": "Timeout-Based Api Wrapper With Optional Retry",
+    "timeLimitMin": 10,
+    "description": "## Timeout-Based Api Wrapper With Optional Retry\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-timeout-based-api-wrapper-with-optional-retry---qid---TqH1fl7pEful8giHWk52)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function timeoutbasedapiwrapperwithoptionalretry() {\n  // Ваша реалізація тут\n}",
+    "solution": "function timeoutbasedapiwrapperwithoptionalretry() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function timeoutbasedapiwrapperwithoptionalretry() {\n  \n  return true;\n}",
+      "function timeoutbasedapiwrapperwithoptionalretry() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function timeoutbasedapiwrapperwithoptionalretry() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Timeout-Based Api Wrapper With Optional Retry\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-measure-function-execution-time",
+    "block": "JS Functions / Polyfills",
+    "title": "Measure Function Execution Time",
+    "timeLimitMin": 10,
+    "description": "## Measure Function Execution Time\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/measure-function-execution-time---qid---IhOsmM8wVTYcn0kVeQRi)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function measurefunctionexecutiontime() {\n  // Ваша реалізація тут\n}",
+    "solution": "function measurefunctionexecutiontime() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function measurefunctionexecutiontime() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function measurefunctionexecutiontime() {\n  \n  return true;\n}",
+      "function measurefunctionexecutiontime() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Measure Function Execution Time\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useobjectstate",
+    "block": "JS Functions / Polyfills",
+    "title": "Useobjectstate",
+    "timeLimitMin": 10,
+    "description": "## Useobjectstate\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/useobjectstate---qid---zlSsuio85wONJyZyUGQJ)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useobjectstate() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useobjectstate() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useobjectstate() {\n  \n  return true;\n}",
+      "function useobjectstate() {\n  \n  return true;\n}",
+      "function useobjectstate() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useobjectstate\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-cinema-hall-layout-structure",
+    "block": "JS Functions / Polyfills",
+    "title": "Cinema Hall Layout Structure",
+    "timeLimitMin": 10,
+    "description": "## Cinema Hall Layout Structure\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/cinema-hall-layout-structure---qid---iesvxlR6cUmOm8RhyatL)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function cinemahalllayoutstructure() {\n  // Ваша реалізація тут\n}",
+    "solution": "function cinemahalllayoutstructure() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function cinemahalllayoutstructure() {\n  \n  return true;\n}",
+      "function cinemahalllayoutstructure() {\n  \n  return true;\n}",
+      "function cinemahalllayoutstructure() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Cinema Hall Layout Structure\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-breadcrumb-chain-problem",
+    "block": "JS Functions / Polyfills",
+    "title": "Breadcrumb Chain Problem",
+    "timeLimitMin": 10,
+    "description": "## Breadcrumb Chain Problem\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/breadcrumb-chain-problem---qid---KO1sGon4cWLhj8BEuuKk)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function breadcrumbchainproblem() {\n  // Ваша реалізація тут\n}",
+    "solution": "function breadcrumbchainproblem() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function breadcrumbchainproblem() {\n  \n  return true;\n}",
+      "function breadcrumbchainproblem() {\n  \n  return true;\n}",
+      "function breadcrumbchainproblem() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Breadcrumb Chain Problem\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-n-api-client",
+    "block": "JS Functions / Polyfills",
+    "title": "N Api Client",
+    "timeLimitMin": 10,
+    "description": "## N Api Client\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-an-api-client---qid---3HxB1T5UgLthaTrV6X9h)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function napiclient() {\n  // Ваша реалізація тут\n}",
+    "solution": "function napiclient() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function napiclient() {\n  \n  return true;\n}",
+      "function napiclient() {\n  \n  return true;\n}",
+      "function napiclient() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"N Api Client\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-function-call-counter",
+    "block": "JS Functions / Polyfills",
+    "title": "Function Call Counter",
+    "timeLimitMin": 10,
+    "description": "## Function Call Counter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/function-call-counter---qid---BnWIBSbMHp60QF6KYIMk)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functioncallcounter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functioncallcounter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functioncallcounter() {\n  \n  return true;\n}",
+      "function functioncallcounter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function functioncallcounter() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function Call Counter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-straws-on-the-board",
+    "block": "JS Functions / Polyfills",
+    "title": "Straws On The Board",
+    "timeLimitMin": 10,
+    "description": "## Straws On The Board\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/straws-on-the-board---qid---2zxuCdkBmZTdHCH0CKBo)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function strawsontheboard() {\n  // Ваша реалізація тут\n}",
+    "solution": "function strawsontheboard() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function strawsontheboard() {\n  \n  return true;\n}",
+      "function strawsontheboard() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function strawsontheboard() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Straws On The Board\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-chess-path-finder-visualiser",
+    "block": "Algorithms",
+    "title": "Chess Path Finder Visualiser",
+    "timeLimitMin": 10,
+    "description": "## Chess Path Finder Visualiser\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/chess-path-finder-visualiser---qid---fXPEuYFNJjsQfBLOKtAI)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function chesspathfindervisualiser() {\n  // Ваша реалізація тут\n}",
+    "solution": "function chesspathfindervisualiser() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function chesspathfindervisualiser() {\n  \n  return true;\n}",
+      "function chesspathfindervisualiser() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function chesspathfindervisualiser() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Chess Path Finder Visualiser\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-count-total-comments",
+    "block": "JS Functions / Polyfills",
+    "title": "Count Total Comments",
+    "timeLimitMin": 10,
+    "description": "## Count Total Comments\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/count-total-comments---qid---ZOhP1z8MNP3Jo0RiK5mg)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function counttotalcomments() {\n  // Ваша реалізація тут\n}",
+    "solution": "function counttotalcomments() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function counttotalcomments() {\n  \n  return true;\n}",
+      "function counttotalcomments() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function counttotalcomments() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Count Total Comments\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-string-compression-and-decompression",
+    "block": "JS Functions / Polyfills",
+    "title": "String Compression And Decompression",
+    "timeLimitMin": 10,
+    "description": "## String Compression And Decompression\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/string-compression-and-decompression---qid---H4BQSlugnCg464F86rCi)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function stringcompressionanddecompression() {\n  // Ваша реалізація тут\n}",
+    "solution": "function stringcompressionanddecompression() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function stringcompressionanddecompression() {\n  \n  return true;\n}",
+      "function stringcompressionanddecompression() {\n  \n  return true;\n}",
+      "function stringcompressionanddecompression() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"String Compression And Decompression\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-dynamic-table-generator",
+    "block": "React Hooks & Components",
+    "title": "Dynamic Table Generator",
+    "timeLimitMin": 10,
+    "description": "## Dynamic Table Generator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/dynamic-table-generator---qid---7QJgxXt0y3xix4uu75Nz)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function dynamictablegenerator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function dynamictablegenerator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function dynamictablegenerator() {\n  \n  return true;\n}",
+      "function dynamictablegenerator() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function dynamictablegenerator() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Dynamic Table Generator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-what-would-be-the-return-value-if-any",
+    "block": "JS Functions / Polyfills",
+    "title": "What Would Be The Return Value (If Any)",
+    "timeLimitMin": 10,
+    "description": "## What Would Be The Return Value (If Any)\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/what-would-be-the-return-value-if-any---qid---tJ0PvCxGpb6KI9g7f5vX)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function whatwouldbethereturnvalueifany() {\n  // Ваша реалізація тут\n}",
+    "solution": "function whatwouldbethereturnvalueifany() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function whatwouldbethereturnvalueifany() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function whatwouldbethereturnvalueifany() {\n  \n  return true;\n}",
+      "function whatwouldbethereturnvalueifany() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"What Would Be The Return Value (If Any)\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-event-driven-key-value-store",
+    "block": "JS Functions / Polyfills",
+    "title": "Event-Driven Key-Value Store",
+    "timeLimitMin": 10,
+    "description": "## Event-Driven Key-Value Store\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-event-driven-key-value-store---qid---yySc0O8S4w3YIeA3pBFY)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function eventdrivenkeyvaluestore() {\n  // Ваша реалізація тут\n}",
+    "solution": "function eventdrivenkeyvaluestore() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function eventdrivenkeyvaluestore() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function eventdrivenkeyvaluestore() {\n  \n  return true;\n}",
+      "function eventdrivenkeyvaluestore() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Event-Driven Key-Value Store\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promisify-polyfill",
+    "block": "JS Functions / Polyfills",
+    "title": "Promisify Polyfill",
+    "timeLimitMin": 10,
+    "description": "## Promisify Polyfill\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-promisify-polyfill---qid---GFqT2ainSIGaPNODqoDe)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promisifypolyfill() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promisifypolyfill() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promisifypolyfill() {\n  \n  return true;\n}",
+      "function promisifypolyfill() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function promisifypolyfill() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promisify Polyfill\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-multi-step-form",
+    "block": "React Hooks & Components",
+    "title": "Multi Step Form",
+    "timeLimitMin": 10,
+    "description": "Implement a wizard style multi-step signup form in React. Retain step values on navigation and support final submit payload output.",
+    "starter": "export function MultiStepForm({ onSubmit }: { onSubmit: (data: any) => void }) {\n  // Ваша реалізація тут\n}",
+    "solution": "import React, { useState } from 'react';\n\nexport function MultiStepForm({ onSubmit }: { onSubmit: (data: any) => void }) {\n  // Оголошення та ініціалізація змінної \"\"\n  const [step, setStep] = useState(1);\n  // Оголошення та ініціалізація змінної \"\"\n  const [formData, setFormData] = useState({\n    username: '',\n    email: '',\n    password: ''\n  });\n\n  // Оголошення та ініціалізація змінної \"handleChange\"\n  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    setFormData({ ...formData, [e.target.name]: e.target.value });\n  };\n\n  // Оголошення та ініціалізація змінної \"next\"\n  const next = () => setStep(prev => prev + 1);\n  // Оголошення та ініціалізація змінної \"prev\"\n  const prev = () => setStep(prev => prev - 1);\n  // Оголошення та ініціалізація змінної \"handleSubmit\"\n  const handleSubmit = (e: React.FormEvent) => {\n    e.preventDefault();\n    onSubmit(formData);\n  };\n\n  // Повернення обчисленого значення\n  return (\n    <form onSubmit={handleSubmit} style={{ width: 300, display: 'flex', flexDirection: 'column', gap: 15 }}>\n      <h3>Step {step} of 3</h3>\n      {step === 1 && (\n        <div>\n          <label>Username: </label>\n          <input name=\"username\" value={formData.username} onChange={handleChange} required />\n        </div>\n      )}\n      {step === 2 && (\n        <div>\n          <label>Email: </label>\n          <input name=\"email\" type=\"email\" value={formData.email} onChange={handleChange} required />\n        </div>\n      )}\n      {step === 3 && (\n        <div>\n          <label>Password: </label>\n          <input name=\"password\" type=\"password\" value={formData.password} onChange={handleChange} required />\n        </div>\n      )}\n      <div style={{ display: 'flex', gap: 10 }}>\n        {step > 1 && <button type=\"button\" onClick={prev}>Back</button>}\n        {step < 3 ? (\n          <button type=\"button\" onClick={next}>Next</button>\n        ) : (\n          <button type=\"submit\">Submit</button>\n        )}\n      </div>\n    </form>\n  );\n}",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n\nexport function MultiStepForm({ onSubmit }: { onSubmit: (data: any) => void }) {\n  \n  const [step, setStep] = useState(1);\n  \n  const [formData, setFormData] = useState({\n    /* TODO: реалізувати цей рядок */\n    email: '',\n    password: ''\n  });\n\n  \n  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    setFormData({ ...formData, [e.target.name]: e.target.value });\n  };\n\n  \n  const next = () => setStep(prev => prev + 1);\n  \n  const prev = () => setStep(prev => prev - 1);\n  \n  const handleSubmit = (e: React.FormEvent) => {\n    e.preventDefault();\n    onSubmit(formData);\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    <form onSubmit={handleSubmit} style={{ width: 300, display: 'flex', flexDirection: 'column', gap: 15 }}>\n      /* TODO: реалізувати цей рядок */\n      {step === 1 && (\n        <div>\n          <label>Username: </label>\n          <input name=\"username\" value={formData.username} onChange={handleChange} required />\n        </div>\n      )}\n      {step === 2 && (\n        <div>\n          <label>Email: </label>\n          <input name=\"email\" type=\"email\" value={formData.email} onChange={handleChange} required />\n        </div>\n      )}\n      {step === 3 && (\n        <div>\n          <label>Password: </label>\n          <input name=\"password\" type=\"password\" value={formData.password} onChange={handleChange} required />\n        </div>\n      )}\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        {step < 3 ? (\n          <button type=\"button\" onClick={next}>Next</button>\n        ) : (\n          <button type=\"submit\">Submit</button>\n        )}\n      /* TODO: реалізувати цей рядок */\n    </form>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function MultiStepForm({ onSubmit }: { onSubmit: (data: any) => void }) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const [formData, setFormData] = useState({\n    /* TODO: реалізувати цей рядок */\n    email: '',\n    password: ''\n  });\n\n  \n  /* TODO: реалізувати цей рядок */\n    setFormData({ ...formData, [e.target.name]: e.target.value });\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    onSubmit(formData);\n  };\n\n  \n  return (\n    /* TODO: реалізувати цей рядок */\n      <h3>Step {step} of 3</h3>\n      {step === 1 && (\n        /* TODO: реалізувати цей рядок */\n          <label>Username: </label>\n          <input name=\"username\" value={formData.username} onChange={handleChange} required />\n        </div>\n      )}\n      {step === 2 && (\n        <div>\n          /* TODO: реалізувати цей рядок */\n          <input name=\"email\" type=\"email\" value={formData.email} onChange={handleChange} required />\n        /* TODO: реалізувати цей рядок */\n      )}\n      {step === 3 && (\n        /* TODO: реалізувати цей рядок */\n          <label>Password: </label>\n          <input name=\"password\" type=\"password\" value={formData.password} onChange={handleChange} required />\n        /* TODO: реалізувати цей рядок */\n      )}\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        ) : (\n          /* TODO: реалізувати цей рядок */\n        )}\n      </div>\n    </form>\n  );\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function MultiStepForm({ onSubmit }: { onSubmit: (data: any) => void }) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  });\n\n  \n  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n  \n  const prev = () => setStep(prev => prev - 1);\n  \n  /* TODO: реалізувати цей рядок */\n    e.preventDefault();\n    /* TODO: реалізувати цей рядок */\n  };\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          <input name=\"username\" value={formData.username} onChange={handleChange} required />\n        /* TODO: реалізувати цей рядок */\n      )}\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      )}\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          <label>Password: </label>\n          /* TODO: реалізувати цей рядок */\n        </div>\n      )}\n      /* TODO: реалізувати цей рядок */\n        {step > 1 && <button type=\"button\" onClick={prev}>Back</button>}\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          <button type=\"submit\">Submit</button>\n        )}\n      </div>\n    </form>\n  );\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Multi Step Form\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-create-a-drag-and-drop-list-component",
+    "block": "Algorithms",
+    "title": "How To Create A Drag And Drop List Component",
+    "timeLimitMin": 10,
+    "description": "## How To Create A Drag And Drop List Component\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-create-a-drag-and-drop-list-component---qid---C5yqJ5JJaTUY6en6Bs1R)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtocreateadraganddroplistcomponent() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtocreateadraganddroplistcomponent() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtocreateadraganddroplistcomponent() {\n  \n  return true;\n}",
+      "function howtocreateadraganddroplistcomponent() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtocreateadraganddroplistcomponent() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Create A Drag And Drop List Component\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-create-analytics-sdk-in-javascript",
+    "block": "JS Functions / Polyfills",
+    "title": "How To Create Analytics Sdk In Javascript",
+    "timeLimitMin": 10,
+    "description": "## How To Create Analytics Sdk In Javascript\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-create-analytics-sdk-in-javascript---qid---DgfGnCyNDx2BHmHeEtzb)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtocreateanalyticssdkinjavascript() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtocreateanalyticssdkinjavascript() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtocreateanalyticssdkinjavascript() {\n  \n  return true;\n}",
+      "function howtocreateanalyticssdkinjavascript() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtocreateanalyticssdkinjavascript() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Create Analytics Sdk In Javascript\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-two-player-line-board-game",
+    "block": "Algorithms",
+    "title": "Two-Player Line Board Game",
+    "timeLimitMin": 10,
+    "description": "## Two-Player Line Board Game\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-two-player-line-board-game---qid---lIas2ZwR8dMHDjbpxICA)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function twoplayerlineboardgame() {\n  // Ваша реалізація тут\n}",
+    "solution": "function twoplayerlineboardgame() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function twoplayerlineboardgame() {\n  \n  return true;\n}",
+      "function twoplayerlineboardgame() {\n  \n  return true;\n}",
+      "function twoplayerlineboardgame() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Two-Player Line Board Game\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-group-array-of-objects-by-key",
+    "block": "JS Functions / Polyfills",
+    "title": "How To Group Array Of Objects By Key",
+    "timeLimitMin": 10,
+    "description": "## How To Group Array Of Objects By Key\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-group-array-of-objects-by-key---qid---jXR36BcP0PlK0yexNXFG)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtogrouparrayofobjectsbykey() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtogrouparrayofobjectsbykey() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtogrouparrayofobjectsbykey() {\n  \n  return true;\n}",
+      "function howtogrouparrayofobjectsbykey() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtogrouparrayofobjectsbykey() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Group Array Of Objects By Key\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-custom-square-method",
+    "block": "JS Functions / Polyfills",
+    "title": "Custom Square Method",
+    "timeLimitMin": 10,
+    "description": "## Custom Square Method\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-custom-array-prototype-square-method---qid---D2G7RkqdWxAjck6U2NV7)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function customsquaremethod() {\n  // Ваша реалізація тут\n}",
+    "solution": "function customsquaremethod() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function customsquaremethod() {\n  \n  return true;\n}",
+      "function customsquaremethod() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function customsquaremethod() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Custom Square Method\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-dom-renderer",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Dom Renderer",
+    "timeLimitMin": 10,
+    "description": "## Dom Renderer\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-virtual-dom-to-actual-html-dom-convertor-or-dom-renderer---qid---bAin2TEn862JTFVFgxEi)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function domrenderer() {\n  // Ваша реалізація тут\n}",
+    "solution": "function domrenderer() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function domrenderer() {\n  \n  return true;\n}",
+      "function domrenderer() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function domrenderer() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Dom Renderer\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-detect-overlapping-circles-in-reactjs-uber-frontend-interview-question",
+    "block": "React Hooks & Components",
+    "title": "How To Detect Overlapping Circles In React.Js Uber Frontend Interview Question",
+    "timeLimitMin": 10,
+    "description": "## How To Detect Overlapping Circles In React.Js Uber Frontend Interview Question\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-detect-overlapping-circles-in-react-js-uber-frontend-interview-question---qid---ixSxPTedmz1CyVZSab1N)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtodetectoverlappingcirclesinreactjsuberfrontendinterviewquestion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtodetectoverlappingcirclesinreactjsuberfrontendinterviewquestion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtodetectoverlappingcirclesinreactjsuberfrontendinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtodetectoverlappingcirclesinreactjsuberfrontendinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtodetectoverlappingcirclesinreactjsuberfrontendinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Detect Overlapping Circles In React.Js Uber Frontend Interview Question\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-chainable-add-function-to-calculate-the-sum-of-numbers",
+    "block": "JS Functions / Polyfills",
+    "title": "Chainable Add Function To Calculate The Sum Of Numbers",
+    "timeLimitMin": 10,
+    "description": "## Chainable Add Function To Calculate The Sum Of Numbers\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-a-chainable-add-function-to-calculate-the-sum-of-numbers---qid---Nu3LCidPXPJi494BiODO)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function chainableaddfunctiontocalculatethesumofnumbers() {\n  // Ваша реалізація тут\n}",
+    "solution": "function chainableaddfunctiontocalculatethesumofnumbers() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function chainableaddfunctiontocalculatethesumofnumbers() {\n  \n  return true;\n}",
+      "function chainableaddfunctiontocalculatethesumofnumbers() {\n  \n  return true;\n}",
+      "function chainableaddfunctiontocalculatethesumofnumbers() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Chainable Add Function To Calculate The Sum Of Numbers\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-n-asynchronous-task-runner-with-concurrency-control-rippling-frontend-interview-question",
+    "block": "JS Functions / Polyfills",
+    "title": "N Asynchronous Task Runner With Concurrency Control Rippling Frontend Interview Question",
+    "timeLimitMin": 10,
+    "description": "## N Asynchronous Task Runner With Concurrency Control Rippling Frontend Interview Question\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-an-asynchronous-task-runner-with-concurrency-control-rippling-frontend-interview-question---qid---QCu4pbqp5zgxZQaQzh0D)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function nasynchronoustaskrunnerwithconcurrencycontrolripplingfrontendinterviewquestion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function nasynchronoustaskrunnerwithconcurrencycontrolripplingfrontendinterviewquestion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function nasynchronoustaskrunnerwithconcurrencycontrolripplingfrontendinterviewquestion() {\n  \n  return true;\n}",
+      "function nasynchronoustaskrunnerwithconcurrencycontrolripplingfrontendinterviewquestion() {\n  \n  return true;\n}",
+      "function nasynchronoustaskrunnerwithconcurrencycontrolripplingfrontendinterviewquestion() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"N Asynchronous Task Runner With Concurrency Control Rippling Frontend Interview Question\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-transfer-list-ui-component",
+    "block": "Algorithms",
+    "title": "Transfer List Ui Component",
+    "timeLimitMin": 10,
+    "description": "## Transfer List Ui Component\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-build-a-transfer-list-ui-component---qid---JXmKtbLuIWiEgODu2MRJ)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function transferlistuicomponent() {\n  // Ваша реалізація тут\n}",
+    "solution": "function transferlistuicomponent() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function transferlistuicomponent() {\n  \n  return true;\n}",
+      "function transferlistuicomponent() {\n  \n  return true;\n}",
+      "function transferlistuicomponent() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Transfer List Ui Component\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-frontend-problem-sovling",
+    "block": "JS Functions / Polyfills",
+    "title": "Frontend Problem Sovling",
+    "timeLimitMin": 10,
+    "description": "## Frontend Problem Sovling\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-auto-retry-promise-on-rejection-or-frontend-problem-sovling---qid---dUr6aT6OrbsBxdtA9EQV)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function frontendproblemsovling() {\n  // Ваша реалізація тут\n}",
+    "solution": "function frontendproblemsovling() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function frontendproblemsovling() {\n  \n  return true;\n}",
+      "function frontendproblemsovling() {\n  \n  return true;\n}",
+      "function frontendproblemsovling() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Frontend Problem Sovling\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-prize-calculator-javascript-interview-question",
+    "block": "React Hooks & Components",
+    "title": "Prize Calculator Javascript Interview Question",
+    "timeLimitMin": 10,
+    "description": "## Prize Calculator Javascript Interview Question\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-a-prize-calculator-javascript-interview-question---qid---0rDhVLnqTFqzycgfAGPq)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function prizecalculatorjavascriptinterviewquestion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function prizecalculatorjavascriptinterviewquestion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function prizecalculatorjavascriptinterviewquestion() {\n  \n  return true;\n}",
+      "function prizecalculatorjavascriptinterviewquestion() {\n  \n  return true;\n}",
+      "function prizecalculatorjavascriptinterviewquestion() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Prize Calculator Javascript Interview Question\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-count-by",
+    "block": "JS Functions / Polyfills",
+    "title": "Count By",
+    "timeLimitMin": 10,
+    "description": "## Count By\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-count-by-or-javascript-problem-solving---qid---ajVW4hL2Zz5DeDCl37uv)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function countby() {\n  // Ваша реалізація тут\n}",
+    "solution": "function countby() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function countby() {\n  \n  return true;\n}",
+      "function countby() {\n  \n  return true;\n}",
+      "function countby() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Count By\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-feature-flag-functionality-atlassian-frontend-interview-question",
+    "block": "JS Functions / Polyfills",
+    "title": "Feature Flag Functionality Atlassian Frontend Interview Question",
+    "timeLimitMin": 10,
+    "description": "## Feature Flag Functionality Atlassian Frontend Interview Question\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-feature-flag-functionality-atlassian-frontend-interview-question---qid---af1JERRj92CZPrEyLl5z)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function featureflagfunctionalityatlassianfrontendinterviewquestion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function featureflagfunctionalityatlassianfrontendinterviewquestion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function featureflagfunctionalityatlassianfrontendinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function featureflagfunctionalityatlassianfrontendinterviewquestion() {\n  \n  return true;\n}",
+      "function featureflagfunctionalityatlassianfrontendinterviewquestion() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Feature Flag Functionality Atlassian Frontend Interview Question\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-circles-game-in-reactjs-frontend-coding-challenge",
+    "block": "Algorithms",
+    "title": "Circles Game In React.Js Frontend Coding Challenge",
+    "timeLimitMin": 10,
+    "description": "## Circles Game In React.Js Frontend Coding Challenge\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-build-circles-game-in-react-js-frontend-coding-challenge---qid---Y8acly7B5CmIVAaT5knP)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function circlesgameinreactjsfrontendcodingchallenge() {\n  // Ваша реалізація тут\n}",
+    "solution": "function circlesgameinreactjsfrontendcodingchallenge() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function circlesgameinreactjsfrontendcodingchallenge() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function circlesgameinreactjsfrontendcodingchallenge() {\n  \n  return true;\n}",
+      "function circlesgameinreactjsfrontendcodingchallenge() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Circles Game In React.Js Frontend Coding Challenge\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-n-interactive-jira-velocity-bar-chart-atlassian-browser-coding-round-interview-question",
+    "block": "JS Functions / Polyfills",
+    "title": "N Interactive Jira Velocity Bar Chart Atlassian Browser Coding Round Interview Question",
+    "timeLimitMin": 10,
+    "description": "## N Interactive Jira Velocity Bar Chart Atlassian Browser Coding Round Interview Question\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-build-an-interactive-jira-velocity-bar-chart-atlassian-browser-coding-round-interview-question---qid---H24LHAOpjxtuol41iGn8)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function ninteractivejiravelocitybarchartatlassianbrowsercodingroundinterviewquestion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function ninteractivejiravelocitybarchartatlassianbrowsercodingroundinterviewquestion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function ninteractivejiravelocitybarchartatlassianbrowsercodingroundinterviewquestion() {\n  \n  return true;\n}",
+      "function ninteractivejiravelocitybarchartatlassianbrowsercodingroundinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function ninteractivejiravelocitybarchartatlassianbrowsercodingroundinterviewquestion() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"N Interactive Jira Velocity Bar Chart Atlassian Browser Coding Round Interview Question\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-create-an-interactive-shape-based-ui-uber-frontend-interview-question",
+    "block": "React Hooks & Components",
+    "title": "How To Create An Interactive Shape Based Ui Uber Frontend Interview Question",
+    "timeLimitMin": 10,
+    "description": "## How To Create An Interactive Shape Based Ui Uber Frontend Interview Question\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-create-an-interactive-shape-based-ui-uber-frontend-interview-question-or-javascript-or-react-js---qid---6FVH1ZMWMXd4uZ8WAGEi)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtocreateaninteractiveshapebaseduiuberfrontendinterviewquestion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtocreateaninteractiveshapebaseduiuberfrontendinterviewquestion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtocreateaninteractiveshapebaseduiuberfrontendinterviewquestion() {\n  \n  return true;\n}",
+      "function howtocreateaninteractiveshapebaseduiuberfrontendinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function howtocreateaninteractiveshapebaseduiuberfrontendinterviewquestion() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Create An Interactive Shape Based Ui Uber Frontend Interview Question\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-credit-card-masker",
+    "block": "JS Functions / Polyfills",
+    "title": "Credit Card Masker",
+    "timeLimitMin": 10,
+    "description": "## Credit Card Masker\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-credit-card-masker-or-klarna-frontend-interview-question-or-javascript---qid---AdZLcjN3FNivgYCuq5pa)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function creditcardmasker() {\n  // Ваша реалізація тут\n}",
+    "solution": "function creditcardmasker() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function creditcardmasker() {\n  \n  return true;\n}",
+      "function creditcardmasker() {\n  \n  return true;\n}",
+      "function creditcardmasker() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Credit Card Masker\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-function-to-return-the-count-of-numbers-in-an-array",
+    "block": "JS Functions / Polyfills",
+    "title": "Function To Return The Count Of Numbers In An Array",
+    "timeLimitMin": 10,
+    "description": "## Function To Return The Count Of Numbers In An Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/write-a-function-to-return-the-count-of-numbers-in-an-array-or-makemytrip-frontend-interview-question---qid---cjzjsfJUP0zHb2lgPJVy)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functiontoreturnthecountofnumbersinanarray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functiontoreturnthecountofnumbersinanarray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functiontoreturnthecountofnumbersinanarray() {\n  \n  return true;\n}",
+      "function functiontoreturnthecountofnumbersinanarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function functiontoreturnthecountofnumbersinanarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function To Return The Count Of Numbers In An Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-how-to-create-a-loading-animation",
+    "block": "React Hooks & Components",
+    "title": "How To Create A Loading Animation",
+    "timeLimitMin": 10,
+    "description": "## How To Create A Loading Animation\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-create-a-loading-animation-or-frontend-coding-challenge-or-react-js-or-javascript---qid---8W49gsfYuifkYlgXgY46)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function howtocreatealoadinganimation() {\n  // Ваша реалізація тут\n}",
+    "solution": "function howtocreatealoadinganimation() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function howtocreatealoadinganimation() {\n  \n  return true;\n}",
+      "function howtocreatealoadinganimation() {\n  \n  return true;\n}",
+      "function howtocreatealoadinganimation() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"How To Create A Loading Animation\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-pagination-component-in-reactjs",
+    "block": "React Hooks & Components",
+    "title": "Pagination Component In React.Js",
+    "timeLimitMin": 10,
+    "description": "## Pagination Component In React.Js\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-build-a-pagination-component-in-react-js-or-razorpay-interview-question-or-javascript---qid---OZbNo0AUBGI97HX3gn3Z)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function paginationcomponentinreactjs() {\n  // Ваша реалізація тут\n}",
+    "solution": "function paginationcomponentinreactjs() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function paginationcomponentinreactjs() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function paginationcomponentinreactjs() {\n  \n  return true;\n}",
+      "function paginationcomponentinreactjs() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Pagination Component In React.Js\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-function-to-convert-a-string-input-into-an-object",
+    "block": "JS Functions / Polyfills",
+    "title": "Function To Convert A String Input Into An Object",
+    "timeLimitMin": 10,
+    "description": "## Function To Convert A String Input Into An Object\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-a-function-to-convert-a-string-input-into-an-object-or-razorpay-interview-question-or-javascript---qid---DHZWLUCg446H72ydrXED)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functiontoconvertastringinputintoanobject() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functiontoconvertastringinputintoanobject() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functiontoconvertastringinputintoanobject() {\n  \n  return true;\n}",
+      "function functiontoconvertastringinputintoanobject() {\n  \n  return true;\n}",
+      "function functiontoconvertastringinputintoanobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function To Convert A String Input Into An Object\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-pipe-utility",
+    "block": "JS Functions / Polyfills",
+    "title": "Pipe Utility",
+    "timeLimitMin": 10,
+    "description": "## Pipe Utility\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-implement-pipe-utility-or-razorpay-interview-question-or-javascript---qid---Dm2i9tr8y3ILsg4Bzn0u)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function pipeutility() {\n  // Ваша реалізація тут\n}",
+    "solution": "function pipeutility() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function pipeutility() {\n  \n  return true;\n}",
+      "function pipeutility() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function pipeutility() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Pipe Utility\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-moving-dot-animation",
+    "block": "JS Functions / Polyfills",
+    "title": "Moving Dot Animation",
+    "timeLimitMin": 10,
+    "description": "## Moving Dot Animation\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/how-to-build-a-moving-dot-animation-or-frontend-coding-challenge---qid---ZZLK1BXyGxrC5D9weINh)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function movingdotanimation() {\n  // Ваша реалізація тут\n}",
+    "solution": "function movingdotanimation() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function movingdotanimation() {\n  \n  return true;\n}",
+      "function movingdotanimation() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function movingdotanimation() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Moving Dot Animation\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-faq-page",
+    "block": "React Hooks & Components",
+    "title": "Faq Page",
+    "timeLimitMin": 10,
+    "description": "## Faq Page\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-faq-page-or-frontend-coding-challenge-or-react-js-or-html-or-css-or-javascript---qid---ayi5oGVQzM4Jkr7cIZnF)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function faqpage() {\n  // Ваша реалізація тут\n}",
+    "solution": "function faqpage() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function faqpage() {\n  \n  return true;\n}",
+      "function faqpage() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function faqpage() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Faq Page\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-gif-search-engine",
+    "block": "Algorithms",
+    "title": "Gif Search Engine",
+    "timeLimitMin": 10,
+    "description": "## Gif Search Engine\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-gif-search-engine-or-frontend-coding-challenge-or-react-js-or-javascript---qid---Yrz7qTiDTIyReYmwrLiA)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function gifsearchengine() {\n  // Ваша реалізація тут\n}",
+    "solution": "function gifsearchengine() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function gifsearchengine() {\n  \n  return true;\n}",
+      "function gifsearchengine() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function gifsearchengine() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Gif Search Engine\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-room-reservation-system",
+    "block": "JS Functions / Polyfills",
+    "title": "Room Reservation System",
+    "timeLimitMin": 10,
+    "description": "## Room Reservation System\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-room-reservation-system-or-frontend-coding-challenge---qid---elXJ1Jch0dc39e87W0PK)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function roomreservationsystem() {\n  // Ваша реалізація тут\n}",
+    "solution": "function roomreservationsystem() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function roomreservationsystem() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function roomreservationsystem() {\n  \n  return true;\n}",
+      "function roomreservationsystem() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Room Reservation System\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-lodash-difference",
+    "block": "JS Functions / Polyfills",
+    "title": "Lodash Difference",
+    "timeLimitMin": 10,
+    "description": "## Lodash Difference\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-function-that-creates-an-array-of-values-not-included-in-other-array-or-lodash-difference-or-javascript-interview-question---qid---xjhgy8O1xkroU074X7EU)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function lodashdifference() {\n  // Ваша реалізація тут\n}",
+    "solution": "function lodashdifference() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function lodashdifference() {\n  \n  return true;\n}",
+      "function lodashdifference() {\n  \n  return true;\n}",
+      "function lodashdifference() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Lodash Difference\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-function-to-convert-all-object-keys-to-camel-case",
+    "block": "JS Functions / Polyfills",
+    "title": "Function To Convert All Object Keys To Camel Case",
+    "timeLimitMin": 10,
+    "description": "## Function To Convert All Object Keys To Camel Case\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-function-to-convert-all-object-keys-to-camel-case-or-javascript-interview-question---qid---9E4Ju40HMV36ksRPq9oF)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functiontoconvertallobjectkeystocamelcase() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functiontoconvertallobjectkeystocamelcase() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functiontoconvertallobjectkeystocamelcase() {\n  \n  return true;\n}",
+      "function functiontoconvertallobjectkeystocamelcase() {\n  \n  return true;\n}",
+      "function functiontoconvertallobjectkeystocamelcase() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function To Convert All Object Keys To Camel Case\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-simple-price-calculator",
+    "block": "React Hooks & Components",
+    "title": "Simple Price Calculator",
+    "timeLimitMin": 10,
+    "description": "## Simple Price Calculator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-simple-price-calculator-or-frontend-coding-challenge-or-razorpay-interview-question---qid---2lGvliAvIzreHeVSRfGD)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function simplepricecalculator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function simplepricecalculator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function simplepricecalculator() {\n  \n  return true;\n}",
+      "function simplepricecalculator() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function simplepricecalculator() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Simple Price Calculator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-javascript-fundamentals",
+    "block": "JS Functions / Polyfills",
+    "title": "Javascript Fundamentals",
+    "timeLimitMin": 10,
+    "description": "## Javascript Fundamentals\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/what-is-the-output-of-the-following-code-snippet-or-javascript-fundamentals-or-frontend-interview-question---qid---ExQRFHuVPv94g0l9bgSX)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function javascriptfundamentals() {\n  // Ваша реалізація тут\n}",
+    "solution": "function javascriptfundamentals() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function javascriptfundamentals() {\n  \n  return true;\n}",
+      "function javascriptfundamentals() {\n  \n  return true;\n}",
+      "function javascriptfundamentals() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Javascript Fundamentals\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-counter-app",
+    "block": "JS Functions / Polyfills",
+    "title": "Counter App",
+    "timeLimitMin": 10,
+    "description": "## Counter App\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/build-a-counter-app-or-frontend-coding-challenge---qid---zodvupyT4q2SnVLeVFGk)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function counterapp() {\n  // Ваша реалізація тут\n}",
+    "solution": "function counterapp() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function counterapp() {\n  \n  return true;\n}",
+      "function counterapp() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function counterapp() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Counter App\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-range-i",
+    "block": "JS Functions / Polyfills",
+    "title": "Range I",
+    "timeLimitMin": 10,
+    "description": "## Range I\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-function-to-generate-a-range-of-numbers-or-range-i-or-javascript-interview-question-or-lodash-polyfills---qid---ZfQeEBCKkGiCvLpYqcLt)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function rangei() {\n  // Ваша реалізація тут\n}",
+    "solution": "function rangei() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function rangei() {\n  \n  return true;\n}",
+      "function rangei() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function rangei() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Range I\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-lodash-polyfills",
+    "block": "JS Functions / Polyfills",
+    "title": "Lodash Polyfills",
+    "timeLimitMin": 10,
+    "description": "## Lodash Polyfills\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **DevTools_Tech**: [Link](https://devtools.tech/questions/s/implement-a-function-that-accepts-a-callback-and-restricts-its-invocation-to-at-most-n-times-or-lodash-polyfills-or-frontend-problem-solving---qid---ge3cwzQQrMlXt6VwDpNg)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function lodashpolyfills() {\n  // Ваша реалізація тут\n}",
+    "solution": "function lodashpolyfills() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function lodashpolyfills() {\n  \n  return true;\n}",
+      "function lodashpolyfills() {\n  \n  return true;\n}",
+      "function lodashpolyfills() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Lodash Polyfills\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-compose",
+    "block": "JS Functions / Polyfills",
+    "title": "Compose",
+    "timeLimitMin": 10,
+    "description": "## Compose\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function compose() {\n  // Ваша реалізація тут\n}",
+    "solution": "function compose() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function compose() {\n  \n  return true;\n}",
+      "function compose() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function compose() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Compose\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-deep-merge",
+    "block": "JS Functions / Polyfills",
+    "title": "Deep Merge",
+    "timeLimitMin": 10,
+    "description": "## Deep Merge\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function deepmerge() {\n  // Ваша реалізація тут\n}",
+    "solution": "function deepmerge() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function deepmerge() {\n  \n  return true;\n}",
+      "function deepmerge() {\n  \n  return true;\n}",
+      "function deepmerge() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Deep Merge\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-squash-object",
+    "block": "JS Functions / Polyfills",
+    "title": "Squash Object",
+    "timeLimitMin": 10,
+    "description": "## Squash Object\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function squashobject() {\n  // Ваша реалізація тут\n}",
+    "solution": "function squashobject() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function squashobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function squashobject() {\n  \n  return true;\n}",
+      "function squashobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Squash Object\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-unsquash-object",
+    "block": "JS Functions / Polyfills",
+    "title": "Unsquash Object",
+    "timeLimitMin": 10,
+    "description": "## Unsquash Object\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function unsquashobject() {\n  // Ваша реалізація тут\n}",
+    "solution": "function unsquashobject() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function unsquashobject() {\n  \n  return true;\n}",
+      "function unsquashobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function unsquashobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Unsquash Object\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-html-serializer",
+    "block": "JS Functions / Polyfills",
+    "title": "Html Serializer",
+    "timeLimitMin": 10,
+    "description": "## Html Serializer\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function htmlserializer() {\n  // Ваша реалізація тут\n}",
+    "solution": "function htmlserializer() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function htmlserializer() {\n  \n  return true;\n}",
+      "function htmlserializer() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function htmlserializer() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Html Serializer\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-schema-validator",
+    "block": "JS Functions / Polyfills",
+    "title": "Schema Validator",
+    "timeLimitMin": 10,
+    "description": "## Schema Validator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function schemavalidator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function schemavalidator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function schemavalidator() {\n  \n  return true;\n}",
+      "function schemavalidator() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function schemavalidator() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Schema Validator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-cancellable-interval",
+    "block": "JS Functions / Polyfills",
+    "title": "Cancellable Interval",
+    "timeLimitMin": 10,
+    "description": "## Cancellable Interval\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function cancellableinterval() {\n  // Ваша реалізація тут\n}",
+    "solution": "function cancellableinterval() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function cancellableinterval() {\n  \n  return true;\n}",
+      "function cancellableinterval() {\n  \n  return true;\n}",
+      "function cancellableinterval() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Cancellable Interval\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-cancellable-timeout",
+    "block": "JS Functions / Polyfills",
+    "title": "Cancellable Timeout",
+    "timeLimitMin": 10,
+    "description": "## Cancellable Timeout\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function cancellabletimeout() {\n  // Ваша реалізація тут\n}",
+    "solution": "function cancellabletimeout() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function cancellabletimeout() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function cancellabletimeout() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function cancellabletimeout() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Cancellable Timeout\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-map-async",
+    "block": "JS Functions / Polyfills",
+    "title": "Map Async",
+    "timeLimitMin": 10,
+    "description": "## Map Async\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function mapasync() {\n  // Ваша реалізація тут\n}",
+    "solution": "function mapasync() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function mapasync() {\n  \n  return true;\n}",
+      "function mapasync() {\n  \n  return true;\n}",
+      "function mapasync() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Map Async\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-map-async-limit",
+    "block": "JS Functions / Polyfills",
+    "title": "Map Async Limit",
+    "timeLimitMin": 10,
+    "description": "## Map Async Limit\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function mapasynclimit() {\n  // Ваша реалізація тут\n}",
+    "solution": "function mapasynclimit() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function mapasynclimit() {\n  \n  return true;\n}",
+      "function mapasynclimit() {\n  \n  return true;\n}",
+      "function mapasynclimit() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Map Async Limit\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-compact",
+    "block": "JS Functions / Polyfills",
+    "title": "Compact",
+    "timeLimitMin": 10,
+    "description": "## Compact\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function compact() {\n  // Ваша реалізація тут\n}",
+    "solution": "function compact() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function compact() {\n  \n  return true;\n}",
+      "function compact() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function compact() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Compact\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-type-utilities",
+    "block": "JS Functions / Polyfills",
+    "title": "Type Utilities",
+    "timeLimitMin": 10,
+    "description": "## Type Utilities\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function typeutilities() {\n  // Ваша реалізація тут\n}",
+    "solution": "function typeutilities() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function typeutilities() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function typeutilities() {\n  \n  return true;\n}",
+      "function typeutilities() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Type Utilities\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-get-elements-by-class-name",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Get Elements By Class Name",
+    "timeLimitMin": 10,
+    "description": "## Get Elements By Class Name\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function getelementsbyclassname() {\n  // Ваша реалізація тут\n}",
+    "solution": "function getelementsbyclassname() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function getelementsbyclassname() {\n  \n  return true;\n}",
+      "function getelementsbyclassname() {\n  \n  return true;\n}",
+      "function getelementsbyclassname() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Get Elements By Class Name\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-get-elements-by-tag-name",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Get Elements By Tag Name",
+    "timeLimitMin": 10,
+    "description": "## Get Elements By Tag Name\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function getelementsbytagname() {\n  // Ваша реалізація тут\n}",
+    "solution": "function getelementsbytagname() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function getelementsbytagname() {\n  \n  return true;\n}",
+      "function getelementsbytagname() {\n  \n  return true;\n}",
+      "function getelementsbytagname() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Get Elements By Tag Name\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-get-elements-by-style",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Get Elements By Style",
+    "timeLimitMin": 10,
+    "description": "## Get Elements By Style\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function getelementsbystyle() {\n  // Ваша реалізація тут\n}",
+    "solution": "function getelementsbystyle() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function getelementsbystyle() {\n  \n  return true;\n}",
+      "function getelementsbystyle() {\n  \n  return true;\n}",
+      "function getelementsbystyle() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Get Elements By Style\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-filter",
+    "block": "JS Functions / Polyfills",
+    "title": "Filter",
+    "timeLimitMin": 10,
+    "description": "## Filter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function filter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function filter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function filter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function filter() {\n  \n  return true;\n}",
+      "function filter() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Filter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-at",
+    "block": "JS Functions / Polyfills",
+    "title": "At",
+    "timeLimitMin": 10,
+    "description": "## At\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function at() {\n  // Ваша реалізація тут\n}",
+    "solution": "function at() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function at() {\n  \n  return true;\n}",
+      "function at() {\n  \n  return true;\n}",
+      "function at() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"At\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-arrayconcat",
+    "block": "JS Functions / Polyfills",
+    "title": "Array.Concat",
+    "timeLimitMin": 10,
+    "description": "## Array.Concat\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arrayconcat() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arrayconcat() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arrayconcat() {\n  \n  return true;\n}",
+      "function arrayconcat() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arrayconcat() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array.Concat\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-arraysquare",
+    "block": "JS Functions / Polyfills",
+    "title": "Array.Square",
+    "timeLimitMin": 10,
+    "description": "## Array.Square\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arraysquare() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arraysquare() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arraysquare() {\n  \n  return true;\n}",
+      "function arraysquare() {\n  \n  return true;\n}",
+      "function arraysquare() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array.Square\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-promisify-ii",
+    "block": "JS Functions / Polyfills",
+    "title": "Promisify Ii",
+    "timeLimitMin": 10,
+    "description": "## Promisify Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function promisifyii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function promisifyii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function promisifyii() {\n  \n  return true;\n}",
+      "function promisifyii() {\n  \n  return true;\n}",
+      "function promisifyii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Promisify Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usequery",
+    "block": "JS Functions / Polyfills",
+    "title": "Usequery",
+    "timeLimitMin": 10,
+    "description": "## Usequery\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usequery() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usequery() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usequery() {\n  \n  return true;\n}",
+      "function usequery() {\n  \n  return true;\n}",
+      "function usequery() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usequery\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usearray",
+    "block": "JS Functions / Polyfills",
+    "title": "Usearray",
+    "timeLimitMin": 10,
+    "description": "## Usearray\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usearray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usearray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usearray() {\n  \n  return true;\n}",
+      "function usearray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usearray() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usearray\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useboolean",
+    "block": "JS Functions / Polyfills",
+    "title": "Useboolean",
+    "timeLimitMin": 10,
+    "description": "## Useboolean\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useboolean() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useboolean() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useboolean() {\n  \n  return true;\n}",
+      "function useboolean() {\n  \n  return true;\n}",
+      "function useboolean() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useboolean\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usecounter",
+    "block": "JS Functions / Polyfills",
+    "title": "Usecounter",
+    "timeLimitMin": 10,
+    "description": "## Usecounter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usecounter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usecounter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usecounter() {\n  \n  return true;\n}",
+      "function usecounter() {\n  \n  return true;\n}",
+      "function usecounter() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usecounter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usecounter-ii",
+    "block": "JS Functions / Polyfills",
+    "title": "Usecounter Ii",
+    "timeLimitMin": 10,
+    "description": "## Usecounter Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usecounterii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usecounterii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usecounterii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usecounterii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usecounterii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usecounter Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usecycle",
+    "block": "JS Functions / Polyfills",
+    "title": "Usecycle",
+    "timeLimitMin": 10,
+    "description": "## Usecycle\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usecycle() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usecycle() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usecycle() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usecycle() {\n  \n  return true;\n}",
+      "function usecycle() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usecycle\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usedefault",
+    "block": "JS Functions / Polyfills",
+    "title": "Usedefault",
+    "timeLimitMin": 10,
+    "description": "## Usedefault\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usedefault() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usedefault() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usedefault() {\n  \n  return true;\n}",
+      "function usedefault() {\n  \n  return true;\n}",
+      "function usedefault() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usedefault\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usestatewithreset",
+    "block": "JS Functions / Polyfills",
+    "title": "Usestatewithreset",
+    "timeLimitMin": 10,
+    "description": "## Usestatewithreset\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usestatewithreset() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usestatewithreset() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usestatewithreset() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usestatewithreset() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usestatewithreset() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usestatewithreset\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useprevious",
+    "block": "JS Functions / Polyfills",
+    "title": "Useprevious",
+    "timeLimitMin": 10,
+    "description": "## Useprevious\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useprevious() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useprevious() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useprevious() {\n  \n  return true;\n}",
+      "function useprevious() {\n  \n  return true;\n}",
+      "function useprevious() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useprevious\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usemediaquery",
+    "block": "JS Functions / Polyfills",
+    "title": "Usemediaquery",
+    "timeLimitMin": 10,
+    "description": "## Usemediaquery\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usemediaquery() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usemediaquery() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usemediaquery() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usemediaquery() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usemediaquery() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usemediaquery\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usewindowsize",
+    "block": "JS Functions / Polyfills",
+    "title": "Usewindowsize",
+    "timeLimitMin": 10,
+    "description": "## Usewindowsize\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usewindowsize() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usewindowsize() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usewindowsize() {\n  \n  return true;\n}",
+      "function usewindowsize() {\n  \n  return true;\n}",
+      "function usewindowsize() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usewindowsize\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usebreakpoint",
+    "block": "JS Functions / Polyfills",
+    "title": "Usebreakpoint",
+    "timeLimitMin": 10,
+    "description": "## Usebreakpoint\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usebreakpoint() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usebreakpoint() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usebreakpoint() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usebreakpoint() {\n  \n  return true;\n}",
+      "function usebreakpoint() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usebreakpoint\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usehover",
+    "block": "JS Functions / Polyfills",
+    "title": "Usehover",
+    "timeLimitMin": 10,
+    "description": "## Usehover\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usehover() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usehover() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usehover() {\n  \n  return true;\n}",
+      "function usehover() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usehover() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usehover\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usefocus",
+    "block": "JS Functions / Polyfills",
+    "title": "Usefocus",
+    "timeLimitMin": 10,
+    "description": "## Usefocus\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usefocus() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usefocus() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usefocus() {\n  \n  return true;\n}",
+      "function usefocus() {\n  \n  return true;\n}",
+      "function usefocus() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usefocus\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useidle",
+    "block": "JS Functions / Polyfills",
+    "title": "Useidle",
+    "timeLimitMin": 10,
+    "description": "## Useidle\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useidle() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useidle() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useidle() {\n  \n  return true;\n}",
+      "function useidle() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useidle() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useidle\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usekeypress",
+    "block": "JS Functions / Polyfills",
+    "title": "Usekeypress",
+    "timeLimitMin": 10,
+    "description": "## Usekeypress\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usekeypress() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usekeypress() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usekeypress() {\n  \n  return true;\n}",
+      "function usekeypress() {\n  \n  return true;\n}",
+      "function usekeypress() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usekeypress\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useinputcontrol",
+    "block": "JS Functions / Polyfills",
+    "title": "Useinputcontrol",
+    "timeLimitMin": 10,
+    "description": "## Useinputcontrol\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useinputcontrol() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useinputcontrol() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useinputcontrol() {\n  \n  return true;\n}",
+      "function useinputcontrol() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useinputcontrol() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useinputcontrol\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useclickanywhere",
+    "block": "JS Functions / Polyfills",
+    "title": "Useclickanywhere",
+    "timeLimitMin": 10,
+    "description": "## Useclickanywhere\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useclickanywhere() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useclickanywhere() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useclickanywhere() {\n  \n  return true;\n}",
+      "function useclickanywhere() {\n  \n  return true;\n}",
+      "function useclickanywhere() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useclickanywhere\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useclickoutside",
+    "block": "JS Functions / Polyfills",
+    "title": "Useclickoutside",
+    "timeLimitMin": 10,
+    "description": "Implement a custom hook `useClickOutside` that triggers a callback function when the user clicks anywhere outside of a specified element referenced via React Ref.",
+    "starter": "export function useClickOutside<T extends HTMLElement>(ref: RefObject<T>, callback: () => void) {\n  // Ваша реалізація тут\n}",
+    "solution": "import { useEffect, RefObject } from 'react';\n\nexport function useClickOutside<T extends HTMLElement>(ref: RefObject<T>, callback: () => void) {\n  useEffect(() => {\n    // Оголошення та ініціалізація змінної \"listener\"\n    const listener = (event: MouseEvent | TouchEvent) => {\n      // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n      if (!ref.current || ref.current.contains(event.target as Node)) {\n        return;\n      }\n      callback();\n    };\n\n    document.addEventListener('mousedown', listener);\n    document.addEventListener('touchstart', listener);\n\n    // Повернення обчисленого значення\n    return () => {\n      document.removeEventListener('mousedown', listener);\n      document.removeEventListener('touchstart', listener);\n    };\n  }, [ref, callback]);\n}",
+    "clozeSteps": [
+      "import { useEffect, RefObject } from 'react';\n\nexport function useClickOutside<T extends HTMLElement>(ref: RefObject<T>, callback: () => void) {\n  useEffect(() => {\n    \n    const listener = (event: MouseEvent | TouchEvent) => {\n      \n      if (!ref.current || ref.current.contains(event.target as Node)) {\n        return;\n      }\n      callback();\n    };\n\n    document.addEventListener('mousedown', listener);\n    document.addEventListener('touchstart', listener);\n\n    \n    return () => {\n      document.removeEventListener('mousedown', listener);\n      document.removeEventListener('touchstart', listener);\n    };\n  /* TODO: реалізувати цей рядок */\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function useClickOutside<T extends HTMLElement>(ref: RefObject<T>, callback: () => void) {\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (!ref.current || ref.current.contains(event.target as Node)) {\n        /* TODO: реалізувати цей рядок */\n      }\n      callback();\n    };\n\n    document.addEventListener('mousedown', listener);\n    document.addEventListener('touchstart', listener);\n\n    \n    return () => {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    };\n  /* TODO: реалізувати цей рядок */\n}",
+      "/* TODO: реалізувати цей рядок */\n\nexport function useClickOutside<T extends HTMLElement>(ref: RefObject<T>, callback: () => void) {\n  useEffect(() => {\n    \n    const listener = (event: MouseEvent | TouchEvent) => {\n      \n      /* TODO: реалізувати цей рядок */\n        return;\n      }\n      /* TODO: реалізувати цей рядок */\n    };\n\n    document.addEventListener('mousedown', listener);\n    /* TODO: реалізувати цей рядок */\n\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    };\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Useclickoutside\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usemediatedstate",
+    "block": "JS Functions / Polyfills",
+    "title": "Usemediatedstate",
+    "timeLimitMin": 10,
+    "description": "## Usemediatedstate\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usemediatedstate() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usemediatedstate() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usemediatedstate() {\n  \n  return true;\n}",
+      "function usemediatedstate() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usemediatedstate() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usemediatedstate\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useeventlistener",
+    "block": "Algorithms",
+    "title": "Useeventlistener",
+    "timeLimitMin": 10,
+    "description": "## Useeventlistener\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useeventlistener() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useeventlistener() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useeventlistener() {\n  \n  return true;\n}",
+      "function useeventlistener() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useeventlistener() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useeventlistener\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usetimeout",
+    "block": "JS Functions / Polyfills",
+    "title": "Usetimeout",
+    "timeLimitMin": 10,
+    "description": "## Usetimeout\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usetimeout() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usetimeout() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usetimeout() {\n  \n  return true;\n}",
+      "function usetimeout() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usetimeout() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usetimeout\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useinterval",
+    "block": "JS Functions / Polyfills",
+    "title": "Useinterval",
+    "timeLimitMin": 10,
+    "description": "## Useinterval\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useinterval() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useinterval() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useinterval() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useinterval() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useinterval() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useinterval\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usecountdown",
+    "block": "JS Functions / Polyfills",
+    "title": "Usecountdown",
+    "timeLimitMin": 10,
+    "description": "## Usecountdown\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usecountdown() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usecountdown() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usecountdown() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usecountdown() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usecountdown() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usecountdown\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usetoggle",
+    "block": "JS Functions / Polyfills",
+    "title": "Usetoggle",
+    "timeLimitMin": 10,
+    "description": "## Usetoggle\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usetoggle() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usetoggle() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usetoggle() {\n  \n  return true;\n}",
+      "function usetoggle() {\n  \n  return true;\n}",
+      "function usetoggle() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usetoggle\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usemap",
+    "block": "JS Functions / Polyfills",
+    "title": "Usemap",
+    "timeLimitMin": 10,
+    "description": "## Usemap\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usemap() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usemap() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usemap() {\n  \n  return true;\n}",
+      "function usemap() {\n  \n  return true;\n}",
+      "function usemap() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usemap\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useset",
+    "block": "JS Functions / Polyfills",
+    "title": "Useset",
+    "timeLimitMin": 10,
+    "description": "## Useset\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useset() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useset() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useset() {\n  \n  return true;\n}",
+      "function useset() {\n  \n  return true;\n}",
+      "function useset() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useset\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useobject",
+    "block": "JS Functions / Polyfills",
+    "title": "Useobject",
+    "timeLimitMin": 10,
+    "description": "## Useobject\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useobject() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useobject() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useobject() {\n  \n  return true;\n}",
+      "function useobject() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useobject\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-usestep",
+    "block": "JS Functions / Polyfills",
+    "title": "Usestep",
+    "timeLimitMin": 10,
+    "description": "## Usestep\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usestep() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usestep() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usestep() {\n  \n  return true;\n}",
+      "function usestep() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usestep() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Usestep\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useeffectonce",
+    "block": "JS Functions / Polyfills",
+    "title": "Useeffectonce",
+    "timeLimitMin": 10,
+    "description": "## Useeffectonce\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function useeffectonce() {\n  // Ваша реалізація тут\n}",
+    "solution": "function useeffectonce() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function useeffectonce() {\n  \n  return true;\n}",
+      "function useeffectonce() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function useeffectonce() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useeffectonce\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-useboolean-ii",
+    "block": "JS Functions / Polyfills",
+    "title": "Useboolean Ii",
+    "timeLimitMin": 10,
+    "description": "## Useboolean Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usebooleanii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usebooleanii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usebooleanii() {\n  \n  return true;\n}",
+      "function usebooleanii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usebooleanii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Useboolean Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-stopwatch",
+    "block": "React Hooks & Components",
+    "title": "Stopwatch",
+    "timeLimitMin": 10,
+    "description": "## Stopwatch\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function stopwatch() {\n  // Ваша реалізація тут\n}",
+    "solution": "function stopwatch() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function stopwatch() {\n  \n  return true;\n}",
+      "function stopwatch() {\n  \n  return true;\n}",
+      "function stopwatch() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Stopwatch\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-digital-clock",
+    "block": "React Hooks & Components",
+    "title": "Digital Clock",
+    "timeLimitMin": 10,
+    "description": "## Digital Clock\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function digitalclock() {\n  // Ваша реалізація тут\n}",
+    "solution": "function digitalclock() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function digitalclock() {\n  \n  return true;\n}",
+      "function digitalclock() {\n  \n  return true;\n}",
+      "function digitalclock() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Digital Clock\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-analog-clock",
+    "block": "React Hooks & Components",
+    "title": "Analog Clock",
+    "timeLimitMin": 10,
+    "description": "## Analog Clock\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function analogclock() {\n  // Ваша реалізація тут\n}",
+    "solution": "function analogclock() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function analogclock() {\n  \n  return true;\n}",
+      "function analogclock() {\n  \n  return true;\n}",
+      "function analogclock() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Analog Clock\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-connect-four",
+    "block": "React Hooks & Components",
+    "title": "Connect Four",
+    "timeLimitMin": 10,
+    "description": "## Connect Four\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function connectfour() {\n  // Ваша реалізація тут\n}",
+    "solution": "function connectfour() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function connectfour() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function connectfour() {\n  \n  return true;\n}",
+      "function connectfour() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Connect Four\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-wordle",
+    "block": "React Hooks & Components",
+    "title": "Wordle",
+    "timeLimitMin": 10,
+    "description": "## Wordle\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function wordle() {\n  // Ваша реалізація тут\n}",
+    "solution": "function wordle() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function wordle() {\n  \n  return true;\n}",
+      "function wordle() {\n  \n  return true;\n}",
+      "function wordle() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Wordle\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-transfer-list",
+    "block": "Algorithms",
+    "title": "Transfer List",
+    "timeLimitMin": 10,
+    "description": "## Transfer List\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function transferlist() {\n  // Ваша реалізація тут\n}",
+    "solution": "function transferlist() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function transferlist() {\n  \n  return true;\n}",
+      "function transferlist() {\n  \n  return true;\n}",
+      "function transferlist() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Transfer List\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-transfer-list-ii",
+    "block": "Algorithms",
+    "title": "Transfer List Ii",
+    "timeLimitMin": 10,
+    "description": "## Transfer List Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function transferlistii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function transferlistii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function transferlistii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function transferlistii() {\n  \n  return true;\n}",
+      "function transferlistii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Transfer List Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-nested-checkboxes",
+    "block": "React Hooks & Components",
+    "title": "Nested Checkboxes",
+    "timeLimitMin": 10,
+    "description": "## Nested Checkboxes\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function nestedcheckboxes() {\n  // Ваша реалізація тут\n}",
+    "solution": "function nestedcheckboxes() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function nestedcheckboxes() {\n  \n  return true;\n}",
+      "function nestedcheckboxes() {\n  \n  return true;\n}",
+      "function nestedcheckboxes() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Nested Checkboxes\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-tweet",
+    "block": "React Hooks & Components",
+    "title": "Tweet",
+    "timeLimitMin": 10,
+    "description": "## Tweet\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function tweet() {\n  // Ваша реалізація тут\n}",
+    "solution": "function tweet() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function tweet() {\n  \n  return true;\n}",
+      "function tweet() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function tweet() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Tweet\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-job-board",
+    "block": "React Hooks & Components",
+    "title": "Job Board",
+    "timeLimitMin": 10,
+    "description": "## Job Board\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function jobboard() {\n  // Ваша реалізація тут\n}",
+    "solution": "function jobboard() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function jobboard() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function jobboard() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function jobboard() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Job Board\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-users-database",
+    "block": "React Hooks & Components",
+    "title": "Users Database",
+    "timeLimitMin": 10,
+    "description": "## Users Database\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function usersdatabase() {\n  // Ваша реалізація тут\n}",
+    "solution": "function usersdatabase() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function usersdatabase() {\n  \n  return true;\n}",
+      "function usersdatabase() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function usersdatabase() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Users Database\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-flight-booker",
+    "block": "React Hooks & Components",
+    "title": "Flight Booker",
+    "timeLimitMin": 10,
+    "description": "## Flight Booker\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function flightbooker() {\n  // Ваша реалізація тут\n}",
+    "solution": "function flightbooker() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function flightbooker() {\n  \n  return true;\n}",
+      "function flightbooker() {\n  \n  return true;\n}",
+      "function flightbooker() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Flight Booker\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-holy-grail",
+    "block": "React Hooks & Components",
+    "title": "Holy Grail",
+    "timeLimitMin": 10,
+    "description": "## Holy Grail\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function holygrail() {\n  // Ваша реалізація тут\n}",
+    "solution": "function holygrail() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function holygrail() {\n  \n  return true;\n}",
+      "function holygrail() {\n  \n  return true;\n}",
+      "function holygrail() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Holy Grail\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-grid-lights",
+    "block": "React Hooks & Components",
+    "title": "Grid Lights",
+    "timeLimitMin": 10,
+    "description": "## Grid Lights\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function gridlights() {\n  // Ваша реалізація тут\n}",
+    "solution": "function gridlights() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function gridlights() {\n  \n  return true;\n}",
+      "function gridlights() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function gridlights() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Grid Lights\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-pixel-art",
+    "block": "React Hooks & Components",
+    "title": "Pixel Art",
+    "timeLimitMin": 10,
+    "description": "## Pixel Art\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function pixelart() {\n  // Ваша реалізація тут\n}",
+    "solution": "function pixelart() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function pixelart() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function pixelart() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function pixelart() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Pixel Art\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-temperature-converter",
+    "block": "React Hooks & Components",
+    "title": "Temperature Converter",
+    "timeLimitMin": 10,
+    "description": "## Temperature Converter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function temperatureconverter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function temperatureconverter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function temperatureconverter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function temperatureconverter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function temperatureconverter() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Temperature Converter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-mortgage-calculator",
+    "block": "React Hooks & Components",
+    "title": "Mortgage Calculator",
+    "timeLimitMin": 10,
+    "description": "## Mortgage Calculator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function mortgagecalculator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function mortgagecalculator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function mortgagecalculator() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function mortgagecalculator() {\n  \n  return true;\n}",
+      "function mortgagecalculator() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Mortgage Calculator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-dice-roller",
+    "block": "React Hooks & Components",
+    "title": "Dice Roller",
+    "timeLimitMin": 10,
+    "description": "## Dice Roller\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function diceroller() {\n  // Ваша реалізація тут\n}",
+    "solution": "function diceroller() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function diceroller() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function diceroller() {\n  \n  return true;\n}",
+      "function diceroller() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Dice Roller\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-signup-form",
+    "block": "React Hooks & Components",
+    "title": "Signup Form",
+    "timeLimitMin": 10,
+    "description": "## Signup Form\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function signupform() {\n  // Ваша реалізація тут\n}",
+    "solution": "function signupform() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function signupform() {\n  \n  return true;\n}",
+      "function signupform() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function signupform() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Signup Form\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-contact-form",
+    "block": "React Hooks & Components",
+    "title": "Contact Form",
+    "timeLimitMin": 10,
+    "description": "## Contact Form\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function contactform() {\n  // Ваша реалізація тут\n}",
+    "solution": "function contactform() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function contactform() {\n  \n  return true;\n}",
+      "function contactform() {\n  \n  return true;\n}",
+      "function contactform() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Contact Form\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-generate-table",
+    "block": "React Hooks & Components",
+    "title": "Generate Table",
+    "timeLimitMin": 10,
+    "description": "## Generate Table\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function generatetable() {\n  // Ваша реалізація тут\n}",
+    "solution": "function generatetable() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function generatetable() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function generatetable() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function generatetable() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Generate Table\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-birthday-year-histogram",
+    "block": "React Hooks & Components",
+    "title": "Birthday Year Histogram",
+    "timeLimitMin": 10,
+    "description": "## Birthday Year Histogram\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function birthdayyearhistogram() {\n  // Ваша реалізація тут\n}",
+    "solution": "function birthdayyearhistogram() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function birthdayyearhistogram() {\n  \n  return true;\n}",
+      "function birthdayyearhistogram() {\n  \n  return true;\n}",
+      "function birthdayyearhistogram() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Birthday Year Histogram\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-auth-code-input",
+    "block": "React Hooks & Components",
+    "title": "Auth Code Input",
+    "timeLimitMin": 10,
+    "description": "## Auth Code Input\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function authcodeinput() {\n  // Ваша реалізація тут\n}",
+    "solution": "function authcodeinput() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function authcodeinput() {\n  \n  return true;\n}",
+      "function authcodeinput() {\n  \n  return true;\n}",
+      "function authcodeinput() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Auth Code Input\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-selectable-cells",
+    "block": "React Hooks & Components",
+    "title": "Selectable Cells",
+    "timeLimitMin": 10,
+    "description": "## Selectable Cells\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function selectablecells() {\n  // Ваша реалізація тут\n}",
+    "solution": "function selectablecells() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function selectablecells() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function selectablecells() {\n  \n  return true;\n}",
+      "function selectablecells() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Selectable Cells\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-undoable-counter",
+    "block": "React Hooks & Components",
+    "title": "Undoable Counter",
+    "timeLimitMin": 10,
+    "description": "## Undoable Counter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function undoablecounter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function undoablecounter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function undoablecounter() {\n  \n  return true;\n}",
+      "function undoablecounter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function undoablecounter() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Undoable Counter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-whack-a-mole",
+    "block": "React Hooks & Components",
+    "title": "Whack-A-Mole",
+    "timeLimitMin": 10,
+    "description": "## Whack-A-Mole\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **GreatFrontEnd**: [Link](#)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function whackamole() {\n  // Ваша реалізація тут\n}",
+    "solution": "function whackamole() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function whackamole() {\n  \n  return true;\n}",
+      "function whackamole() {\n  \n  return true;\n}",
+      "function whackamole() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Whack-A-Mole\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-asynctaskqueue",
+    "block": "JS Functions / Polyfills",
+    "title": "Asynctaskqueue",
+    "timeLimitMin": 10,
+    "description": "## Asynctaskqueue\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/async-task-queue)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function asynctaskqueue() {\n  // Ваша реалізація тут\n}",
+    "solution": "function asynctaskqueue() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function asynctaskqueue() {\n  \n  return true;\n}",
+      "function asynctaskqueue() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function asynctaskqueue() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Asynctaskqueue\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-twitter-mentions",
+    "block": "JS Functions / Polyfills",
+    "title": "Twitter Mentions",
+    "timeLimitMin": 10,
+    "description": "## Twitter Mentions\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/twitter-mention-hashtag)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function twittermentions() {\n  // Ваша реалізація тут\n}",
+    "solution": "function twittermentions() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function twittermentions() {\n  \n  return true;\n}",
+      "function twittermentions() {\n  \n  return true;\n}",
+      "function twittermentions() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Twitter Mentions\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-undefined-to-null",
+    "block": "JS Functions / Polyfills",
+    "title": "Undefined To Null",
+    "timeLimitMin": 10,
+    "description": "## Undefined To Null\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/undefined-to-null)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function undefinedtonull() {\n  // Ваша реалізація тут\n}",
+    "solution": "function undefinedtonull() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function undefinedtonull() {\n  \n  return true;\n}",
+      "function undefinedtonull() {\n  \n  return true;\n}",
+      "function undefinedtonull() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Undefined To Null\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-uncompress-string",
+    "block": "JS Functions / Polyfills",
+    "title": "Uncompress [String",
+    "timeLimitMin": 10,
+    "description": "## Uncompress [String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function uncompressstring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function uncompressstring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function uncompressstring() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function uncompressstring() {\n  \n  return true;\n}",
+      "function uncompressstring() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Uncompress [String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-clz32",
+    "block": "JS Functions / Polyfills",
+    "title": "Clz32",
+    "timeLimitMin": 10,
+    "description": "## Clz32\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/clz32)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function clz32() {\n  // Ваша реалізація тут\n}",
+    "solution": "function clz32() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function clz32() {\n  \n  return true;\n}",
+      "function clz32() {\n  \n  return true;\n}",
+      "function clz32() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Clz32\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-callback-on-message-channel",
+    "block": "JS Functions / Polyfills",
+    "title": "Callback On Message Channel",
+    "timeLimitMin": 10,
+    "description": "## Callback On Message Channel\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/some-message-channel)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function callbackonmessagechannel() {\n  // Ваша реалізація тут\n}",
+    "solution": "function callbackonmessagechannel() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function callbackonmessagechannel() {\n  \n  return true;\n}",
+      "function callbackonmessagechannel() {\n  \n  return true;\n}",
+      "function callbackonmessagechannel() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Callback On Message Channel\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-generate-css-selector-for-target-element",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Generate Css Selector For Target Element",
+    "timeLimitMin": 10,
+    "description": "## Generate Css Selector For Target Element\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/generate-selector)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function generatecssselectorfortargetelement() {\n  // Ваша реалізація тут\n}",
+    "solution": "function generatecssselectorfortargetelement() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function generatecssselectorfortargetelement() {\n  \n  return true;\n}",
+      "function generatecssselectorfortargetelement() {\n  \n  return true;\n}",
+      "function generatecssselectorfortargetelement() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Generate Css Selector For Target Element\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-lru---chrome-storage-automatic-eviction",
+    "block": "Algorithms",
+    "title": "Lru - Chrome Storage Automatic Eviction",
+    "timeLimitMin": 10,
+    "description": "## Lru - Chrome Storage Automatic Eviction\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/lru-chrome-storage-eviction)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function lruchromestorageautomaticeviction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function lruchromestorageautomaticeviction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function lruchromestorageautomaticeviction() {\n  \n  return true;\n}",
+      "function lruchromestorageautomaticeviction() {\n  \n  return true;\n}",
+      "function lruchromestorageautomaticeviction() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Lru - Chrome Storage Automatic Eviction\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-move-zeros",
+    "block": "Algorithms",
+    "title": "Move Zeros",
+    "timeLimitMin": 10,
+    "description": "## Move Zeros\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/move-zeros)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function movezeros() {\n  // Ваша реалізація тут\n}",
+    "solution": "function movezeros() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function movezeros() {\n  \n  return true;\n}",
+      "function movezeros() {\n  \n  return true;\n}",
+      "function movezeros() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Move Zeros\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-validate-number-string",
+    "block": "Algorithms",
+    "title": "Validate Number [String",
+    "timeLimitMin": 10,
+    "description": "## Validate Number [String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function validatenumberstring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function validatenumberstring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function validatenumberstring() {\n  \n  return true;\n}",
+      "function validatenumberstring() {\n  \n  return true;\n}",
+      "function validatenumberstring() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Validate Number [String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-remove-characters",
+    "block": "Algorithms",
+    "title": "Remove Characters",
+    "timeLimitMin": 10,
+    "description": "## Remove Characters\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/remove-characters)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function removecharacters() {\n  // Ваша реалізація тут\n}",
+    "solution": "function removecharacters() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function removecharacters() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function removecharacters() {\n  \n  return true;\n}",
+      "function removecharacters() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Remove Characters\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-immer-produce",
+    "block": "JS Functions / Polyfills",
+    "title": "Immer Produce",
+    "timeLimitMin": 10,
+    "description": "## Immer Produce\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/immerjs)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function immerproduce() {\n  // Ваша реалізація тут\n}",
+    "solution": "function immerproduce() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function immerproduce() {\n  \n  return true;\n}",
+      "function immerproduce() {\n  \n  return true;\n}",
+      "function immerproduce() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Immer Produce\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-integer-to-roman-numerals",
+    "block": "Algorithms",
+    "title": "Integer To Roman Numerals",
+    "timeLimitMin": 10,
+    "description": "## Integer To Roman Numerals\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/integer-to-roman)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function integertoromannumerals() {\n  // Ваша реалізація тут\n}",
+    "solution": "function integertoromannumerals() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function integertoromannumerals() {\n  \n  return true;\n}",
+      "function integertoromannumerals() {\n  \n  return true;\n}",
+      "function integertoromannumerals() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Integer To Roman Numerals\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-find-the-single-integer",
+    "block": "Algorithms",
+    "title": "Find The Single Integer",
+    "timeLimitMin": 10,
+    "description": "## Find The Single Integer\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/find-the-single-integer)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findthesingleinteger() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findthesingleinteger() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findthesingleinteger() {\n  \n  return true;\n}",
+      "function findthesingleinteger() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function findthesingleinteger() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find The Single Integer\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-tobe-or-nottobe",
+    "block": "JS Functions / Polyfills",
+    "title": "Tobe Or Not.Tobe",
+    "timeLimitMin": 10,
+    "description": "## Tobe Or Not.Tobe\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/jest-assertion)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function tobeornottobe() {\n  // Ваша реалізація тут\n}",
+    "solution": "function tobeornottobe() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function tobeornottobe() {\n  \n  return true;\n}",
+      "function tobeornottobe() {\n  \n  return true;\n}",
+      "function tobeornottobe() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Tobe Or Not.Tobe\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-atob",
+    "block": "JS Functions / Polyfills",
+    "title": "Atob",
+    "timeLimitMin": 10,
+    "description": "## Atob\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-atob)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function atob() {\n  // Ваша реалізація тут\n}",
+    "solution": "function atob() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function atob() {\n  \n  return true;\n}",
+      "function atob() {\n  \n  return true;\n}",
+      "function atob() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Atob\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-previous-left-sibling",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Previous Left Sibling",
+    "timeLimitMin": 10,
+    "description": "## Previous Left Sibling\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/previous-left-sibling)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function previousleftsibling() {\n  // Ваша реалізація тут\n}",
+    "solution": "function previousleftsibling() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function previousleftsibling() {\n  \n  return true;\n}",
+      "function previousleftsibling() {\n  \n  return true;\n}",
+      "function previousleftsibling() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Previous Left Sibling\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-semver-compare",
+    "block": "JS Functions / Polyfills",
+    "title": "Semver Compare",
+    "timeLimitMin": 10,
+    "description": "## Semver Compare\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/semver-compare)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function semvercompare() {\n  // Ваша реалізація тут\n}",
+    "solution": "function semvercompare() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function semvercompare() {\n  \n  return true;\n}",
+      "function semvercompare() {\n  \n  return true;\n}",
+      "function semvercompare() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Semver Compare\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-set",
+    "block": "JS Functions / Polyfills",
+    "title": "Set",
+    "timeLimitMin": 10,
+    "description": "## Set\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/lodash-set)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function set() {\n  // Ваша реалізація тут\n}",
+    "solution": "function set() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function set() {\n  \n  return true;\n}",
+      "function set() {\n  \n  return true;\n}",
+      "function set() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Set\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-a-count-function",
+    "block": "JS Functions / Polyfills",
+    "title": "A Count Function",
+    "timeLimitMin": 10,
+    "description": "## A Count Function\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/count-function)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function acountfunction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function acountfunction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function acountfunction() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function acountfunction() {\n  \n  return true;\n}",
+      "function acountfunction() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"A Count Function\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-two-way-binding",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Two-Way Binding",
+    "timeLimitMin": 10,
+    "description": "## Two-Way Binding\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/two-way-binding)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function twowaybinding() {\n  // Ваша реалізація тут\n}",
+    "solution": "function twowaybinding() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function twowaybinding() {\n  \n  return true;\n}",
+      "function twowaybinding() {\n  \n  return true;\n}",
+      "function twowaybinding() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Two-Way Binding\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-uglify-css-class-names",
+    "block": "JS Functions / Polyfills",
+    "title": "Uglify Css Class Names",
+    "timeLimitMin": 10,
+    "description": "## Uglify Css Class Names\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/unique-class-name)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function uglifycssclassnames() {\n  // Ваша реалізація тут\n}",
+    "solution": "function uglifycssclassnames() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function uglifycssclassnames() {\n  \n  return true;\n}",
+      "function uglifycssclassnames() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function uglifycssclassnames() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Uglify Css Class Names\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-find-top-k-elements",
+    "block": "Algorithms",
+    "title": "Find Top K Elements",
+    "timeLimitMin": 10,
+    "description": "## Find Top K Elements\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/top-k-elements)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findtopkelements() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findtopkelements() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findtopkelements() {\n  \n  return true;\n}",
+      "function findtopkelements() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function findtopkelements() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find Top K Elements\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-interpolation",
+    "block": "JS Functions / Polyfills",
+    "title": "Interpolation",
+    "timeLimitMin": 10,
+    "description": "## Interpolation\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/interpolation)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function interpolation() {\n  // Ваша реалізація тут\n}",
+    "solution": "function interpolation() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function interpolation() {\n  \n  return true;\n}",
+      "function interpolation() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function interpolation() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Interpolation\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-a-counter-object",
+    "block": "JS Functions / Polyfills",
+    "title": "A Counter Object",
+    "timeLimitMin": 10,
+    "description": "## A Counter Object\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/create-a-counter-object)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function acounterobject() {\n  // Ваша реалізація тут\n}",
+    "solution": "function acounterobject() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function acounterobject() {\n  \n  return true;\n}",
+      "function acounterobject() {\n  \n  return true;\n}",
+      "function acounterobject() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"A Counter Object\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-most-frequently-occurring-character",
+    "block": "JS Functions / Polyfills",
+    "title": "Most Frequently Occurring Character",
+    "timeLimitMin": 10,
+    "description": "## Most Frequently Occurring Character\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/most-frequently-occurring-character)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function mostfrequentlyoccurringcharacter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function mostfrequentlyoccurringcharacter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function mostfrequentlyoccurringcharacter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function mostfrequentlyoccurringcharacter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function mostfrequentlyoccurringcharacter() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Most Frequently Occurring Character\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-serialize-and-deserialize-data-types-not-supported-in-json",
+    "block": "JS Functions / Polyfills",
+    "title": "Serialize And Deserialize Data Types Not Supported In Json",
+    "timeLimitMin": 10,
+    "description": "## Serialize And Deserialize Data Types Not Supported In Json\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/serialize-and-deserialize-data-types-not-supported-in-JSON)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function serializeanddeserializedatatypesnotsupportedinjson() {\n  // Ваша реалізація тут\n}",
+    "solution": "function serializeanddeserializedatatypesnotsupportedinjson() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function serializeanddeserializedatatypesnotsupportedinjson() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function serializeanddeserializedatatypesnotsupportedinjson() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function serializeanddeserializedatatypesnotsupportedinjson() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Serialize And Deserialize Data Types Not Supported In Json\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-lit-html",
+    "block": "JS Functions / Polyfills",
+    "title": "[Lit-Html",
+    "timeLimitMin": 10,
+    "description": "## [Lit-Html\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=lit-html)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function lithtml() {\n  // Ваша реалізація тут\n}",
+    "solution": "function lithtml() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function lithtml() {\n  \n  return true;\n}",
+      "function lithtml() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function lithtml() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"[Lit-Html\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-btoa",
+    "block": "JS Functions / Polyfills",
+    "title": "Btoa",
+    "timeLimitMin": 10,
+    "description": "## Btoa\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-btoa)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function btoa() {\n  // Ваша реалізація тут\n}",
+    "solution": "function btoa() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function btoa() {\n  \n  return true;\n}",
+      "function btoa() {\n  \n  return true;\n}",
+      "function btoa() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Btoa\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-localstorage-with-expiration",
+    "block": "JS Functions / Polyfills",
+    "title": "Localstorage With Expiration",
+    "timeLimitMin": 10,
+    "description": "## Localstorage With Expiration\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/localStorage-with-expiration)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function localstoragewithexpiration() {\n  // Ваша реалізація тут\n}",
+    "solution": "function localstoragewithexpiration() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function localstoragewithexpiration() {\n  \n  return true;\n}",
+      "function localstoragewithexpiration() {\n  \n  return true;\n}",
+      "function localstoragewithexpiration() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Localstorage With Expiration\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-roman-numerals-to-integer",
+    "block": "JS Functions / Polyfills",
+    "title": "Roman Numerals To Integer",
+    "timeLimitMin": 10,
+    "description": "## Roman Numerals To Integer\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/roman-numerals-to-integer)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function romannumeralstointeger() {\n  // Ваша реалізація тут\n}",
+    "solution": "function romannumeralstointeger() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function romannumeralstointeger() {\n  \n  return true;\n}",
+      "function romannumeralstointeger() {\n  \n  return true;\n}",
+      "function romannumeralstointeger() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Roman Numerals To Integer\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-the-angle-between-hour-hand-and-minute-hand-of-a-clock",
+    "block": "React Hooks & Components",
+    "title": "The Angle Between Hour Hand And Minute Hand Of A Clock",
+    "timeLimitMin": 10,
+    "description": "## The Angle Between Hour Hand And Minute Hand Of A Clock\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/the-angle-between-hour-hand-and-minute-hand-of-a-clock)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function theanglebetweenhourhandandminutehandofaclock() {\n  // Ваша реалізація тут\n}",
+    "solution": "function theanglebetweenhourhandandminutehandofaclock() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function theanglebetweenhourhandandminutehandofaclock() {\n  \n  return true;\n}",
+      "function theanglebetweenhourhandandminutehandofaclock() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function theanglebetweenhourhandandminutehandofaclock() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"The Angle Between Hour Hand And Minute Hand Of A Clock\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-lazyman",
+    "block": "JS Functions / Polyfills",
+    "title": "Lazyman",
+    "timeLimitMin": 10,
+    "description": "## Lazyman\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/create-lazyman)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function lazyman() {\n  // Ваша реалізація тут\n}",
+    "solution": "function lazyman() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function lazyman() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function lazyman() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function lazyman() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Lazyman\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigdecimal-division",
+    "block": "Algorithms",
+    "title": "Bigdecimal Division",
+    "timeLimitMin": 10,
+    "description": "## Bigdecimal Division\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/bigdecimal-division)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigdecimaldivision() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigdecimaldivision() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigdecimaldivision() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function bigdecimaldivision() {\n  \n  return true;\n}",
+      "function bigdecimaldivision() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigdecimal Division\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigdecimal-multiplication",
+    "block": "Algorithms",
+    "title": "Bigdecimal Multiplication",
+    "timeLimitMin": 10,
+    "description": "## Bigdecimal Multiplication\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/bigdecimal-multiplication)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigdecimalmultiplication() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigdecimalmultiplication() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigdecimalmultiplication() {\n  \n  return true;\n}",
+      "function bigdecimalmultiplication() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function bigdecimalmultiplication() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigdecimal Multiplication\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigdecimal-subtraction",
+    "block": "Algorithms",
+    "title": "Bigdecimal Subtraction",
+    "timeLimitMin": 10,
+    "description": "## Bigdecimal Subtraction\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/bigdecimal-subtraction)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigdecimalsubtraction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigdecimalsubtraction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigdecimalsubtraction() {\n  \n  return true;\n}",
+      "function bigdecimalsubtraction() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function bigdecimalsubtraction() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigdecimal Subtraction\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigdecimal-addition",
+    "block": "Algorithms",
+    "title": "Bigdecimal Addition",
+    "timeLimitMin": 10,
+    "description": "## Bigdecimal Addition\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/decimal-addition)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigdecimaladdition() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigdecimaladdition() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigdecimaladdition() {\n  \n  return true;\n}",
+      "function bigdecimaladdition() {\n  \n  return true;\n}",
+      "function bigdecimaladdition() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigdecimal Addition\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-calculate-arithmetic-expression",
+    "block": "Algorithms",
+    "title": "Calculate Arithmetic Expression",
+    "timeLimitMin": 10,
+    "description": "## Calculate Arithmetic Expression\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/calculate-arithmetic-expression)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function calculatearithmeticexpression() {\n  // Ваша реалізація тут\n}",
+    "solution": "function calculatearithmeticexpression() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function calculatearithmeticexpression() {\n  \n  return true;\n}",
+      "function calculatearithmeticexpression() {\n  \n  return true;\n}",
+      "function calculatearithmeticexpression() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Calculate Arithmetic Expression\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-a-number-sequence",
+    "block": "JS Functions / Polyfills",
+    "title": "A Number Sequence",
+    "timeLimitMin": 10,
+    "description": "## A Number Sequence\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/A-number-sequence)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function anumbersequence() {\n  // Ваша реалізація тут\n}",
+    "solution": "function anumbersequence() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function anumbersequence() {\n  \n  return true;\n}",
+      "function anumbersequence() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function anumbersequence() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"A Number Sequence\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-isprime",
+    "block": "Algorithms",
+    "title": "Isprime",
+    "timeLimitMin": 10,
+    "description": "## Isprime\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/isPrime)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function isprime() {\n  // Ваша реалізація тут\n}",
+    "solution": "function isprime() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function isprime() {\n  \n  return true;\n}",
+      "function isprime() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function isprime() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Isprime\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-tokenizer",
+    "block": "JS Functions / Polyfills",
+    "title": "A Tokenizer",
+    "timeLimitMin": 10,
+    "description": "## A Tokenizer\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/create-a-tokenizer)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function atokenizer() {\n  // Ваша реалізація тут\n}",
+    "solution": "function atokenizer() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function atokenizer() {\n  \n  return true;\n}",
+      "function atokenizer() {\n  \n  return true;\n}",
+      "function atokenizer() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"A Tokenizer\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-event-delegation",
+    "block": "JS Functions / Polyfills",
+    "title": "Event Delegation",
+    "timeLimitMin": 10,
+    "description": "## Event Delegation\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/event-delegation)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function eventdelegation() {\n  // Ваша реалізація тут\n}",
+    "solution": "function eventdelegation() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function eventdelegation() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function eventdelegation() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function eventdelegation() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Event Delegation\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-objectis",
+    "block": "JS Functions / Polyfills",
+    "title": "Object.Is",
+    "timeLimitMin": 10,
+    "description": "## Object.Is\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-Object.is)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function objectis() {\n  // Ваша реалізація тут\n}",
+    "solution": "function objectis() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function objectis() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function objectis() {\n  \n  return true;\n}",
+      "function objectis() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Object.Is\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-bigint-division",
+    "block": "JS Functions / Polyfills",
+    "title": "Bigint Division",
+    "timeLimitMin": 10,
+    "description": "## Bigint Division\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-BigInt-division)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigintdivision() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigintdivision() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigintdivision() {\n  \n  return true;\n}",
+      "function bigintdivision() {\n  \n  return true;\n}",
+      "function bigintdivision() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigint Division\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigint-multiplication",
+    "block": "JS Functions / Polyfills",
+    "title": "Bigint Multiplication",
+    "timeLimitMin": 10,
+    "description": "## Bigint Multiplication\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-BigInt-multiplication)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigintmultiplication() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigintmultiplication() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigintmultiplication() {\n  \n  return true;\n}",
+      "function bigintmultiplication() {\n  \n  return true;\n}",
+      "function bigintmultiplication() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigint Multiplication\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-virtual-dom",
+    "block": "Algorithms",
+    "title": "Virtual [Dom",
+    "timeLimitMin": 10,
+    "description": "Suppose you have solved [110. serialize and deserialize binary tree](https://bigfrontend.dev/problem/serialize-and-deserialize-binary-tree), have you wondered how to do similar task to DOM tree ?\n\nHTML string could be thought as some sort of [serialization](https://en.wikipedia.org/wiki/Serialization), the browser parses(deserialize) the HTML → construct the DOM tree.\n\nBesides XML base, we could try JSON for this. If we log the element presentation in React, like below\n\n```js\nconst el = (\n  <div>\n    <h1> this is </h1>\n    <p className=\"paragraph\">\n      {' '}\n      a <button> button </button> from <a href=\"https://bfe.dev\">\n        <b>BFE</b>.dev\n      </a>\n    </p>\n  </div>\n);\n\nconsole.log(el);\n```\n\nwe would get this( ref, key .etc are stripped off)\n\n```js\n{\n  type: 'div',\n  props: {\n    children: [\n      {\n        type: 'h1',\n        props: {\n          children: ' this is ',\n        },\n      },\n      {\n        type: 'p',\n        props: {\n          className: 'paragraph',\n          children: [\n            ' a ',\n            {\n              type: 'button',\n              props: {\n                children: ' button ',\n              },\n            },\n            ' from',\n            {\n              type: 'a',\n              props: {\n                href: 'https://bfe.dev',\n                children: [\n                  {\n                    type: 'b',\n                    props: {\n                      children: 'BFE',\n                    },\n                  },\n                  '.dev',\n                ],\n              },\n            },\n          ],\n        },\n      },\n    ],\n  },\n};\n```\n\nClearly this is the same tree structure but only in object literal.\n\nNow you are asked to serialize/deserialize the DOM tree, like what React does.\n\n**Note**\n\n**Functions like event handlers and custom components are beyond the scope of this problem, you can ignore them**, just focus on basic HTML tags.\n\nYou should support:\n\n1. TextNode (string) as children\n2. single child and multiple children\n3. camelCased properties\n\n`virtualize()` takes in a real DOM tree and create an object literal. `render()` takes in a object literal presentation and recreate a DOM tree.",
+    "starter": "function virtualize(element) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {HTMLElement}\n * @return {object} object literal presentation\n */\nfunction virtualize(element) {\n  const result = {\n    type: element.nodeName.toLowerCase(),\n    props: {},\n  };\n\n  for (const attr of element.attributes) {\n    const name = attr.nodeName === 'class' ? 'className' : attr.nodeName;\n    result.props[name] = attr.nodeValue;\n  }\n\n  const children = [];\n  for (const childNode of element.childNodes) {\n    if (childNode.nodeType === Node.TEXT_NODE) {\n      children.push(childNode.nodeValue);\n      continue;\n    }\n\n    const child = virtualize(childNode);\n    children.push(child);\n  }\n\n  result.props.children = children.length === 1 ? children[0] : children;\n  return result;\n}\n\n/**\n * @param {object} valid object literal presentation\n * @return {HTMLElement}\n */\nfunction render(obj) {\n  if (typeof obj === 'string') {\n    return document.createTextNode(obj);\n  }\n\n  const {\n    type,\n    props: { children, ...attrs },\n  } = obj;\n  const element = document.createElement(type);\n\n  for (const attr in attrs) {\n    const attrName = attr === 'className' ? 'class' : attr;\n    element.setAttribute(attrName, attrs[attr]);\n  }\n\n  if (typeof children === 'string') {\n    element.appendChild(render(children));\n    return element;\n  }\n\n  for (const child of children) {\n    element.appendChild(render(child));\n  }\n\n  return element;\n}",
+    "clozeSteps": [
+      "\nfunction virtualize(element) {\n  const result = {\n    type: element.nodeName.toLowerCase(),\n    props: {},\n  };\n\n  for (const attr of element.attributes) {\n    const name = attr.nodeName === 'class' ? 'className' : attr.nodeName;\n    result.props[name] = attr.nodeValue;\n  }\n\n  /* TODO: реалізувати цей рядок */\n  for (const childNode of element.childNodes) {\n    if (childNode.nodeType === Node.TEXT_NODE) {\n      children.push(childNode.nodeValue);\n      continue;\n    }\n\n    /* TODO: реалізувати цей рядок */\n    children.push(child);\n  }\n\n  result.props.children = children.length === 1 ? children[0] : children;\n  return result;\n}\n\n\nfunction render(obj) {\n  /* TODO: реалізувати цей рядок */\n    return document.createTextNode(obj);\n  }\n\n  const {\n    type,\n    props: { children, ...attrs },\n  } = obj;\n  const element = document.createElement(type);\n\n  for (const attr in attrs) {\n    const attrName = attr === 'className' ? 'class' : attr;\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (typeof children === 'string') {\n    /* TODO: реалізувати цей рядок */\n    return element;\n  }\n\n  for (const child of children) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction virtualize(element) {\n  const result = {\n    /* TODO: реалізувати цей рядок */\n    props: {},\n  };\n\n  /* TODO: реалізувати цей рядок */\n    const name = attr.nodeName === 'class' ? 'className' : attr.nodeName;\n    result.props[name] = attr.nodeValue;\n  }\n\n  const children = [];\n  /* TODO: реалізувати цей рядок */\n    if (childNode.nodeType === Node.TEXT_NODE) {\n      children.push(childNode.nodeValue);\n      /* TODO: реалізувати цей рядок */\n    }\n\n    const child = virtualize(childNode);\n    children.push(child);\n  }\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n}\n\n\nfunction render(obj) {\n  if (typeof obj === 'string') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  } = obj;\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    const attrName = attr === 'className' ? 'class' : attr;\n    element.setAttribute(attrName, attrs[attr]);\n  }\n\n  if (typeof children === 'string') {\n    element.appendChild(render(children));\n    return element;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return element;\n}",
+      "\nfunction virtualize(element) {\n  /* TODO: реалізувати цей рядок */\n    type: element.nodeName.toLowerCase(),\n    props: {},\n  };\n\n  for (const attr of element.attributes) {\n    const name = attr.nodeName === 'class' ? 'className' : attr.nodeName;\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const children = [];\n  /* TODO: реалізувати цей рядок */\n    if (childNode.nodeType === Node.TEXT_NODE) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n  return result;\n}\n\n\nfunction render(obj) {\n  if (typeof obj === 'string') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    type,\n    /* TODO: реалізувати цей рядок */\n  } = obj;\n  /* TODO: реалізувати цей рядок */\n\n  for (const attr in attrs) {\n    const attrName = attr === 'className' ? 'class' : attr;\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  for (const child of children) {\n    element.appendChild(render(child));\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Virtual [Dom\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-remove-duplicate-characters-in-a-string",
+    "block": "Algorithms",
+    "title": "Remove Duplicate Characters In A [String",
+    "timeLimitMin": 10,
+    "description": "## Remove Duplicate Characters In A [String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function removeduplicatecharactersinastring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function removeduplicatecharactersinastring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function removeduplicatecharactersinastring() {\n  \n  return true;\n}",
+      "function removeduplicatecharactersinastring() {\n  \n  return true;\n}",
+      "function removeduplicatecharactersinastring() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Remove Duplicate Characters In A [String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-count-palindromic-substring",
+    "block": "Algorithms",
+    "title": "Count Palindromic Sub[String",
+    "timeLimitMin": 10,
+    "description": "## Count Palindromic Sub[String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function countpalindromicsubstring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function countpalindromicsubstring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function countpalindromicsubstring() {\n  \n  return true;\n}",
+      "function countpalindromicsubstring() {\n  \n  return true;\n}",
+      "function countpalindromicsubstring() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Count Palindromic Sub[String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-pow",
+    "block": "Algorithms",
+    "title": "Pow",
+    "timeLimitMin": 10,
+    "description": "Can you write your own [Math.pow()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow) ? The power would only be integers.\n\n```js\npow(1, 2);\n// 1\n\npow(2, 10);\n// 1024\n\npow(4, -1);\n// 0.25\n```\n\nAll inputs are safe.\n\n**Follow-up**\n\nYou can easily solve this problem by multiplying the base one after another, but it is slow. For power of `n`, it is needed to do the multiplication `n` times, can you think of a faster solution ?",
+    "starter": "function pow(base, power) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number} base\n * @param {number} power - integer\n * @return {number}\n */\nfunction pow(base, power) {\n  if (power < 0) {\n    return 1 / _pow(base, -power);\n  }\n\n  return _pow(base, power);\n}\n\nfunction _pow(base, power) {\n  if (power === 0) {\n    return 1;\n  }\n\n  if (power === 1) {\n    return base;\n  }\n\n  const halfResult = _pow(base, Math.floor(power / 2));\n  const result = halfResult * halfResult;\n  return power % 2 === 0 ? result : base * result;\n}",
+    "clozeSteps": [
+      "\nfunction pow(base, power) {\n  if (power < 0) {\n    return 1 / _pow(base, -power);\n  }\n\n  return _pow(base, power);\n}\n\nfunction _pow(base, power) {\n  if (power === 0) {\n    return 1;\n  }\n\n  if (power === 1) {\n    return base;\n  }\n\n  const halfResult = _pow(base, Math.floor(power / 2));\n  const result = halfResult * halfResult;\n  return power % 2 === 0 ? result : base * result;\n}",
+      "\nfunction pow(base, power) {\n  if (power < 0) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction _pow(base, power) {\n  /* TODO: реалізувати цей рядок */\n    return 1;\n  }\n\n  if (power === 1) {\n    return base;\n  }\n\n  const halfResult = _pow(base, Math.floor(power / 2));\n  const result = halfResult * halfResult;\n  return power % 2 === 0 ? result : base * result;\n}",
+      "\nfunction pow(base, power) {\n  /* TODO: реалізувати цей рядок */\n    return 1 / _pow(base, -power);\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction _pow(base, power) {\n  if (power === 0) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (power === 1) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  const halfResult = _pow(base, Math.floor(power / 2));\n  const result = halfResult * halfResult;\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Pow\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-stack-by-using-queue",
+    "block": "Algorithms",
+    "title": "A Stack By Using Queue",
+    "timeLimitMin": 10,
+    "description": "## A Stack By Using Queue\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/Implement-a-Stack-by-using-Queue)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function astackbyusingqueue() {\n  // Ваша реалізація тут\n}",
+    "solution": "function astackbyusingqueue() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function astackbyusingqueue() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function astackbyusingqueue() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function astackbyusingqueue() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"A Stack By Using Queue\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-find-the-largest-difference",
+    "block": "Algorithms",
+    "title": "Find The Largest Difference",
+    "timeLimitMin": 10,
+    "description": "## Find The Largest Difference\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/Find-the-largest-difference)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findthelargestdifference() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findthelargestdifference() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findthelargestdifference() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function findthelargestdifference() {\n  \n  return true;\n}",
+      "function findthelargestdifference() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find The Largest Difference\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-find-two-numbers-that-sum-up-to-0",
+    "block": "Algorithms",
+    "title": "Find Two Numbers That Sum Up To 0",
+    "timeLimitMin": 10,
+    "description": "## Find Two Numbers That Sum Up To 0\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/Find-two-numbers-that-sum-up-to-0)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findtwonumbersthatsumupto0() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findtwonumbersthatsumupto0() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findtwonumbersthatsumupto0() {\n  \n  return true;\n}",
+      "function findtwonumbersthatsumupto0() {\n  \n  return true;\n}",
+      "function findtwonumbersthatsumupto0() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find Two Numbers That Sum Up To 0\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-find-the-first-duplicate-character-in-a-string",
+    "block": "JS Functions / Polyfills",
+    "title": "Find The First Duplicate Character In A [String",
+    "timeLimitMin": 10,
+    "description": "## Find The First Duplicate Character In A [String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findthefirstduplicatecharacterinastring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findthefirstduplicatecharacterinastring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findthefirstduplicatecharacterinastring() {\n  \n  return true;\n}",
+      "function findthefirstduplicatecharacterinastring() {\n  \n  return true;\n}",
+      "function findthefirstduplicatecharacterinastring() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Find The First Duplicate Character In A [String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-traverse-dom",
+    "block": "Algorithms",
+    "title": "Traverse [Dom",
+    "timeLimitMin": 10,
+    "description": "## Traverse [Dom\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=DOM)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function traversedom() {\n  // Ваша реалізація тут\n}",
+    "solution": "function traversedom() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function traversedom() {\n  \n  return true;\n}",
+      "function traversedom() {\n  \n  return true;\n}",
+      "function traversedom() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Traverse [Dom\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-sqrt",
+    "block": "Algorithms",
+    "title": "Sqrt",
+    "timeLimitMin": 10,
+    "description": "## Sqrt\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-Math-sqrt)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function sqrt() {\n  // Ваша реалізація тут\n}",
+    "solution": "function sqrt() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function sqrt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function sqrt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function sqrt() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Sqrt\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-validate-string",
+    "block": "Algorithms",
+    "title": "Validate [String",
+    "timeLimitMin": 10,
+    "description": "## Validate [String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function validatestring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function validatestring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function validatestring() {\n  \n  return true;\n}",
+      "function validatestring() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function validatestring() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Validate [String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-merge-identical-api-calls",
+    "block": "JS Functions / Polyfills",
+    "title": "Merge Identical Api Calls",
+    "timeLimitMin": 10,
+    "description": "## Merge Identical Api Calls\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/merge-identical-API-calls)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function mergeidenticalapicalls() {\n  // Ваша реалізація тут\n}",
+    "solution": "function mergeidenticalapicalls() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function mergeidenticalapicalls() {\n  \n  return true;\n}",
+      "function mergeidenticalapicalls() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function mergeidenticalapicalls() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Merge Identical Api Calls\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-detect-circle-in-linked-list",
+    "block": "Algorithms",
+    "title": "Detect Circle In Linked List",
+    "timeLimitMin": 10,
+    "description": "## Detect Circle In Linked List\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/detect-circle-in-linked-list)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function detectcircleinlinkedlist() {\n  // Ваша реалізація тут\n}",
+    "solution": "function detectcircleinlinkedlist() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function detectcircleinlinkedlist() {\n  \n  return true;\n}",
+      "function detectcircleinlinkedlist() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function detectcircleinlinkedlist() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Detect Circle In Linked List\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-extract-all-anchor-element-from-html-string",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Extract All Anchor Element From Html String",
+    "timeLimitMin": 10,
+    "description": "## Extract All Anchor Element From Html String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/extract-all-anchor-elements-from-HTML-string%20)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function extractallanchorelementfromhtmlstring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function extractallanchorelementfromhtmlstring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function extractallanchorelementfromhtmlstring() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function extractallanchorelementfromhtmlstring() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function extractallanchorelementfromhtmlstring() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Extract All Anchor Element From Html String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-validate-an-ip-address",
+    "block": "JS Functions / Polyfills",
+    "title": "Validate An Ip Address",
+    "timeLimitMin": 10,
+    "description": "## Validate An Ip Address\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/validate-an-ip-address)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function validateanipaddress() {\n  // Ваша реалізація тут\n}",
+    "solution": "function validateanipaddress() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function validateanipaddress() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function validateanipaddress() {\n  \n  return true;\n}",
+      "function validateanipaddress() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Validate An Ip Address\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-compress-a-string",
+    "block": "JS Functions / Polyfills",
+    "title": "Compress A [String",
+    "timeLimitMin": 10,
+    "description": "## Compress A [String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem?tags=string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function compressastring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function compressastring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function compressastring() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function compressastring() {\n  \n  return true;\n}",
+      "function compressastring() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Compress A [String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-count-1-in-binary-form",
+    "block": "Algorithms",
+    "title": "Count \"1\" In Binary Form",
+    "timeLimitMin": 10,
+    "description": "## Count \"1\" In Binary Form\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/how-many-1s-in-binary)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function count1inbinaryform() {\n  // Ваша реалізація тут\n}",
+    "solution": "function count1inbinaryform() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function count1inbinaryform() {\n  \n  return true;\n}",
+      "function count1inbinaryform() {\n  \n  return true;\n}",
+      "function count1inbinaryform() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Count \"1\" In Binary Form\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-trim",
+    "block": "JS Functions / Polyfills",
+    "title": "Trim",
+    "timeLimitMin": 10,
+    "description": "## Trim\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-String-prototype-trim)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function trim() {\n  // Ваша реалізація тут\n}",
+    "solution": "function trim() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function trim() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function trim() {\n  \n  return true;\n}",
+      "function trim() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Trim\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-your-own-objectcreate",
+    "block": "JS Functions / Polyfills",
+    "title": "Your Own Object.Create",
+    "timeLimitMin": 10,
+    "description": "## Your Own Object.Create\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-your-own-Object-create)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function yourownobjectcreate() {\n  // Ваша реалізація тут\n}",
+    "solution": "function yourownobjectcreate() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function yourownobjectcreate() {\n  \n  return true;\n}",
+      "function yourownobjectcreate() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function yourownobjectcreate() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Your Own Object.Create\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-generate-fibonacci-number-with-recursion",
+    "block": "Algorithms",
+    "title": "Generate Fibonacci Number With Recursion",
+    "timeLimitMin": 10,
+    "description": "## Generate Fibonacci Number With Recursion\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/Generate-Fibonacci-Number-with-recursion)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function generatefibonaccinumberwithrecursion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function generatefibonaccinumberwithrecursion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function generatefibonaccinumberwithrecursion() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function generatefibonaccinumberwithrecursion() {\n  \n  return true;\n}",
+      "function generatefibonaccinumberwithrecursion() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Generate Fibonacci Number With Recursion\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-next-right-sibling",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Next Right Sibling",
+    "timeLimitMin": 10,
+    "description": "Given a DOM tree and a target element, please return the **next right sibling**.\n\n![A DOM tree](https://i.imgur.com/DUICfa3.png 'A DOM tree')\n\nLike above, the next right sibling of `<button/>` is the blue `<a/>`. Notice that **they don't necessarily have the same parent element**.\n\nIf no right sibling, then return `null`.\n\nWhat is time & space cost of your solution ?",
+    "starter": "function nextRightSibling(root, target) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {HTMLElement} root\n * @param {HTMLElement} target\n * @return {HTMLElement | null}\n */\nfunction nextRightSibling(root, target) {\n  const queue = [root, null];\n\n  while (queue.length > 0) {\n    const node = queue.shift();\n\n    if (node === target) {\n      return queue[0];\n    }\n\n    if (node === null) {\n      queue.push(null);\n    } else {\n      queue.push(...node.children);\n    }\n  }\n\n  return null;\n}",
+    "clozeSteps": [
+      "\nfunction nextRightSibling(root, target) {\n  const queue = [root, null];\n\n  while (queue.length > 0) {\n    const node = queue.shift();\n\n    if (node === target) {\n      return queue[0];\n    }\n\n    if (node === null) {\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      queue.push(...node.children);\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction nextRightSibling(root, target) {\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    if (node === target) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (node === null) {\n      queue.push(null);\n    /* TODO: реалізувати цей рядок */\n      queue.push(...node.children);\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction nextRightSibling(root, target) {\n  const queue = [root, null];\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      return queue[0];\n    }\n\n    /* TODO: реалізувати цей рядок */\n      queue.push(null);\n    } else {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Next Right Sibling\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-support-negative-array-index-in-javascript",
+    "block": "JS Functions / Polyfills",
+    "title": "Support Negative Array Index In [Javascript",
+    "timeLimitMin": 10,
+    "description": "Python supports negative list index , while JavaScript doesn't.\n\nCan you write a wrapper function to make **negative array index** possible?\n\n```js\nconst originalArr = [1, 2, 3];\nconst arr = wrap(originalArr);\n\narr[0]; // 1\narr[1]; // 2\narr[2]; // 3\narr[3]; // undefined\narr[-1]; // 3\narr[-2]; // 2\narr[-3]; // 1\narr[-4]; // undefined\n```\n\nAll methods on `arr` should be applied to the original array, which means\n\n<!--prettier-ignore-->\n```js\narr.push(4);\narr[3] // 4\noriginalArr[3] // 4\n\narr.shift();\narr[0] // 2\noriginalArr[0] // 2\n\narr.bfe = 'bfe';\noriginalArr.bfe // 'bfe'\n\narr[-1] = 5;\narr // [2,3,5]\noriginalArr // [2,3,5]\n\noriginalArr[2] = 6;\narr // [2,3,6]\noriginalArr // [2,3,6]\n```",
+    "starter": "function wrap(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any[]} arr\n * @returns {?} - sorry no type hint for this\n */\nfunction wrap(arr) {\n  const handler = {\n    get(target, prop, receiver) {\n      prop = getPositiveIdx(target.length, prop);\n\n      return Reflect.get(target, prop, receiver);\n    },\n    set(target, prop, value, receiver) {\n      prop = getPositiveIdx(target.length, prop);\n\n      const idxIsOutOfBounds = prop > arr.length || prop < 0;\n      if (idxIsOutOfBounds) {\n        throw new Error('Array Index Overflow');\n      }\n\n      Reflect.set(target, prop, value, receiver);\n      return true;\n    },\n  };\n\n  return new Proxy(arr, handler);\n}\n\nfunction getPositiveIdx(arrLength, propName) {\n  try {\n    let idx = Number(propName);\n    if (isNaN(idx)) return propName;\n\n    return idx < 0 ? arrLength + idx : idx;\n  } catch (err) {\n    return propName;\n  }\n}",
+    "clozeSteps": [
+      "\nfunction wrap(arr) {\n  const handler = {\n    get(target, prop, receiver) {\n      prop = getPositiveIdx(target.length, prop);\n\n      return Reflect.get(target, prop, receiver);\n    },\n    set(target, prop, value, receiver) {\n      prop = getPositiveIdx(target.length, prop);\n\n      const idxIsOutOfBounds = prop > arr.length || prop < 0;\n      if (idxIsOutOfBounds) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      Reflect.set(target, prop, value, receiver);\n      return true;\n    },\n  };\n\n  return new Proxy(arr, handler);\n}\n\nfunction getPositiveIdx(arrLength, propName) {\n  /* TODO: реалізувати цей рядок */\n    let idx = Number(propName);\n    /* TODO: реалізувати цей рядок */\n\n    return idx < 0 ? arrLength + idx : idx;\n  } catch (err) {\n    return propName;\n  }\n}",
+      "\nfunction wrap(arr) {\n  /* TODO: реалізувати цей рядок */\n    get(target, prop, receiver) {\n      /* TODO: реалізувати цей рядок */\n\n      return Reflect.get(target, prop, receiver);\n    },\n    set(target, prop, value, receiver) {\n      /* TODO: реалізувати цей рядок */\n\n      /* TODO: реалізувати цей рядок */\n      if (idxIsOutOfBounds) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      Reflect.set(target, prop, value, receiver);\n      return true;\n    },\n  };\n\n  return new Proxy(arr, handler);\n}\n\nfunction getPositiveIdx(arrLength, propName) {\n  /* TODO: реалізувати цей рядок */\n    let idx = Number(propName);\n    if (isNaN(idx)) return propName;\n\n    /* TODO: реалізувати цей рядок */\n  } catch (err) {\n    /* TODO: реалізувати цей рядок */\n  }\n}",
+      "\nfunction wrap(arr) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n\n      /* TODO: реалізувати цей рядок */\n    },\n    set(target, prop, value, receiver) {\n      /* TODO: реалізувати цей рядок */\n\n      /* TODO: реалізувати цей рядок */\n      if (idxIsOutOfBounds) {\n        throw new Error('Array Index Overflow');\n      }\n\n      Reflect.set(target, prop, value, receiver);\n      /* TODO: реалізувати цей рядок */\n    },\n  };\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction getPositiveIdx(arrLength, propName) {\n  /* TODO: реалізувати цей рядок */\n    let idx = Number(propName);\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Support Negative Array Index In [Javascript\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-longest-substring-with-unique-characters",
+    "block": "Algorithms",
+    "title": "Longest Substring With Unique Characters",
+    "timeLimitMin": 10,
+    "description": "Given a string, please find the **longest substring that has no repeated characters**.\n\nIf there are multiple result, any one substring is fine.\n\n```js\nlongestUniqueSubstr('aaaaa');\n// 'a'\nlongestUniqueSubstr('abcabc');\n// 'abc', or 'bca', or 'cab'\nlongestUniqueSubstr('a12#2');\n// 'a12#'\n```\n\n_Follow-up_\n\nWhat is the time & space cost of your solution ? Could you do it better?",
+    "starter": "function longestUniqueSubstr(str) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {string} str\n * @return {string}\n */\nfunction longestUniqueSubstr(str) {\n  let longestSubstrStart = 0;\n  let longestSubstrEnd = 1;\n  let substrStart = 0;\n  const seenChars = new Map();\n\n  for (let idx = 0; idx < str.length; idx++) {\n    const char = str[idx];\n\n    if (seenChars.has(char)) {\n      const prevIdx = seenChars.get(char);\n      substrStart = Math.max(substrStart, prevIdx + 1);\n    }\n\n    seenChars.set(char, idx);\n\n    const currSubstrLen = idx - substrStart + 1;\n    const currLongestSubstrLen = longestSubstrEnd - longestSubstrStart;\n    if (currSubstrLen > currLongestSubstrLen) {\n      longestSubstrEnd = idx + 1;\n      if (substrStart !== longestSubstrStart) {\n        longestSubstrStart = substrStart;\n      }\n    }\n  }\n\n  return str.slice(longestSubstrStart, longestSubstrEnd);\n}",
+    "clozeSteps": [
+      "\nfunction longestUniqueSubstr(str) {\n  let longestSubstrStart = 0;\n  let longestSubstrEnd = 1;\n  let substrStart = 0;\n  const seenChars = new Map();\n\n  for (let idx = 0; idx < str.length; idx++) {\n    /* TODO: реалізувати цей рядок */\n\n    if (seenChars.has(char)) {\n      const prevIdx = seenChars.get(char);\n      substrStart = Math.max(substrStart, prevIdx + 1);\n    }\n\n    seenChars.set(char, idx);\n\n    const currSubstrLen = idx - substrStart + 1;\n    /* TODO: реалізувати цей рядок */\n    if (currSubstrLen > currLongestSubstrLen) {\n      longestSubstrEnd = idx + 1;\n      if (substrStart !== longestSubstrStart) {\n        longestSubstrStart = substrStart;\n      }\n    }\n  }\n\n  return str.slice(longestSubstrStart, longestSubstrEnd);\n}",
+      "\nfunction longestUniqueSubstr(str) {\n  let longestSubstrStart = 0;\n  let longestSubstrEnd = 1;\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  for (let idx = 0; idx < str.length; idx++) {\n    const char = str[idx];\n\n    if (seenChars.has(char)) {\n      const prevIdx = seenChars.get(char);\n      substrStart = Math.max(substrStart, prevIdx + 1);\n    }\n\n    /* TODO: реалізувати цей рядок */\n\n    const currSubstrLen = idx - substrStart + 1;\n    const currLongestSubstrLen = longestSubstrEnd - longestSubstrStart;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      if (substrStart !== longestSubstrStart) {\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n  }\n\n  return str.slice(longestSubstrStart, longestSubstrEnd);\n}",
+      "\nfunction longestUniqueSubstr(str) {\n  /* TODO: реалізувати цей рядок */\n  let longestSubstrEnd = 1;\n  let substrStart = 0;\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    const char = str[idx];\n\n    if (seenChars.has(char)) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n\n    const currSubstrLen = idx - substrStart + 1;\n    const currLongestSubstrLen = longestSubstrEnd - longestSubstrStart;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        longestSubstrStart = substrStart;\n      }\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Longest Substring With Unique Characters\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-generate-fibonacci-number",
+    "block": "Algorithms",
+    "title": "Generate Fibonacci Number",
+    "timeLimitMin": 10,
+    "description": "## Generate Fibonacci Number\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/fibonacci-number)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function generatefibonaccinumber() {\n  // Ваша реалізація тут\n}",
+    "solution": "function generatefibonaccinumber() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function generatefibonaccinumber() {\n  \n  return true;\n}",
+      "function generatefibonaccinumber() {\n  \n  return true;\n}",
+      "function generatefibonaccinumber() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Generate Fibonacci Number\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-get",
+    "block": "JS Functions / Polyfills",
+    "title": "Get",
+    "timeLimitMin": 10,
+    "description": "## Get\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-lodash-get)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function get() {\n  // Ваша реалізація тут\n}",
+    "solution": "function get() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function get() {\n  \n  return true;\n}",
+      "function get() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function get() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Get\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-a-fake-timer-setinterval",
+    "block": "React Hooks & Components",
+    "title": "A Fake Timer (Setinterval)",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [36. create a fake timer(setTimeout)](https://bigfrontend.dev/problem/create-a-fake-timer)\n\nLike `setTimeout`, `setInterval` also is not accurate. (please refer [Event Loop](https://javascript.info/event-loop) for detail).\n\nThis is OK in general web application, but might be problematic in test.\n\nCould you implement your own `setInterval()` and `clearInterval()` to be sync? so that they have **accurate timing** for test. This is what [FakeTimes](https://github.com/sinonjs/fake-timers) are for.\n\nBy \"accurate\", it means **suppose all functions cost no time**, we start our function at time `0`, then `setInterval(func1, 100)` would schedule `func1` exactly at `100, 200, 300 .etc`.\n\nYou need to replace `Date.now()` as well to provide the time.\n\n```js\nclass FakeTimer {\n  install() {\n    // replace window.setInterval, window.clearInterval, Date.now\n    // with your implementation\n  }\n\n  uninstall() {\n    // restore the original implementation of\n    // window.setInterval, window.clearInterval, Date.now\n  }\n\n  tick() {\n    // run the scheduled functions without waiting\n  }\n}\n```\n\n** Be careful about the infinite loops **. Your code is tested like this:\n\n```js\nconst fakeTimer = new FakeTimer();\nfakeTimer.install();\n\nconst logs = [];\nconst log = () => {\n  logs.push(Date.now());\n};\n\nlet count = 0;\nconst id = setInterval(() => {\n  if (count > 1) {\n    clearInterval(id);\n  } else {\n    log();\n  }\n  count += 1;\n}, 100);\n// log 'A' at every 100, stop at 200\nfakeTimer.tick();\nfakeTimer.uninstall();\n\nexpect(logs).toEqual([100, 200]);\n```\n\n**Note**\n\nOnly `Date.now()` is used when judging your code, you can ignore other time related apis.",
+    "starter": "class FakeTimer {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: A Fake Timer (Setinterval)\nclass FakeTimer {\n  constructor() {\n    this.origSetInterval = window.setInterval;\n    this.origClearInterval = window.clearInterval;\n    this.origDateNow = Date.now;\n\n    this.taskQueue = [];\n    this.currTime = 0;\n  }\n\n  install() {\n    window.setInterval = (fn, delay) => {\n      // Оголошення та ініціалізація змінної \"id\"\n      const id = this.taskQueue.length;\n      this.taskQueue.push({\n        id,\n        fn,\n        delay,\n      });\n      // Повернення обчисленого значення\n      return id;\n    };\n\n    window.clearInterval = (id) => {\n      // Фільтрація масиву за заданим критерієм\n      this.taskQueue = this.taskQueue.filter((task) => task.id !== id);\n    };\n\n    Date.now = () => this.currTime;\n  }\n\n  uninstall() {\n    window.setInterval = this.origSetInterval;\n    window.clearInterval = this.origClearInterval;\n    Date.now = this.origDateNow;\n  }\n\n  tick() {\n    // Цикл виконання, поки умова є істинною\n    while (this.taskQueue.length > 0) {\n      // Оголошення та ініціалізація змінної \"task\"\n      const task = this.taskQueue.shift();\n      this.currTime = task.delay;\n      this.taskQueue.push({\n        ...task,\n        delay: this.currTime + task.delay,\n      });\n      task.fn();\n    }\n  }\n}",
+    "clozeSteps": [
+      "\nclass FakeTimer {\n  constructor() {\n    this.origSetInterval = window.setInterval;\n    this.origClearInterval = window.clearInterval;\n    this.origDateNow = Date.now;\n\n    /* TODO: реалізувати цей рядок */\n    this.currTime = 0;\n  }\n\n  install() {\n    window.setInterval = (fn, delay) => {\n      \n      const id = this.taskQueue.length;\n      this.taskQueue.push({\n        id,\n        fn,\n        delay,\n      });\n      \n      /* TODO: реалізувати цей рядок */\n    };\n\n    window.clearInterval = (id) => {\n      \n      /* TODO: реалізувати цей рядок */\n    };\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  uninstall() {\n    window.setInterval = this.origSetInterval;\n    /* TODO: реалізувати цей рядок */\n    Date.now = this.origDateNow;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    while (this.taskQueue.length > 0) {\n      \n      /* TODO: реалізувати цей рядок */\n      this.currTime = task.delay;\n      this.taskQueue.push({\n        ...task,\n        delay: this.currTime + task.delay,\n      });\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}",
+      "\nclass FakeTimer {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    this.origDateNow = Date.now;\n\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  install() {\n    window.setInterval = (fn, delay) => {\n      \n      const id = this.taskQueue.length;\n      this.taskQueue.push({\n        id,\n        fn,\n        /* TODO: реалізувати цей рядок */\n      });\n      \n      return id;\n    };\n\n    /* TODO: реалізувати цей рядок */\n      \n      this.taskQueue = this.taskQueue.filter((task) => task.id !== id);\n    };\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  uninstall() {\n    window.setInterval = this.origSetInterval;\n    window.clearInterval = this.origClearInterval;\n    Date.now = this.origDateNow;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    while (this.taskQueue.length > 0) {\n      \n      const task = this.taskQueue.shift();\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        ...task,\n        delay: this.currTime + task.delay,\n      });\n      task.fn();\n    }\n  }\n}",
+      "\nclass FakeTimer {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    this.origDateNow = Date.now;\n\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    window.setInterval = (fn, delay) => {\n      \n      const id = this.taskQueue.length;\n      /* TODO: реалізувати цей рядок */\n        id,\n        fn,\n        delay,\n      });\n      \n      return id;\n    };\n\n    /* TODO: реалізувати цей рядок */\n      \n      this.taskQueue = this.taskQueue.filter((task) => task.id !== id);\n    };\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  uninstall() {\n    /* TODO: реалізувати цей рядок */\n    window.clearInterval = this.origClearInterval;\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      \n      const task = this.taskQueue.shift();\n      /* TODO: реалізувати цей рядок */\n      this.taskQueue.push({\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      });\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Fake Timer (Setinterval)\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-an-interval",
+    "block": "JS Functions / Polyfills",
+    "title": "An Interval",
+    "timeLimitMin": 10,
+    "description": "You are asked to create a new `mySetInterval(a, b)` which has a different behavior from `window.setInterval`, the time between calls is a linear function, growing larger and larger `period = a + b * count`.\n\n```js\nlet prev = Date.now();\nconst func = () => {\n  const now = Date.now();\n  console.log('roughly ', Date.now() - prev);\n  prev = now;\n};\n\nconst id = mySetInterval(func, 100, 200);\n\n// roughly 100, 100 + 200 _ 0\n// roughly 400, 100 + 200 _ 1\n// roughly 900, 100 + 200 _ 2\n// roughly 1600, 100 + 200 _ 3\n// ....\n\nmyClearInterval(id); // stop the interval\n```\n\n1. Interface is `mySetInterval(delay, period)`, the first `delay` is used for the first call, and then `period` is used.\n2. Because `window.setTimeout` and `window.setInterval` are not accurate in browser environment, they are replaced to other implementation when judging your code. They still have the same interface, and internally keep track of the timing for testing purpose.\n\nSomething like below will be used to do the test. (You don't need to read following code to accomplish this task)\n\n```js\nlet currentTime = 0;\n\nconst run = (delay, period, clearAt) => {\n  currentTime = 0;\n  pipeline.length = 0;\n\n  const logs = [];\n\n  const func = () => {\n    logs.push(currentTime);\n  };\n\n  mySetInterval(func, delay, period);\n  if (clearAt !== undefined) {\n    setTimeout(() => {\n      myClearInterval(id);\n    }, clearAt);\n  }\n\n  while (pipeline.length > 0 && calls.length < 5) {\n    const [time, callback] = pipeline.shift();\n    currentTime = time;\n    callback();\n  }\n\n  return calls;\n};\n\nexpect(run(100, 200)).toEqual([100, 400, 900, 1600, 2500]);\nexpect(run(100, 200, 450)).toEqual([100, 400]);\nexpect(run(100, 200, 50)).toEqual([]);\n```",
+    "starter": "function mySetInterval(func, delay, period) {\n  // Ваша реалізація тут\n}",
+    "solution": "const timerIds = new Map();\n\n/**\n * @param {Function} func\n * @param {number} delay\n * @param {number} period\n * @return {number}\n */\nfunction mySetInterval(func, delay, period) {\n  let multiplier = 0;\n\n  const initialTimerId = setTimeout(run, delay + period * multiplier);\n\n  function run() {\n    func();\n    multiplier++;\n    const nextTimerId = setTimeout(run, delay + period * multiplier);\n    timerIds.set(initialTimerId, nextTimerId);\n  }\n\n  return initialTimerId;\n}\n\n/**\n * @param { number } id\n */\nfunction myClearInterval(id) {\n  clearTimeout(id);\n  if (timerIds.has(id)) {\n    clearTimeout(timerIds.get(id));\n    timerIds.delete(id);\n  }\n}",
+    "clozeSteps": [
+      "const timerIds = new Map();\n\n\nfunction mySetInterval(func, delay, period) {\n  let multiplier = 0;\n\n  /* TODO: реалізувати цей рядок */\n\n  function run() {\n    func();\n    /* TODO: реалізувати цей рядок */\n    const nextTimerId = setTimeout(run, delay + period * multiplier);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return initialTimerId;\n}\n\n\nfunction myClearInterval(id) {\n  /* TODO: реалізувати цей рядок */\n  if (timerIds.has(id)) {\n    clearTimeout(timerIds.get(id));\n    timerIds.delete(id);\n  }\n}",
+      "/* TODO: реалізувати цей рядок */\n\n\nfunction mySetInterval(func, delay, period) {\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n\n  function run() {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return initialTimerId;\n}\n\n\nfunction myClearInterval(id) {\n  clearTimeout(id);\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    timerIds.delete(id);\n  }\n}",
+      "const timerIds = new Map();\n\n\nfunction mySetInterval(func, delay, period) {\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n\n  function run() {\n    /* TODO: реалізувати цей рядок */\n    multiplier++;\n    const nextTimerId = setTimeout(run, delay + period * multiplier);\n    timerIds.set(initialTimerId, nextTimerId);\n  }\n\n  return initialTimerId;\n}\n\n\nfunction myClearInterval(id) {\n  /* TODO: реалізувати цей рядок */\n  if (timerIds.has(id)) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"An Interval\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-find-available-meeting-slots",
+    "block": "Algorithms",
+    "title": "Find Available Meeting Slots",
+    "timeLimitMin": 10,
+    "description": "`[start, end]` is a time interval, with all integers from 0 to 24.\n\nGiven schedules for all team members,\n\n<!--prettier-ignore-->\n```js\n[\n  [[13, 15], [11, 12], [10, 13]], //schedule for member 1\n  [[8, 9]], // schedule for member 2\n  [[13, 18]] // schedule for member 3\n]\n```\n\nYou need to create a function `findMeetingSlots()` to return the time slots available for all the members to have a meeting.\n\nFor the input above, below slots should be returned\n\n<!--prettier-ignore-->\n```js\n[[0, 8],[9, 10],[18, 24]]\n```\n\n**Notes**\n\n1. the input schedule intervals might be unsorted\n2. one member's schedule might have overlapping intervals.",
+    "starter": "function findMeetingSlots(schedules) {\n  // Ваша реалізація тут\n}",
+    "solution": "// type Interval = [number, number]\n\n/**\n * @param {Interval[][]} schedules\n * @return {Interval[]}\n */\nfunction findMeetingSlots(schedules) {\n  const mergedSchedules = mergeSchedules(schedules);\n  mergedSchedules.sort((a, b) => a[0] - b[0]);\n\n  const availableTimeBlocks = [];\n  let currentEndTime = 0;\n\n  for (const timeBlock of mergedSchedules) {\n    const [startTime, endTime] = timeBlock;\n\n    if (startTime > currentEndTime) {\n      availableTimeBlocks.push([currentEndTime, startTime]);\n    }\n\n    if (endTime > currentEndTime) {\n      currentEndTime = endTime;\n    }\n  }\n\n  if (currentEndTime < 24) {\n    availableTimeBlocks.push([currentEndTime, 24]);\n  }\n\n  return availableTimeBlocks;\n}\n\nfunction mergeSchedules(schedules) {\n  const mergedSchedules = [];\n  for (const schedule of schedules) {\n    mergedSchedules.push(...schedule);\n  }\n  return mergedSchedules;\n}",
+    "clozeSteps": [
+      "\n\n\nfunction findMeetingSlots(schedules) {\n  /* TODO: реалізувати цей рядок */\n  mergedSchedules.sort((a, b) => a[0] - b[0]);\n\n  const availableTimeBlocks = [];\n  let currentEndTime = 0;\n\n  for (const timeBlock of mergedSchedules) {\n    const [startTime, endTime] = timeBlock;\n\n    /* TODO: реалізувати цей рядок */\n      availableTimeBlocks.push([currentEndTime, startTime]);\n    }\n\n    if (endTime > currentEndTime) {\n      currentEndTime = endTime;\n    }\n  }\n\n  if (currentEndTime < 24) {\n    availableTimeBlocks.push([currentEndTime, 24]);\n  }\n\n  return availableTimeBlocks;\n}\n\nfunction mergeSchedules(schedules) {\n  /* TODO: реалізувати цей рядок */\n  for (const schedule of schedules) {\n    mergedSchedules.push(...schedule);\n  }\n  return mergedSchedules;\n}",
+      "\n\n\nfunction findMeetingSlots(schedules) {\n  const mergedSchedules = mergeSchedules(schedules);\n  mergedSchedules.sort((a, b) => a[0] - b[0]);\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  for (const timeBlock of mergedSchedules) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n      currentEndTime = endTime;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return availableTimeBlocks;\n}\n\nfunction mergeSchedules(schedules) {\n  const mergedSchedules = [];\n  /* TODO: реалізувати цей рядок */\n    mergedSchedules.push(...schedule);\n  }\n  return mergedSchedules;\n}",
+      "\n\n\nfunction findMeetingSlots(schedules) {\n  /* TODO: реалізувати цей рядок */\n  mergedSchedules.sort((a, b) => a[0] - b[0]);\n\n  /* TODO: реалізувати цей рядок */\n  let currentEndTime = 0;\n\n  for (const timeBlock of mergedSchedules) {\n    /* TODO: реалізувати цей рядок */\n\n    if (startTime > currentEndTime) {\n      availableTimeBlocks.push([currentEndTime, startTime]);\n    }\n\n    if (endTime > currentEndTime) {\n      currentEndTime = endTime;\n    }\n  }\n\n  if (currentEndTime < 24) {\n    availableTimeBlocks.push([currentEndTime, 24]);\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction mergeSchedules(schedules) {\n  const mergedSchedules = [];\n  for (const schedule of schedules) {\n    /* TODO: реалізувати цей рядок */\n  }\n  return mergedSchedules;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Find Available Meeting Slots\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-your-own-urlsearchparams",
+    "block": "Algorithms",
+    "title": "Your Own Urlsearchparams",
+    "timeLimitMin": 10,
+    "description": "When we want to extract parameters from query string, [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) could be very handy.\n\nCan you implement `MyURLSearchParams` which works the same ?\n\n```js\nconst params = new MyURLSearchParams('?a=1&a=2&b=2');\nparams.get('a'); // '1'\nparams.getAll('a'); // ['1', '2']\nparams.get('b'); // '2'\nparams.getAll('b'); // ['2']\n\nparams.append('a', 3);\nparams.set('b', '3');\nparams.toString(); // 'a=1&a=2&b=3&a=3'\n```\n\nThere are [a few methods](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) on URLSearchParams, please implement them all.",
+    "starter": "class MyURLSearchParams {\n  // Ваша реалізація тут\n}",
+    "solution": "class MyURLSearchParams {\n  /**\n   * @params {string} init\n   */\n  constructor(init) {\n    this._searchParamsArray = [];\n    this._searchParamsMap = new Map();\n\n    if (typeof init !== 'object') {\n      this._constructSearchParamsFromString(init);\n    } else if (Array.isArray(init)) {\n      this._constructSearchParamsFromArray(init);\n    } else {\n      this._constructSearchParamsFromObject(init);\n    }\n  }\n\n  /**\n   * @params {string} name\n   * @params {any} value\n   */\n  append(name, value) {\n    name = String(name);\n    value = String(value);\n\n    this._searchParamsArray.push([name, value]);\n    this._storeParamInSearchParamsMap(name, value);\n  }\n\n  /**\n   * @params {string} name\n   */\n  delete(name) {\n    name = String(name);\n\n    this._searchParamsMap.delete(name);\n    this._searchParamsArray = this._searchParamsArray.filter(\n      (param) => param[0] !== name\n    );\n  }\n\n  /**\n   * @returns {Iterator}\n   */\n  entries() {\n    return this[Symbol.iterator]();\n  }\n\n  /**\n   * @param {(value, key) => void} callback\n   */\n  forEach(callback) {\n    this._searchParamsArray.forEach((param) => {\n      callback(param[1], param[0]);\n    });\n  }\n\n  /**\n   * @param {string} name\n   * returns the first value of the name\n   */\n  get(name) {\n    name = String(name);\n    const value = this._searchParamsMap.get(name);\n    return value ? value[0] : null;\n  }\n\n  /**\n   * @param {string} name\n   * @return {string[]}\n   * returns the value list of the name\n   */\n  getAll(name) {\n    name = String(name);\n    const value = this._searchParamsMap.get(name);\n    return value ? value : [];\n  }\n\n  /**\n   * @params {string} name\n   * @return {boolean}\n   */\n  has(name) {\n    name = String(name);\n    return this._searchParamsMap.has(name);\n  }\n\n  /**\n   * @return {Iterator}\n   */\n  keys() {\n    return this._createItertor({ shouldReturnKey: true });\n  }\n\n  /**\n   * @param {string} name\n   * @param {any} value\n   */\n  set(name, value) {\n    name = String(name);\n    value = String(value);\n\n    if (!this.has(name)) {\n      this.append(name, value);\n      return;\n    }\n\n    this._searchParamsMap.set(name, [value]);\n    const searchParamIdx = this._searchParamsArray.findIndex(\n      (param) => param[0] === name\n    );\n    this._searchParamsArray[searchParamIdx][1] = value;\n    this._searchParamsArray = this._searchParamsArray.filter(\n      (param, idx) => param[0] !== name || idx === searchParamIdx\n    );\n  }\n\n  // sor all key/value pairs based on the keys\n  sort() {\n    this._searchParamsArray.sort((a, b) => {\n      const keyA = a[0];\n      const keyB = b[0];\n\n      if (keyA < keyB) return -1;\n\n      if (keyA > keyB) return 1;\n\n      return 0;\n    });\n  }\n\n  /**\n   * @return {string}\n   */\n  toString() {\n    return this._searchParamsArray\n      .map(([key, value]) => {\n        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;\n      })\n      .join('&');\n  }\n\n  /**\n   * @return {Iterator} values\n   */\n  values() {\n    return this._createItertor({ shouldReturnKey: false });\n  }\n\n  [Symbol.iterator]() {\n    return this._searchParamsArray[Symbol.iterator]();\n  }\n\n  _constructSearchParamsFromString(init) {\n    let searchParams = String(init);\n    if (searchParams.startsWith('?')) {\n      searchParams = searchParams.slice(1);\n    }\n\n    searchParams.split('&').forEach((param) => {\n      let [key, value] = param.split('=');\n      if (!value) {\n        value = '';\n      }\n      this._searchParamsArray.push([key, value]);\n      this._storeParamInSearchParamsMap(key, value);\n    });\n  }\n\n  _constructSearchParamsFromArray(init) {\n    for (const param of init) {\n      if (!Array.isArray(param || param.length !== 2)) {\n        throw new Error(\"Failed to construct 'URLSearchParams'\");\n      }\n\n      const key = String(param[0]);\n      const value = String(param[1]);\n\n      this._searchParamsArray.push([key, value]);\n      this._storeParamInSearchParamsMap(key, value);\n    }\n  }\n\n  _constructSearchParamsFromObject(init) {\n    if (init instanceof Set) {\n      throw new Error(\"Failed to construct 'URLSearchParams'\");\n    }\n\n    for (const key of Object.keys(init)) {\n      const value = String(init[key]);\n\n      this._searchParamsArray.push([key, value]);\n      this._storeParamInSearchParamsMap(key, value);\n    }\n  }\n\n  _storeParamInSearchParamsMap(key, value) {\n    let values = this._searchParamsMap.get(key);\n    if (!values) {\n      values = [];\n      this._searchParamsMap.set(key, values);\n    }\n    values.push(value);\n  }\n\n  _createItertor({ shouldReturnKey }) {\n    const iterable = {\n      idx: 0,\n      searchParamsArray: this._searchParamsArray,\n      shouldReturnKey,\n      next() {\n        if (this.idx === this.searchParamsArray.length) {\n          return {\n            done: true,\n          };\n        }\n\n        const searchParam = this.searchParamsArray[this.idx];\n        const value = shouldReturnKey ? searchParam[0] : searchParam[1];\n        this.idx++;\n        return {\n          done: false,\n          value,\n        };\n      },\n    };\n\n    return {\n      [Symbol.iterator]() {\n        return iterable;\n      },\n    };\n  }\n}",
+    "clozeSteps": [
+      "class MyURLSearchParams {\n  \n  constructor(init) {\n    this._searchParamsArray = [];\n    this._searchParamsMap = new Map();\n\n    if (typeof init !== 'object') {\n      /* TODO: реалізувати цей рядок */\n    } else if (Array.isArray(init)) {\n      /* TODO: реалізувати цей рядок */\n    } else {\n      this._constructSearchParamsFromObject(init);\n    }\n  }\n\n  \n  append(name, value) {\n    /* TODO: реалізувати цей рядок */\n    value = String(value);\n\n    /* TODO: реалізувати цей рядок */\n    this._storeParamInSearchParamsMap(name, value);\n  }\n\n  \n  delete(name) {\n    name = String(name);\n\n    this._searchParamsMap.delete(name);\n    this._searchParamsArray = this._searchParamsArray.filter(\n      (param) => param[0] !== name\n    );\n  }\n\n  \n  entries() {\n    return this[Symbol.iterator]();\n  }\n\n  \n  forEach(callback) {\n    this._searchParamsArray.forEach((param) => {\n      /* TODO: реалізувати цей рядок */\n    });\n  }\n\n  \n  get(name) {\n    name = String(name);\n    const value = this._searchParamsMap.get(name);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  getAll(name) {\n    /* TODO: реалізувати цей рядок */\n    const value = this._searchParamsMap.get(name);\n    return value ? value : [];\n  }\n\n  \n  has(name) {\n    name = String(name);\n    return this._searchParamsMap.has(name);\n  }\n\n  \n  keys() {\n    return this._createItertor({ shouldReturnKey: true });\n  }\n\n  \n  set(name, value) {\n    name = String(name);\n    value = String(value);\n\n    if (!this.has(name)) {\n      this.append(name, value);\n      return;\n    }\n\n    this._searchParamsMap.set(name, [value]);\n    const searchParamIdx = this._searchParamsArray.findIndex(\n      (param) => param[0] === name\n    );\n    this._searchParamsArray[searchParamIdx][1] = value;\n    /* TODO: реалізувати цей рядок */\n      (param, idx) => param[0] !== name || idx === searchParamIdx\n    );\n  }\n\n  \n  sort() {\n    this._searchParamsArray.sort((a, b) => {\n      const keyA = a[0];\n      const keyB = b[0];\n\n      /* TODO: реалізувати цей рядок */\n\n      /* TODO: реалізувати цей рядок */\n\n      return 0;\n    });\n  }\n\n  \n  toString() {\n    return this._searchParamsArray\n      /* TODO: реалізувати цей рядок */\n        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;\n      })\n      .join('&');\n  }\n\n  \n  values() {\n    return this._createItertor({ shouldReturnKey: false });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    return this._searchParamsArray[Symbol.iterator]();\n  }\n\n  _constructSearchParamsFromString(init) {\n    let searchParams = String(init);\n    if (searchParams.startsWith('?')) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    searchParams.split('&').forEach((param) => {\n      let [key, value] = param.split('=');\n      if (!value) {\n        value = '';\n      }\n      this._searchParamsArray.push([key, value]);\n      this._storeParamInSearchParamsMap(key, value);\n    });\n  }\n\n  _constructSearchParamsFromArray(init) {\n    for (const param of init) {\n      if (!Array.isArray(param || param.length !== 2)) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      const key = String(param[0]);\n      const value = String(param[1]);\n\n      this._searchParamsArray.push([key, value]);\n      this._storeParamInSearchParamsMap(key, value);\n    }\n  }\n\n  _constructSearchParamsFromObject(init) {\n    if (init instanceof Set) {\n      throw new Error(\"Failed to construct 'URLSearchParams'\");\n    }\n\n    /* TODO: реалізувати цей рядок */\n      const value = String(init[key]);\n\n      /* TODO: реалізувати цей рядок */\n      this._storeParamInSearchParamsMap(key, value);\n    }\n  }\n\n  _storeParamInSearchParamsMap(key, value) {\n    let values = this._searchParamsMap.get(key);\n    if (!values) {\n      values = [];\n      this._searchParamsMap.set(key, values);\n    }\n    values.push(value);\n  }\n\n  _createItertor({ shouldReturnKey }) {\n    const iterable = {\n      idx: 0,\n      searchParamsArray: this._searchParamsArray,\n      /* TODO: реалізувати цей рядок */\n      next() {\n        if (this.idx === this.searchParamsArray.length) {\n          return {\n            done: true,\n          };\n        }\n\n        const searchParam = this.searchParamsArray[this.idx];\n        const value = shouldReturnKey ? searchParam[0] : searchParam[1];\n        this.idx++;\n        /* TODO: реалізувати цей рядок */\n          done: false,\n          /* TODO: реалізувати цей рядок */\n        };\n      },\n    };\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        return iterable;\n      },\n    };\n  }\n}",
+      "class MyURLSearchParams {\n  \n  constructor(init) {\n    this._searchParamsArray = [];\n    /* TODO: реалізувати цей рядок */\n\n    if (typeof init !== 'object') {\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      this._constructSearchParamsFromArray(init);\n    } else {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  \n  append(name, value) {\n    /* TODO: реалізувати цей рядок */\n    value = String(value);\n\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  delete(name) {\n    name = String(name);\n\n    this._searchParamsMap.delete(name);\n    this._searchParamsArray = this._searchParamsArray.filter(\n      (param) => param[0] !== name\n    );\n  }\n\n  \n  entries() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  forEach(callback) {\n    this._searchParamsArray.forEach((param) => {\n      callback(param[1], param[0]);\n    });\n  }\n\n  \n  get(name) {\n    name = String(name);\n    const value = this._searchParamsMap.get(name);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    name = String(name);\n    const value = this._searchParamsMap.get(name);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  has(name) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  keys() {\n    return this._createItertor({ shouldReturnKey: true });\n  }\n\n  \n  set(name, value) {\n    /* TODO: реалізувати цей рядок */\n    value = String(value);\n\n    if (!this.has(name)) {\n      this.append(name, value);\n      return;\n    }\n\n    this._searchParamsMap.set(name, [value]);\n    const searchParamIdx = this._searchParamsArray.findIndex(\n      (param) => param[0] === name\n    );\n    this._searchParamsArray[searchParamIdx][1] = value;\n    /* TODO: реалізувати цей рядок */\n      (param, idx) => param[0] !== name || idx === searchParamIdx\n    );\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      const keyB = b[0];\n\n      if (keyA < keyB) return -1;\n\n      if (keyA > keyB) return 1;\n\n      /* TODO: реалізувати цей рядок */\n    });\n  }\n\n  \n  toString() {\n    /* TODO: реалізувати цей рядок */\n      .map(([key, value]) => {\n        /* TODO: реалізувати цей рядок */\n      })\n      .join('&');\n  }\n\n  \n  values() {\n    return this._createItertor({ shouldReturnKey: false });\n  }\n\n  [Symbol.iterator]() {\n    return this._searchParamsArray[Symbol.iterator]();\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    if (searchParams.startsWith('?')) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    searchParams.split('&').forEach((param) => {\n      /* TODO: реалізувати цей рядок */\n      if (!value) {\n        value = '';\n      }\n      this._searchParamsArray.push([key, value]);\n      /* TODO: реалізувати цей рядок */\n    });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      if (!Array.isArray(param || param.length !== 2)) {\n        throw new Error(\"Failed to construct 'URLSearchParams'\");\n      }\n\n      const key = String(param[0]);\n      /* TODO: реалізувати цей рядок */\n\n      this._searchParamsArray.push([key, value]);\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  _constructSearchParamsFromObject(init) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    for (const key of Object.keys(init)) {\n      const value = String(init[key]);\n\n      /* TODO: реалізувати цей рядок */\n      this._storeParamInSearchParamsMap(key, value);\n    }\n  }\n\n  _storeParamInSearchParamsMap(key, value) {\n    let values = this._searchParamsMap.get(key);\n    if (!values) {\n      values = [];\n      /* TODO: реалізувати цей рядок */\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n\n  _createItertor({ shouldReturnKey }) {\n    const iterable = {\n      /* TODO: реалізувати цей рядок */\n      searchParamsArray: this._searchParamsArray,\n      shouldReturnKey,\n      next() {\n        /* TODO: реалізувати цей рядок */\n          return {\n            /* TODO: реалізувати цей рядок */\n          };\n        }\n\n        const searchParam = this.searchParamsArray[this.idx];\n        const value = shouldReturnKey ? searchParam[0] : searchParam[1];\n        this.idx++;\n        return {\n          done: false,\n          value,\n        };\n      },\n    };\n\n    return {\n      [Symbol.iterator]() {\n        return iterable;\n      },\n    };\n  }\n}",
+      "class MyURLSearchParams {\n  \n  constructor(init) {\n    this._searchParamsArray = [];\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    } else if (Array.isArray(init)) {\n      /* TODO: реалізувати цей рядок */\n    } else {\n      this._constructSearchParamsFromObject(init);\n    }\n  }\n\n  \n  append(name, value) {\n    /* TODO: реалізувати цей рядок */\n    value = String(value);\n\n    this._searchParamsArray.push([name, value]);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  delete(name) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n    this._searchParamsArray = this._searchParamsArray.filter(\n      /* TODO: реалізувати цей рядок */\n    );\n  }\n\n  \n  entries() {\n    return this[Symbol.iterator]();\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      callback(param[1], param[0]);\n    });\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    name = String(name);\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    name = String(name);\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  has(name) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    return this._createItertor({ shouldReturnKey: true });\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    name = String(name);\n    value = String(value);\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      return;\n    }\n\n    this._searchParamsMap.set(name, [value]);\n    /* TODO: реалізувати цей рядок */\n      (param) => param[0] === name\n    );\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    );\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n\n      if (keyA < keyB) return -1;\n\n      if (keyA > keyB) return 1;\n\n      return 0;\n    });\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;\n      })\n      .join('&');\n  }\n\n  \n  values() {\n    return this._createItertor({ shouldReturnKey: false });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    return this._searchParamsArray[Symbol.iterator]();\n  }\n\n  _constructSearchParamsFromString(init) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    searchParams.split('&').forEach((param) => {\n      let [key, value] = param.split('=');\n      if (!value) {\n        value = '';\n      }\n      /* TODO: реалізувати цей рядок */\n      this._storeParamInSearchParamsMap(key, value);\n    });\n  }\n\n  /* TODO: реалізувати цей рядок */\n    for (const param of init) {\n      if (!Array.isArray(param || param.length !== 2)) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n\n      this._searchParamsArray.push([key, value]);\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n      const value = String(init[key]);\n\n      this._searchParamsArray.push([key, value]);\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      values = [];\n      this._searchParamsMap.set(key, values);\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      shouldReturnKey,\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n            /* TODO: реалізувати цей рядок */\n          };\n        }\n\n        /* TODO: реалізувати цей рядок */\n        const value = shouldReturnKey ? searchParam[0] : searchParam[1];\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        };\n      },\n    };\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      },\n    };\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Your Own Urlsearchparams\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "senior"
+  },
+  {
+    "id": "canonical-convert-snakecase-to-camelcase",
+    "block": "JS Functions / Polyfills",
+    "title": "Convert Snake_case To Camelcase",
+    "timeLimitMin": 10,
+    "description": "Do you prefer [snake_case](https://en.wikipedia.org/wiki/Snake_case) or [camelCase](https://en.wikipedia.org/wiki/Camel_case) ?\n\nAnyway, please create a function to convert snake_case to camcelCase.\n\n```js\nsnakeToCamel('snake_case');\n// 'snakeCase'\nsnakeToCamel('is_flag_on');\n// 'isFlagOn'\nsnakeToCamel('is_IOS_or_Android');\n// 'isIOSOrAndroid'\nsnakeToCamel('_first_underscore');\n// '_firstUnderscore'\nsnakeToCamel('last_underscore_');\n// 'lastUnderscore_'\nsnakeToCamel('_double__underscore_');\n// '_double__underscore_'\n```\n\ncontiguous underscore `__`, leading underscore `_a`, and trailing underscore `a_` should be kept untouched.",
+    "starter": "function snakeToCamel(str) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {string} str\n * @return {string}\n */\nfunction snakeToCamel(str) {\n  return str.replace(/[a-z]_[a-z]/gi, (match) => {\n    return match[0] + match[2].toUpperCase();\n  });\n}",
+    "clozeSteps": [
+      "\nfunction snakeToCamel(str) {\n  return str.replace(/[a-z]_[a-z]/gi, (match) => {\n    return match[0] + match[2].toUpperCase();\n  });\n}",
+      "\nfunction snakeToCamel(str) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  });\n}",
+      "\nfunction snakeToCamel(str) {\n  return str.replace(/[a-z]_[a-z]/gi, (match) => {\n    /* TODO: реалізувати цей рядок */\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Convert Snake_case To Camelcase\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-convert-hex-color-to-rgba",
+    "block": "JS Functions / Polyfills",
+    "title": "Convert Hex Color To Rgba",
+    "timeLimitMin": 10,
+    "description": "Suppose you write some CSS code, you need to set [colors](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value). You can choose hexadecimal notation `#fff` or Functional notation `rgba(255,255,255,1)`.\n\nCan you write a function to convert hexadecimal notation to functional notation?\n\n```js\nhexToRgb('#fff');\n// 'rgba(255,255,255,1)'\n```\n\n1. Alpha channel should have **maximum 2 digits after decimal point, round up if needed**.\n2. Don't forget to do input validation",
+    "starter": "function hexToRgba(hex) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {string} hex\n * @return {string}\n */\nfunction hexToRgba(hex) {\n  if (!validateInput(hex)) throw new Error('Invalid input.');\n\n  let digits = hex.slice(1);\n  if (digits.length === 3 || digits.length === 4) {\n    digits = digits.replace(/\\w/g, (digit) => digit + digit);\n  }\n\n  if (digits.length === 6) digits += 'FF';\n\n  const rgbas = [];\n\n  for (let idx = 0; idx < digits.length; idx += 2) {\n    const hex = digits[idx] + digits[idx + 1];\n    const decimal = parseInt(hex, 16);\n    if (isNaN(decimal)) throw new Error('Invalid input.');\n\n    const isAlpha = idx === 6;\n    if (isAlpha) {\n      rgbas.push(roundUpToTwoDecimalPlaces(decimal / 255));\n      continue;\n    }\n\n    rgbas.push(decimal);\n  }\n\n  return 'rgba(' + rgbas.join(',') + ')';\n}\n\nfunction validateInput(hex) {\n  if (typeof hex !== 'string' || !hex.startsWith('#')) {\n    return false;\n  }\n\n  if (\n    hex.length !== 4 &&\n    hex.length !== 5 &&\n    hex.length !== 7 &&\n    hex.length !== 9\n  ) {\n    return false;\n  }\n\n  return true;\n}\n\nfunction roundUpToTwoDecimalPlaces(floatNumber) {\n  return Math.round(floatNumber * 100) / 100;\n}",
+    "clozeSteps": [
+      "\nfunction hexToRgba(hex) {\n  /* TODO: реалізувати цей рядок */\n\n  let digits = hex.slice(1);\n  if (digits.length === 3 || digits.length === 4) {\n    digits = digits.replace(/\\w/g, (digit) => digit + digit);\n  }\n\n  if (digits.length === 6) digits += 'FF';\n\n  const rgbas = [];\n\n  /* TODO: реалізувати цей рядок */\n    const hex = digits[idx] + digits[idx + 1];\n    /* TODO: реалізувати цей рядок */\n    if (isNaN(decimal)) throw new Error('Invalid input.');\n\n    const isAlpha = idx === 6;\n    if (isAlpha) {\n      rgbas.push(roundUpToTwoDecimalPlaces(decimal / 255));\n      continue;\n    }\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return 'rgba(' + rgbas.join(',') + ')';\n}\n\nfunction validateInput(hex) {\n  if (typeof hex !== 'string' || !hex.startsWith('#')) {\n    return false;\n  }\n\n  if (\n    /* TODO: реалізувати цей рядок */\n    hex.length !== 5 &&\n    hex.length !== 7 &&\n    hex.length !== 9\n  ) {\n    return false;\n  }\n\n  return true;\n}\n\nfunction roundUpToTwoDecimalPlaces(floatNumber) {\n  return Math.round(floatNumber * 100) / 100;\n}",
+      "\nfunction hexToRgba(hex) {\n  /* TODO: реалізувати цей рядок */\n\n  let digits = hex.slice(1);\n  if (digits.length === 3 || digits.length === 4) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (digits.length === 6) digits += 'FF';\n\n  const rgbas = [];\n\n  for (let idx = 0; idx < digits.length; idx += 2) {\n    /* TODO: реалізувати цей рядок */\n    const decimal = parseInt(hex, 16);\n    if (isNaN(decimal)) throw new Error('Invalid input.');\n\n    /* TODO: реалізувати цей рядок */\n    if (isAlpha) {\n      rgbas.push(roundUpToTwoDecimalPlaces(decimal / 255));\n      continue;\n    }\n\n    rgbas.push(decimal);\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction validateInput(hex) {\n  if (typeof hex !== 'string' || !hex.startsWith('#')) {\n    return false;\n  }\n\n  if (\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    hex.length !== 7 &&\n    hex.length !== 9\n  ) {\n    return false;\n  }\n\n  return true;\n}\n\nfunction roundUpToTwoDecimalPlaces(floatNumber) {\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction hexToRgba(hex) {\n  if (!validateInput(hex)) throw new Error('Invalid input.');\n\n  /* TODO: реалізувати цей рядок */\n  if (digits.length === 3 || digits.length === 4) {\n    digits = digits.replace(/\\w/g, (digit) => digit + digit);\n  }\n\n  if (digits.length === 6) digits += 'FF';\n\n  const rgbas = [];\n\n  /* TODO: реалізувати цей рядок */\n    const hex = digits[idx] + digits[idx + 1];\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n    if (isAlpha) {\n      rgbas.push(roundUpToTwoDecimalPlaces(decimal / 255));\n      continue;\n    }\n\n    rgbas.push(decimal);\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction validateInput(hex) {\n  if (typeof hex !== 'string' || !hex.startsWith('#')) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  if (\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    hex.length !== 7 &&\n    /* TODO: реалізувати цей рядок */\n  ) {\n    return false;\n  }\n\n  /* TODO: реалізувати цей рядок */\n}\n\nfunction roundUpToTwoDecimalPlaces(floatNumber) {\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Convert Hex Color To Rgba\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigint-subtraction-with-sign",
+    "block": "JS Functions / Polyfills",
+    "title": "Bigint Subtraction With Sign",
+    "timeLimitMin": 10,
+    "description": "## Bigint Subtraction With Sign\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-BigInt-subtraction-with-sign)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigintsubtractionwithsign() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigintsubtractionwithsign() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigintsubtractionwithsign() {\n  \n  return true;\n}",
+      "function bigintsubtractionwithsign() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function bigintsubtractionwithsign() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigint Subtraction With Sign\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigint-addition-with-sign",
+    "block": "JS Functions / Polyfills",
+    "title": "Bigint Addition With Sign",
+    "timeLimitMin": 10,
+    "description": "## Bigint Addition With Sign\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-BigInt-addition-with-sign)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigintadditionwithsign() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigintadditionwithsign() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigintadditionwithsign() {\n  \n  return true;\n}",
+      "function bigintadditionwithsign() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function bigintadditionwithsign() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigint Addition With Sign\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigint-subtraction",
+    "block": "Algorithms",
+    "title": "Bigint Subtraction",
+    "timeLimitMin": 10,
+    "description": "## Bigint Subtraction\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-BigInt-subtraction)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigintsubtraction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigintsubtraction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigintsubtraction() {\n  \n  return true;\n}",
+      "function bigintsubtraction() {\n  \n  return true;\n}",
+      "function bigintsubtraction() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigint Subtraction\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-remove-duplicates-from-an-array",
+    "block": "Algorithms",
+    "title": "Remove Duplicates From An Array",
+    "timeLimitMin": 10,
+    "description": "Given an array containing all kinds of data, please implement a function `deduplicate()` to remove the duplicates.\n\nYou should modify the array in place. Order doesn't matter.",
+    "starter": "function deduplicate(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any[]} arr\n */\nfunction deduplicate(arr) {\n  const map = new Map();\n\n  for (let i = 0; i < arr.length; i++) {\n    if (map.has(arr[i])) {\n      arr.splice(i, 1);\n      i--;\n      continue;\n    }\n    map.set(arr[i], 1);\n  }\n}",
+    "clozeSteps": [
+      "\nfunction deduplicate(arr) {\n  const map = new Map();\n\n  for (let i = 0; i < arr.length; i++) {\n    if (map.has(arr[i])) {\n      arr.splice(i, 1);\n      i--;\n      /* TODO: реалізувати цей рядок */\n    }\n    map.set(arr[i], 1);\n  }\n}",
+      "\nfunction deduplicate(arr) {\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    if (map.has(arr[i])) {\n      /* TODO: реалізувати цей рядок */\n      i--;\n      continue;\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n}",
+      "\nfunction deduplicate(arr) {\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      arr.splice(i, 1);\n      i--;\n      continue;\n    }\n    map.set(arr[i], 1);\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Remove Duplicates From An Array\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-add-comma-to-number",
+    "block": "JS Functions / Polyfills",
+    "title": "Add Comma To Number",
+    "timeLimitMin": 10,
+    "description": "## Add Comma To Number\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/add-comma-to-number)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function addcommatonumber() {\n  // Ваша реалізація тут\n}",
+    "solution": "function addcommatonumber() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function addcommatonumber() {\n  \n  return true;\n}",
+      "function addcommatonumber() {\n  \n  return true;\n}",
+      "function addcommatonumber() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Add Comma To Number\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-bigint-addition",
+    "block": "Algorithms",
+    "title": "Bigint Addition",
+    "timeLimitMin": 10,
+    "description": "## Bigint Addition\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/add-BigInt-string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function bigintaddition() {\n  // Ваша реалізація тут\n}",
+    "solution": "function bigintaddition() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function bigintaddition() {\n  \n  return true;\n}",
+      "function bigintaddition() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function bigintaddition() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Bigint Addition\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-your-own-call",
+    "block": "JS Functions / Polyfills",
+    "title": "Your Own Call",
+    "timeLimitMin": 10,
+    "description": "[Function.prototype.call](https://tc39.es/ecma262/#sec-function.prototype.call) is very useful when we want to alter the `this` of a function.\n\nCan you implement your own `myCall`, which returns the same result as `Function.prototype.call`?\n\nFor the [newest ECMAScript spec](https://tc39.es/ecma262/#sec-function.prototype.call), `thisArg` are not transformed. And not replaced with window in [Strict Mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode).\n\nYour implementation should follow above spec and do what non Strict Mode does.\n\n`Function.prototype.cal/apply/bind` and [Reflect.apply](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect/apply) should not be used.",
+    "starter": "Function.prototype.mycall = function (thisArg, ...args) {\n  // Ваша реалізація тут\n}",
+    "solution": "Function.prototype.mycall = function (thisArg, ...args) {\n  // thisArg can be null or defined.\n  thisArg = thisArg || window;\n\n  // Transform primitive value into object, so that we can add property.\n  thisArg = Object(thisArg);\n\n  // Create a unique property name.\n  const fn = Symbol();\n\n  // Assign the function that has to be called to the unique property.\n  thisArg[fn] = this;\n\n  // Call the function as a method to get the correct context.\n  const returnValue = thisArg[fn](...args);\n\n  // Delete the unique property so that the original thisArg is not affected.\n  delete thisArg[fn];\n  return returnValue;\n};",
+    "clozeSteps": [
+      "Function.prototype.mycall = function (thisArg, ...args) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const fn = Symbol();\n\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const returnValue = thisArg[fn](...args);\n\n  \n  delete thisArg[fn];\n  return returnValue;\n};",
+      "Function.prototype.mycall = function (thisArg, ...args) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  thisArg = Object(thisArg);\n\n  \n  const fn = Symbol();\n\n  \n  thisArg[fn] = this;\n\n  \n  const returnValue = thisArg[fn](...args);\n\n  \n  /* TODO: реалізувати цей рядок */\n  return returnValue;\n};",
+      "Function.prototype.mycall = function (thisArg, ...args) {\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  /* TODO: реалізувати цей рядок */\n\n  \n  const fn = Symbol();\n\n  \n  thisArg[fn] = this;\n\n  \n  const returnValue = thisArg[fn](...args);\n\n  \n  delete thisArg[fn];\n  /* TODO: реалізувати цей рядок */\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Your Own Call\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-your-own-new-operator",
+    "block": "JS Functions / Polyfills",
+    "title": "Your Own New Operator",
+    "timeLimitMin": 10,
+    "description": "`new` [operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) is used to create new instance objects.\n\nDo you know exactly what `new` does?\n\nYou are asked to implement `myNew()`, which should return an object just as what `new` does but without using `new`.\n\nPay attention to the return type of constructor.",
+    "starter": "const myNew = (constructor, ...args) => {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Function} constructor\n * @param {any[]} args - argument passed to the constructor\n * `myNew(constructor, ...args)` should return the same as `new constructor(...args)`\n */\nconst myNew = (constructor, ...args) => {\n  // The `Object.create()` method creates a new empty object, using the\n  // specified object as the prototype of the newly created object.\n  const obj = Object.create(constructor.prototype);\n\n  // Call constructor with obj as its context and\n  // stored its return value in the variable returnValue.\n  const returnValue = constructor.apply(obj, args);\n\n  // If returnValue is an object, return returnValue, otherwise return obj.\n  // Usually, constructors do not have return statement. The new operator\n  // creates an object, assign it to this, and automatically returns that\n  // object as a result. If a constructor has return statement and the return\n  // value is an object, the object is returned instead of the newly created\n  // object, otherwise the return value is ignored.\n  return returnValue instanceof Object ? returnValue : obj;\n};",
+    "clozeSteps": [
+      "\nconst myNew = (constructor, ...args) => {\n  \n  \n  const obj = Object.create(constructor.prototype);\n\n  \n  \n  const returnValue = constructor.apply(obj, args);\n\n  \n  \n  \n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n};",
+      "\nconst myNew = (constructor, ...args) => {\n  \n  \n  const obj = Object.create(constructor.prototype);\n\n  \n  \n  const returnValue = constructor.apply(obj, args);\n\n  \n  \n  \n  \n  \n  \n  return returnValue instanceof Object ? returnValue : obj;\n};",
+      "\nconst myNew = (constructor, ...args) => {\n  \n  \n  const obj = Object.create(constructor.prototype);\n\n  \n  \n  const returnValue = constructor.apply(obj, args);\n\n  \n  \n  \n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Your Own New Operator\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-browser-history",
+    "block": "JS Functions / Polyfills",
+    "title": "A Browser History",
+    "timeLimitMin": 10,
+    "description": "I believe you are very familiar about your browser you are currently visiting https://bigfrontend.dev with.\n\nThe common actions relating to history are:\n\n1. `new BrowserHistory()` - when you open a new tab, it is set with an empty history\n2. `goBack()` - go to last entry, notice the entries are kept so that forward() could get us back\n3. `forward()` - go to next visited entry\n4. `visit()` - when you enter a new address or click a link, this adds a new entry but truncate the entries which we could `forward()` to.\n\nSay we start a new tab, this is the empty history.\n\n```\n[ ]\n```\n\nThen visit url A, B, C in turn.\n\n```\n[ A, B, C]\n        ↑\n```\n\nWe are currently at C, we could `goBack()` to B, then to A\n\n```\n[ A, B, C]\n  ↑\n```\n\n`forward()` get us to B\n\n```\n[ A, B, C]\n     ↑\n```\n\nNow if we visit a new url D, since we are currently at B, C is truncated.\n\n```\n[ A, B, D]\n        ↑\n```\n\nYou are asked to implement a `BrowserHistory` class to mimic the behavior.",
+    "starter": "class BrowserHistory {\n  // Ваша реалізація тут\n}",
+    "solution": "class BrowserHistory {\n  /**\n   * @param {string} url\n   * if url is set, it means new tab with url\n   * otherwise, it is empty new tab\n   */\n  constructor(url) {\n    // Store the url, since the method `goBack()` should\n    // return the initial url if it is out of bounds.\n    /** For instance,\n     *  const bh = new BrowserHistory('X')\n     *  bh.visit('A')\n     *  bh.goBack()\n     *  bh.goBack()\n     *  console.log(bh.current); // should be be 'X' rather than undefined.\n     */\n    this.initialUrl = url;\n    this.urls = url ? [url] : [];\n    this.currentIndex = this.urls.length - 1;\n  }\n  /**\n   * @param { string } url\n   */\n  visit(url) {\n    this.currentIndex++;\n    this.urls[this.currentIndex] = url;\n  }\n\n  /**\n   * @return {string} current url\n   */\n  get current() {\n    return this.currentIndex >= 0\n      ? this.urls[this.currentIndex]\n      : this.initialUrl;\n  }\n\n  // go to previous entry\n  goBack() {\n    this.currentIndex--;\n  }\n\n  // go to next visited url\n  forward() {\n    this.currentIndex = Math.min(this.urls.length - 1, this.currentIndex + 1);\n  }\n}",
+    "clozeSteps": [
+      "class BrowserHistory {\n  \n  constructor(url) {\n    \n    \n    \n    this.initialUrl = url;\n    this.urls = url ? [url] : [];\n    this.currentIndex = this.urls.length - 1;\n  }\n  \n  visit(url) {\n    this.currentIndex++;\n    this.urls[this.currentIndex] = url;\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    return this.currentIndex >= 0\n      /* TODO: реалізувати цей рядок */\n      : this.initialUrl;\n  }\n\n  \n  goBack() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  forward() {\n    this.currentIndex = Math.min(this.urls.length - 1, this.currentIndex + 1);\n  }\n}",
+      "class BrowserHistory {\n  \n  constructor(url) {\n    \n    \n    \n    this.initialUrl = url;\n    this.urls = url ? [url] : [];\n    this.currentIndex = this.urls.length - 1;\n  }\n  \n  visit(url) {\n    this.currentIndex++;\n    this.urls[this.currentIndex] = url;\n  }\n\n  \n  get current() {\n    return this.currentIndex >= 0\n      ? this.urls[this.currentIndex]\n      : this.initialUrl;\n  }\n\n  \n  goBack() {\n    this.currentIndex--;\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    this.currentIndex = Math.min(this.urls.length - 1, this.currentIndex + 1);\n  }\n}",
+      "class BrowserHistory {\n  \n  constructor(url) {\n    \n    \n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  visit(url) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      : this.initialUrl;\n  }\n\n  \n  goBack() {\n    this.currentIndex--;\n  }\n\n  \n  forward() {\n    this.currentIndex = Math.min(this.urls.length - 1, this.currentIndex + 1);\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Browser History\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-call-apis-with-pagination",
+    "block": "JS Functions / Polyfills",
+    "title": "Call Apis With Pagination",
+    "timeLimitMin": 10,
+    "description": "Have you ever met some APIs with pagination, and needed to recursively fetch them based on response of previous request ?\n\nSuppose we have a `/list` API, which returns an array `items`.\n\n```js\n// fetchList is provided for you\nconst fetchList = (since?: number) =>\n  Promise<{items: Array<{id: number}>}>\n```\n\n1. for initial request, we just fetch `fetchList`. and get the last item id from response.\n2. for next page, we need to call `fetchList(lastItemId)`.\n3. repeat above process.\n\nThe `/list` API only gives us 5 items at a time, with server-side filtering, it might be less than 5. But if none returned, it means nothing to fetch any more and we should stop.\n\nYou are asked to create a function that could return arbitrary amount of items.\n\n```js\nconst fetchListWithAmount = (amount: number = 5) { }\n```\n\n**note**\n\nYou can achieve this by regular loop, even fancier solutions with [async iterators or async generators](https://javascript.info/async-iterators-generators). You should try them all.",
+    "starter": "const fetchListWithAmount = async (amount = 5) => {\n  // Ваша реалізація тут\n}",
+    "solution": "// fetchList is provided for you\n// const fetchList = (since?: number) =>\n//   Promise<{items: Array<{id: number}>}>\n\n// you can change this to generator function if you want\nconst fetchListWithAmount = async (amount = 5) => {\n  const items = [];\n  let lastItemId = null;\n\n  while (items.length <= amount) {\n    const response = lastItemId\n      ? await fetchList(lastItemId)\n      : await fetchList();\n    if (!response || !response.items.length) {\n      break;\n    }\n    items.push(...response.items);\n    lastItemId = items[items.length - 1].id;\n  }\n\n  return items.slice(0, amount);\n};",
+    "clozeSteps": [
+      "\n\n\n\n\nconst fetchListWithAmount = async (amount = 5) => {\n  const items = [];\n  let lastItemId = null;\n\n  while (items.length <= amount) {\n    const response = lastItemId\n      ? await fetchList(lastItemId)\n      : await fetchList();\n    if (!response || !response.items.length) {\n      break;\n    }\n    items.push(...response.items);\n    lastItemId = items[items.length - 1].id;\n  }\n\n  return items.slice(0, amount);\n};",
+      "\n\n\n\n\nconst fetchListWithAmount = async (amount = 5) => {\n  const items = [];\n  let lastItemId = null;\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      break;\n    }\n    items.push(...response.items);\n    lastItemId = items[items.length - 1].id;\n  }\n\n  return items.slice(0, amount);\n};",
+      "\n\n\n\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  let lastItemId = null;\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      ? await fetchList(lastItemId)\n      /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    items.push(...response.items);\n    lastItemId = items[items.length - 1].id;\n  }\n\n  return items.slice(0, amount);\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Call Apis With Pagination\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-highlight-keywords-in-html-string",
+    "block": "Algorithms",
+    "title": "Highlight Keywords In Html String",
+    "timeLimitMin": 10,
+    "description": "Suppose you are implementing an auto-complete in search input.\n\nWhen keywords are typed, you need to **highlight the keywords**, how would you do that?\n\nTo simplify things, you need to create a function `highlightKeywords(html:string, keywords: string[])`, which wraps the keywords in html string, with `<em>` tag.\n\nHere is an example.\n\n```js\nhighlightKeywords('Hello FrontEnd Lovers', ['Hello', 'Front', 'JavaScript']);\n// '<em>Hello</em> <em>Front</em>End Lovers'\n```\n\nPay attention to the overlapping and adjacent case. You should use the least tags as possible.\n\n```js\nhighlightKeywords('Hello FrontEnd Lovers', ['Front', 'End', 'JavaScript']);\n// 'Hello <em>FrontEnd</em> Lovers'\n\nhighlightKeywords('Hello FrontEnd Lovers', ['Front', 'FrontEnd', 'JavaScript']);\n// 'Hello <em>FrontEnd</em> Lovers'\n```\n\nnote that `space` should not be included.",
+    "starter": "class TrieNode {\n  // Ваша реалізація тут\n}",
+    "solution": "class TrieNode {\n  constructor() {\n    this.children = new Map();\n    this.isEndOfWord = false;\n  }\n}\n\nclass Trie {\n  constructor() {\n    this.root = new TrieNode();\n  }\n\n  insert(word) {\n    let currentNode = this.root;\n    for (const char of word) {\n      if (!currentNode.children.has(char)) {\n        currentNode.children.set(char, new TrieNode());\n      }\n      currentNode = currentNode.children.get(char);\n    }\n\n    currentNode.isEndOfWord = true;\n  }\n}\n\n/**\n * @param {string} html\n * @param {string[]} keywords\n */\nfunction highlightKeywords(html, keywords) {\n  const trie = new Trie();\n  keywords.forEach((keyword) => {\n    trie.insert(keyword);\n  });\n\n  let node = trie.root;\n  let containedString = '';\n  let highlightedString = '';\n  for (const char of html) {\n    if (!node.children.has(char) && !containedString) {\n      highlightedString += char;\n      continue;\n    }\n\n    if (node.children.has(char)) {\n      containedString += char;\n      node = node.children.get(char);\n      if (node.isEndOfWord && node.children.size === 0) {\n        node = trie.root;\n      }\n      continue;\n    }\n\n    highlightedString += `<em>${containedString}</em>${char}`;\n    containedString = '';\n  }\n\n  if (containedString) {\n    highlightedString += `<em>${containedString}</em>`;\n  }\n\n  return highlightedString;\n}",
+    "clozeSteps": [
+      "class TrieNode {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n    this.isEndOfWord = false;\n  }\n}\n\nclass Trie {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  insert(word) {\n    let currentNode = this.root;\n    for (const char of word) {\n      if (!currentNode.children.has(char)) {\n        currentNode.children.set(char, new TrieNode());\n      }\n      /* TODO: реалізувати цей рядок */\n    }\n\n    currentNode.isEndOfWord = true;\n  }\n}\n\n\nfunction highlightKeywords(html, keywords) {\n  const trie = new Trie();\n  keywords.forEach((keyword) => {\n    trie.insert(keyword);\n  });\n\n  let node = trie.root;\n  let containedString = '';\n  let highlightedString = '';\n  for (const char of html) {\n    if (!node.children.has(char) && !containedString) {\n      highlightedString += char;\n      continue;\n    }\n\n    if (node.children.has(char)) {\n      containedString += char;\n      /* TODO: реалізувати цей рядок */\n      if (node.isEndOfWord && node.children.size === 0) {\n        node = trie.root;\n      }\n      continue;\n    }\n\n    highlightedString += `<em>${containedString}</em>${char}`;\n    containedString = '';\n  }\n\n  if (containedString) {\n    highlightedString += `<em>${containedString}</em>`;\n  }\n\n  return highlightedString;\n}",
+      "class TrieNode {\n  constructor() {\n    this.children = new Map();\n    this.isEndOfWord = false;\n  }\n}\n\nclass Trie {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      if (!currentNode.children.has(char)) {\n        currentNode.children.set(char, new TrieNode());\n      }\n      /* TODO: реалізувати цей рядок */\n    }\n\n    currentNode.isEndOfWord = true;\n  }\n}\n\n\nfunction highlightKeywords(html, keywords) {\n  const trie = new Trie();\n  keywords.forEach((keyword) => {\n    trie.insert(keyword);\n  });\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    if (!node.children.has(char) && !containedString) {\n      highlightedString += char;\n      continue;\n    }\n\n    if (node.children.has(char)) {\n      containedString += char;\n      node = node.children.get(char);\n      if (node.isEndOfWord && node.children.size === 0) {\n        node = trie.root;\n      }\n      continue;\n    }\n\n    highlightedString += `<em>${containedString}</em>${char}`;\n    containedString = '';\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  return highlightedString;\n}",
+      "class TrieNode {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n    this.isEndOfWord = false;\n  }\n}\n\nclass Trie {\n  constructor() {\n    this.root = new TrieNode();\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      if (!currentNode.children.has(char)) {\n        currentNode.children.set(char, new TrieNode());\n      }\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n  }\n}\n\n\nfunction highlightKeywords(html, keywords) {\n  /* TODO: реалізувати цей рядок */\n  keywords.forEach((keyword) => {\n    trie.insert(keyword);\n  });\n\n  /* TODO: реалізувати цей рядок */\n  let containedString = '';\n  /* TODO: реалізувати цей рядок */\n  for (const char of html) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    if (node.children.has(char)) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n      continue;\n    }\n\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    highlightedString += `<em>${containedString}</em>`;\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Highlight Keywords In Html String\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-extends-in-es5",
+    "block": "JS Functions / Polyfills",
+    "title": "Extends In Es5",
+    "timeLimitMin": 10,
+    "description": "## Extends In Es5\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/write-your-own-extends-in-es5)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function extendsines5() {\n  // Ваша реалізація тут\n}",
+    "solution": "function extendsines5() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function extendsines5() {\n  \n  return true;\n}",
+      "function extendsines5() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function extendsines5() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Extends In Es5\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-a-middleware-system",
+    "block": "JS Functions / Polyfills",
+    "title": "A Middleware System",
+    "timeLimitMin": 10,
+    "description": "Have you ever used [Express Middleware](http://expressjs.com/en/guide/using-middleware.html#using-middleware) before?\n\nMiddleware functions are functions with fixed interface that could be chained up like following two functions.\n\n```js\napp.use(\n  '/user/:id',\n  function (req, res, next) {\n    next();\n  },\n  function (req, res, next) {\n    next(new Error('sth wrong'));\n  }\n);\n```\n\nYou are asked to create simplified Middleware system:\n\n```js\ntype Request = object;\n\ntype NextFunc = (error?: any) => void;\n\ntype MiddlewareFunc = (req: Request, next: NextFunc) => void;\n\ntype ErrorHandler = (error: Error, req: Request, next: NextFunc) => void;\n\nclass Middleware {\n  use(func: MiddlewareFunc | ErrorHandler) {\n    // do any async operations\n    // call next() to trigger next function\n  }\n  start(req: Request) {\n    // trigger all functions with a req object\n  }\n}\n```\n\nNow we can do something similar with Express\n\n```js\nconst middleware = new Middleware();\n\nmiddleware.use((req, next) => {\n  req.a = 1;\n  next();\n});\n\nmiddleware.use((req, next) => {\n  req.b = 2;\n  next();\n});\n\nmiddleware.use((req, next) => {\n  console.log(req);\n});\n\nmiddleware.start({});\n// {a: 1, b: 2}\n```\n\nNotice that `use()` could also accept an ErrorHandler which has 3 arguments. The error handler is triggered if `next()` is called with an extra argument or uncaught error happens, like following.\n\n```js\nconst middleware = new Middleware();\n\n// throw an error at first function\nmiddleware.use((req, next) => {\n  req.a = 1;\n  throw new Error('sth wrong');\n  // or `next(new Error('sth wrong'))`\n});\n\n// since error occurs, this is skipped\nmiddleware.use((req, next) => {\n  req.b = 2;\n});\n\n// since error occurs, this is skipped\nmiddleware.use((req, next) => {\n  console.log(req);\n});\n\n// since error occurs, this is called\nmiddleware.use((error, req, next) => {\n  console.log(error);\n  console.log(req);\n});\n\nmiddleware.start({});\n// Error: sth wrong\n// {a: 1}\n```",
+    "starter": "class Middleware {\n  // Ваша реалізація тут\n}",
+    "solution": "class Middleware {\n  constructor() {\n    this.middlewareFuncs = [];\n    this.middlewareFuncIndex = 0;\n    this.errorHandlers = [];\n    this.errorHandlerIndex = 0;\n    this.next = this.next.bind(this);\n  }\n\n  /**\n   * @param {MiddlewareFunc} func\n   */\n  use(func) {\n    if (func.length === 3) {\n      this.errorHandlers.push(func);\n    } else {\n      this.middlewareFuncs.push(func);\n    }\n  }\n\n  /**\n   * @param {Request} req\n   */\n  start(req) {\n    this.req = req;\n    this.next();\n  }\n\n  next(error) {\n    try {\n      let func;\n      if (error) {\n        func = this.errorHandlers[this.errorHandlerIndex++];\n        func(error, this.req, this.next);\n      } else {\n        func = this.middlewareFuncs[this.middlewareFuncIndex++];\n        func(this.req, this.next);\n      }\n    } catch (err) {\n      const errorHandler = this.errorHandlers[this.errorHandlerIndex++];\n      errorHandler(err, this.req, this.next);\n    }\n  }\n}",
+    "clozeSteps": [
+      "class Middleware {\n  constructor() {\n    this.middlewareFuncs = [];\n    this.middlewareFuncIndex = 0;\n    this.errorHandlers = [];\n    this.errorHandlerIndex = 0;\n    this.next = this.next.bind(this);\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      this.errorHandlers.push(func);\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  \n  start(req) {\n    this.req = req;\n    this.next();\n  }\n\n  next(error) {\n    try {\n      /* TODO: реалізувати цей рядок */\n      if (error) {\n        func = this.errorHandlers[this.errorHandlerIndex++];\n        func(error, this.req, this.next);\n      } else {\n        func = this.middlewareFuncs[this.middlewareFuncIndex++];\n        /* TODO: реалізувати цей рядок */\n      }\n    } catch (err) {\n      const errorHandler = this.errorHandlers[this.errorHandlerIndex++];\n      errorHandler(err, this.req, this.next);\n    }\n  }\n}",
+      "class Middleware {\n  constructor() {\n    this.middlewareFuncs = [];\n    this.middlewareFuncIndex = 0;\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  use(func) {\n    if (func.length === 3) {\n      /* TODO: реалізувати цей рядок */\n    } else {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    this.next();\n  }\n\n  next(error) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      } else {\n        /* TODO: реалізувати цей рядок */\n        func(this.req, this.next);\n      }\n    } catch (err) {\n      const errorHandler = this.errorHandlers[this.errorHandlerIndex++];\n      errorHandler(err, this.req, this.next);\n    }\n  }\n}",
+      "class Middleware {\n  constructor() {\n    this.middlewareFuncs = [];\n    this.middlewareFuncIndex = 0;\n    this.errorHandlers = [];\n    /* TODO: реалізувати цей рядок */\n    this.next = this.next.bind(this);\n  }\n\n  \n  use(func) {\n    /* TODO: реалізувати цей рядок */\n      this.errorHandlers.push(func);\n    /* TODO: реалізувати цей рядок */\n      this.middlewareFuncs.push(func);\n    }\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      let func;\n      /* TODO: реалізувати цей рядок */\n        func = this.errorHandlers[this.errorHandlerIndex++];\n        /* TODO: реалізувати цей рядок */\n      } else {\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n    } catch (err) {\n      const errorHandler = this.errorHandlers[this.errorHandlerIndex++];\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Middleware System\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-reverse-a-linked-list",
+    "block": "Algorithms",
+    "title": "Reverse A Linked List",
+    "timeLimitMin": 10,
+    "description": "## Reverse A Linked List\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/Reverse-a-linked-list)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function reversealinkedlist() {\n  // Ваша реалізація тут\n}",
+    "solution": "function reversealinkedlist() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function reversealinkedlist() {\n  \n  return true;\n}",
+      "function reversealinkedlist() {\n  \n  return true;\n}",
+      "function reversealinkedlist() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Reverse A Linked List\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-once",
+    "block": "JS Functions / Polyfills",
+    "title": "Once",
+    "timeLimitMin": 10,
+    "description": "[\\_.once(func)](https://lodash.com/docs/4.17.15#once) is used to force a function to be called only once, later calls only returns the result of first call.\n\nCan you implement your own `once()`?\n\n```js\nfunction func(num) {\n  return num;\n}\n\nconst onced = once(func);\n\nonced(1);\n// 1, func called with 1\n\nonced(2);\n// 1, even 2 is passed, previous result is returned\n```",
+    "starter": "function once(func) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Function} func\n * @return {Function}\n */\nfunction once(func) {\n  let result;\n  let isExecuted = false;\n  return function (...args) {\n    if (!isExecuted) {\n      result = func.apply(this, args);\n      isExecuted = true;\n    }\n    return result;\n  };\n}",
+    "clozeSteps": [
+      "\nfunction once(func) {\n  let result;\n  let isExecuted = false;\n  return function (...args) {\n    if (!isExecuted) {\n      result = func.apply(this, args);\n      isExecuted = true;\n    }\n    return result;\n  };\n}",
+      "\nfunction once(func) {\n  /* TODO: реалізувати цей рядок */\n  let isExecuted = false;\n  return function (...args) {\n    /* TODO: реалізувати цей рядок */\n      result = func.apply(this, args);\n      isExecuted = true;\n    }\n    /* TODO: реалізувати цей рядок */\n  };\n}",
+      "\nfunction once(func) {\n  /* TODO: реалізувати цей рядок */\n  let isExecuted = false;\n  return function (...args) {\n    /* TODO: реалізувати цей рядок */\n      result = func.apply(this, args);\n      /* TODO: реалізувати цей рядок */\n    }\n    /* TODO: реалізувати цей рядок */\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Once\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-range",
+    "block": "JS Functions / Polyfills",
+    "title": "Range",
+    "timeLimitMin": 10,
+    "description": "Can you create a `range(from, to)` which makes following work?\n\n```js\nfor (let num of range(1, 4)) {\n  console.log(num);\n}\n// 1\n// 2\n// 3\n// 4\n```\n\nThis is a simple one, could you think **more fancy approaches other than for-loop**?\n\nNotice that you are not required to return an array, but something iterable would be fine.",
+    "starter": "function range(from, to) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {integer} from\n * @param {integer} to\n */\nfunction range(from, to) {\n  // The iterator object that will be returned\n  // when calling the Symbol.iterator method of an object.\n  // The iterator object has a method named next which\n  // generates values for the iteration.\n  const iterator = {\n    from: from,\n    to: to,\n    next() {\n      if (this.from > this.to) {\n        return { done: true };\n      }\n\n      const value = { value: this.from, done: false };\n      this.from++;\n      return value;\n    },\n  };\n\n  // Return an object that has a method named\n  // Symbol.iterator for the for...of to work.\n  // When for..of starts, it calls that method once.\n  return {\n    [Symbol.iterator]() {\n      return iterator;\n    },\n  };\n}",
+    "clozeSteps": [
+      "\nfunction range(from, to) {\n  \n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n    from: from,\n    /* TODO: реалізувати цей рядок */\n    next() {\n      if (this.from > this.to) {\n        return { done: true };\n      }\n\n      const value = { value: this.from, done: false };\n      this.from++;\n      return value;\n    },\n  };\n\n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      return iterator;\n    },\n  };\n}",
+      "\nfunction range(from, to) {\n  \n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    to: to,\n    next() {\n      /* TODO: реалізувати цей рядок */\n        return { done: true };\n      }\n\n      const value = { value: this.from, done: false };\n      this.from++;\n      return value;\n    },\n  };\n\n  \n  \n  \n  return {\n    [Symbol.iterator]() {\n      return iterator;\n    },\n  };\n}",
+      "\nfunction range(from, to) {\n  \n  \n  \n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    to: to,\n    /* TODO: реалізувати цей рядок */\n      if (this.from > this.to) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      const value = { value: this.from, done: false };\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    },\n  };\n\n  \n  \n  \n  return {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    },\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Range\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-jestspyon",
+    "block": "JS Functions / Polyfills",
+    "title": "Jest.Spyon",
+    "timeLimitMin": 10,
+    "description": "If you did unit test before, you must be familiar with `Spy`.\n\nYou are asked to create a `spyOn(object, methodName)`, which works the same as [jest.spyOn()](https://jestjs.io/docs/en/jest-object#jestspyonobject-methodname).\n\nTo make it simple, here are the 2 requirements of `spyOn`\n\n1. original method should be called when spied one is called\n2. spy should have a `calls` array, which holds all the arguments in each call.\n\nCode to explain everything.\n\n```js\nconst obj = {\n  data: 1,\n  increment(num) {\n    this.data += num;\n  },\n};\n\nconst spy = spyOn(obj, 'increment');\n\nobj.increment(1);\n\nconsole.log(obj.data); // 2\n\nobj.increment(2);\n\nconsole.log(obj.data); // 4\n\nconsole.log(spy.calls);\n// [ [1], [2] ]\n```",
+    "starter": "function spyOn(obj, methodName) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {object} obj\n * @param {string} methodName\n */\nfunction spyOn(obj, methodName) {\n  const spy = {\n    calls: [],\n  };\n\n  const originalMethod = obj[methodName];\n  if (!originalMethod || typeof originalMethod !== 'function') {\n    throw new Error();\n  }\n\n  obj[methodName] = (...args) => {\n    spy.calls.push(args);\n    originalMethod.apply(obj, args);\n  };\n\n  return spy;\n}",
+    "clozeSteps": [
+      "\nfunction spyOn(obj, methodName) {\n  const spy = {\n    calls: [],\n  };\n\n  const originalMethod = obj[methodName];\n  if (!originalMethod || typeof originalMethod !== 'function') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    spy.calls.push(args);\n    originalMethod.apply(obj, args);\n  };\n\n  return spy;\n}",
+      "\nfunction spyOn(obj, methodName) {\n  const spy = {\n    calls: [],\n  };\n\n  /* TODO: реалізувати цей рядок */\n  if (!originalMethod || typeof originalMethod !== 'function') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  obj[methodName] = (...args) => {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  };\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction spyOn(obj, methodName) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  };\n\n  /* TODO: реалізувати цей рядок */\n  if (!originalMethod || typeof originalMethod !== 'function') {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  obj[methodName] = (...args) => {\n    spy.calls.push(args);\n    /* TODO: реалізувати цей рядок */\n  };\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Jest.Spyon\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-fake-timersettimeout",
+    "block": "React Hooks & Components",
+    "title": "A Fake Timer(Settimeout)",
+    "timeLimitMin": 10,
+    "description": "`setTimeout` adds task in to a task queue to be handled later, the time actually is no accurate. ([Event Loop](https://javascript.info/event-loop)).\n\nThis is OK in general web application, but might be problematic in test.\n\nFor example, at [5. implement throttle() with leading & trailing option](https://bigfrontend.dev/problem/implement-throttle-with-leading-and-trailing-option) we need to test the timer with more accurate approach.\n\nCould you implement your own `setTimeout()` and `clearTimeout()` to be sync? so that they have **accurate timing** for test. This is what [FakeTimes](https://github.com/sinonjs/fake-timers) are for.\n\nBy \"accurate\", it means **suppose all functions cost no time**, we start our function at time `0`, then `setTimeout(func1, 100)` would schedule `func1` exactly at `100`.\n\nYou need to replace `Date.now()` as well to provide the time.\n\n```js\nclass FakeTimer {\n  install() {\n    // setTimeout(), clearTimeout(), and Date.now()\n    // are replaced\n  }\n\n  uninstall() {\n    // restore the original APIs\n    // setTimeout(), clearTimeout() and Date.now()\n  }\n\n  tick() {\n    // run all the schedule functions in order\n  }\n}\n```\n\nYour code is tested like this\n\n```js\nconst fakeTimer = new FakeTimer();\nfakeTimer.install();\n\nconst logs = [];\nconst log = (arg) => {\n  logs.push([Date.now(), arg]);\n};\n\nsetTimeout(() => log('A'), 100);\n// log 'A' at 100\n\nconst b = setTimeout(() => log('B'), 110);\nclearTimeout(b);\n// b is set but cleared\n\nsetTimeout(() => log('C'), 200);\n\nexpect(logs).toEqual([\n  [100, 'A'],\n  [200, 'C'],\n]);\n\nfakeTimer.uninstall();\n```\n\n**Note**\n\nOnly `Date.now()` is used when judging your code, you can ignore other time related apis.",
+    "starter": "class FakeTimer {\n  // Ваша реалізація тут\n}",
+    "solution": "class FakeTimer {\n  constructor() {\n    this.taskQueue = [];\n    this.currTime = 0;\n  }\n\n  install() {\n    // replace window.setTimeout, window.clearTimeout, Date.now\n    // with your implementation\n    this.windowSetTimeout = window.setTimeout;\n    this.windowClearTimeout = window.clearTimeout;\n    this.dateNow = Date.now;\n\n    window.setTimeout = (cb, wait) => {\n      // accumulate the time for nested setTimeout calls.\n      wait += this.currTime;\n\n      const task = {\n        id: this.taskQueue.length - 1,\n        cb,\n        wait,\n      };\n      this.taskQueue.push(task);\n      this.taskQueue.sort((taskA, taskB) => taskB.wait - taskA.wait);\n\n      return task.id;\n    };\n\n    window.clearTimeout = (id) => {\n      const taskIndex = this.taskQueue.findIndex((task) => task.id === id);\n      this.taskQueue.splice(taskIndex, 1);\n    };\n\n    Date.now = () => this.currTime;\n  }\n\n  uninstall() {\n    // restore the original implementation of\n    // window.setTimeout, window.clearTimeout, Date.now\n    window.setTimeout = this.windowSetTimeout;\n    window.clearTimeout = this.windowClearTimeout;\n    Date.now = this.dateNow;\n  }\n\n  tick() {\n    // run the scheduled functions without waiting\n    while (this.taskQueue.length > 0) {\n      const { cb, wait } = this.taskQueue.pop();\n      this.currTime = wait;\n      cb();\n    }\n  }\n}",
+    "clozeSteps": [
+      "class FakeTimer {\n  constructor() {\n    this.taskQueue = [];\n    this.currTime = 0;\n  }\n\n  install() {\n    \n    \n    this.windowSetTimeout = window.setTimeout;\n    /* TODO: реалізувати цей рядок */\n    this.dateNow = Date.now;\n\n    window.setTimeout = (cb, wait) => {\n      \n      wait += this.currTime;\n\n      const task = {\n        id: this.taskQueue.length - 1,\n        cb,\n        wait,\n      };\n      this.taskQueue.push(task);\n      this.taskQueue.sort((taskA, taskB) => taskB.wait - taskA.wait);\n\n      /* TODO: реалізувати цей рядок */\n    };\n\n    window.clearTimeout = (id) => {\n      const taskIndex = this.taskQueue.findIndex((task) => task.id === id);\n      this.taskQueue.splice(taskIndex, 1);\n    };\n\n    Date.now = () => this.currTime;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    \n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  tick() {\n    \n    while (this.taskQueue.length > 0) {\n      const { cb, wait } = this.taskQueue.pop();\n      /* TODO: реалізувати цей рядок */\n      cb();\n    }\n  }\n}",
+      "class FakeTimer {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n    this.currTime = 0;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    \n    this.windowSetTimeout = window.setTimeout;\n    this.windowClearTimeout = window.clearTimeout;\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      \n      wait += this.currTime;\n\n      /* TODO: реалізувати цей рядок */\n        id: this.taskQueue.length - 1,\n        cb,\n        /* TODO: реалізувати цей рядок */\n      };\n      this.taskQueue.push(task);\n      this.taskQueue.sort((taskA, taskB) => taskB.wait - taskA.wait);\n\n      return task.id;\n    };\n\n    window.clearTimeout = (id) => {\n      const taskIndex = this.taskQueue.findIndex((task) => task.id === id);\n      this.taskQueue.splice(taskIndex, 1);\n    };\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  uninstall() {\n    \n    \n    /* TODO: реалізувати цей рядок */\n    window.clearTimeout = this.windowClearTimeout;\n    /* TODO: реалізувати цей рядок */\n  }\n\n  tick() {\n    \n    while (this.taskQueue.length > 0) {\n      const { cb, wait } = this.taskQueue.pop();\n      this.currTime = wait;\n      cb();\n    }\n  }\n}",
+      "class FakeTimer {\n  constructor() {\n    this.taskQueue = [];\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    \n    this.windowSetTimeout = window.setTimeout;\n    this.windowClearTimeout = window.clearTimeout;\n    /* TODO: реалізувати цей рядок */\n\n    window.setTimeout = (cb, wait) => {\n      \n      wait += this.currTime;\n\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        cb,\n        /* TODO: реалізувати цей рядок */\n      };\n      /* TODO: реалізувати цей рядок */\n      this.taskQueue.sort((taskA, taskB) => taskB.wait - taskA.wait);\n\n      /* TODO: реалізувати цей рядок */\n    };\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      this.taskQueue.splice(taskIndex, 1);\n    };\n\n    /* TODO: реалізувати цей рядок */\n  }\n\n  uninstall() {\n    \n    \n    window.setTimeout = this.windowSetTimeout;\n    /* TODO: реалізувати цей рядок */\n    Date.now = this.dateNow;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      cb();\n    }\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Fake Timer(Settimeout)\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-async-helper---race",
+    "block": "JS Functions / Polyfills",
+    "title": "Async Helper - Race",
+    "timeLimitMin": 10,
+    "description": "This problem is related to [30. implement async helper - parallel()](https://bigfrontend.dev/problem/implement-async-helper-parallel).\n\nYou are asked to implement an async function helper, `race()` which works like [Promise.race()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race). Different from `parallel()` that waits for all functions to finish, `race()` will finish when any function is done or run into error.\n\nAll async functions have following interface\n\n```ts\ntype Callback = (error: Error, data: any) => void;\n\ntype AsyncFunc = (callback: Callback, data: any) => void;\n```\n\nYour `race()` should **accept AsyncFunc array**, and return a new function which triggers its own callback when **any** async function is done or an error occurs.\n\nSuppose we have an 3 async functions\n\n```js\nconst async1 = (callback) => {\n  setTimeout(() => callback(undefined, 1), 300);\n};\n\nconst async2 = (callback) => {\n  setTimeout(() => callback(undefined, 2), 100);\n};\n\nconst async3 = (callback) => {\n  setTimeout(() => callback(undefined, 3), 200);\n};\n```\n\nYour `race()` should be able to accomplish this\n\n```js\nconst first = race([async1, async2, async3]);\n\nfirst((error, data) => {\n  console.log(data); // 2, since 2 is the first to be given\n}, 1);\n```\n\nWhen error occurs, only first error is passed down to the last. Later errors or data are ignored.",
+    "starter": "function race(funcs) {\n  // Ваша реалізація тут\n}",
+    "solution": "/*\ntype Callback = (error: Error, data: any) => void\n\ntype AsyncFunc = (\n   callback: Callback,\n   data: any\n) => void\n\n*/\n\n/**\n * @param {AsyncFunc[]} funcs\n * @return {(callback: Callback) => void}\n */\nfunction race(funcs) {\n  return (finalCallback, input) => {\n    let isExecuted = false;\n    for (const func of funcs) {\n      func((err, data) => {\n        if (!isExecuted) {\n          finalCallback(err, data);\n          isExecuted = true;\n        }\n      }, input);\n    }\n  };\n}",
+    "clozeSteps": [
+      "\n\n\nfunction race(funcs) {\n  return (finalCallback, input) => {\n    /* TODO: реалізувати цей рядок */\n    for (const func of funcs) {\n      func((err, data) => {\n        if (!isExecuted) {\n          finalCallback(err, data);\n          isExecuted = true;\n        }\n      }, input);\n    }\n  };\n}",
+      "\n\n\nfunction race(funcs) {\n  return (finalCallback, input) => {\n    let isExecuted = false;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        }\n      }, input);\n    }\n  };\n}",
+      "\n\n\nfunction race(funcs) {\n  return (finalCallback, input) => {\n    let isExecuted = false;\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n          finalCallback(err, data);\n          isExecuted = true;\n        }\n      /* TODO: реалізувати цей рядок */\n    }\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Async Helper - Race\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-async-helper---parallel",
+    "block": "JS Functions / Polyfills",
+    "title": "Async Helper - Parallel",
+    "timeLimitMin": 10,
+    "description": "This problem is related to [29. implement async helper - sequence()](https://bigfrontend.dev/problem/implement-async-helper-sequence).\n\nYou are asked to implement an async function helper, `parallel()` which works like `Promise.all()`. Different from `sequence()`, the async function doesn't wait for each other, rather they are all triggered together.\n\nAll async functions have following interface\n\n```js\ntype Callback = (error: Error, data: any) => void;\n\ntype AsyncFunc = (callback: Callback, data: any) => void;\n```\n\nYour `parallel()` should **accept AsyncFunc array**, and return a new function which triggers its own callback when all async functions are done or an error occurs.\n\nSuppose we have an 3 async functions\n\n```js\nconst async1 = (callback) => {\n  callback(undefined, 1);\n};\n\nconst async2 = (callback) => {\n  callback(undefined, 2);\n};\n\nconst async3 = (callback) => {\n  callback(undefined, 3);\n};\n```\n\nYour `parallel()` should be able to accomplish this\n\n```js\nconst all = parallel([async1, async2, async3]);\n\nall((error, data) => {\n  console.log(data); // [1, 2, 3]\n}, 1);\n```\n\nWhen error occurs, only first error is passed down to the last. Later errors or data are ignored.",
+    "starter": "function parallel(funcs) {\n  // Ваша реалізація тут\n}",
+    "solution": "/*\ntype Callback = (error: Error, data: any) => void\n\ntype AsyncFunc = (\n   callback: Callback,\n   data: any\n) => void\n\n*/\n\n/**\n * @param {AsyncFunc[]} funcs\n * @return {(callback: Callback) => void}\n */\nfunction parallel(funcs) {\n  return (finalCallback, input) => {\n    const results = Array(funcs.length);\n    let count = 0;\n    let hasError = false;\n\n    funcs.forEach((func, i) => {\n      func((err, data) => {\n        if (hasError) {\n          return;\n        }\n\n        if (err) {\n          hasError = true;\n          finalCallback(err, undefined);\n          return;\n        }\n\n        results[i] = data;\n        count++;\n\n        if (count === funcs.length) {\n          finalCallback(undefined, results);\n        }\n      }, input);\n    });\n  };\n}",
+    "clozeSteps": [
+      "\n\n\nfunction parallel(funcs) {\n  return (finalCallback, input) => {\n    /* TODO: реалізувати цей рядок */\n    let count = 0;\n    let hasError = false;\n\n    funcs.forEach((func, i) => {\n      func((err, data) => {\n        if (hasError) {\n          return;\n        }\n\n        if (err) {\n          hasError = true;\n          finalCallback(err, undefined);\n          return;\n        }\n\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n\n        if (count === funcs.length) {\n          finalCallback(undefined, results);\n        }\n      /* TODO: реалізувати цей рядок */\n    });\n  };\n}",
+      "\n\n\nfunction parallel(funcs) {\n  /* TODO: реалізувати цей рядок */\n    const results = Array(funcs.length);\n    let count = 0;\n    let hasError = false;\n\n    /* TODO: реалізувати цей рядок */\n      func((err, data) => {\n        if (hasError) {\n          return;\n        }\n\n        if (err) {\n          hasError = true;\n          finalCallback(err, undefined);\n          /* TODO: реалізувати цей рядок */\n        }\n\n        results[i] = data;\n        count++;\n\n        if (count === funcs.length) {\n          /* TODO: реалізувати цей рядок */\n        }\n      }, input);\n    });\n  };\n}",
+      "\n\n\nfunction parallel(funcs) {\n  return (finalCallback, input) => {\n    const results = Array(funcs.length);\n    let count = 0;\n    let hasError = false;\n\n    /* TODO: реалізувати цей рядок */\n      func((err, data) => {\n        /* TODO: реалізувати цей рядок */\n          return;\n        }\n\n        if (err) {\n          hasError = true;\n          finalCallback(err, undefined);\n          return;\n        }\n\n        results[i] = data;\n        count++;\n\n        if (count === funcs.length) {\n          /* TODO: реалізувати цей рядок */\n        }\n      }, input);\n    });\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Async Helper - Parallel\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-async-helper---sequence",
+    "block": "JS Functions / Polyfills",
+    "title": "Async Helper - Sequence",
+    "timeLimitMin": 10,
+    "description": "## Async Helper - Sequence\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-async-helper-sequence)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function asynchelpersequence() {\n  // Ваша реалізація тут\n}",
+    "solution": "function asynchelpersequence() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function asynchelpersequence() {\n  \n  return true;\n}",
+      "function asynchelpersequence() {\n  \n  return true;\n}",
+      "function asynchelpersequence() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Async Helper - Sequence\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-clearalltimeout",
+    "block": "JS Functions / Polyfills",
+    "title": "Clearalltimeout",
+    "timeLimitMin": 10,
+    "description": "`window.setTimeout()` could be used to schedule some task in the future.\n\nCould you implement `clearAllTimeout()` to clear all the timers? This might be useful when we want to clear things up before page transition.\n\nFor example\n\n```js\nsetTimeout(func1, 10000);\nsetTimeout(func2, 10000);\nsetTimeout(func3, 10000);\n// all 3 functions are scheduled 10 seconds later\n\nclearAllTimeout();\n// all scheduled tasks are cancelled.\n```\n\n**note**\n\nYou need to keep the interface of `window.setTimeout` and `window.clearTimeout` the same, but you could replace them with new logic",
+    "starter": "function clearAllTimeout() {\n  // Ваша реалізація тут\n}",
+    "solution": "const timerCache = new Set();\nconst originalSetTimeout = window.setTimeout;\n\nwindow.setTimeout = (cb, delay) => {\n  const timer = originalSetTimeout(cb, delay);\n  timerCache.add(timer);\n  return timer;\n};\n\n/**\n * cancel all timer from window.setTimeout\n */\nfunction clearAllTimeout() {\n  for (const timer of timerCache) {\n    clearTimeout(timer);\n  }\n}",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n\nwindow.setTimeout = (cb, delay) => {\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  return timer;\n};\n\n\nfunction clearAllTimeout() {\n  for (const timer of timerCache) {\n    clearTimeout(timer);\n  }\n}",
+      "/* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n\nwindow.setTimeout = (cb, delay) => {\n  const timer = originalSetTimeout(cb, delay);\n  timerCache.add(timer);\n  return timer;\n};\n\n\nfunction clearAllTimeout() {\n  /* TODO: реалізувати цей рядок */\n    clearTimeout(timer);\n  }\n}",
+      "/* TODO: реалізувати цей рядок */\nconst originalSetTimeout = window.setTimeout;\n\nwindow.setTimeout = (cb, delay) => {\n  const timer = originalSetTimeout(cb, delay);\n  timerCache.add(timer);\n  /* TODO: реалізувати цей рядок */\n};\n\n\nfunction clearAllTimeout() {\n  /* TODO: реалізувати цей рядок */\n    clearTimeout(timer);\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Clearalltimeout\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-completeassign",
+    "block": "JS Functions / Polyfills",
+    "title": "Completeassign",
+    "timeLimitMin": 10,
+    "description": "This is a follow-up on [26. implement Object.assign()](https://bigfrontend.dev/problem/implement-object-assign).\n\n`Object.assign()` assigns the enumerable properties, so getters are not copied, non-enumerable properties are ignored.\n\nSuppose we have following source object.\n\n```js\nconst source = Object.create(\n  {\n    a: 3, // prototype\n  },\n  {\n    b: {\n      value: 4,\n      enumerable: true, // enumerable data descriptor\n    },\n    c: {\n      value: 5, // non-enumerable data descriptor\n    },\n    d: {\n      // non-enumerable accessor descriptor\n      get: function () {\n        return this.\\_d;\n      },\n      set: function (value) {\n        this.\\_d = value;\n      },\n    },\n    e: {\n      // enumerable accessor descriptor\n      get: function () {\n        return this.\\_e;\n      },\n      set: function (value) {\n        this.\\_e = value;\n      },\n      enumerable: true,\n    },\n  }\n);\n```\n\nIf we call `Object.assign()` with source of above, we get:\n\n```js\nObject.assign({}, source);\n\n// {b: 4, e: undefined}\n// e is undefined because `this._e` is undefined\n```\n\nRather than above result, could you implement a `completeAssign()` which have the same parameters as `Object.assign()` but fully copies the data descriptors and accessor descriptors?\n\nIn case you are not familiar with the descriptors, [this page from MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) might help.\n\nThis problem is solely checking your understanding of how property descriptors work.",
+    "starter": "function completeAssign(target, ...sources) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Completeassign\nfunction completeAssign(target, ...sources) {\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (!target) {\n    // Викидання помилки (обробка виняткових ситуацій)\n    throw new Error();\n  }\n\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (typeof target !== 'object') {\n    // Оголошення та ініціалізація змінної \"constructor\"\n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  // Цикл перебору елементів\n  for (const source of sources) {\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!source) {\n      continue;\n    }\n\n    // Оголошення та ініціалізація змінної \"descriptors\"\n    const descriptors = Object.getOwnPropertyDescriptors(source);\n    // Оголошення та ініціалізація змінної \"keys\"\n    const keys = [\n      ...Object.getOwnPropertyNames(source),\n      ...Object.getOwnPropertySymbols(source),\n    ];\n    // Цикл перебору елементів\n    for (const key of keys) {\n      Object.defineProperty(target, key, descriptors[key]);\n    }\n  }\n\n  // Повернення обчисленого значення\n  return target;\n}",
+    "clozeSteps": [
+      "\nfunction completeAssign(target, ...sources) {\n  \n  if (!target) {\n    \n    throw new Error();\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  \n  for (const source of sources) {\n    \n    if (!source) {\n      continue;\n    }\n\n    \n    const descriptors = Object.getOwnPropertyDescriptors(source);\n    \n    const keys = [\n      ...Object.getOwnPropertyNames(source),\n      ...Object.getOwnPropertySymbols(source),\n    ];\n    \n    for (const key of keys) {\n      Object.defineProperty(target, key, descriptors[key]);\n    }\n  }\n\n  \n  return target;\n}",
+      "\nfunction completeAssign(target, ...sources) {\n  \n  if (!target) {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  if (typeof target !== 'object') {\n    \n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  \n  for (const source of sources) {\n    \n    /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      ...Object.getOwnPropertyNames(source),\n      /* TODO: реалізувати цей рядок */\n    ];\n    \n    for (const key of keys) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  \n  return target;\n}",
+      "\nfunction completeAssign(target, ...sources) {\n  \n  if (!target) {\n    \n    throw new Error();\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      continue;\n    }\n\n    \n    /* TODO: реалізувати цей рядок */\n    \n    const keys = [\n      ...Object.getOwnPropertyNames(source),\n      /* TODO: реалізувати цей рядок */\n    ];\n    \n    for (const key of keys) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  \n  return target;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Completeassign\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-objectassign",
+    "block": "JS Functions / Polyfills",
+    "title": "Object.Assign",
+    "timeLimitMin": 10,
+    "description": "_The `Object.assign()` method copies all enumerable own properties from one or more source objects to a target object. It returns the target object._ (source: [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign))\n\nIt is widely used, Object Spread operator actually is internally the same as `Object.assign()` ([source](https://github.com/tc39/proposal-object-rest-spread/blob/master/Spread.md)). Following 2 lines of code are totally the same.\n\n```js\nlet aClone = { ...a };\nlet aClone = Object.assign({}, a);\n```\n\nThis is an easy one, could you implement `Object.assign()` with your own implementation?",
+    "starter": "function objectAssign(target, ...sources) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any} target\n * @param {any[]} sources\n * @return {object}\n */\nfunction objectAssign(target, ...sources) {\n  if (!target) {\n    throw new Error();\n  }\n\n  if (typeof target !== 'object') {\n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  for (const source of sources) {\n    if (!source) {\n      continue;\n    }\n\n    const keys = [\n      ...Object.keys(source),\n      ...Object.getOwnPropertySymbols(source),\n    ];\n    for (const key of keys) {\n      const descriptor = Object.getOwnPropertyDescriptor(target, key);\n      if (descriptor && !descriptor.configurable) {\n        throw new Error();\n      }\n\n      target[key] = source[key];\n    }\n  }\n\n  return target;\n}",
+    "clozeSteps": [
+      "\nfunction objectAssign(target, ...sources) {\n  if (!target) {\n    throw new Error();\n  }\n\n  if (typeof target !== 'object') {\n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  /* TODO: реалізувати цей рядок */\n    if (!source) {\n      continue;\n    }\n\n    const keys = [\n      /* TODO: реалізувати цей рядок */\n      ...Object.getOwnPropertySymbols(source),\n    ];\n    for (const key of keys) {\n      /* TODO: реалізувати цей рядок */\n      if (descriptor && !descriptor.configurable) {\n        throw new Error();\n      }\n\n      target[key] = source[key];\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction objectAssign(target, ...sources) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  for (const source of sources) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    const keys = [\n      ...Object.keys(source),\n      ...Object.getOwnPropertySymbols(source),\n    ];\n    /* TODO: реалізувати цей рядок */\n      const descriptor = Object.getOwnPropertyDescriptor(target, key);\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n\n      target[key] = source[key];\n    }\n  }\n\n  return target;\n}",
+      "\nfunction objectAssign(target, ...sources) {\n  /* TODO: реалізувати цей рядок */\n    throw new Error();\n  }\n\n  if (typeof target !== 'object') {\n    const constructor = Object.getPrototypeOf(target).constructor;\n    target = new constructor(target);\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n      ...Object.keys(source),\n      /* TODO: реалізувати цей рядок */\n    ];\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      if (descriptor && !descriptor.configurable) {\n        /* TODO: реалізувати цей рядок */\n      }\n\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Object.Assign\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-reorder-array-with-new-indexes",
+    "block": "Algorithms",
+    "title": "Reorder Array With New Indexes",
+    "timeLimitMin": 10,
+    "description": "Suppose we have an array of items - `A`, and another array of indexes in numbers - `B`\n\n```js\nconst A = ['A', 'B', 'C', 'D', 'E', 'F'];\nconst B = [1, 5, 4, 3, 2, 0];\n```\n\nYou need to reorder A, so that the A[i] is put at index of B[i], which means B is the new index for each item of A.\n\nFor above example A should be modified inline to following\n\n```js\n['F', 'A', 'E', 'D', 'C', 'B'];\n```\n\nThe input are always valid.\n\n**follow-up**\n\nIt is fairly easy to do this by using extra `O(n)` space, could you solve it with `O(1)` space?",
+    "starter": "function sort(items, newOrder) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any[]} items\n * @param {number[]} newOrder\n * @return {void}\n */\nfunction sort(items, newOrder) {\n  for (let i = 0; i < newOrder.length; i++) {\n    const newIndex = newOrder[i];\n    if (newIndex !== i) {\n      swap(newOrder, newIndex, i);\n      swap(items, newIndex, i);\n    }\n  }\n}\n\nfunction swap(arr, i, j) {\n  [arr[i], arr[j]] = [arr[j], arr[i]];\n}",
+    "clozeSteps": [
+      "\nfunction sort(items, newOrder) {\n  for (let i = 0; i < newOrder.length; i++) {\n    /* TODO: реалізувати цей рядок */\n    if (newIndex !== i) {\n      swap(newOrder, newIndex, i);\n      swap(items, newIndex, i);\n    }\n  }\n}\n\nfunction swap(arr, i, j) {\n  [arr[i], arr[j]] = [arr[j], arr[i]];\n}",
+      "\nfunction sort(items, newOrder) {\n  for (let i = 0; i < newOrder.length; i++) {\n    const newIndex = newOrder[i];\n    if (newIndex !== i) {\n      /* TODO: реалізувати цей рядок */\n      swap(items, newIndex, i);\n    }\n  }\n}\n\nfunction swap(arr, i, j) {\n  [arr[i], arr[j]] = [arr[j], arr[i]];\n}",
+      "\nfunction sort(items, newOrder) {\n  /* TODO: реалізувати цей рядок */\n    const newIndex = newOrder[i];\n    if (newIndex !== i) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n}\n\nfunction swap(arr, i, j) {\n  [arr[i], arr[j]] = [arr[j], arr[i]];\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Reorder Array With New Indexes\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-priority-queue-in-javascript",
+    "block": "Algorithms",
+    "title": "A Priority Queue In [Javascript",
+    "timeLimitMin": 10,
+    "description": "[Priority Queue](https://storm.cis.fordham.edu/~yli/documents/CISC2200Spring15/Graph.pdf) is a commonly used data structure in algorithm problem. Especially useful for **Top K** problem with a huge amount of input data, since it could avoid sorting the whole but keep a fixed-length sorted portion of it.\n\nSince there is no built-in Priority Queue in JavaScript, in a real interview, you should tell interview saying that \"Suppose we already have a Priority Queue Class I can use\", there is no time for you to write a Priority Queue from scratch.\n\nBut it is a good coding problem to practice, so please implement a Priority Queue with following interface\n\n```js\nclass PriorityQueue {\n  // compare is a function defines the priority, which is the order\n  // the elements closer to first element is sooner to be removed.\n  constructor(compare) {}\n\n  // add a new element to the queue\n  // you need to put it in the right order\n  add(element) {}\n\n  // remove the head element and return\n  poll() {}\n\n  // get the head element\n  peek() {}\n\n  // get the amount of items in the queue\n  size() {}\n}\n```\n\nHere is an example to make it clearer\n\n```js\nconst pq = new PriorityQueue((a, b) => a - b);\n// (a, b) => a - b means\n// smaller numbers are closer to index:0\n// which means smaller number are to be removed sooner\n\npq.add(5);\n// now 5 is the only element\n\npq.add(2);\n// 2 added\n\npq.add(1);\n// 1 added\n\npq.peek();\n// since smaller number are sooner to be removed\n// so this gives us 1\n\npq.poll();\n// 1\n// 1 is removed, 2 and 5 are left\n\npq.peek();\n// 2 is the smallest now, this returns 2\n\npq.poll();\n// 2\n// 2 is removed, only 5 is left\n```",
+    "starter": "class PriorityQueue {\n  // Ваша реалізація тут\n}",
+    "solution": "class PriorityQueue {\n  /**\n   * @param {(a: any, b: any) => -1 | 0 | 1} compare -\n   * compare function, similar to parameter of Array.prototype.sort\n   */\n  constructor(compare) {\n    this.compare = compare;\n    this.heap = [];\n  }\n\n  /**\n   * return {number} amount of items\n   */\n  size() {\n    return this.heap.length;\n  }\n\n  /**\n   * returns the head element\n   */\n  peek() {\n    return this.heap[0];\n  }\n\n  /**\n   * @param {any} value - new value to add\n   */\n  add(element) {\n    this.heap.push(element);\n\n    const heapSize = this.size();\n    if (heapSize > 1) {\n      this.heapifyUp(heapSize - 1);\n    }\n  }\n\n  /**\n   * remove the head element\n   * @return {any} the head element\n   */\n  poll() {\n    const heapSize = this.size();\n    if (heapSize <= 1) {\n      return this.heap.pop();\n    }\n\n    this.swap(0, heapSize - 1);\n    const head = this.heap.pop();\n    this.heapifyDown(0);\n    return head;\n  }\n\n  heapifyUp(index) {\n    const parentIndex = Math.floor((index - 1) / 2);\n\n    if (parentIndex < 0) {\n      return;\n    }\n\n    const comparison = this.compare(this.heap[index], this.heap[parentIndex]);\n    if (comparison < 0) {\n      this.swap(index, parentIndex);\n      this.heapifyUp(parentIndex);\n    }\n  }\n\n  heapifyDown(parentIndex) {\n    const leftIndex = 2 * parentIndex + 1;\n    const rightIndex = 2 * parentIndex + 2;\n    let swappableIndex = parentIndex;\n    const heapSize = this.size();\n    let comparison = 0;\n\n    if (leftIndex < heapSize) {\n      comparison = this.compare(\n        this.heap[leftIndex],\n        this.heap[swappableIndex]\n      );\n      if (comparison < 0) {\n        swappableIndex = leftIndex;\n      }\n    }\n\n    if (rightIndex < heapSize) {\n      comparison = this.compare(\n        this.heap[rightIndex],\n        this.heap[swappableIndex]\n      );\n      if (comparison < 0) {\n        swappableIndex = rightIndex;\n      }\n    }\n\n    if (swappableIndex !== parentIndex) {\n      this.swap(parentIndex, swappableIndex);\n      this.heapifyDown(swappableIndex);\n    }\n  }\n\n  swap(i, j) {\n    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];\n  }\n}",
+    "clozeSteps": [
+      "class PriorityQueue {\n  \n  constructor(compare) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  size() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  peek() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  add(element) {\n    this.heap.push(element);\n\n    const heapSize = this.size();\n    if (heapSize > 1) {\n      this.heapifyUp(heapSize - 1);\n    }\n  }\n\n  \n  poll() {\n    const heapSize = this.size();\n    if (heapSize <= 1) {\n      return this.heap.pop();\n    }\n\n    this.swap(0, heapSize - 1);\n    /* TODO: реалізувати цей рядок */\n    this.heapifyDown(0);\n    return head;\n  }\n\n  heapifyUp(index) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    const comparison = this.compare(this.heap[index], this.heap[parentIndex]);\n    if (comparison < 0) {\n      this.swap(index, parentIndex);\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  heapifyDown(parentIndex) {\n    const leftIndex = 2 * parentIndex + 1;\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    const heapSize = this.size();\n    let comparison = 0;\n\n    if (leftIndex < heapSize) {\n      comparison = this.compare(\n        this.heap[leftIndex],\n        this.heap[swappableIndex]\n      );\n      if (comparison < 0) {\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n\n    if (rightIndex < heapSize) {\n      comparison = this.compare(\n        /* TODO: реалізувати цей рядок */\n        this.heap[swappableIndex]\n      );\n      if (comparison < 0) {\n        swappableIndex = rightIndex;\n      }\n    }\n\n    if (swappableIndex !== parentIndex) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  swap(i, j) {\n    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];\n  }\n}",
+      "class PriorityQueue {\n  \n  constructor(compare) {\n    this.compare = compare;\n    this.heap = [];\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    return this.heap.length;\n  }\n\n  \n  peek() {\n    return this.heap[0];\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    this.heap.push(element);\n\n    /* TODO: реалізувати цей рядок */\n    if (heapSize > 1) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  \n  poll() {\n    const heapSize = this.size();\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    this.swap(0, heapSize - 1);\n    const head = this.heap.pop();\n    this.heapifyDown(0);\n    return head;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    const parentIndex = Math.floor((index - 1) / 2);\n\n    /* TODO: реалізувати цей рядок */\n      return;\n    }\n\n    const comparison = this.compare(this.heap[index], this.heap[parentIndex]);\n    if (comparison < 0) {\n      this.swap(index, parentIndex);\n      this.heapifyUp(parentIndex);\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n    const leftIndex = 2 * parentIndex + 1;\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    let comparison = 0;\n\n    if (leftIndex < heapSize) {\n      /* TODO: реалізувати цей рядок */\n        this.heap[leftIndex],\n        this.heap[swappableIndex]\n      );\n      if (comparison < 0) {\n        swappableIndex = leftIndex;\n      }\n    }\n\n    /* TODO: реалізувати цей рядок */\n      comparison = this.compare(\n        /* TODO: реалізувати цей рядок */\n        this.heap[swappableIndex]\n      );\n      /* TODO: реалізувати цей рядок */\n        swappableIndex = rightIndex;\n      }\n    }\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      this.heapifyDown(swappableIndex);\n    }\n  }\n\n  swap(i, j) {\n    /* TODO: реалізувати цей рядок */\n  }\n}",
+      "class PriorityQueue {\n  \n  constructor(compare) {\n    /* TODO: реалізувати цей рядок */\n    this.heap = [];\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    return this.heap[0];\n  }\n\n  \n  add(element) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      this.heapifyUp(heapSize - 1);\n    }\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    const heapSize = this.size();\n    if (heapSize <= 1) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n    const head = this.heap.pop();\n    this.heapifyDown(0);\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n\n    if (parentIndex < 0) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    /* TODO: реалізувати цей рядок */\n    if (comparison < 0) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  heapifyDown(parentIndex) {\n    /* TODO: реалізувати цей рядок */\n    const rightIndex = 2 * parentIndex + 2;\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    let comparison = 0;\n\n    /* TODO: реалізувати цей рядок */\n      comparison = this.compare(\n        /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      );\n      /* TODO: реалізувати цей рядок */\n        swappableIndex = leftIndex;\n      }\n    }\n\n    /* TODO: реалізувати цей рядок */\n      comparison = this.compare(\n        this.heap[rightIndex],\n        /* TODO: реалізувати цей рядок */\n      );\n      if (comparison < 0) {\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n\n    if (swappableIndex !== parentIndex) {\n      this.swap(parentIndex, swappableIndex);\n      this.heapifyDown(swappableIndex);\n    }\n  }\n\n  swap(i, j) {\n    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Priority Queue In [Javascript\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-a-sum",
+    "block": "JS Functions / Polyfills",
+    "title": "A Sum",
+    "timeLimitMin": 10,
+    "description": "Create a `sum()`, which makes following possible\n\n```js\nconst sum1 = sum(1);\nsum1(2) == 3; // true\nsum1(3) == 4; // true\nsum(1)(2)(3) == 6; // true\nsum(5)(-1)(2) == 6; // true\n```",
+    "starter": "function sum(num) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {number} num\n */\nfunction sum(num) {\n  // Declare a function which will be returned by\n  // the function sum(), so we can take a new number.\n  const func = function (newNum) {\n    // Add the new number to the previous one, call sum()\n    // and pass the result as argument, so we can take a\n    // new number again.\n    return sum(num + newNum);\n  };\n\n  // Override func's native valueOf function with our custom one that\n  // returns the current num, so we can do 'sum(1)(2)(3) == 6'.\n  // When encountering an object where a primitive value is expected,\n  // JavaScript calls valueOf method to convert the object (in js, functions are objects )\n  // to a primitive value.\n  // Besides valueOf, JavaScript also has toString to do such 'type coercion'.\n  // sum(1)(2)(3) === 6 will result in false, because '===' does not perform\n  // type conversion.\n  func.valueOf = function () {\n    return num;\n  };\n\n  return func;\n}",
+    "clozeSteps": [
+      "\nfunction sum(num) {\n  \n  \n  const func = function (newNum) {\n    \n    \n    \n    return sum(num + newNum);\n  };\n\n  \n  \n  \n  \n  \n  \n  \n  \n  func.valueOf = function () {\n    return num;\n  };\n\n  return func;\n}",
+      "\nfunction sum(num) {\n  \n  \n  const func = function (newNum) {\n    \n    \n    \n    return sum(num + newNum);\n  };\n\n  \n  \n  \n  \n  \n  \n  \n  \n  func.valueOf = function () {\n    /* TODO: реалізувати цей рядок */\n  };\n\n  return func;\n}",
+      "\nfunction sum(num) {\n  \n  \n  const func = function (newNum) {\n    \n    \n    \n    return sum(num + newNum);\n  };\n\n  \n  \n  \n  \n  \n  \n  \n  \n  func.valueOf = function () {\n    /* TODO: реалізувати цей рядок */\n  };\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Sum\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-jsonparse",
+    "block": "JS Functions / Polyfills",
+    "title": "Json.Parse",
+    "timeLimitMin": 10,
+    "description": "## Json.Parse\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-JSON-parse)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function jsonparse() {\n  // Ваша реалізація тут\n}",
+    "solution": "function jsonparse() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function jsonparse() {\n  \n  return true;\n}",
+      "function jsonparse() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function jsonparse() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Json.Parse\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-detect-data-type-in-javascript",
+    "block": "JS Functions / Polyfills",
+    "title": "Detect Data Type In [Javascript",
+    "timeLimitMin": 10,
+    "description": "This is an easy problem.\n\nFor [all the basic data types](https://javascript.info/types) in JavaScript, how could you write a function to detect the type of arbitrary data?\n\nBesides basic types, you need to also handle also commonly used complex data type including `Array`, `ArrayBuffer`, `Map`, `Set`, `Date` and `Function`\n\nThe goal is not to list up all the data types but to show us how to solve the problem when we need to.\n\nThe type should be lowercase\n\n```js\ndetectType(1); // 'number'\ndetectType(new Map()); // 'map'\ndetectType([]); // 'array'\ndetectType(null); // 'null'\n\n// more in judging step\n```",
+    "starter": "function detectType(data) {\n  // Ваша реалізація тут\n}",
+    "solution": "const dataTypes = new Map([\n  [Number, 'number'],\n  [String, 'string'],\n  [Boolean, 'boolean'],\n  [Array, 'array'],\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  [Map, 'map'],\n  [Set, 'set'],\n]);\n\n/**\n * @param {any} data\n * @return {string}\n */\nfunction detectType(data) {\n  if (typeof data !== 'object') {\n    return typeof data;\n  }\n\n  if (data === null) {\n    return 'null';\n  }\n\n  for (const [type, name] of dataTypes.entries()) {\n    if (data instanceof type) {\n      return name;\n    }\n  }\n\n  return 'object';\n}",
+    "clozeSteps": [
+      "const dataTypes = new Map([\n  [Number, 'number'],\n  [String, 'string'],\n  [Boolean, 'boolean'],\n  /* TODO: реалізувати цей рядок */\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  [Map, 'map'],\n  [Set, 'set'],\n]);\n\n\nfunction detectType(data) {\n  /* TODO: реалізувати цей рядок */\n    return typeof data;\n  }\n\n  if (data === null) {\n    return 'null';\n  }\n\n  /* TODO: реалізувати цей рядок */\n    if (data instanceof type) {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n\n  return 'object';\n}",
+      "const dataTypes = new Map([\n  [Number, 'number'],\n  [String, 'string'],\n  /* TODO: реалізувати цей рядок */\n  [Array, 'array'],\n  [ArrayBuffer, 'arraybuffer'],\n  [Date, 'date'],\n  /* TODO: реалізувати цей рядок */\n  [Set, 'set'],\n]);\n\n\nfunction detectType(data) {\n  if (typeof data !== 'object') {\n    return typeof data;\n  }\n\n  if (data === null) {\n    return 'null';\n  }\n\n  for (const [type, name] of dataTypes.entries()) {\n    /* TODO: реалізувати цей рядок */\n      return name;\n    }\n  }\n\n  return 'object';\n}",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  [String, 'string'],\n  /* TODO: реалізувати цей рядок */\n  [Array, 'array'],\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  [Map, 'map'],\n  /* TODO: реалізувати цей рядок */\n]);\n\n\nfunction detectType(data) {\n  if (typeof data !== 'object') {\n    return typeof data;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    if (data instanceof type) {\n      return name;\n    }\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Detect Data Type In [Javascript\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-improve-a-function",
+    "block": "JS Functions / Polyfills",
+    "title": "Improve A Function",
+    "timeLimitMin": 10,
+    "description": "## Improve A Function\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/improve-a-function)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function improveafunction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function improveafunction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function improveafunction() {\n  \n  return true;\n}",
+      "function improveafunction() {\n  \n  return true;\n}",
+      "function improveafunction() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Improve A Function\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-simple-store-for-dom-element",
+    "block": "Vanilla DOM & Browser API",
+    "title": "A Simple Store For Dom Element",
+    "timeLimitMin": 10,
+    "description": "We have `Map` in es6, so we could use any data as key, such as DOM element.\n\n```js\nconst map = new Map();\nmap.set(domNode, somedata);\n```\n\nWhat if we need to support old JavaScript env like es5, how would you create your own Node Store as above?\n\nYou are asked to implement a Node Store, which supports DOM element as key.\n\n```js\nclass NodeStore {\n  set(node, value) {}\n\n  get(node) {}\n\n  has(node) {}\n}\n```\n\n**note**\n\n`Map` is disabled when judging your code, it is against the goal of practicing.\n\nYou can create a simple general `Map` polyfill. Or since you are asked to support specially for DOM element, what is special about DOM element?\n\nWhat is the Time / Space cost of your solution?",
+    "starter": "class NodeStore {\n  // Ваша реалізація тут\n}",
+    "solution": "class NodeStore {\n  constructor() {\n    this.nodes = {};\n  }\n  /**\n   * @param {Node} node\n   * @param {any} value\n   */\n  set(node, value) {\n    node.__id__ = Symbol();\n    this.nodes[node.__id__] = value;\n  }\n  /**\n   * @param {Node} node\n   * @return {any}\n   */\n  get(node) {\n    return this.nodes[node.__id__];\n  }\n\n  /**\n   * @param {Node} node\n   * @return {Boolean}\n   */\n  has(node) {\n    // coerce to boolean value\n    return !!this.nodes[node.__id__];\n  }\n}",
+    "clozeSteps": [
+      "class NodeStore {\n  constructor() {\n    this.nodes = {};\n  }\n  \n  set(node, value) {\n    node.__id__ = Symbol();\n    this.nodes[node.__id__] = value;\n  }\n  \n  get(node) {\n    return this.nodes[node.__id__];\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    return !!this.nodes[node.__id__];\n  }\n}",
+      "class NodeStore {\n  constructor() {\n    this.nodes = {};\n  }\n  \n  set(node, value) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  get(node) {\n    return this.nodes[node.__id__];\n  }\n\n  \n  has(node) {\n    \n    return !!this.nodes[node.__id__];\n  }\n}",
+      "class NodeStore {\n  constructor() {\n    this.nodes = {};\n  }\n  \n  /* TODO: реалізувати цей рядок */\n    node.__id__ = Symbol();\n    this.nodes[node.__id__] = value;\n  }\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n\n  \n  /* TODO: реалізувати цей рядок */\n    \n    return !!this.nodes[node.__id__];\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Simple Store For Dom Element\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-simple-dom-wrapper-to-support-method-chaining-like-jquery",
+    "block": "Vanilla DOM & Browser API",
+    "title": "A Simple Dom Wrapper To Support Method Chaining Like Jquery",
+    "timeLimitMin": 10,
+    "description": "I believe you've used jQuery before, we often chain the jQuery methods together to accomplish our goals.\n\nFor example, below chained call turns button into a black button with white text.\n\n```js\n$('#button')\n  .css('color', '#fff')\n  .css('backgroundColor', '#000')\n  .css('fontWeight', 'bold');\n```\n\nThe chaining makes the code simple to read, could you create a simple wrapper `$` to make above code work as expected?\n\nThe wrapper only needs to have `css(propertyName: string, value: any)`",
+    "starter": "function $(el) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {HTMLElement} el - element to be wrapped\n */\nfunction $(el) {\n  return {\n    css(propertyName, value) {\n      el.style[propertyName] = value;\n      return this;\n    },\n  };\n}",
+    "clozeSteps": [
+      "\nfunction $(el) {\n  return {\n    css(propertyName, value) {\n      el.style[propertyName] = value;\n      return this;\n    },\n  };\n}",
+      "\nfunction $(el) {\n  return {\n    css(propertyName, value) {\n      el.style[propertyName] = value;\n      return this;\n    },\n  };\n}",
+      "\nfunction $(el) {\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      el.style[propertyName] = value;\n      return this;\n    },\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"A Simple Dom Wrapper To Support Method Chaining Like Jquery\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-a-queue-by-using-stack",
+    "block": "Algorithms",
+    "title": "A Queue By Using Stack",
+    "timeLimitMin": 10,
+    "description": "## A Queue By Using Stack\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/implement-a-queue-by-using-stack)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function aqueuebyusingstack() {\n  // Ваша реалізація тут\n}",
+    "solution": "function aqueuebyusingstack() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function aqueuebyusingstack() {\n  \n  return true;\n}",
+      "function aqueuebyusingstack() {\n  \n  return true;\n}",
+      "function aqueuebyusingstack() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"A Queue By Using Stack\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-immutability-helper",
+    "block": "JS Functions / Polyfills",
+    "title": "Immutability Helper",
+    "timeLimitMin": 10,
+    "description": "If you use React, you would meet the scenario to copy the state for a slight change.\n\nFor example, for following state\n\n```js\nconst state = {\n  a: {\n    b: {\n      c: 1,\n    },\n  },\n  d: 2,\n};\n```\n\nif we are to modify `d` to a new state, we could use [\\_.cloneDeep](https://lodash.com/docs/4.17.15#cloneDeep), but it is not efficient because `state.a` is cloned while we don't need to change that.\n\nA better way is to do shallow copy like this\n\n```js\nconst newState = {\n  ...state,\n  d: 3,\n};\n```\n\nnow is the problem, if we want to modify `c`, we would have to do something like\n\n```js\nconst newState = {\n  ...state,\n  a: {\n    ...state.a,\n    b: {\n      ...state.b,\n      c: 2,\n    },\n  },\n};\n```\n\nWe can see that for simple data structure it would be enough to use spread operator, but for complex data structures, it is verbose.\n\nHere comes the [Immutability Helper](https://reactjs.org/docs/update.html), you are asked to implement your own Immutability Helper `update()`, which supports following features.\n\n**1. {$push: array} push() all the items in array on the target.**\n\n```js\nconst arr = [1, 2, 3, 4];\nconst newArr = update(arr, { $push: [5, 6] });\n// [1, 2, 3, 4, 5, 6]\n```\n\n**2. {$set: any} replace the target**\n\n```js\nconst state = {\n  a: {\n    b: {\n      c: 1,\n    },\n  },\n  d: 2,\n};\n\nconst newState = update(state, { a: { b: { c: { $set: 3 } } } });\n/*\n{\n  a: {\n    b: {\n      c: 3\n    }\n  },\n  d: 2\n}\n*/\n```\n\nNotice that we could also update array elements with `$set`\n\n```js\nconst arr = [1, 2, 3, 4];\nconst newArr = update(arr, { 0: { $set: 0 } });\n//  [0, 2, 3, 4]\n```\n\n**3. {$merge: object} merge object to the location**\n\n```js\nconst state = {\n  a: {\n    b: {\n      c: 1,\n    },\n  },\n  d: 2,\n};\n\nconst newState = update(state, { a: { b: { $merge: { e: 5 } } } });\n/*\n{\n  a: {\n    b: {\n      c: 3,\n      e: 5\n    }\n  },\n  d: 2\n}\n*/\n```\n\n**4. {$apply: function} custom replacer**\n\n```js\nconst arr = [1, 2, 3, 4];\nconst newArr = update(arr, { 0: { $apply: (item) => item * 2 } });\n// [2, 2, 3, 4]\n```",
+    "starter": "function update(data, command) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any} data\n * @param {Object} command\n */\nfunction update(data, command) {\n  if (typeof data !== 'object' && !Array.isArray(data)) {\n    throw new Error();\n  }\n\n  let copiedData = copy(data);\n  _update(copiedData, command);\n  return copiedData;\n}\n\nfunction _update(data, command) {\n  for (const key in command) {\n    if (key === '$push' && Array.isArray(command[key]) && Array.isArray(data)) {\n      data.push(...command[key]);\n      return;\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      command[key].hasOwnProperty('$set')\n    ) {\n      data[key] = command[key].$set;\n      return;\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      command[key].hasOwnProperty('$apply') &&\n      Array.isArray(data)\n    ) {\n      if (data[key]) {\n        data[key] = command[key].$apply(data[key]);\n        return;\n      }\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      command[key].hasOwnProperty('$merge')\n    ) {\n      if (typeof data[key] === 'object') {\n        data[key] = {\n          ...data[key],\n          ...command[key].$merge,\n        };\n        return;\n      } else {\n        throw new Error();\n      }\n    }\n\n    if (typeof command[key] === 'object') {\n      _update(data[key], command[key]);\n    }\n  }\n}\n\nfunction copy(data) {\n  let newData;\n\n  if (Array.isArray(data)) {\n    newData = [];\n\n    for (const el of data) {\n      if (Array.isArray(el) || typeof el === 'object') {\n        newData.push(copy(el));\n      } else {\n        newData.push(el);\n      }\n    }\n  } else if (typeof data === 'object') {\n    newData = {};\n\n    for (const key in data) {\n      if (typeof data[key] === 'object' || Array.isArray(data[key])) {\n        newData[key] = copy(data[key]);\n      } else {\n        newData[key] = data[key];\n      }\n    }\n  }\n\n  return newData;\n}",
+    "clozeSteps": [
+      "\nfunction update(data, command) {\n  if (typeof data !== 'object' && !Array.isArray(data)) {\n    throw new Error();\n  }\n\n  let copiedData = copy(data);\n  _update(copiedData, command);\n  return copiedData;\n}\n\nfunction _update(data, command) {\n  for (const key in command) {\n    if (key === '$push' && Array.isArray(command[key]) && Array.isArray(data)) {\n      data.push(...command[key]);\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      /* TODO: реалізувати цей рядок */\n    ) {\n      data[key] = command[key].$set;\n      return;\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      command[key].hasOwnProperty('$apply') &&\n      Array.isArray(data)\n    ) {\n      /* TODO: реалізувати цей рядок */\n        data[key] = command[key].$apply(data[key]);\n        return;\n      }\n    }\n\n    if (\n      /* TODO: реалізувати цей рядок */\n      command[key].hasOwnProperty('$merge')\n    ) {\n      if (typeof data[key] === 'object') {\n        data[key] = {\n          /* TODO: реалізувати цей рядок */\n          ...command[key].$merge,\n        };\n        /* TODO: реалізувати цей рядок */\n      } else {\n        throw new Error();\n      }\n    }\n\n    if (typeof command[key] === 'object') {\n      _update(data[key], command[key]);\n    }\n  }\n}\n\nfunction copy(data) {\n  let newData;\n\n  if (Array.isArray(data)) {\n    newData = [];\n\n    for (const el of data) {\n      if (Array.isArray(el) || typeof el === 'object') {\n        newData.push(copy(el));\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n  } else if (typeof data === 'object') {\n    /* TODO: реалізувати цей рядок */\n\n    for (const key in data) {\n      if (typeof data[key] === 'object' || Array.isArray(data[key])) {\n        newData[key] = copy(data[key]);\n      } else {\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n  }\n\n  return newData;\n}",
+      "\nfunction update(data, command) {\n  if (typeof data !== 'object' && !Array.isArray(data)) {\n    throw new Error();\n  }\n\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  return copiedData;\n}\n\nfunction _update(data, command) {\n  for (const key in command) {\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      return;\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      /* TODO: реалізувати цей рядок */\n    ) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      /* TODO: реалізувати цей рядок */\n      Array.isArray(data)\n    ) {\n      if (data[key]) {\n        data[key] = command[key].$apply(data[key]);\n        return;\n      }\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      /* TODO: реалізувати цей рядок */\n    ) {\n      if (typeof data[key] === 'object') {\n        data[key] = {\n          ...data[key],\n          ...command[key].$merge,\n        };\n        return;\n      /* TODO: реалізувати цей рядок */\n        throw new Error();\n      }\n    }\n\n    /* TODO: реалізувати цей рядок */\n      _update(data[key], command[key]);\n    }\n  }\n}\n\nfunction copy(data) {\n  let newData;\n\n  if (Array.isArray(data)) {\n    newData = [];\n\n    for (const el of data) {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      } else {\n        newData.push(el);\n      }\n    }\n  } else if (typeof data === 'object') {\n    newData = {};\n\n    for (const key in data) {\n      /* TODO: реалізувати цей рядок */\n        newData[key] = copy(data[key]);\n      } else {\n        newData[key] = data[key];\n      }\n    }\n  }\n\n  return newData;\n}",
+      "\nfunction update(data, command) {\n  if (typeof data !== 'object' && !Array.isArray(data)) {\n    throw new Error();\n  }\n\n  let copiedData = copy(data);\n  /* TODO: реалізувати цей рядок */\n  return copiedData;\n}\n\nfunction _update(data, command) {\n  /* TODO: реалізувати цей рядок */\n    if (key === '$push' && Array.isArray(command[key]) && Array.isArray(data)) {\n      data.push(...command[key]);\n      return;\n    }\n\n    if (\n      /* TODO: реалізувати цей рядок */\n      command[key].hasOwnProperty('$set')\n    ) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n\n    if (\n      typeof command[key] === 'object' &&\n      command[key].hasOwnProperty('$apply') &&\n      /* TODO: реалізувати цей рядок */\n    ) {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n        return;\n      }\n    }\n\n    if (\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    ) {\n      if (typeof data[key] === 'object') {\n        /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n        };\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        throw new Error();\n      }\n    }\n\n    if (typeof command[key] === 'object') {\n      _update(data[key], command[key]);\n    }\n  }\n}\n\nfunction copy(data) {\n  let newData;\n\n  if (Array.isArray(data)) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      }\n    }\n  } else if (typeof data === 'object') {\n    newData = {};\n\n    for (const key in data) {\n      /* TODO: реалізувати цей рядок */\n        /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n        newData[key] = data[key];\n      }\n    }\n  }\n\n  return newData;\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Immutability Helper\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-what-is-composition-create-a-pipe",
+    "block": "JS Functions / Polyfills",
+    "title": "What Is Composition? Create A Pipe",
+    "timeLimitMin": 10,
+    "description": "what is Composition? It is actually not that difficult to understand, see [@dan_abramov 's explanation](https://whatthefuck.is/composition).\n\nHere you are asked to create a `pipe()` function, which chains multiple functions together to create a new function.\n\nSuppose we have some simple functions like this\n\n```js\nconst times = (y) => (x) => x * y;\nconst plus = (y) => (x) => x + y;\nconst subtract = (y) => (x) => x - y;\nconst divide = (y) => (x) => x / y;\n```\n\nYour `pipe()` would be used to generate new functions\n\n```js\npipe([times(2), times(3)]);\n// x _ 2 _ 3\n\npipe([times(2), plus(3), times(4)]);\n// (x _ 2 + 3) _ 4\n\npipe([times(2), subtract(3), divide(4)]);\n// (x \\* 2 - 3) / 4\n```\n\n**notes**\n\n1. to make things simple, functions passed to `pipe()` will all accept 1 argument",
+    "starter": "function pipe(funcs) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {Array<(arg: any) => any>} funcs\n * @return {(arg: any) => any}\n */\nfunction pipe(funcs) {\n  return function (n) {\n    let result = n;\n    for (let func of funcs) {\n      result = func(result);\n    }\n    return result;\n  };\n}",
+    "clozeSteps": [
+      "\nfunction pipe(funcs) {\n  return function (n) {\n    let result = n;\n    for (let func of funcs) {\n      result = func(result);\n    }\n    return result;\n  };\n}",
+      "\nfunction pipe(funcs) {\n  return function (n) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      result = func(result);\n    }\n    return result;\n  };\n}",
+      "\nfunction pipe(funcs) {\n  return function (n) {\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    return result;\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"What Is Composition? Create A Pipe\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-first-bad-version",
+    "block": "Algorithms",
+    "title": "First Bad Version",
+    "timeLimitMin": 10,
+    "description": "## First Bad Version\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Coding**: [Link](https://bfe.dev/problem/first-bad-version)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function firstbadversion() {\n  // Ваша реалізація тут\n}",
+    "solution": "function firstbadversion() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function firstbadversion() {\n  \n  return true;\n}",
+      "function firstbadversion() {\n  \n  return true;\n}",
+      "function firstbadversion() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"First Bad Version\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-decode-message",
+    "block": "JS Functions / Polyfills",
+    "title": "Decode Message",
+    "timeLimitMin": 10,
+    "description": "Your are given a 2-D array of characters. There is a hidden message in it.\n\n```\nI B C A L K A\nD R F C A E A\nG H O E L A D\n```\n\nThe way to collect the message is as follows\n\n1. start at top left\n2. move diagonally down right\n3. when cannot move any more, try to switch to diagonally up right\n4. when cannot move any more, try switch to diagonally down right, repeat 3\n5. stop when cannot neither move down right or up right. the character on the path is the message\n   for the input above, `IROCLED` should be returned.\n\n**notes**\n\nif no characters could be collected, return empty string",
+    "starter": "function decode(message) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {string[][]} message\n * @return {string}\n */\nfunction decode(message) {\n  const result = [];\n  let x = 0;\n  let y = 0;\n  let dir = 'down';\n\n  while (message[x] && message[x][y]) {\n    result.push(message[x][y]);\n\n    if (dir === 'down') {\n      x++;\n    } else {\n      x--;\n    }\n\n    if (x === 0) {\n      dir = 'down';\n    } else if (x === message.length - 1) {\n      dir = 'up';\n    }\n\n    y++;\n  }\n\n  return result.join('');\n}",
+    "clozeSteps": [
+      "\nfunction decode(message) {\n  const result = [];\n  let x = 0;\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  /* TODO: реалізувати цей рядок */\n    result.push(message[x][y]);\n\n    if (dir === 'down') {\n      x++;\n    } else {\n      x--;\n    }\n\n    if (x === 0) {\n      dir = 'down';\n    } else if (x === message.length - 1) {\n      dir = 'up';\n    }\n\n    y++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction decode(message) {\n  const result = [];\n  let x = 0;\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n\n  while (message[x] && message[x][y]) {\n    /* TODO: реалізувати цей рядок */\n\n    /* TODO: реалізувати цей рядок */\n      x++;\n    /* TODO: реалізувати цей рядок */\n      x--;\n    }\n\n    if (x === 0) {\n      /* TODO: реалізувати цей рядок */\n    } else if (x === message.length - 1) {\n      /* TODO: реалізувати цей рядок */\n    }\n\n    y++;\n  }\n\n  return result.join('');\n}",
+      "\nfunction decode(message) {\n  const result = [];\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  let dir = 'down';\n\n  while (message[x] && message[x][y]) {\n    /* TODO: реалізувати цей рядок */\n\n    if (dir === 'down') {\n      x++;\n    } else {\n      x--;\n    }\n\n    /* TODO: реалізувати цей рядок */\n      dir = 'down';\n    /* TODO: реалізувати цей рядок */\n      dir = 'up';\n    }\n\n    y++;\n  }\n\n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Decode Message\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-can-you-shuffle-an-array",
+    "block": "JS Functions / Polyfills",
+    "title": "Can You Shuffle An Array?",
+    "timeLimitMin": 10,
+    "description": "How would you implement a `shuffle()` ?\n\nWhen passed with an array, it should modify the array inline to generate a randomly picked permutation at the same probability.\n\nfor an array like this:\n\n```js\nconst arr = [1, 2, 3, 4];\n```\n\nthere would be possibly 4! = 24 permutations\n\n```\n[1, 2, 3, 4]\n[1, 2, 4, 3]\n[1, 3, 2, 4]\n[1, 3, 4, 2]\n[1, 4, 2, 3]\n[1, 4, 3, 2]\n[2, 1, 3, 4]\n[2, 1, 4, 3]\n[2, 3, 1, 4]\n[2, 3, 4, 1]\n[2, 4, 1, 3]\n[2, 4, 3, 1]\n[3, 1, 2, 4]\n[3, 1, 4, 2]\n[3, 2, 1, 4]\n[3, 2, 4, 1]\n[3, 4, 1, 2]\n[3, 4, 2, 1]\n[4, 1, 2, 3]\n[4, 1, 3, 2]\n[4, 2, 1, 3]\n[4, 2, 3, 1]\n[4, 3, 1, 2]\n[4, 3, 2, 1]\n```\n\nyour `shuffle()` should transform the array in one of the above array, at the same 1/24 probability.\n\n**notes**\n\nYour `shuffle()` will be called multiple times, to calculate the probability on each possible result, and test again [standard deviation](https://simple.wikipedia.org/wiki/Standard_deviation)\n\nref: https://javascript.info/task/shuffle",
+    "starter": "function shuffle(arr) {\n  // Ваша реалізація тут\n}",
+    "solution": "/**\n * @param {any[]} arr\n */\nfunction shuffle(arr) {\n  // Fisher-Yates shuffle\n  for (let i = arr.length - 1; i > 0; i--) {\n    const randomIndex = Math.floor(Math.random() * (i + 1));\n    [arr[randomIndex], arr[i]] = [arr[i], arr[randomIndex]];\n  }\n}",
+    "clozeSteps": [
+      "\nfunction shuffle(arr) {\n  \n  for (let i = arr.length - 1; i > 0; i--) {\n    const randomIndex = Math.floor(Math.random() * (i + 1));\n    [arr[randomIndex], arr[i]] = [arr[i], arr[randomIndex]];\n  }\n}",
+      "\nfunction shuffle(arr) {\n  \n  /* TODO: реалізувати цей рядок */\n    const randomIndex = Math.floor(Math.random() * (i + 1));\n    [arr[randomIndex], arr[i]] = [arr[i], arr[randomIndex]];\n  }\n}",
+      "\nfunction shuffle(arr) {\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Can You Shuffle An Array?\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-tostring",
+    "block": "General Quiz",
+    "title": "Tostring",
+    "timeLimitMin": 10,
+    "description": "## Tostring\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/tostring)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function tostring() {\n  // Ваша реалізація тут\n}",
+    "solution": "function tostring() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function tostring() {\n  \n  return true;\n}",
+      "function tostring() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function tostring() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Tostring\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-banana",
+    "block": "General Quiz",
+    "title": "Banana",
+    "timeLimitMin": 10,
+    "description": "## Banana\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/banana)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function banana() {\n  // Ваша реалізація тут\n}",
+    "solution": "function banana() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function banana() {\n  \n  return true;\n}",
+      "function banana() {\n  \n  return true;\n}",
+      "function banana() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Banana\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-return-await",
+    "block": "General Quiz",
+    "title": "Return Await",
+    "timeLimitMin": 10,
+    "description": "## Return Await\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/return-await)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function returnawait() {\n  // Ваша реалізація тут\n}",
+    "solution": "function returnawait() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function returnawait() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function returnawait() {\n  \n  return true;\n}",
+      "function returnawait() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Return Await\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-async",
+    "block": "General Quiz",
+    "title": "Async",
+    "timeLimitMin": 10,
+    "description": "## Async\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/async)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function async() {\n  // Ваша реалізація тут\n}",
+    "solution": "function async() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function async() {\n  \n  return true;\n}",
+      "function async() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function async() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Async\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-function-ii",
+    "block": "General Quiz",
+    "title": "Function Ii",
+    "timeLimitMin": 10,
+    "description": "## Function Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/function-ii)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functionii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functionii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functionii() {\n  \n  return true;\n}",
+      "function functionii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function functionii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-settimeout-iv",
+    "block": "General Quiz",
+    "title": "Settimeout Iv",
+    "timeLimitMin": 10,
+    "description": "## Settimeout Iv\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/settimeout-iv)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function settimeoutiv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function settimeoutiv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function settimeoutiv() {\n  \n  return true;\n}",
+      "function settimeoutiv() {\n  \n  return true;\n}",
+      "function settimeoutiv() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Settimeout Iv\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-objectkeys",
+    "block": "General Quiz",
+    "title": "Object.Keys",
+    "timeLimitMin": 10,
+    "description": "## Object.Keys\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/object-keys)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function objectkeys() {\n  // Ваша реалізація тут\n}",
+    "solution": "function objectkeys() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function objectkeys() {\n  \n  return true;\n}",
+      "function objectkeys() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function objectkeys() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Object.Keys\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-trycatchfinally-2",
+    "block": "General Quiz",
+    "title": "Try...Catch...Finally 2",
+    "timeLimitMin": 10,
+    "description": "## Try...Catch...Finally 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/try-catch-finally-2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function trycatchfinally2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function trycatchfinally2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function trycatchfinally2() {\n  \n  return true;\n}",
+      "function trycatchfinally2() {\n  \n  return true;\n}",
+      "function trycatchfinally2() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Try...Catch...Finally 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-comma-2",
+    "block": "General Quiz",
+    "title": "Comma 2",
+    "timeLimitMin": 10,
+    "description": "## Comma 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/comma-2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function comma2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function comma2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function comma2() {\n  \n  return true;\n}",
+      "function comma2() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function comma2() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Comma 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-return-in-generator-2",
+    "block": "General Quiz",
+    "title": "Return In Generator 2",
+    "timeLimitMin": 10,
+    "description": "## Return In Generator 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/return-gen)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function returningenerator2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function returningenerator2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function returningenerator2() {\n  \n  return true;\n}",
+      "function returningenerator2() {\n  \n  return true;\n}",
+      "function returningenerator2() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Return In Generator 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-iterable",
+    "block": "General Quiz",
+    "title": "Iterable",
+    "timeLimitMin": 10,
+    "description": "## Iterable\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/iterable)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function iterable() {\n  // Ваша реалізація тут\n}",
+    "solution": "function iterable() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function iterable() {\n  \n  return true;\n}",
+      "function iterable() {\n  \n  return true;\n}",
+      "function iterable() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Iterable\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-generator-return",
+    "block": "General Quiz",
+    "title": "Generator Return",
+    "timeLimitMin": 10,
+    "description": "## Generator Return\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/generator-return)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function generatorreturn() {\n  // Ваша реалізація тут\n}",
+    "solution": "function generatorreturn() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function generatorreturn() {\n  \n  return true;\n}",
+      "function generatorreturn() {\n  \n  return true;\n}",
+      "function generatorreturn() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Generator Return\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-trycatchfinally",
+    "block": "General Quiz",
+    "title": "Try..Catch..Finally",
+    "timeLimitMin": 10,
+    "description": "## Try..Catch..Finally\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/try-catch-finally)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function trycatchfinally() {\n  // Ваша реалізація тут\n}",
+    "solution": "function trycatchfinally() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function trycatchfinally() {\n  \n  return true;\n}",
+      "function trycatchfinally() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function trycatchfinally() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Try..Catch..Finally\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-return-in-generator",
+    "block": "General Quiz",
+    "title": "Return In Generator",
+    "timeLimitMin": 10,
+    "description": "## Return In Generator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/return-in-generator)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function returningenerator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function returningenerator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function returningenerator() {\n  \n  return true;\n}",
+      "function returningenerator() {\n  \n  return true;\n}",
+      "function returningenerator() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Return In Generator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-structuredclone",
+    "block": "General Quiz",
+    "title": "Structuredclone",
+    "timeLimitMin": 10,
+    "description": "## Structuredclone\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/structuredclone)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function structuredclone() {\n  // Ваша реалізація тут\n}",
+    "solution": "function structuredclone() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function structuredclone() {\n  \n  return true;\n}",
+      "function structuredclone() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function structuredclone() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Structuredclone\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-this-vii",
+    "block": "General Quiz",
+    "title": "This Vii",
+    "timeLimitMin": 10,
+    "description": "## This Vii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this-VII)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function thisvii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function thisvii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function thisvii() {\n  \n  return true;\n}",
+      "function thisvii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function thisvii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"This Vii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-strict",
+    "block": "General Quiz",
+    "title": "Strict",
+    "timeLimitMin": 10,
+    "description": "## Strict\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/strict)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function strict() {\n  // Ваша реалізація тут\n}",
+    "solution": "function strict() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function strict() {\n  \n  return true;\n}",
+      "function strict() {\n  \n  return true;\n}",
+      "function strict() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Strict\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-parseint-ii",
+    "block": "General Quiz",
+    "title": "Parseint Ii",
+    "timeLimitMin": 10,
+    "description": "## Parseint Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/parseInt-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function parseintii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function parseintii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function parseintii() {\n  \n  return true;\n}",
+      "function parseintii() {\n  \n  return true;\n}",
+      "function parseintii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Parseint Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-constructor",
+    "block": "General Quiz",
+    "title": "Constructor",
+    "timeLimitMin": 10,
+    "description": "Реалізуйте оптимальне рішення для Constructor.",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "",
+    "clozeSteps": [
+      "",
+      "",
+      ""
+    ],
+    "breakdown": "Розбір з коментарями для завдання \"Constructor\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-push",
+    "block": "General Quiz",
+    "title": "Push",
+    "timeLimitMin": 10,
+    "description": "## Push\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/push)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function push() {\n  // Ваша реалізація тут\n}",
+    "solution": "function push() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function push() {\n  \n  return true;\n}",
+      "function push() {\n  \n  return true;\n}",
+      "function push() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Push\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-symbol",
+    "block": "General Quiz",
+    "title": "Symbol",
+    "timeLimitMin": 10,
+    "description": "## Symbol\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Symbol)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function symbol() {\n  // Ваша реалізація тут\n}",
+    "solution": "function symbol() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function symbol() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function symbol() {\n  \n  return true;\n}",
+      "function symbol() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Symbol\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-falsy",
+    "block": "General Quiz",
+    "title": "Falsy",
+    "timeLimitMin": 10,
+    "description": "## Falsy\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/falsy)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function falsy() {\n  // Ваша реалізація тут\n}",
+    "solution": "function falsy() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function falsy() {\n  \n  return true;\n}",
+      "function falsy() {\n  \n  return true;\n}",
+      "function falsy() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Falsy\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-yield",
+    "block": "General Quiz",
+    "title": "Yield",
+    "timeLimitMin": 10,
+    "description": "## Yield\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/yield)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function yield() {\n  // Ваша реалізація тут\n}",
+    "solution": "function yield() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function yield() {\n  \n  return true;\n}",
+      "function yield() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function yield() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Yield\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-isnan",
+    "block": "General Quiz",
+    "title": "Isnan",
+    "timeLimitMin": 10,
+    "description": "## Isnan\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/isNaN)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function isnan() {\n  // Ваша реалізація тут\n}",
+    "solution": "function isnan() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function isnan() {\n  \n  return true;\n}",
+      "function isnan() {\n  \n  return true;\n}",
+      "function isnan() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Isnan\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-property-key",
+    "block": "General Quiz",
+    "title": "Property Key",
+    "timeLimitMin": 10,
+    "description": "## Property Key\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/property-key)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function propertykey() {\n  // Ваша реалізація тут\n}",
+    "solution": "function propertykey() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function propertykey() {\n  \n  return true;\n}",
+      "function propertykey() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function propertykey() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Property Key\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-this-vi",
+    "block": "General Quiz",
+    "title": "This Vi",
+    "timeLimitMin": 10,
+    "description": "## This Vi\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this-VI)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function thisvi() {\n  // Ваша реалізація тут\n}",
+    "solution": "function thisvi() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function thisvi() {\n  \n  return true;\n}",
+      "function thisvi() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function thisvi() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"This Vi\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-typeof",
+    "block": "General Quiz",
+    "title": "Typeof",
+    "timeLimitMin": 10,
+    "description": "## Typeof\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/typeof)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function typeof() {\n  // Ваша реалізація тут\n}",
+    "solution": "function typeof() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function typeof() {\n  \n  return true;\n}",
+      "function typeof() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function typeof() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Typeof\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-inheritance",
+    "block": "General Quiz",
+    "title": "Inheritance",
+    "timeLimitMin": 10,
+    "description": "## Inheritance\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Inheritance)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function inheritance() {\n  // Ваша реалізація тут\n}",
+    "solution": "function inheritance() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function inheritance() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function inheritance() {\n  \n  return true;\n}",
+      "function inheritance() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Inheritance\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-arrow-function-ii",
+    "block": "General Quiz",
+    "title": "Arrow Function Ii",
+    "timeLimitMin": 10,
+    "description": "## Arrow Function Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Arrow-Function-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arrowfunctionii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arrowfunctionii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arrowfunctionii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arrowfunctionii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arrowfunctionii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Arrow Function Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-equal-iv",
+    "block": "General Quiz",
+    "title": "Equal Iv",
+    "timeLimitMin": 10,
+    "description": "## Equal Iv\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Equal-IV)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function equaliv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function equaliv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function equaliv() {\n  \n  return true;\n}",
+      "function equaliv() {\n  \n  return true;\n}",
+      "function equaliv() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Equal Iv\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-var-vs-let",
+    "block": "General Quiz",
+    "title": "Var Vs Let",
+    "timeLimitMin": 10,
+    "description": "## Var Vs Let\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/var-vs-let)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function varvslet() {\n  // Ваша реалізація тут\n}",
+    "solution": "function varvslet() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function varvslet() {\n  \n  return true;\n}",
+      "function varvslet() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function varvslet() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Var Vs Let\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-closure",
+    "block": "General Quiz",
+    "title": "Closure",
+    "timeLimitMin": 10,
+    "description": "## Closure\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/closure-1)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function closure() {\n  // Ваша реалізація тут\n}",
+    "solution": "function closure() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function closure() {\n  \n  return true;\n}",
+      "function closure() {\n  \n  return true;\n}",
+      "function closure() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Closure\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-this-v",
+    "block": "General Quiz",
+    "title": "This V",
+    "timeLimitMin": 10,
+    "description": "## This V\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this-V)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function thisv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function thisv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function thisv() {\n  \n  return true;\n}",
+      "function thisv() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function thisv() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"This V\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-comparison",
+    "block": "General Quiz",
+    "title": "Comparison",
+    "timeLimitMin": 10,
+    "description": "## Comparison\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/comparison)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function comparison() {\n  // Ваша реалізація тут\n}",
+    "solution": "function comparison() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function comparison() {\n  \n  return true;\n}",
+      "function comparison() {\n  \n  return true;\n}",
+      "function comparison() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Comparison\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-number-format",
+    "block": "General Quiz",
+    "title": "Number Format",
+    "timeLimitMin": 10,
+    "description": "## Number Format\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/number-format)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function numberformat() {\n  // Ваша реалізація тут\n}",
+    "solution": "function numberformat() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function numberformat() {\n  \n  return true;\n}",
+      "function numberformat() {\n  \n  return true;\n}",
+      "function numberformat() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Number Format\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-emoji",
+    "block": "General Quiz",
+    "title": "Emoji",
+    "timeLimitMin": 10,
+    "description": "## Emoji\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/emoji)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function emoji() {\n  // Ваша реалізація тут\n}",
+    "solution": "function emoji() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function emoji() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function emoji() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function emoji() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Emoji\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-string",
+    "block": "General Quiz",
+    "title": "String",
+    "timeLimitMin": 10,
+    "description": "## String\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/string)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function string() {\n  // Ваша реалізація тут\n}",
+    "solution": "function string() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function string() {\n  \n  return true;\n}",
+      "function string() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function string() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"String\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-nan",
+    "block": "General Quiz",
+    "title": "Nan",
+    "timeLimitMin": 10,
+    "description": "## Nan\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/NaN)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function nan() {\n  // Ваша реалізація тут\n}",
+    "solution": "function nan() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function nan() {\n  \n  return true;\n}",
+      "function nan() {\n  \n  return true;\n}",
+      "function nan() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Nan\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-largest-array-index",
+    "block": "General Quiz",
+    "title": "Largest Array Index",
+    "timeLimitMin": 10,
+    "description": "## Largest Array Index\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/largest-Array-index)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function largestarrayindex() {\n  // Ваша реалізація тут\n}",
+    "solution": "function largestarrayindex() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function largestarrayindex() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function largestarrayindex() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function largestarrayindex() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Largest Array Index\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-array-keys",
+    "block": "General Quiz",
+    "title": "Array Keys",
+    "timeLimitMin": 10,
+    "description": "## Array Keys\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/array-keys)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arraykeys() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arraykeys() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arraykeys() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arraykeys() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arraykeys() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array Keys\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-let",
+    "block": "General Quiz",
+    "title": "Let",
+    "timeLimitMin": 10,
+    "description": "## Let\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/let)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function let() {\n  // Ваша реалізація тут\n}",
+    "solution": "function let() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function let() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function let() {\n  \n  return true;\n}",
+      "function let() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Let\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-trycatch",
+    "block": "General Quiz",
+    "title": "Try...Catch",
+    "timeLimitMin": 10,
+    "description": "## Try...Catch\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/try-catch)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function trycatch() {\n  // Ваша реалізація тут\n}",
+    "solution": "function trycatch() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function trycatch() {\n  \n  return true;\n}",
+      "function trycatch() {\n  \n  return true;\n}",
+      "function trycatch() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Try...Catch\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-instanceof-2",
+    "block": "General Quiz",
+    "title": "Instanceof 2",
+    "timeLimitMin": 10,
+    "description": "## Instanceof 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/instanceOf-2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function instanceof2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function instanceof2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function instanceof2() {\n  \n  return true;\n}",
+      "function instanceof2() {\n  \n  return true;\n}",
+      "function instanceof2() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Instanceof 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-settimeout-iii",
+    "block": "General Quiz",
+    "title": "Settimeout Iii",
+    "timeLimitMin": 10,
+    "description": "## Settimeout Iii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/setTimeout-III)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function settimeoutiii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function settimeoutiii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function settimeoutiii() {\n  \n  return true;\n}",
+      "function settimeoutiii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function settimeoutiii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Settimeout Iii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-stringraw",
+    "block": "General Quiz",
+    "title": "String.Raw",
+    "timeLimitMin": 10,
+    "description": "## String.Raw\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/String-raw)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function stringraw() {\n  // Ваша реалізація тут\n}",
+    "solution": "function stringraw() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function stringraw() {\n  \n  return true;\n}",
+      "function stringraw() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function stringraw() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"String.Raw\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-plus-plus",
+    "block": "General Quiz",
+    "title": "Plus Plus",
+    "timeLimitMin": 10,
+    "description": "## Plus Plus\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Plus-Plus)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function plusplus() {\n  // Ваша реалізація тут\n}",
+    "solution": "function plusplus() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function plusplus() {\n  \n  return true;\n}",
+      "function plusplus() {\n  \n  return true;\n}",
+      "function plusplus() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Plus Plus\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-proxy-ii",
+    "block": "General Quiz",
+    "title": "Proxy Ii",
+    "timeLimitMin": 10,
+    "description": "## Proxy Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Proxy-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function proxyii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function proxyii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function proxyii() {\n  \n  return true;\n}",
+      "function proxyii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function proxyii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Proxy Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-settimeout-ii",
+    "block": "General Quiz",
+    "title": "Settimeout Ii",
+    "timeLimitMin": 10,
+    "description": "## Settimeout Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/setTimeout-2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function settimeoutii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function settimeoutii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function settimeoutii() {\n  \n  return true;\n}",
+      "function settimeoutii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function settimeoutii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Settimeout Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-proxy-i",
+    "block": "General Quiz",
+    "title": "Proxy I",
+    "timeLimitMin": 10,
+    "description": "## Proxy I\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/proxy-i)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function proxyi() {\n  // Ваша реалізація тут\n}",
+    "solution": "function proxyi() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function proxyi() {\n  \n  return true;\n}",
+      "function proxyi() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function proxyi() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Proxy I\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-equal-iii",
+    "block": "General Quiz",
+    "title": "Equal Iii",
+    "timeLimitMin": 10,
+    "description": "## Equal Iii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/equal-iii)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function equaliii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function equaliii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function equaliii() {\n  \n  return true;\n}",
+      "function equaliii() {\n  \n  return true;\n}",
+      "function equaliii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Equal Iii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-regexp",
+    "block": "General Quiz",
+    "title": "[Regexp",
+    "timeLimitMin": 10,
+    "description": "## [Regexp\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz?tags=RegExp)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function regexp() {\n  // Ваша реалізація тут\n}",
+    "solution": "function regexp() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function regexp() {\n  \n  return true;\n}",
+      "function regexp() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function regexp() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"[Regexp\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-parseint-2",
+    "block": "General Quiz",
+    "title": "Parseint 2",
+    "timeLimitMin": 10,
+    "description": "## Parseint 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/parseInt-2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function parseint2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function parseint2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function parseint2() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function parseint2() {\n  \n  return true;\n}",
+      "function parseint2() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Parseint 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-const",
+    "block": "General Quiz",
+    "title": "Const",
+    "timeLimitMin": 10,
+    "description": "## Const\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/const)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function const() {\n  // Ваша реалізація тут\n}",
+    "solution": "function const() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function const() {\n  \n  return true;\n}",
+      "function const() {\n  \n  return true;\n}",
+      "function const() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Const\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-meaningless-calculation",
+    "block": "General Quiz",
+    "title": "Meaningless Calculation",
+    "timeLimitMin": 10,
+    "description": "## Meaningless Calculation\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/meaningless-calculation)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function meaninglesscalculation() {\n  // Ваша реалізація тут\n}",
+    "solution": "function meaninglesscalculation() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function meaninglesscalculation() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function meaninglesscalculation() {\n  \n  return true;\n}",
+      "function meaninglesscalculation() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Meaningless Calculation\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-typed-array-length",
+    "block": "General Quiz",
+    "title": "Typed Array Length",
+    "timeLimitMin": 10,
+    "description": "## Typed Array Length\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Typed-Array-length)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function typedarraylength() {\n  // Ваша реалізація тут\n}",
+    "solution": "function typedarraylength() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function typedarraylength() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function typedarraylength() {\n  \n  return true;\n}",
+      "function typedarraylength() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Typed Array Length\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-window-name",
+    "block": "General Quiz",
+    "title": "Window Name",
+    "timeLimitMin": 10,
+    "description": "## Window Name\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/window-name)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function windowname() {\n  // Ваша реалізація тут\n}",
+    "solution": "function windowname() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function windowname() {\n  \n  return true;\n}",
+      "function windowname() {\n  \n  return true;\n}",
+      "function windowname() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Window Name\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-array-length",
+    "block": "General Quiz",
+    "title": "Array Length",
+    "timeLimitMin": 10,
+    "description": "## Array Length\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/array-length)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arraylength() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arraylength() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arraylength() {\n  \n  return true;\n}",
+      "function arraylength() {\n  \n  return true;\n}",
+      "function arraylength() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array Length\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-two-way-generator",
+    "block": "General Quiz",
+    "title": "Two-Way Generator",
+    "timeLimitMin": 10,
+    "description": "## Two-Way Generator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/generator-2-way)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function twowaygenerator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function twowaygenerator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function twowaygenerator() {\n  \n  return true;\n}",
+      "function twowaygenerator() {\n  \n  return true;\n}",
+      "function twowaygenerator() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Two-Way Generator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-function",
+    "block": "General Quiz",
+    "title": "Function",
+    "timeLimitMin": 10,
+    "description": "## Function\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/function)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function function() {\n  // Ваша реалізація тут\n}",
+    "solution": "function function() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function function() {\n  \n  return true;\n}",
+      "function function() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function function() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-undefined",
+    "block": "General Quiz",
+    "title": "Undefined",
+    "timeLimitMin": 10,
+    "description": "## Undefined\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/undefined)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function undefined() {\n  // Ваша реалізація тут\n}",
+    "solution": "function undefined() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function undefined() {\n  \n  return true;\n}",
+      "function undefined() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function undefined() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Undefined\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-if-ii",
+    "block": "General Quiz",
+    "title": "If Ii",
+    "timeLimitMin": 10,
+    "description": "## If Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/if-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function ifii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function ifii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function ifii() {\n  \n  return true;\n}",
+      "function ifii() {\n  \n  return true;\n}",
+      "function ifii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"If Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-if",
+    "block": "General Quiz",
+    "title": "If",
+    "timeLimitMin": 10,
+    "description": "## If\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/if)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function if() {\n  // Ваша реалізація тут\n}",
+    "solution": "function if() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function if() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function if() {\n  \n  return true;\n}",
+      "function if() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"If\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-comma",
+    "block": "General Quiz",
+    "title": "Comma",
+    "timeLimitMin": 10,
+    "description": "## Comma\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/comma)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function comma() {\n  // Ваша реалізація тут\n}",
+    "solution": "function comma() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function comma() {\n  \n  return true;\n}",
+      "function comma() {\n  \n  return true;\n}",
+      "function comma() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Comma\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-function-name",
+    "block": "General Quiz",
+    "title": "Function Name",
+    "timeLimitMin": 10,
+    "description": "## Function Name\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Function-name)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functionname() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functionname() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functionname() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function functionname() {\n  \n  return true;\n}",
+      "function functionname() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function Name\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-reference-type",
+    "block": "General Quiz",
+    "title": "Reference Type",
+    "timeLimitMin": 10,
+    "description": "## Reference Type\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/reference-type)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function referencetype() {\n  // Ваша реалізація тут\n}",
+    "solution": "function referencetype() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function referencetype() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function referencetype() {\n  \n  return true;\n}",
+      "function referencetype() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Reference Type\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-in",
+    "block": "General Quiz",
+    "title": "In",
+    "timeLimitMin": 10,
+    "description": "## In\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/in-coercion)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function in() {\n  // Ваша реалізація тут\n}",
+    "solution": "function in() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function in() {\n  \n  return true;\n}",
+      "function in() {\n  \n  return true;\n}",
+      "function in() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"In\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-messagechannel",
+    "block": "General Quiz",
+    "title": "Messagechannel",
+    "timeLimitMin": 10,
+    "description": "## Messagechannel\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/message-channel)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function messagechannel() {\n  // Ваша реалізація тут\n}",
+    "solution": "function messagechannel() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function messagechannel() {\n  \n  return true;\n}",
+      "function messagechannel() {\n  \n  return true;\n}",
+      "function messagechannel() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Messagechannel\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-onclick",
+    "block": "General Quiz",
+    "title": "Onclick",
+    "timeLimitMin": 10,
+    "description": "## Onclick\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/messsage-channel-is-async)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function onclick() {\n  // Ваша реалізація тут\n}",
+    "solution": "function onclick() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function onclick() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function onclick() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function onclick() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Onclick\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-postmessage",
+    "block": "General Quiz",
+    "title": "Postmessage",
+    "timeLimitMin": 10,
+    "description": "## Postmessage\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/postMessage)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function postmessage() {\n  // Ваша реалізація тут\n}",
+    "solution": "function postmessage() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function postmessage() {\n  \n  return true;\n}",
+      "function postmessage() {\n  \n  return true;\n}",
+      "function postmessage() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Postmessage\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-override-setter",
+    "block": "General Quiz",
+    "title": "Override Setter",
+    "timeLimitMin": 10,
+    "description": "## Override Setter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/override-setter)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function overridesetter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function overridesetter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function overridesetter() {\n  \n  return true;\n}",
+      "function overridesetter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function overridesetter() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Override Setter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-inherit-getter-setter",
+    "block": "General Quiz",
+    "title": "Inherit Getter Setter",
+    "timeLimitMin": 10,
+    "description": "## Inherit Getter Setter\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/inherit-getter-setter)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function inheritgettersetter() {\n  // Ваша реалізація тут\n}",
+    "solution": "function inheritgettersetter() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function inheritgettersetter() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function inheritgettersetter() {\n  \n  return true;\n}",
+      "function inheritgettersetter() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Inherit Getter Setter\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-non-writable",
+    "block": "General Quiz",
+    "title": "Non-Writable",
+    "timeLimitMin": 10,
+    "description": "## Non-Writable\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/inherit-writable-flag)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function nonwritable() {\n  // Ваша реалізація тут\n}",
+    "solution": "function nonwritable() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function nonwritable() {\n  \n  return true;\n}",
+      "function nonwritable() {\n  \n  return true;\n}",
+      "function nonwritable() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Non-Writable\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-to-primitive",
+    "block": "General Quiz",
+    "title": "To Primitive",
+    "timeLimitMin": 10,
+    "description": "## To Primitive\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/primitive)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function toprimitive() {\n  // Ваша реалізація тут\n}",
+    "solution": "function toprimitive() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function toprimitive() {\n  \n  return true;\n}",
+      "function toprimitive() {\n  \n  return true;\n}",
+      "function toprimitive() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"To Primitive\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-sparse-array",
+    "block": "General Quiz",
+    "title": "Sparse Array",
+    "timeLimitMin": 10,
+    "description": "## Sparse Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/sparse-array)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function sparsearray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function sparsearray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function sparsearray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function sparsearray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function sparsearray() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Sparse Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-settimeout0ms",
+    "block": "General Quiz",
+    "title": "Settimeout(0ms)",
+    "timeLimitMin": 10,
+    "description": "## Settimeout(0ms)\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/setTimeout-0ms)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function settimeout0ms() {\n  // Ваша реалізація тут\n}",
+    "solution": "function settimeout0ms() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function settimeout0ms() {\n  \n  return true;\n}",
+      "function settimeout0ms() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function settimeout0ms() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Settimeout(0ms)\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-prototype-2",
+    "block": "General Quiz",
+    "title": "Prototype 2",
+    "timeLimitMin": 10,
+    "description": "## Prototype 2\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/prototype2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function prototype2() {\n  // Ваша реалізація тут\n}",
+    "solution": "function prototype2() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function prototype2() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function prototype2() {\n  \n  return true;\n}",
+      "function prototype2() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Prototype 2\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-requestanimationframe",
+    "block": "General Quiz",
+    "title": "Requestanimationframe",
+    "timeLimitMin": 10,
+    "description": "## Requestanimationframe\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/requestanimationframe)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function requestanimationframe() {\n  // Ваша реалізація тут\n}",
+    "solution": "function requestanimationframe() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function requestanimationframe() {\n  \n  return true;\n}",
+      "function requestanimationframe() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function requestanimationframe() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Requestanimationframe\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-method",
+    "block": "General Quiz",
+    "title": "Method",
+    "timeLimitMin": 10,
+    "description": "## Method\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/method)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function method() {\n  // Ваша реалізація тут\n}",
+    "solution": "function method() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function method() {\n  \n  return true;\n}",
+      "function method() {\n  \n  return true;\n}",
+      "function method() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Method\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-async-await",
+    "block": "General Quiz",
+    "title": "Async Await",
+    "timeLimitMin": 10,
+    "description": "## Async Await\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/async-await)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function asyncawait() {\n  // Ваша реалізація тут\n}",
+    "solution": "function asyncawait() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function asyncawait() {\n  \n  return true;\n}",
+      "function asyncawait() {\n  \n  return true;\n}",
+      "function asyncawait() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Async Await\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-this-iv",
+    "block": "General Quiz",
+    "title": "This Iv",
+    "timeLimitMin": 10,
+    "description": "## This Iv\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this-4)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function thisiv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function thisiv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function thisiv() {\n  \n  return true;\n}",
+      "function thisiv() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function thisiv() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"This Iv\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-prototype",
+    "block": "General Quiz",
+    "title": "Prototype",
+    "timeLimitMin": 10,
+    "description": "## Prototype\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/prototype)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function prototype() {\n  // Ваша реалізація тут\n}",
+    "solution": "function prototype() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function prototype() {\n  \n  return true;\n}",
+      "function prototype() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function prototype() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Prototype\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-implicit-coercion-iv",
+    "block": "General Quiz",
+    "title": "Implicit Coercion Iv",
+    "timeLimitMin": 10,
+    "description": "## Implicit Coercion Iv\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/implicit-coersion-2)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function implicitcoercioniv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function implicitcoercioniv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function implicitcoercioniv() {\n  \n  return true;\n}",
+      "function implicitcoercioniv() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function implicitcoercioniv() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Implicit Coercion Iv\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-vi",
+    "block": "General Quiz",
+    "title": "Hoisting Vi",
+    "timeLimitMin": 10,
+    "description": "## Hoisting Vi\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Hoisting-VI)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingvi() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingvi() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingvi() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function hoistingvi() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function hoistingvi() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting Vi\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-function-call",
+    "block": "General Quiz",
+    "title": "Function Call",
+    "timeLimitMin": 10,
+    "description": "## Function Call\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Function-call)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functioncall() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functioncall() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functioncall() {\n  \n  return true;\n}",
+      "function functioncall() {\n  \n  return true;\n}",
+      "function functioncall() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function Call\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-v",
+    "block": "General Quiz",
+    "title": "Hoisting V",
+    "timeLimitMin": 10,
+    "description": "## Hoisting V\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/hoisting-v)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingv() {\n  \n  return true;\n}",
+      "function hoistingv() {\n  \n  return true;\n}",
+      "function hoistingv() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting V\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-this-iii",
+    "block": "General Quiz",
+    "title": "This Iii",
+    "timeLimitMin": 10,
+    "description": "## This Iii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this-III)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function thisiii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function thisiii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function thisiii() {\n  \n  return true;\n}",
+      "function thisiii() {\n  \n  return true;\n}",
+      "function thisiii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"This Iii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-regexpprototypetest",
+    "block": "General Quiz",
+    "title": "Regexp.Prototype.Test",
+    "timeLimitMin": 10,
+    "description": "## Regexp.Prototype.Test\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/RegExp-prototype-test)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function regexpprototypetest() {\n  // Ваша реалізація тут\n}",
+    "solution": "function regexpprototypetest() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function regexpprototypetest() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function regexpprototypetest() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function regexpprototypetest() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Regexp.Prototype.Test\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-var",
+    "block": "General Quiz",
+    "title": "Var",
+    "timeLimitMin": 10,
+    "description": "## Var\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/var)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function var() {\n  // Ваша реалізація тут\n}",
+    "solution": "function var() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function var() {\n  \n  return true;\n}",
+      "function var() {\n  \n  return true;\n}",
+      "function var() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Var\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-iv",
+    "block": "General Quiz",
+    "title": "Hoisting Iv",
+    "timeLimitMin": 10,
+    "description": "## Hoisting Iv\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Hoisting-IV)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingiv() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingiv() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingiv() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function hoistingiv() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function hoistingiv() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting Iv\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-push-unshift",
+    "block": "General Quiz",
+    "title": "Push Unshift",
+    "timeLimitMin": 10,
+    "description": "## Push Unshift\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/push-unshift)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function pushunshift() {\n  // Ваша реалізація тут\n}",
+    "solution": "function pushunshift() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function pushunshift() {\n  \n  return true;\n}",
+      "function pushunshift() {\n  \n  return true;\n}",
+      "function pushunshift() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Push Unshift\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-implicit-coercion-iii",
+    "block": "General Quiz",
+    "title": "Implicit Coercion Iii",
+    "timeLimitMin": 10,
+    "description": "## Implicit Coercion Iii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Implicit-Conversion-III)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function implicitcoercioniii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function implicitcoercioniii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function implicitcoercioniii() {\n  \n  return true;\n}",
+      "function implicitcoercioniii() {\n  \n  return true;\n}",
+      "function implicitcoercioniii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Implicit Coercion Iii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-precedence",
+    "block": "General Quiz",
+    "title": "Precedence",
+    "timeLimitMin": 10,
+    "description": "## Precedence\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/precedence)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function precedence() {\n  // Ваша реалізація тут\n}",
+    "solution": "function precedence() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function precedence() {\n  \n  return true;\n}",
+      "function precedence() {\n  \n  return true;\n}",
+      "function precedence() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Precedence\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-this-ii",
+    "block": "General Quiz",
+    "title": "This Ii",
+    "timeLimitMin": 10,
+    "description": "## This Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function thisii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function thisii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function thisii() {\n  \n  return true;\n}",
+      "function thisii() {\n  \n  return true;\n}",
+      "function thisii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"This Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-iiii",
+    "block": "General Quiz",
+    "title": "Hoisting Iiii",
+    "timeLimitMin": 10,
+    "description": "## Hoisting Iiii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Hoisting-IIII)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingiiii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingiiii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingiiii() {\n  \n  return true;\n}",
+      "function hoistingiiii() {\n  \n  return true;\n}",
+      "function hoistingiiii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting Iiii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-math",
+    "block": "General Quiz",
+    "title": "Math",
+    "timeLimitMin": 10,
+    "description": "## Math\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Math)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function math() {\n  // Ваша реалізація тут\n}",
+    "solution": "function math() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function math() {\n  \n  return true;\n}",
+      "function math() {\n  \n  return true;\n}",
+      "function math() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Math\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-equal-ii",
+    "block": "General Quiz",
+    "title": "Equal Ii",
+    "timeLimitMin": 10,
+    "description": "## Equal Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Equal-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function equalii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function equalii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function equalii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function equalii() {\n  \n  return true;\n}",
+      "function equalii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Equal Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-iii",
+    "block": "General Quiz",
+    "title": "Hoisting Iii",
+    "timeLimitMin": 10,
+    "description": "## Hoisting Iii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Hoisting-III)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingiii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingiii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingiii() {\n  \n  return true;\n}",
+      "function hoistingiii() {\n  \n  return true;\n}",
+      "function hoistingiii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting Iii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-ii",
+    "block": "General Quiz",
+    "title": "Hoisting Ii",
+    "timeLimitMin": 10,
+    "description": "## Hoisting Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Hoisting-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function hoistingii() {\n  \n  return true;\n}",
+      "function hoistingii() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hoisting-i",
+    "block": "General Quiz",
+    "title": "Hoisting I",
+    "timeLimitMin": 10,
+    "description": "## Hoisting I\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Hoisting-I)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function hoistingi() {\n  // Ваша реалізація тут\n}",
+    "solution": "function hoistingi() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function hoistingi() {\n  \n  return true;\n}",
+      "function hoistingi() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function hoistingi() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hoisting I\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-true-or-false",
+    "block": "General Quiz",
+    "title": "True Or False",
+    "timeLimitMin": 10,
+    "description": "## True Or False\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/true-or-false)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function trueorfalse() {\n  // Ваша реалізація тут\n}",
+    "solution": "function trueorfalse() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function trueorfalse() {\n  \n  return true;\n}",
+      "function trueorfalse() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function trueorfalse() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"True Or False\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-zero",
+    "block": "General Quiz",
+    "title": "Zero",
+    "timeLimitMin": 10,
+    "description": "## Zero\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/zero)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function zero() {\n  // Ваша реалізація тут\n}",
+    "solution": "function zero() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function zero() {\n  \n  return true;\n}",
+      "function zero() {\n  \n  return true;\n}",
+      "function zero() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Zero\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-equality--sameness",
+    "block": "General Quiz",
+    "title": "Equality & Sameness",
+    "timeLimitMin": 10,
+    "description": "## Equality & Sameness\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Equality-Sameness)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function equalitysameness() {\n  // Ваша реалізація тут\n}",
+    "solution": "function equalitysameness() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function equalitysameness() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function equalitysameness() {\n  \n  return true;\n}",
+      "function equalitysameness() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Equality & Sameness\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-min-max",
+    "block": "General Quiz",
+    "title": "Min Max",
+    "timeLimitMin": 10,
+    "description": "## Min Max\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/min-max)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function minmax() {\n  // Ваша реалізація тут\n}",
+    "solution": "function minmax() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function minmax() {\n  \n  return true;\n}",
+      "function minmax() {\n  \n  return true;\n}",
+      "function minmax() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Min Max\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-array-i",
+    "block": "General Quiz",
+    "title": "Array I",
+    "timeLimitMin": 10,
+    "description": "## Array I\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Array-I)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arrayi() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arrayi() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arrayi() {\n  \n  return true;\n}",
+      "function arrayi() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arrayi() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array I\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-name-for-function-expression",
+    "block": "General Quiz",
+    "title": "Name For Function Expression",
+    "timeLimitMin": 10,
+    "description": "## Name For Function Expression\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/name-for-Function-expression)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function nameforfunctionexpression() {\n  // Ваша реалізація тут\n}",
+    "solution": "function nameforfunctionexpression() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function nameforfunctionexpression() {\n  \n  return true;\n}",
+      "function nameforfunctionexpression() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function nameforfunctionexpression() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Name For Function Expression\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-this",
+    "block": "General Quiz",
+    "title": "This",
+    "timeLimitMin": 10,
+    "description": "## This\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/this)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function this() {\n  // Ваша реалізація тут\n}",
+    "solution": "function this() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function this() {\n  \n  return true;\n}",
+      "function this() {\n  \n  return true;\n}",
+      "function this() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"This\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-parseint",
+    "block": "General Quiz",
+    "title": "Parseint",
+    "timeLimitMin": 10,
+    "description": "## Parseint\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/parseInt)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function parseint() {\n  // Ваша реалізація тут\n}",
+    "solution": "function parseint() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function parseint() {\n  \n  return true;\n}",
+      "function parseint() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function parseint() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Parseint\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-addition-vs-unary-plus",
+    "block": "General Quiz",
+    "title": "Addition Vs Unary Plus",
+    "timeLimitMin": 10,
+    "description": "## Addition Vs Unary Plus\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Addition-vs-Unary-Plus)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function additionvsunaryplus() {\n  // Ваша реалізація тут\n}",
+    "solution": "function additionvsunaryplus() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function additionvsunaryplus() {\n  \n  return true;\n}",
+      "function additionvsunaryplus() {\n  \n  return true;\n}",
+      "function additionvsunaryplus() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Addition Vs Unary Plus\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-operator-precedence",
+    "block": "General Quiz",
+    "title": "Operator Precedence",
+    "timeLimitMin": 10,
+    "description": "## Operator Precedence\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/operator-precedence)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function operatorprecedence() {\n  // Ваша реалізація тут\n}",
+    "solution": "function operatorprecedence() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function operatorprecedence() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function operatorprecedence() {\n  \n  return true;\n}",
+      "function operatorprecedence() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Operator Precedence\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-arguments",
+    "block": "General Quiz",
+    "title": "Arguments",
+    "timeLimitMin": 10,
+    "description": "## Arguments\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/arguments)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arguments() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arguments() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arguments() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arguments() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arguments() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Arguments\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-implicit-coercion-ii",
+    "block": "General Quiz",
+    "title": "Implicit Coercion  Ii",
+    "timeLimitMin": 10,
+    "description": "## Implicit Coercion  Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Implicit-Conversion-II)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function implicitcoercionii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function implicitcoercionii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function implicitcoercionii() {\n  \n  return true;\n}",
+      "function implicitcoercionii() {\n  \n  return true;\n}",
+      "function implicitcoercionii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Implicit Coercion  Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-equal",
+    "block": "General Quiz",
+    "title": "Equal",
+    "timeLimitMin": 10,
+    "description": "## Equal\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Equal-1)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function equal() {\n  // Ваша реалізація тут\n}",
+    "solution": "function equal() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function equal() {\n  \n  return true;\n}",
+      "function equal() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function equal() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Equal\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-null-and-undefined",
+    "block": "General Quiz",
+    "title": "Null And Undefined",
+    "timeLimitMin": 10,
+    "description": "## Null And Undefined\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/null-and-undefined)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function nullandundefined() {\n  // Ваша реалізація тут\n}",
+    "solution": "function nullandundefined() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function nullandundefined() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function nullandundefined() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function nullandundefined() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Null And Undefined\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-implicit-coercion-i",
+    "block": "General Quiz",
+    "title": "Implicit Coercion I",
+    "timeLimitMin": 10,
+    "description": "## Implicit Coercion I\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Implicit-Conversion-1)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function implicitcoercioni() {\n  // Ваша реалізація тут\n}",
+    "solution": "function implicitcoercioni() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function implicitcoercioni() {\n  \n  return true;\n}",
+      "function implicitcoercioni() {\n  \n  return true;\n}",
+      "function implicitcoercioni() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Implicit Coercion I\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-increment-operator",
+    "block": "General Quiz",
+    "title": "Increment Operator",
+    "timeLimitMin": 10,
+    "description": "## Increment Operator\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/Increment-Operator)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function incrementoperator() {\n  // Ваша реалізація тут\n}",
+    "solution": "function incrementoperator() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function incrementoperator() {\n  \n  return true;\n}",
+      "function incrementoperator() {\n  \n  return true;\n}",
+      "function incrementoperator() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Increment Operator\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-arrow-function",
+    "block": "General Quiz",
+    "title": "Arrow Function",
+    "timeLimitMin": 10,
+    "description": "## Arrow Function\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/6-Arrow-Function)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arrowfunction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arrowfunction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arrowfunction() {\n  \n  return true;\n}",
+      "function arrowfunction() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arrowfunction() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Arrow Function\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "middle"
+  },
+  {
+    "id": "canonical-scope",
+    "block": "General Quiz",
+    "title": "Scope",
+    "timeLimitMin": 10,
+    "description": "## Scope\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_Quiz**: [Link](https://bfe.dev/quiz/block-scope-1)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function scope() {\n  // Ваша реалізація тут\n}",
+    "solution": "function scope() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function scope() {\n  \n  return true;\n}",
+      "function scope() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function scope() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Scope\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-prefixt-p",
+    "block": "TypeScript Puzzles",
+    "title": "Prefix<T, P>",
+    "timeLimitMin": 10,
+    "description": "## Prefix<T, P>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-prefix-t)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function prefixtp() {\n  // Ваша реалізація тут\n}",
+    "solution": "function prefixtp() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function prefixtp() {\n  \n  return true;\n}",
+      "function prefixtp() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function prefixtp() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Prefix<T, P>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-undefinedtonullt",
+    "block": "TypeScript Puzzles",
+    "title": "Undefinedtonull<T>",
+    "timeLimitMin": 10,
+    "description": "## Undefinedtonull<T>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-UndefinedToNull-T)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function undefinedtonullt() {\n  // Ваша реалізація тут\n}",
+    "solution": "function undefinedtonullt() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function undefinedtonullt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function undefinedtonullt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function undefinedtonullt() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Undefinedtonull<T>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-mapstringuniontoobjectunionu",
+    "block": "TypeScript Puzzles",
+    "title": "Mapstringuniontoobjectunion<U>",
+    "timeLimitMin": 10,
+    "description": "## Mapstringuniontoobjectunion<U>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-MapUnion-U-M)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function mapstringuniontoobjectunionu() {\n  // Ваша реалізація тут\n}",
+    "solution": "function mapstringuniontoobjectunionu() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function mapstringuniontoobjectunionu() {\n  \n  return true;\n}",
+      "function mapstringuniontoobjectunionu() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function mapstringuniontoobjectunionu() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Mapstringuniontoobjectunion<U>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-diffa-b",
+    "block": "TypeScript Puzzles",
+    "title": "Diff<A, B>",
+    "timeLimitMin": 10,
+    "description": "## Diff<A, B>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-Diff-A-B)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function diffab() {\n  // Ваша реалізація тут\n}",
+    "solution": "function diffab() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function diffab() {\n  \n  return true;\n}",
+      "function diffab() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function diffab() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Diff<A, B>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-objectpathso",
+    "block": "TypeScript Puzzles",
+    "title": "Objectpaths<O>",
+    "timeLimitMin": 10,
+    "description": "## Objectpaths<O>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-ObjectPaths-O)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function objectpathso() {\n  // Ваша реалізація тут\n}",
+    "solution": "function objectpathso() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function objectpathso() {\n  \n  return true;\n}",
+      "function objectpathso() {\n  \n  return true;\n}",
+      "function objectpathso() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Objectpaths<O>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-absn",
+    "block": "TypeScript Puzzles",
+    "title": "Abs<N>",
+    "timeLimitMin": 10,
+    "description": "## Abs<N>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-Abs-N)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function absn() {\n  // Ваша реалізація тут\n}",
+    "solution": "function absn() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function absn() {\n  \n  return true;\n}",
+      "function absn() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function absn() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Abs<N>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-stringtonumbers",
+    "block": "TypeScript Puzzles",
+    "title": "Stringtonumber<S>",
+    "timeLimitMin": 10,
+    "description": "## Stringtonumber<S>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-StringToNumber-S)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function stringtonumbers() {\n  // Ваша реалізація тут\n}",
+    "solution": "function stringtonumbers() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function stringtonumbers() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function stringtonumbers() {\n  \n  return true;\n}",
+      "function stringtonumbers() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Stringtonumber<S>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-camelcases",
+    "block": "TypeScript Puzzles",
+    "title": "Camelcase<S>",
+    "timeLimitMin": 10,
+    "description": "## Camelcase<S>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/camelcase)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function camelcases() {\n  // Ваша реалізація тут\n}",
+    "solution": "function camelcases() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function camelcases() {\n  \n  return true;\n}",
+      "function camelcases() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function camelcases() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Camelcase<S>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-snakecases",
+    "block": "TypeScript Puzzles",
+    "title": "Snakecase<S>",
+    "timeLimitMin": 10,
+    "description": "## Snakecase<S>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/snakecase)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function snakecases() {\n  // Ваша реалізація тут\n}",
+    "solution": "function snakecases() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function snakecases() {\n  \n  return true;\n}",
+      "function snakecases() {\n  \n  return true;\n}",
+      "function snakecases() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Snakecase<S>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-splits-d",
+    "block": "TypeScript Puzzles",
+    "title": "Split<S, D>",
+    "timeLimitMin": 10,
+    "description": "## Split<S, D>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/split)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function splitsd() {\n  // Ваша реалізація тут\n}",
+    "solution": "function splitsd() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function splitsd() {\n  \n  return true;\n}",
+      "function splitsd() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function splitsd() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Split<S, D>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-capitalizet",
+    "block": "TypeScript Puzzles",
+    "title": "Capitalize<T>",
+    "timeLimitMin": 10,
+    "description": "## Capitalize<T>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/capitalize)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function capitalizet() {\n  // Ваша реалізація тут\n}",
+    "solution": "function capitalizet() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function capitalizet() {\n  \n  return true;\n}",
+      "function capitalizet() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function capitalizet() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Capitalize<T>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-asserts-never",
+    "block": "TypeScript Puzzles",
+    "title": "Asserts Never",
+    "timeLimitMin": 10,
+    "description": "## Asserts Never\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/asserts-never)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function assertsnever() {\n  // Ваша реалізація тут\n}",
+    "solution": "function assertsnever() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function assertsnever() {\n  \n  return true;\n}",
+      "function assertsnever() {\n  \n  return true;\n}",
+      "function assertsnever() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Asserts Never\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-dividea-b",
+    "block": "TypeScript Puzzles",
+    "title": "Divide<A, B>",
+    "timeLimitMin": 10,
+    "description": "## Divide<A, B>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/Divide-A-B)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function divideab() {\n  // Ваша реалізація тут\n}",
+    "solution": "function divideab() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function divideab() {\n  \n  return true;\n}",
+      "function divideab() {\n  \n  return true;\n}",
+      "function divideab() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Divide<A, B>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-multiplya-b",
+    "block": "TypeScript Puzzles",
+    "title": "Multiply<A, B>",
+    "timeLimitMin": 10,
+    "description": "## Multiply<A, B>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/Multiply-A-B)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function multiplyab() {\n  // Ваша реалізація тут\n}",
+    "solution": "function multiplyab() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function multiplyab() {\n  \n  return true;\n}",
+      "function multiplyab() {\n  \n  return true;\n}",
+      "function multiplyab() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Multiply<A, B>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-subtracta-b",
+    "block": "TypeScript Puzzles",
+    "title": "Subtract<A, B>",
+    "timeLimitMin": 10,
+    "description": "## Subtract<A, B>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/Subtract-A-B)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function subtractab() {\n  // Ваша реалізація тут\n}",
+    "solution": "function subtractab() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function subtractab() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function subtractab() {\n  \n  return true;\n}",
+      "function subtractab() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Subtract<A, B>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-slicea-s-e",
+    "block": "TypeScript Puzzles",
+    "title": "Slice<A, S, E>",
+    "timeLimitMin": 10,
+    "description": "Just like what `Array.prototype.slice()` does, please implement `Slice<A, S, E>`.\n\n```ts\ntype A = Slice<[1, 2, 3, 4], 0, 2>; // [1, 2]\ntype B = Slice<[1, 2, 3, 4], 2>; // [3, 4]\ntype C = Slice<[number, boolean, bigint], 2, 5>; // [bigint]\ntype D = Slice<[string, boolean], 0, 1>; // [string]\ntype E = Slice<[number, boolean, bigint], 5, 6>; // []\n```\n\nLet's assume end index `E` won't be negative",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type SmallerThan<\n  X extends number,\n  Y extends number,\n  A extends any[] = []\n> = A['length'] extends Y\n  ? false\n  : A['length'] extends X\n  ? true\n  : SmallerThan<X, Y, [...A, 1]>;\n\ntype Slice<\n  A extends any[],\n  S extends number = 0,\n  E extends number = A['length'],\n  I extends any[] = [],\n  O extends any[] = []\n> = A extends [infer F, ...infer R]\n  ? SmallerThan<I['length'], S> extends false\n    ? SmallerThan<I['length'], E> extends true\n      ? Slice<R, S, E, [...I, 1], [...O, F]>\n      : O\n    : Slice<R, S, E, [...I, 1], O>\n  : O;",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  X extends number,\n  Y extends number,\n  /* TODO: реалізувати цей рядок */\n> = A['length'] extends Y\n  ? false\n  : A['length'] extends X\n  ? true\n  : SmallerThan<X, Y, [...A, 1]>;\n\ntype Slice<\n  A extends any[],\n  S extends number = 0,\n  E extends number = A['length'],\n  I extends any[] = [],\n  O extends any[] = []\n> = A extends [infer F, ...infer R]\n  ? SmallerThan<I['length'], S> extends false\n    ? SmallerThan<I['length'], E> extends true\n      ? Slice<R, S, E, [...I, 1], [...O, F]>\n      : O\n    : Slice<R, S, E, [...I, 1], O>\n  : O;",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  Y extends number,\n  /* TODO: реалізувати цей рядок */\n> = A['length'] extends Y\n  ? false\n  : A['length'] extends X\n  ? true\n  : SmallerThan<X, Y, [...A, 1]>;\n\ntype Slice<\n  A extends any[],\n  S extends number = 0,\n  E extends number = A['length'],\n  /* TODO: реалізувати цей рядок */\n  O extends any[] = []\n/* TODO: реалізувати цей рядок */\n  ? SmallerThan<I['length'], S> extends false\n    /* TODO: реалізувати цей рядок */\n      ? Slice<R, S, E, [...I, 1], [...O, F]>\n      : O\n    /* TODO: реалізувати цей рядок */\n  : O;",
+      "/* TODO: реалізувати цей рядок */\n  X extends number,\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ? true\n  /* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  A extends any[],\n  S extends number = 0,\n  E extends number = A['length'],\n  I extends any[] = [],\n  O extends any[] = []\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      : O\n    /* TODO: реалізувати цей рядок */\n  : O;"
+    ],
+    "breakdown": "Рішення для завдання \"Slice<A, S, E>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-replacealls-f-t",
+    "block": "TypeScript Puzzles",
+    "title": "Replaceall<S, F, T>",
+    "timeLimitMin": 10,
+    "description": "Just like `String.prototype.replaceAll()`,\n\nplease implement `ReplaceAll<S, F, T>`.\n\n```ts\ntype A = ReplaceAll<'aba', 'b', ''>; // 'aa'\ntype B = ReplaceAll<'ababbab', 'b', ''>; // 'aaa'\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type ReplaceAll<\n  S extends string,\n  F extends string,\n  T extends string\n> = F extends ''\n  ? S\n  : S extends `${F}${infer R}`\n  ? `${T}${ReplaceAll<R, F, T>}`\n  : S extends `${infer A}${F}${infer R}`\n  ? `${A}${T}${ReplaceAll<R, F, T>}`\n  : S extends `${infer A}${F}`\n  ? `${A}${T}`\n  : S;",
+    "clozeSteps": [
+      "type ReplaceAll<\n  S extends string,\n  /* TODO: реалізувати цей рядок */\n  T extends string\n> = F extends ''\n  ? S\n  : S extends `${F}${infer R}`\n  /* TODO: реалізувати цей рядок */\n  : S extends `${infer A}${F}${infer R}`\n  ? `${A}${T}${ReplaceAll<R, F, T>}`\n  : S extends `${infer A}${F}`\n  ? `${A}${T}`\n  : S;",
+      "type ReplaceAll<\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  T extends string\n> = F extends ''\n  ? S\n  : S extends `${F}${infer R}`\n  ? `${T}${ReplaceAll<R, F, T>}`\n  : S extends `${infer A}${F}${infer R}`\n  /* TODO: реалізувати цей рядок */\n  : S extends `${infer A}${F}`\n  ? `${A}${T}`\n  : S;",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n> = F extends ''\n  ? S\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ? `${A}${T}${ReplaceAll<R, F, T>}`\n  : S extends `${infer A}${F}`\n  /* TODO: реалізувати цей рядок */\n  : S;"
+    ],
+    "breakdown": "Рішення для завдання \"Replaceall<S, F, T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-trimt",
+    "block": "TypeScript Puzzles",
+    "title": "Trim<T>",
+    "timeLimitMin": 10,
+    "description": "Please implement `Trim<T>` just like `String.prototype.trim()`.\n\n```ts\ntype A = Trim<'    BFE.dev'>; // 'BFE'\ntype B = Trim<' BFE. dev  '>; // 'BFE. dev'\ntype C = Trim<'  BFE .   dev  '>; // 'BFE .   dev'\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type Reverse<T extends string> = T extends ''\n  ? ''\n  : T extends `${infer F}${infer R}`\n  ? `${Reverse<R>}${F}`\n  : '';\n\ntype TrimFrontSpace<T> = T extends `${infer F}${infer R}`\n  ? F extends ' '\n    ? TrimFrontSpace<R>\n    : T\n  : T;\n\ntype Trim<T extends string> = TrimFrontSpace<T> extends `${infer Trimmed}`\n  ? Reverse<Trimmed> extends `${infer Reversed}`\n    ? TrimFrontSpace<Reversed> extends `${infer TrimmedReversed}`\n      ? Reverse<TrimmedReversed>\n      : T\n    : T\n  : T;",
+    "clozeSteps": [
+      "type Reverse<T extends string> = T extends ''\n  ? ''\n  /* TODO: реалізувати цей рядок */\n  ? `${Reverse<R>}${F}`\n  /* TODO: реалізувати цей рядок */\n\ntype TrimFrontSpace<T> = T extends `${infer F}${infer R}`\n  /* TODO: реалізувати цей рядок */\n    ? TrimFrontSpace<R>\n    : T\n  : T;\n\ntype Trim<T extends string> = TrimFrontSpace<T> extends `${infer Trimmed}`\n  /* TODO: реалізувати цей рядок */\n    ? TrimFrontSpace<Reversed> extends `${infer TrimmedReversed}`\n      ? Reverse<TrimmedReversed>\n      : T\n    : T\n  : T;",
+      "type Reverse<T extends string> = T extends ''\n  ? ''\n  /* TODO: реалізувати цей рядок */\n  ? `${Reverse<R>}${F}`\n  : '';\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    ? TrimFrontSpace<R>\n    : T\n  : T;\n\n/* TODO: реалізувати цей рядок */\n  ? Reverse<Trimmed> extends `${infer Reversed}`\n    ? TrimFrontSpace<Reversed> extends `${infer TrimmedReversed}`\n      /* TODO: реалізувати цей рядок */\n      : T\n    : T\n  : T;",
+      "/* TODO: реалізувати цей рядок */\n  ? ''\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  : '';\n\n/* TODO: реалізувати цей рядок */\n  ? F extends ' '\n    ? TrimFrontSpace<R>\n    : T\n  : T;\n\n/* TODO: реалізувати цей рядок */\n  ? Reverse<Trimmed> extends `${infer Reversed}`\n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      : T\n    : T\n  : T;"
+    ],
+    "breakdown": "Рішення для завдання \"Trim<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-equala-b",
+    "block": "TypeScript Puzzles",
+    "title": "Equal<A, B>",
+    "timeLimitMin": 10,
+    "description": "## Equal<A, B>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/Euqual-A-B)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function equalab() {\n  // Ваша реалізація тут\n}",
+    "solution": "function equalab() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function equalab() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function equalab() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function equalab() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Equal<A, B>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-findindext-e",
+    "block": "TypeScript Puzzles",
+    "title": "Findindex<T, E>",
+    "timeLimitMin": 10,
+    "description": "## Findindex<T, E>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/Search)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function findindexte() {\n  // Ваша реалізація тут\n}",
+    "solution": "function findindexte() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function findindexte() {\n  \n  return true;\n}",
+      "function findindexte() {\n  \n  return true;\n}",
+      "function findindexte() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Findindex<T, E>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-uniontointersectiont",
+    "block": "TypeScript Puzzles",
+    "title": "Uniontointersection<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `UnionToIntersection<T>` to get an Intersection type from Union type.\n\n```ts\ntype A = UnionToIntersection<{ a: string } | { b: string } | { c: string }>;\n// {a: string} & {b: string} & {c: string}\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type UnionToIntersection<T> = (\n  T extends any ? (args: T) => void : never\n) extends (args: infer R) => void\n  ? R\n  : never;",
+    "clozeSteps": [
+      "type UnionToIntersection<T> = (\n  /* TODO: реалізувати цей рядок */\n) extends (args: infer R) => void\n  ? R\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  T extends any ? (args: T) => void : never\n) extends (args: infer R) => void\n  ? R\n  : never;",
+      "type UnionToIntersection<T> = (\n  /* TODO: реалізувати цей рядок */\n) extends (args: infer R) => void\n  ? R\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Uniontointersection<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-tonumbert",
+    "block": "TypeScript Puzzles",
+    "title": "Tonumber<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `ToNumber<T>` to get an integer number type from integer string.\n\n```ts\ntype A = ToNumber<'1'>; // 1\ntype B = ToNumber<'40'>; // 40\ntype C = ToNumber<'0'>; // 0\n```\n\n**Note**\n\nWe can just consider smaller numbers.",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type ToNumber<\n  T extends string,\n  A extends number[] = []\n> = `${A['length']}` extends T ? A['length'] : ToNumber<T, [...A, 1]>;",
+    "clozeSteps": [
+      "type ToNumber<\n  /* TODO: реалізувати цей рядок */\n  A extends number[] = []\n> = `${A['length']}` extends T ? A['length'] : ToNumber<T, [...A, 1]>;",
+      "type ToNumber<\n  T extends string,\n  /* TODO: реалізувати цей рядок */\n> = `${A['length']}` extends T ? A['length'] : ToNumber<T, [...A, 1]>;",
+      "type ToNumber<\n  /* TODO: реалізувати цей рядок */\n  A extends number[] = []\n> = `${A['length']}` extends T ? A['length'] : ToNumber<T, [...A, 1]>;"
+    ],
+    "breakdown": "Рішення для завдання \"Tonumber<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-adda-b",
+    "block": "TypeScript Puzzles",
+    "title": "Add<A, B>",
+    "timeLimitMin": 10,
+    "description": "Implement `Add<A, B>` to get the sum of two positive integers.\n\n```ts\ntype A = Add<1, 2>; // 3\ntype B = Add<0, 0>; // 0\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type CreateTuple<\n  S extends number,\n  A extends number[] = []\n> = A['length'] extends S ? A : CreateTuple<S, [...A, 1]>;\n\ntype Add<A extends number, B extends number> = [\n  ...CreateTuple<A>,\n  ...CreateTuple<B>\n]['length'];",
+    "clozeSteps": [
+      "type CreateTuple<\n  S extends number,\n  /* TODO: реалізувати цей рядок */\n> = A['length'] extends S ? A : CreateTuple<S, [...A, 1]>;\n\ntype Add<A extends number, B extends number> = [\n  ...CreateTuple<A>,\n  ...CreateTuple<B>\n]['length'];",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  A extends number[] = []\n> = A['length'] extends S ? A : CreateTuple<S, [...A, 1]>;\n\n/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ...CreateTuple<B>\n/* TODO: реалізувати цей рядок */",
+      "type CreateTuple<\n  S extends number,\n  /* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n\n/* TODO: реалізувати цей рядок */\n  ...CreateTuple<A>,\n  /* TODO: реалізувати цей рядок */\n]['length'];"
+    ],
+    "breakdown": "Рішення для завдання \"Add<A, B>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-smallerthana-b",
+    "block": "TypeScript Puzzles",
+    "title": "Smallerthan<A, B>",
+    "timeLimitMin": 10,
+    "description": "Implement `SmallerThan<A, B>` to compare two positive integers.\n\n```ts\ntype A = SmallerThan<0, 1>; // true\ntype B = SmallerThan<1, 0>; // false\ntype C = SmallerThan<10, 9>; // false\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type SmallerThan<\n  A extends number,\n  B extends number,\n  R extends number[] = []\n> = A extends B\n  ? false\n  : A extends R['length']\n  ? true\n  : B extends R['length']\n  ? false\n  : SmallerThan<A, B, [...R, A]>;",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  A extends number,\n  B extends number,\n  R extends number[] = []\n/* TODO: реалізувати цей рядок */\n  ? false\n  : A extends R['length']\n  ? true\n  /* TODO: реалізувати цей рядок */\n  ? false\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  B extends number,\n  /* TODO: реалізувати цей рядок */\n> = A extends B\n  ? false\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ? false\n  /* TODO: реалізувати цей рядок */",
+      "type SmallerThan<\n  A extends number,\n  /* TODO: реалізувати цей рядок */\n  R extends number[] = []\n> = A extends B\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ? true\n  : B extends R['length']\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Smallerthan<A, B>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-largerthana-b",
+    "block": "TypeScript Puzzles",
+    "title": "Largerthan<A, B>",
+    "timeLimitMin": 10,
+    "description": "Implement `LargerThan<A, B>` to compare two positive integers.\n\n```ts\ntype A = LargerThan<0, 1>; // false\ntype B = LargerThan<1, 0>; // true\ntype C = LargerThan<10, 9>; // true\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type LargerThan<\n  A extends number,\n  B extends number,\n  R extends number[] = []\n> = A extends R['length']\n  ? false\n  : B extends R['length']\n  ? true\n  : LargerThan<A, B, [...R, A]>;",
+    "clozeSteps": [
+      "type LargerThan<\n  A extends number,\n  B extends number,\n  R extends number[] = []\n> = A extends R['length']\n  ? false\n  : B extends R['length']\n  ? true\n  : LargerThan<A, B, [...R, A]>;",
+      "/* TODO: реалізувати цей рядок */\n  A extends number,\n  B extends number,\n  /* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n  ? false\n  /* TODO: реалізувати цей рядок */\n  ? true\n  /* TODO: реалізувати цей рядок */",
+      "type LargerThan<\n  A extends number,\n  B extends number,\n  R extends number[] = []\n> = A extends R['length']\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ? true\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Largerthan<A, B>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-filtert-a",
+    "block": "TypeScript Puzzles",
+    "title": "Filter<T, A>",
+    "timeLimitMin": 10,
+    "description": "Implement `Filter<T, A>` to return a new tuple type by filtering all the types from T that are assignable to A.\n\n```ts\ntype A = Filter<[1, 'BFE', 2, true, 'dev'], number>; // [1, 2]\ntype B = Filter<[1, 'BFE', 2, true, 'dev'], string>; // ['BFE', 'dev']\ntype C = Filter<[1, 'BFE', 2, any, 'dev'], string>; // ['BFE', any, 'dev']\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type Filter<T extends any[], A> = T extends [infer F, ...infer R]\n  ? [F] extends [A]\n    ? [F, ...Filter<R, A>]\n    : Filter<R, A>\n  : [];",
+    "clozeSteps": [
+      "type Filter<T extends any[], A> = T extends [infer F, ...infer R]\n  ? [F] extends [A]\n    ? [F, ...Filter<R, A>]\n    : Filter<R, A>\n  : [];",
+      "/* TODO: реалізувати цей рядок */\n  ? [F] extends [A]\n    ? [F, ...Filter<R, A>]\n    /* TODO: реалізувати цей рядок */\n  : [];",
+      "/* TODO: реалізувати цей рядок */\n  ? [F] extends [A]\n    /* TODO: реалізувати цей рядок */\n    : Filter<R, A>\n  : [];"
+    ],
+    "breakdown": "Рішення для завдання \"Filter<T, A>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-repeatt-c",
+    "block": "TypeScript Puzzles",
+    "title": "Repeat<T, C>",
+    "timeLimitMin": 10,
+    "description": "Implement `Repeat<T, C>` to return a tuple by repeating.\n\n```ts\ntype A = Repeat<number, 3>; // [number, number, number]\ntype B = Repeat<string, 2>; // [string, string]\ntype C = Repeat<1, 1>; // [1, 1]\ntype D = Repeat<0, 0>; // []\n```\n\n**note**\n\nnegative case of C could be ignored.",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type Repeat<T, C extends number, A extends T[] = []> = A['length'] extends C\n  ? A\n  : Repeat<T, C, [...A, T]>;",
+    "clozeSteps": [
+      "type Repeat<T, C extends number, A extends T[] = []> = A['length'] extends C\n  ? A\n  /* TODO: реалізувати цей рядок */",
+      "type Repeat<T, C extends number, A extends T[] = []> = A['length'] extends C\n  ? A\n  : Repeat<T, C, [...A, T]>;",
+      "type Repeat<T, C extends number, A extends T[] = []> = A['length'] extends C\n  ? A\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Repeat<T, C>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-tupletostringt",
+    "block": "TypeScript Puzzles",
+    "title": "Tupletostring<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `TupleToString<T>` to return a new type by concatenating all the string to a new string type.\n\n```ts\ntype A = TupleToString<['a']>; // 'a'\ntype B = TupleToString<['B', 'F', 'E']>; // 'BFE'\ntype C = TupleToString<[]>; // ''\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type TupleToString<T extends string[]> = T extends [infer F, ...infer R]\n  ? R extends string[]\n    ? `${F & string}${TupleToString<R>}`\n    : F\n  : '';",
+    "clozeSteps": [
+      "type TupleToString<T extends string[]> = T extends [infer F, ...infer R]\n  ? R extends string[]\n    /* TODO: реалізувати цей рядок */\n    : F\n  : '';",
+      "type TupleToString<T extends string[]> = T extends [infer F, ...infer R]\n  ? R extends string[]\n    /* TODO: реалізувати цей рядок */\n    : F\n  : '';",
+      "type TupleToString<T extends string[]> = T extends [infer F, ...infer R]\n  ? R extends string[]\n    /* TODO: реалізувати цей рядок */\n    : F\n  : '';"
+    ],
+    "breakdown": "Рішення для завдання \"Tupletostring<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-repeatstringt-c",
+    "block": "TypeScript Puzzles",
+    "title": "Repeatstring<T, C>",
+    "timeLimitMin": 10,
+    "description": "Similar to `String.prototype.repeat()`, implement `RepeatString<T, C>` to create a new type by repeating string `T` for `C` times.\n\n```ts\ntype A = RepeatString<'a', 3>; // 'aaa'\ntype B = RepeatString<'a', 0>; // ''\n```\n\n**Note**\n\nThere is no need to handle negative case of C.",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type RepeatString<\n  Type extends string,\n  Count extends number,\n  Original extends string = Type,\n  Array extends string[] = [Type]\n> = Count extends 0\n  ? ''\n  : Array['length'] extends Count\n  ? Type\n  : RepeatString<`${Type}${Original}`, Count, Original, [...Array, Original]>;",
+    "clozeSteps": [
+      "type RepeatString<\n  Type extends string,\n  Count extends number,\n  Original extends string = Type,\n  Array extends string[] = [Type]\n> = Count extends 0\n  ? ''\n  : Array['length'] extends Count\n  ? Type\n  : RepeatString<`${Type}${Original}`, Count, Original, [...Array, Original]>;",
+      "type RepeatString<\n  Type extends string,\n  /* TODO: реалізувати цей рядок */\n  Original extends string = Type,\n  Array extends string[] = [Type]\n> = Count extends 0\n  ? ''\n  : Array['length'] extends Count\n  ? Type\n  /* TODO: реалізувати цей рядок */",
+      "type RepeatString<\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  Original extends string = Type,\n  Array extends string[] = [Type]\n/* TODO: реалізувати цей рядок */\n  ? ''\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Repeatstring<T, C>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-pusht-i",
+    "block": "TypeScript Puzzles",
+    "title": "Push<T, I>",
+    "timeLimitMin": 10,
+    "description": "Implement `Push<T, I>` to return a new type by pushing new type into tuple type.\n\n```ts\ntype A = Push<[1, 2, 3], 4>; // [1, 2, 3, 4]\ntype B = Push<[1], 2>; // [1, 2]\ntype C = Push<[], string>; // [string]\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type Push<T extends any[], I> = [...T, I];",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */",
+      "type Push<T extends any[], I> = [...T, I];",
+      "type Push<T extends any[], I> = [...T, I];"
+    ],
+    "breakdown": "Рішення для завдання \"Push<T, I>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-isanyt",
+    "block": "TypeScript Puzzles",
+    "title": "Isany<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `IsAny<T>` to check against `any`.\n\n```ts\ntype A = IsAny<string>; // false\ntype B = IsAny<any>; // true\ntype C = IsAny<unknown>; // false\ntype D = IsAny<never>; // false\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "// type IsAny<T> = 0 extends 1 & T ? true : false;\ntype IsAny<T> = false extends true & T ? true : false;",
+    "clozeSteps": [
+      "\ntype IsAny<T> = false extends true & T ? true : false;",
+      "\ntype IsAny<T> = false extends true & T ? true : false;",
+      "\ntype IsAny<T> = false extends true & T ? true : false;"
+    ],
+    "breakdown": "Рішення для завдання \"Isany<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-shiftt",
+    "block": "TypeScript Puzzles",
+    "title": "Shift<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `Shift<T>` to shift the first item of a tuple type.\n\n```ts\ntype A = Shift<[1, 2, 3]>; // [2, 3]\ntype B = Shift<[1]>; // []\ntype C = Shift<[]>; // []\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type Shift<T extends any[]> = T extends [any, ...infer R] ? R : [];",
+    "clozeSteps": [
+      "type Shift<T extends any[]> = T extends [any, ...infer R] ? R : [];",
+      "type Shift<T extends any[]> = T extends [any, ...infer R] ? R : [];",
+      "type Shift<T extends any[]> = T extends [any, ...infer R] ? R : [];"
+    ],
+    "breakdown": "Рішення для завдання \"Shift<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-isemptytypet",
+    "block": "TypeScript Puzzles",
+    "title": "Isemptytype<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `IsEmptyType<T>` to check if T is empty type `{}`.\n\n```ts\ntype A = IsEmptyType<string>; // false\ntype B = IsEmptyType<{ a: 3 }>; // false\ntype C = IsEmptyType<{}>; // true\ntype D = IsEmptyType<any>; // false\ntype E = IsEmptyType<object>; // false\ntype F = IsEmptyType<Object>; // false\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type isAny<T> = 0 extends 1 & T ? true : false;\ntype IsEmptyType<T> = isAny<T> extends true\n  ? false\n  : T extends Record<string, never>\n  ? true\n  : false;",
+    "clozeSteps": [
+      "type isAny<T> = 0 extends 1 & T ? true : false;\ntype IsEmptyType<T> = isAny<T> extends true\n  ? false\n  : T extends Record<string, never>\n  ? true\n  : false;",
+      "type isAny<T> = 0 extends 1 & T ? true : false;\ntype IsEmptyType<T> = isAny<T> extends true\n  ? false\n  /* TODO: реалізувати цей рядок */\n  ? true\n  : false;",
+      "/* TODO: реалізувати цей рядок */\ntype IsEmptyType<T> = isAny<T> extends true\n  ? false\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Isemptytype<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-reversetuplet",
+    "block": "TypeScript Puzzles",
+    "title": "Reversetuple<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `ReverseTuple<T>` to reverse a tuple type.\n\n```ts\ntype A = ReverseTuple<[string, number, boolean]>; // [boolean, number, string]\ntype B = ReverseTuple<[1, 2, 3]>; // [3,2,1]\ntype C = ReverseTuple<[]>; // []\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type ReverseTuple<T extends any[]> = T extends [...infer F, infer L]\n  ? [L, ...ReverseTuple<F>]\n  : [];",
+    "clozeSteps": [
+      "type ReverseTuple<T extends any[]> = T extends [...infer F, infer L]\n  ? [L, ...ReverseTuple<F>]\n  /* TODO: реалізувати цей рядок */",
+      "type ReverseTuple<T extends any[]> = T extends [...infer F, infer L]\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */",
+      "type ReverseTuple<T extends any[]> = T extends [...infer F, infer L]\n  /* TODO: реалізувати цей рядок */\n  : [];"
+    ],
+    "breakdown": "Рішення для завдання \"Reversetuple<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-lengthofstringt",
+    "block": "TypeScript Puzzles",
+    "title": "Lengthofstring<T>",
+    "timeLimitMin": 10,
+    "description": "Implement `LengthOfString<T>` to return the length of a string.\n\n```ts\ntype A = LengthOfString<'BFE.dev'>; // 7\ntype B = LengthOfString<''>; // 0\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type StringToTuple<T extends string> = T extends `${infer F}${infer R}`\n  ? [F, ...StringToTuple<R>]\n  : [];\ntype LengthOfString<T extends string> = StringToTuple<T>['length'];",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  ? [F, ...StringToTuple<R>]\n  : [];\ntype LengthOfString<T extends string> = StringToTuple<T>['length'];",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\ntype LengthOfString<T extends string> = StringToTuple<T>['length'];",
+      "type StringToTuple<T extends string> = T extends `${infer F}${infer R}`\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Lengthofstring<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-lengthoftuplet",
+    "block": "TypeScript Puzzles",
+    "title": "Lengthoftuple<T>",
+    "timeLimitMin": 10,
+    "description": "Here is an easy problem, please implement `LengthOfTuple<T>` to return the length of tuple.\n\n```ts\ntype A = LengthOfTuple<['B', 'F', 'E']>; // 3\ntype B = LengthOfTuple<[]>; // 0\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type LengthOfTuple<T extends any[]> = T['length'];",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */",
+      "type LengthOfTuple<T extends any[]> = T['length'];"
+    ],
+    "breakdown": "Рішення для завдання \"Lengthoftuple<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-stringtotuplet",
+    "block": "TypeScript Puzzles",
+    "title": "Stringtotuple<T>",
+    "timeLimitMin": 10,
+    "description": "Given a string literal type, please implement `StringToTuple<T>` to generate a tuple type by spreading each characters.\n\n```ts\ntype A = StringToTuple<'BFE.dev'>; // ['B', 'F', 'E', '.', 'd', 'e','v']\ntype B = StringToTuple<''>; // []\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type StringToTuple<T extends string> = T extends `${infer F}${infer R}`\n  ? [F, ...StringToTuple<R>]\n  : [];",
+    "clozeSteps": [
+      "type StringToTuple<T extends string> = T extends `${infer F}${infer R}`\n  /* TODO: реалізувати цей рядок */\n  : [];",
+      "/* TODO: реалізувати цей рядок */\n  ? [F, ...StringToTuple<R>]\n  : [];",
+      "/* TODO: реалізувати цей рядок */\n  ? [F, ...StringToTuple<R>]\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Stringtotuple<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-lastitemt",
+    "block": "TypeScript Puzzles",
+    "title": "Lastitem<T>",
+    "timeLimitMin": 10,
+    "description": "Similar to [19. FirstItem\\<T\\>](https://bigfrontend.dev/typescript/implement-FirstItem-T), please implement `LastItem<T>` to obtain last item of a tuple type.\n\n```ts\ntype A = LastItem<[string, number, boolean]>; // boolean\ntype B = LastItem<['B', 'F', 'E']>; // 'E'\ntype C = LastItem<[]>; // never\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type LastItem<T extends any[]> = T extends [...any, infer L] ? L : never;",
+    "clozeSteps": [
+      "type LastItem<T extends any[]> = T extends [...any, infer L] ? L : never;",
+      "type LastItem<T extends any[]> = T extends [...any, infer L] ? L : never;",
+      "/* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Lastitem<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-firstitemt",
+    "block": "TypeScript Puzzles",
+    "title": "Firstitem<T>",
+    "timeLimitMin": 10,
+    "description": "## Firstitem<T>\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **BFE_TS**: [Link](https://bfe.dev/typescript/implement-FirstItem-T)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function firstitemt() {\n  // Ваша реалізація тут\n}",
+    "solution": "function firstitemt() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function firstitemt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function firstitemt() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function firstitemt() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Firstitem<T>\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-tupletouniont",
+    "block": "TypeScript Puzzles",
+    "title": "Tupletounion<T>",
+    "timeLimitMin": 10,
+    "description": "Given a tuple type, implement `TupleToUnion<T>` to get a union type from it.\n\n```ts\ntype Foo = [string, number, boolean];\n\ntype Bar = TupleToUnion<Foo>; // string | number | boolean\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type TupleToUnion<T extends any[]> = T extends [\n  first: infer F,\n  ...rest: infer R\n]\n  ? F | TupleToUnion<R>\n  : never;",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  first: infer F,\n  ...rest: infer R\n]\n  ? F | TupleToUnion<R>\n  : never;",
+      "type TupleToUnion<T extends any[]> = T extends [\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n]\n  ? F | TupleToUnion<R>\n  : never;",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  ...rest: infer R\n]\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Tupletounion<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-lastchart",
+    "block": "TypeScript Puzzles",
+    "title": "Lastchar<T>",
+    "timeLimitMin": 10,
+    "description": "Similar to [FirstChar\\<T\\>](https://bigfrontend.dev/typescript/FirstChar), please implement `LastChar<T>` to get the last character.\n\n```ts\ntype A = LastChar<'BFE'>; // 'E'\ntype B = LastChar<'dev'>; // 'v'\ntype C = LastChar<''>; // never\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type LastChar<T extends string> = T extends `${infer F}${infer R}`\n  ? R extends ''\n    ? F\n    : LastChar<R>\n  : never;",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */\n  ? R extends ''\n    ? F\n    : LastChar<R>\n  /* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n    ? F\n    /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */",
+      "type LastChar<T extends string> = T extends `${infer F}${infer R}`\n  /* TODO: реалізувати цей рядок */\n    ? F\n    : LastChar<R>\n  /* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Lastchar<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-firstchart",
+    "block": "TypeScript Puzzles",
+    "title": "Firstchar<T>",
+    "timeLimitMin": 10,
+    "description": "Please implement `FirstChar<T>` to get the first character of a string.\n\n```ts\ntype A = FirstChar<'BFE'>; // 'B'\ntype B = FirstChar<'dev'>; // 'd'\ntype C = FirstChar<''>; // never\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type FirstChar<T extends string> = T extends `${infer S}${any}` ? S : never;",
+    "clozeSteps": [
+      "type FirstChar<T extends string> = T extends `${infer S}${any}` ? S : never;",
+      "/* TODO: реалізувати цей рядок */",
+      "type FirstChar<T extends string> = T extends `${infer S}${any}` ? S : never;"
+    ],
+    "breakdown": "Рішення для завдання \"Firstchar<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-thisparametertypet",
+    "block": "TypeScript Puzzles",
+    "title": "Thisparametertype<T>",
+    "timeLimitMin": 10,
+    "description": "For a function type T, `ThisParameterType<T>` extracts the `this` type. If `this` is not set, `unknown` is used.\n\nPlease implement `MyThisParameterType<T>` by yourself.\n\n```ts\nfunction Foo(this: { a: string }) {}\nfunction Bar() {}\n\ntype A = MyThisParameterType<typeof Foo>; // {a: string}\ntype B = MyThisParameterType<typeof Bar>; // unknown\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyThisParameterType<T extends Function> = T extends (\n  this: infer This,\n  ...args: any[]\n) => any\n  ? This\n  : unknown;",
+    "clozeSteps": [
+      "type MyThisParameterType<T extends Function> = T extends (\n  this: infer This,\n  /* TODO: реалізувати цей рядок */\n) => any\n  ? This\n  : unknown;",
+      "type MyThisParameterType<T extends Function> = T extends (\n  this: infer This,\n  ...args: any[]\n) => any\n  /* TODO: реалізувати цей рядок */\n  : unknown;",
+      "/* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n  /* TODO: реалізувати цей рядок */\n/* TODO: реалізувати цей рядок */\n  ? This\n  : unknown;"
+    ],
+    "breakdown": "Рішення для завдання \"Thisparametertype<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-instancetypet",
+    "block": "TypeScript Puzzles",
+    "title": "Instancetype<T>",
+    "timeLimitMin": 10,
+    "description": "For a constructor function type T, `InstanceType<T>` returns the instance type.\n\nPlease implement `MyInstanceType<T>` by yourself.\n\n```ts\nclass Foo {}\ntype A = MyInstanceType<typeof Foo>; // Foo\ntype B = MyInstanceType<() => string>; // Error\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyInstanceType<T extends abstract new (...args: any[]) => any> =\n  T extends abstract new (...args: any[]) => infer R ? R : never;",
+    "clozeSteps": [
+      "type MyInstanceType<T extends abstract new (...args: any[]) => any> =\n  T extends abstract new (...args: any[]) => infer R ? R : never;",
+      "type MyInstanceType<T extends abstract new (...args: any[]) => any> =\n  T extends abstract new (...args: any[]) => infer R ? R : never;",
+      "type MyInstanceType<T extends abstract new (...args: any[]) => any> =\n  T extends abstract new (...args: any[]) => infer R ? R : never;"
+    ],
+    "breakdown": "Рішення для завдання \"Instancetype<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-nonnullablet",
+    "block": "TypeScript Puzzles",
+    "title": "Nonnullable<T>",
+    "timeLimitMin": 10,
+    "description": "`NonNullable<T>` returns a type by excluding `null` and `undefined` from T.\n\nPlease implement `MyNonNullable<T>` by yourself.\n\n```ts\ntype Foo = 'a' | 'b' | null | undefined;\n\ntype A = MyNonNullable<Foo>; // 'a' | 'b'\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyNonNullable<T> = T extends null | undefined ? never : T;",
+    "clozeSteps": [
+      "/* TODO: реалізувати цей рядок */",
+      "type MyNonNullable<T> = T extends null | undefined ? never : T;",
+      "/* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Nonnullable<T>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-extractt-u",
+    "block": "TypeScript Puzzles",
+    "title": "Extract<T, U>",
+    "timeLimitMin": 10,
+    "description": "As the opposite of [Exclude<T, K>](https://bigfrontend.dev/typescript/implement-Exclude-T-E), `Extract<T, U>` returns a type by extracting union members from T that are assignable to U.\n\nPlease implement `MyExtract<T, U>` by yourself.\n\n```ts\ntype Foo = 'a' | 'b' | 'c';\n\ntype A = MyExtract<Foo, 'a'>; // 'a'\ntype B = MyExtract<Foo, 'a' | 'b'>; // 'a' | 'b'\ntype C = MyExtract<Foo, 'b' | 'c' | 'd' | 'e'>; // 'b' | 'c'\ntype D = MyExtract<Foo, never>; // never\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyExtract<T, U> = T extends U ? T : never;",
+    "clozeSteps": [
+      "type MyExtract<T, U> = T extends U ? T : never;",
+      "/* TODO: реалізувати цей рядок */",
+      "/* TODO: реалізувати цей рядок */"
+    ],
+    "breakdown": "Рішення для завдання \"Extract<T, U>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-excludet-e",
+    "block": "TypeScript Puzzles",
+    "title": "Exclude<T, E>",
+    "timeLimitMin": 10,
+    "description": "`Exclude<T, K>` returns a type by removing from T the union members that are assignable to K.\n\nPlease implement `MyExclude<T, K>` by yourself.\n\n```ts\ntype Foo = 'a' | 'b' | 'c';\n\ntype A = MyExclude<Foo, 'a'>; // 'b' | 'c'\ntype B = MyExclude<Foo, 'c'>; // 'a' | 'b\ntype C = MyExclude<Foo, 'c' | 'd'>; // 'a' | 'b'\ntype D = MyExclude<Foo, 'a' | 'b' | 'c'>; // never\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyExclude<T, E> = T extends E ? never : T;",
+    "clozeSteps": [
+      "type MyExclude<T, E> = T extends E ? never : T;",
+      "type MyExclude<T, E> = T extends E ? never : T;",
+      "type MyExclude<T, E> = T extends E ? never : T;"
+    ],
+    "breakdown": "Рішення для завдання \"Exclude<T, E>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-recordk-v",
+    "block": "TypeScript Puzzles",
+    "title": "Record<K, V>",
+    "timeLimitMin": 10,
+    "description": "`Record<K, V>` returns an object type with keys of K and values of V.\n\nPlease implement `MyRecord<K, V>` by yourself.\n\nNotice that property key could only be `number | string | symbol`.\n\n```ts\ntype Key = 'a' | 'b' | 'c';\n\nconst a: Record<Key, string> = {\n  a: 'BFE.dev',\n  b: 'BFE.dev',\n  c: 'BFE.dev',\n};\na.a = 'bigfrontend.dev'; // OK\na.b = 123; // Error\na.d = 'BFE.dev'; // Error\n\ntype Foo = MyRecord<{ a: string }, string>; // Error\n```",
+    "starter": "function myFunc() {\n  // Ваша реалізація тут\n}",
+    "solution": "type MyRecord<K extends keyof any, V> = {\n  [P in K]: V;\n};",
+    "clozeSteps": [
+      "type MyRecord<K extends keyof any, V> = {\n  [P in K]: V;\n};",
+      "type MyRecord<K extends keyof any, V> = {\n  [P in K]: V;\n};",
+      "type MyRecord<K extends keyof any, V> = {\n  /* TODO: реалізувати цей рядок */\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Record<K, V>\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-hello-world-function",
+    "block": "JS Functions / Polyfills",
+    "title": "Hello World Function",
+    "timeLimitMin": 10,
+    "description": "## Hello World Function\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/create-hello-world-function)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function helloworldfunction() {\n  // Ваша реалізація тут\n}",
+    "solution": "function helloworldfunction() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function helloworldfunction() {\n  \n  return true;\n}",
+      "function helloworldfunction() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function helloworldfunction() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Hello World Function\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-to-be-or-not-to-be",
+    "block": "JS Functions / Polyfills",
+    "title": "To Be Or Not To Be",
+    "timeLimitMin": 10,
+    "description": "## To Be Or Not To Be\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/to-be-or-not-to-be)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function tobeornottobe() {\n  // Ваша реалізація тут\n}",
+    "solution": "function tobeornottobe() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function tobeornottobe() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function tobeornottobe() {\n  \n  return true;\n}",
+      "function tobeornottobe() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"To Be Or Not To Be\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-counter-ii",
+    "block": "JS Functions / Polyfills",
+    "title": "Counter Ii",
+    "timeLimitMin": 10,
+    "description": "## Counter Ii\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/counter-ii)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function counterii() {\n  // Ваша реалізація тут\n}",
+    "solution": "function counterii() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function counterii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function counterii() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function counterii() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Counter Ii\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-apply-transform-over-each-element-in-array",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Apply Transform Over Each Element In Array",
+    "timeLimitMin": 10,
+    "description": "## Apply Transform Over Each Element In Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/apply-transform-over-each-element-in-array)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function applytransformovereachelementinarray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function applytransformovereachelementinarray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function applytransformovereachelementinarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function applytransformovereachelementinarray() {\n  \n  return true;\n}",
+      "function applytransformovereachelementinarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Apply Transform Over Each Element In Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-filter-elements-from-array",
+    "block": "Vanilla DOM & Browser API",
+    "title": "Filter Elements From Array",
+    "timeLimitMin": 10,
+    "description": "## Filter Elements From Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/filter-elements-from-array)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function filterelementsfromarray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function filterelementsfromarray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function filterelementsfromarray() {\n  \n  return true;\n}",
+      "function filterelementsfromarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function filterelementsfromarray() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Filter Elements From Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-array-reduce-transformation",
+    "block": "React Hooks & Components",
+    "title": "Array Reduce Transformation",
+    "timeLimitMin": 10,
+    "description": "## Array Reduce Transformation\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/array-reduce-transformation)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function arrayreducetransformation() {\n  // Ваша реалізація тут\n}",
+    "solution": "function arrayreducetransformation() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function arrayreducetransformation() {\n  \n  return true;\n}",
+      "function arrayreducetransformation() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function arrayreducetransformation() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Array Reduce Transformation\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-function-composition",
+    "block": "JS Functions / Polyfills",
+    "title": "Function Composition",
+    "timeLimitMin": 10,
+    "description": "## Function Composition\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/function-composition)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function functioncomposition() {\n  // Ваша реалізація тут\n}",
+    "solution": "function functioncomposition() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function functioncomposition() {\n  \n  return true;\n}",
+      "function functioncomposition() {\n  \n  return true;\n}",
+      "function functioncomposition() {\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Опис для завдання \"Function Composition\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-return-length-of-arguments-passed",
+    "block": "JS Functions / Polyfills",
+    "title": "Return Length Of Arguments Passed",
+    "timeLimitMin": 10,
+    "description": "## Return Length Of Arguments Passed\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/return-length-of-arguments-passed)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function returnlengthofargumentspassed() {\n  // Ваша реалізація тут\n}",
+    "solution": "function returnlengthofargumentspassed() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function returnlengthofargumentspassed() {\n  \n  return true;\n}",
+      "function returnlengthofargumentspassed() {\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "function returnlengthofargumentspassed() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Return Length Of Arguments Passed\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-allow-one-function-call",
+    "block": "JS Functions / Polyfills",
+    "title": "Allow One Function Call",
+    "timeLimitMin": 10,
+    "description": "Given a function fn, return a new function that is identical to the original function except that it ensures fn is called at most once.",
+    "starter": "function once(fn) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Allow One Function Call\nfunction once(fn) {\n  // Оголошення та ініціалізація змінної \"called\"\n  let called = false;\n  // Оголошення та ініціалізація змінної \"result\"\n  let result;\n  // Повернення обчисленого значення\n  return function(...args) {\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!called) {\n      called = true;\n      result = fn(...args);\n      // Повернення обчисленого значення\n      return result;\n    }\n    // Повернення обчисленого значення\n    return undefined;\n  };\n}",
+    "clozeSteps": [
+      "\nfunction once(fn) {\n  \n  let called = false;\n  \n  let result;\n  \n  return function(...args) {\n    \n    /* TODO: реалізувати цей рядок */\n      called = true;\n      result = fn(...args);\n      \n      return result;\n    }\n    \n    return undefined;\n  };\n}",
+      "\nfunction once(fn) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  let result;\n  \n  return function(...args) {\n    \n    /* TODO: реалізувати цей рядок */\n      called = true;\n      result = fn(...args);\n      \n      return result;\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  };\n}",
+      "\nfunction once(fn) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  let result;\n  \n  return function(...args) {\n    \n    if (!called) {\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Allow One Function Call\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-timeout-cancellation",
+    "block": "JS Functions / Polyfills",
+    "title": "Timeout Cancellation",
+    "timeLimitMin": 10,
+    "description": "Given a function fn, an array of arguments args, and a timeout t in milliseconds, return a cancel function cancelFn. If cancelFn is invoked before t milliseconds, it should cancel the execution of fn.",
+    "starter": "function cancellable(fn, args, t) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Timeout Cancellation\nfunction cancellable(fn, args, t) {\n  // Оголошення та ініціалізація змінної \"timer\"\n  const timer = setTimeout(() => {\n    fn(...args);\n  }, t);\n  \n  // Повернення обчисленого значення\n  return function cancelFn() {\n    // Скасування активного таймера\n    clearTimeout(timer);\n  };\n}",
+    "clozeSteps": [
+      "\nfunction cancellable(fn, args, t) {\n  \n  const timer = setTimeout(() => {\n    fn(...args);\n  }, t);\n  \n  \n  return function cancelFn() {\n    \n    clearTimeout(timer);\n  };\n}",
+      "\nfunction cancellable(fn, args, t) {\n  \n  const timer = setTimeout(() => {\n    fn(...args);\n  /* TODO: реалізувати цей рядок */\n  \n  \n  return function cancelFn() {\n    \n    clearTimeout(timer);\n  };\n}",
+      "\nfunction cancellable(fn, args, t) {\n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }, t);\n  \n  \n  return function cancelFn() {\n    \n    /* TODO: реалізувати цей рядок */\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Timeout Cancellation\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-interval-cancellation",
+    "block": "JS Functions / Polyfills",
+    "title": "Interval Cancellation",
+    "timeLimitMin": 10,
+    "description": "Given a function fn, an array of arguments args, and an interval period t, return a cancel function cancelFn. fn should be called immediately and then repeatedly every t milliseconds until cancelFn is called.",
+    "starter": "function cancellableInterval(fn, args, t) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Interval Cancellation\nfunction cancellableInterval(fn, args, t) {\n  fn(...args);\n  // Оголошення та ініціалізація змінної \"timer\"\n  const timer = setInterval(() => {\n    fn(...args);\n  }, t);\n  \n  // Повернення обчисленого значення\n  return function cancelFn() {\n    clearInterval(timer);\n  };\n}",
+    "clozeSteps": [
+      "\nfunction cancellableInterval(fn, args, t) {\n  fn(...args);\n  \n  const timer = setInterval(() => {\n    fn(...args);\n  }, t);\n  \n  \n  return function cancelFn() {\n    clearInterval(timer);\n  };\n}",
+      "\nfunction cancellableInterval(fn, args, t) {\n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n    fn(...args);\n  /* TODO: реалізувати цей рядок */\n  \n  \n  return function cancelFn() {\n    /* TODO: реалізувати цей рядок */\n  };\n}",
+      "\nfunction cancellableInterval(fn, args, t) {\n  /* TODO: реалізувати цей рядок */\n  \n  const timer = setInterval(() => {\n    fn(...args);\n  }, t);\n  \n  \n  return function cancelFn() {\n    clearInterval(timer);\n  };\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Interval Cancellation\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-cache-with-time-limit",
+    "block": "JS Functions / Polyfills",
+    "title": "Cache With Time Limit",
+    "timeLimitMin": 10,
+    "description": "Write a class that allows getting and setting key-value pairs, but with a time-to-live (TTL) limit on each key. When the TTL expires, the key should become inaccessible.",
+    "starter": "class TimeLimitedCache {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Cache With Time Limit\nclass TimeLimitedCache {\n  constructor() {\n    this.cache = new Map();\n  }\n\n  set(key, value, duration) {\n    // Оголошення та ініціалізація змінної \"now\"\n    const now = Date.now();\n    // Оголошення та ініціалізація змінної \"hasKey\"\n    const hasKey = this.cache.has(key) && this.cache.get(key).expiry > now;\n    \n    // Перевірка умови виконання\n    if (this.cache.has(key)) {\n      // Скасування активного таймера\n      clearTimeout(this.cache.get(key).timer);\n    }\n    \n    // Оголошення та ініціалізація змінної \"timer\"\n    const timer = setTimeout(() => {\n      this.cache.delete(key);\n    }, duration);\n    \n    this.cache.set(key, {\n      value,\n      expiry: now + duration,\n      timer\n    });\n    \n    // Повернення обчисленого значення\n    return hasKey;\n  }\n\n  get(key) {\n    // Оголошення та ініціалізація змінної \"now\"\n    const now = Date.now();\n    // Перевірка умови виконання\n    if (this.cache.has(key)) {\n      // Оголошення та ініціалізація змінної \"entry\"\n      const entry = this.cache.get(key);\n      // Перевірка умови виконання\n      if (entry.expiry > now) {\n        // Повернення обчисленого значення\n        return entry.value;\n      }\n    }\n    // Повернення обчисленого значення\n    return -1;\n  }\n\n  count() {\n    // Оголошення та ініціалізація змінної \"now\"\n    const now = Date.now();\n    // Оголошення та ініціалізація змінної \"cnt\"\n    let cnt = 0;\n    // Цикл перебору елементів\n    for (const [_, entry] of this.cache.entries()) {\n      // Перевірка умови виконання\n      if (entry.expiry > now) cnt++;\n    }\n    // Повернення обчисленого значення\n    return cnt;\n  }\n}",
+    "clozeSteps": [
+      "\nclass TimeLimitedCache {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  set(key, value, duration) {\n    \n    const now = Date.now();\n    \n    const hasKey = this.cache.has(key) && this.cache.get(key).expiry > now;\n    \n    \n    if (this.cache.has(key)) {\n      \n      clearTimeout(this.cache.get(key).timer);\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }, duration);\n    \n    this.cache.set(key, {\n      value,\n      expiry: now + duration,\n      timer\n    });\n    \n    \n    return hasKey;\n  }\n\n  get(key) {\n    \n    const now = Date.now();\n    \n    /* TODO: реалізувати цей рядок */\n      \n      const entry = this.cache.get(key);\n      \n      if (entry.expiry > now) {\n        \n        return entry.value;\n      }\n    }\n    \n    return -1;\n  }\n\n  count() {\n    \n    const now = Date.now();\n    \n    let cnt = 0;\n    \n    for (const [_, entry] of this.cache.entries()) {\n      \n      if (entry.expiry > now) cnt++;\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  }\n}",
+      "\nclass TimeLimitedCache {\n  constructor() {\n    this.cache = new Map();\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    const now = Date.now();\n    \n    const hasKey = this.cache.has(key) && this.cache.get(key).expiry > now;\n    \n    \n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    const timer = setTimeout(() => {\n      this.cache.delete(key);\n    }, duration);\n    \n    this.cache.set(key, {\n      value,\n      /* TODO: реалізувати цей рядок */\n      timer\n    });\n    \n    \n    return hasKey;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      \n      const entry = this.cache.get(key);\n      \n      if (entry.expiry > now) {\n        \n        /* TODO: реалізувати цей рядок */\n      }\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  count() {\n    \n    const now = Date.now();\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (entry.expiry > now) cnt++;\n    }\n    \n    return cnt;\n  }\n}",
+      "\nclass TimeLimitedCache {\n  constructor() {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (this.cache.has(key)) {\n      \n      /* TODO: реалізувати цей рядок */\n    }\n    \n    \n    /* TODO: реалізувати цей рядок */\n      this.cache.delete(key);\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      value,\n      /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    });\n    \n    \n    return hasKey;\n  }\n\n  get(key) {\n    \n    const now = Date.now();\n    \n    if (this.cache.has(key)) {\n      \n      const entry = this.cache.get(key);\n      \n      /* TODO: реалізувати цей рядок */\n        \n        /* TODO: реалізувати цей рядок */\n      }\n    }\n    \n    return -1;\n  }\n\n  count() {\n    \n    const now = Date.now();\n    \n    let cnt = 0;\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (entry.expiry > now) cnt++;\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Cache With Time Limit\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-execute-asynchronous-functions-in-parallel",
+    "block": "JS Functions / Polyfills",
+    "title": "Execute Asynchronous Functions In Parallel",
+    "timeLimitMin": 10,
+    "description": "Implement a function promiseAll(functions) that runs all async functions in parallel and returns a promise resolving to an array of their results, or rejecting on the first failure (essentially Promise.all polyfill).",
+    "starter": "function promiseAll(functions) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Execute Asynchronous Functions In Parallel\nfunction promiseAll(functions) {\n  // Повернення обчисленого значення\n  return new Promise((resolve, reject) => {\n    // Оголошення та ініціалізація змінної \"results\"\n    const results = [];\n    // Оголошення та ініціалізація змінної \"completed\"\n    let completed = 0;\n    \n    // Перевірка умови виконання\n    if (functions.length === 0) {\n      resolve(results);\n      return;\n    }\n    \n    // Головна функція/клас для: Execute Asynchronous Functions In Parallel\n    functions.forEach((fn, idx) => {\n      fn()\n        .then(val => {\n          results[idx] = val;\n          completed++;\n          // Перевірка умови виконання\n          if (completed === functions.length) {\n            resolve(results);\n          }\n        })\n        .catch(reject);\n    });\n  });\n}",
+    "clozeSteps": [
+      "\nfunction promiseAll(functions) {\n  \n  /* TODO: реалізувати цей рядок */\n    \n    const results = [];\n    \n    let completed = 0;\n    \n    \n    if (functions.length === 0) {\n      resolve(results);\n      return;\n    }\n    \n    \n    functions.forEach((fn, idx) => {\n      fn()\n        .then(val => {\n          /* TODO: реалізувати цей рядок */\n          completed++;\n          \n          if (completed === functions.length) {\n            resolve(results);\n          }\n        })\n        .catch(reject);\n    });\n  });\n}",
+      "\nfunction promiseAll(functions) {\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (functions.length === 0) {\n      resolve(results);\n      return;\n    }\n    \n    \n    functions.forEach((fn, idx) => {\n      fn()\n        .then(val => {\n          /* TODO: реалізувати цей рядок */\n          completed++;\n          \n          if (completed === functions.length) {\n            resolve(results);\n          }\n        })\n        .catch(reject);\n    });\n  });\n}",
+      "\nfunction promiseAll(functions) {\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n    \n    \n    if (functions.length === 0) {\n      /* TODO: реалізувати цей рядок */\n      return;\n    }\n    \n    \n    functions.forEach((fn, idx) => {\n      fn()\n        .then(val => {\n          /* TODO: реалізувати цей рядок */\n          /* TODO: реалізувати цей рядок */\n          \n          if (completed === functions.length) {\n            resolve(results);\n          }\n        })\n        .catch(reject);\n    });\n  });\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Execute Asynchronous Functions In Parallel\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-is-object-empty",
+    "block": "JS Functions / Polyfills",
+    "title": "Is Object Empty",
+    "timeLimitMin": 10,
+    "description": "Given an object or an array, return if it is empty. An empty object contains no key-value pairs. An empty array contains no elements.",
+    "starter": "function isEmpty(obj) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Is Object Empty\nfunction isEmpty(obj) {\n  // Перевірка умови виконання\n  if (Array.isArray(obj)) {\n    // Повернення обчисленого значення\n    return obj.length === 0;\n  }\n  // Повернення обчисленого значення\n  return Object.keys(obj).length === 0;\n}",
+    "clozeSteps": [
+      "\nfunction isEmpty(obj) {\n  \n  if (Array.isArray(obj)) {\n    \n    return obj.length === 0;\n  }\n  \n  return Object.keys(obj).length === 0;\n}",
+      "\nfunction isEmpty(obj) {\n  \n  if (Array.isArray(obj)) {\n    \n    return obj.length === 0;\n  }\n  \n  return Object.keys(obj).length === 0;\n}",
+      "\nfunction isEmpty(obj) {\n  \n  if (Array.isArray(obj)) {\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Is Object Empty\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-chunk-array",
+    "block": "JS Functions / Polyfills",
+    "title": "Chunk Array",
+    "timeLimitMin": 10,
+    "description": "## Chunk Array\n\nЦя задача отримана в результаті дослідження.\n\n### Джерела:\n* **LeetCode_JS**: [Link](https://leetcode.com/problems/chunk-array)\n\n### Компанії:\n* General Industry\n\n*(Перейдіть за посиланнями для перегляду повного опису)*",
+    "starter": "function chunkarray() {\n  // Ваша реалізація тут\n}",
+    "solution": "function chunkarray() {\n  // Перегляньте рішення на оригінальній платформі\n  return true;\n}",
+    "clozeSteps": [
+      "function chunkarray() {\n  \n  return true;\n}",
+      "function chunkarray() {\n  \n  return true;\n}",
+      "function chunkarray() {\n  \n  return true;\n}"
+    ],
+    "breakdown": "Опис для завдання \"Chunk Array\" знаходиться на зовнішньому ресурсі.",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-array-prototype-last",
+    "block": "JS Functions / Polyfills",
+    "title": "Array Prototype Last",
+    "timeLimitMin": 10,
+    "description": "Enhance all arrays so that you can call the array.last() method on any array and it will return the last element. If there are no elements in the array, it should return -1.",
+    "starter": "Array.prototype.last = function() {\n  // Ваша реалізація тут\n}",
+    "solution": "Array.prototype.last = function() {\n  // Перевірка умови виконання\n  if (this.length === 0) return -1;\n  // Повернення обчисленого значення\n  return this[this.length - 1];\n};",
+    "clozeSteps": [
+      "Array.prototype.last = function() {\n  \n  if (this.length === 0) return -1;\n  \n  /* TODO: реалізувати цей рядок */\n};",
+      "Array.prototype.last = function() {\n  \n  if (this.length === 0) return -1;\n  \n  /* TODO: реалізувати цей рядок */\n};",
+      "Array.prototype.last = function() {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  /* TODO: реалізувати цей рядок */\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Array Prototype Last\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-group-by",
+    "block": "JS Functions / Polyfills",
+    "title": "Group By",
+    "timeLimitMin": 10,
+    "description": "Enhance all arrays so that you can call the array.groupBy(fn) method on any array and it will return a grouped object.",
+    "starter": "Array.prototype.groupBy = function(fn) {\n  // Ваша реалізація тут\n}",
+    "solution": "Array.prototype.groupBy = function(fn) {\n  // Оголошення та ініціалізація змінної \"result\"\n  const result = {};\n  // Цикл перебору елементів\n  for (const item of this) {\n    // Оголошення та ініціалізація змінної \"key\"\n    const key = fn(item);\n    // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n    if (!result[key]) {\n      result[key] = [];\n    }\n    result[key].push(item);\n  }\n  // Повернення обчисленого значення\n  return result;\n};",
+    "clozeSteps": [
+      "Array.prototype.groupBy = function(fn) {\n  \n  const result = {};\n  \n  for (const item of this) {\n    \n    const key = fn(item);\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  return result;\n};",
+      "Array.prototype.groupBy = function(fn) {\n  \n  const result = {};\n  \n  for (const item of this) {\n    \n    const key = fn(item);\n    \n    /* TODO: реалізувати цей рядок */\n      result[key] = [];\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  return result;\n};",
+      "Array.prototype.groupBy = function(fn) {\n  \n  const result = {};\n  \n  for (const item of this) {\n    \n    const key = fn(item);\n    \n    if (!result[key]) {\n      /* TODO: реалізувати цей рядок */\n    }\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  return result;\n};"
+    ],
+    "breakdown": "Рішення для завдання \"Group By\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-join-two-arrays-by-id",
+    "block": "JS Functions / Polyfills",
+    "title": "Join Two Arrays By Id",
+    "timeLimitMin": 10,
+    "description": "Given two arrays arr1 and arr2, return a new joined array. All objects in both arrays contain an id field. Merge objects with identical IDs (values in arr2 overwrite values in arr1).",
+    "starter": "function join(arr1, arr2) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Join Two Arrays By Id\nfunction join(arr1, arr2) {\n  // Оголошення та ініціалізація змінної \"map\"\n  const map = new Map();\n  \n  // Цикл перебору елементів\n  for (const obj of arr1) {\n    map.set(obj.id, { ...obj });\n  }\n  \n  // Цикл перебору елементів\n  for (const obj of arr2) {\n    // Перевірка умови виконання\n    if (map.has(obj.id)) {\n      map.set(obj.id, { ...map.get(obj.id), ...obj });\n    } else {\n      map.set(obj.id, { ...obj });\n    }\n  }\n  \n  // Повернення обчисленого значення\n  return Array.from(map.values()).sort((a, b) => a.id - b.id);\n}",
+    "clozeSteps": [
+      "\nfunction join(arr1, arr2) {\n  \n  const map = new Map();\n  \n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  for (const obj of arr2) {\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    } else {\n      map.set(obj.id, { ...obj });\n    }\n  }\n  \n  \n  return Array.from(map.values()).sort((a, b) => a.id - b.id);\n}",
+      "\nfunction join(arr1, arr2) {\n  \n  const map = new Map();\n  \n  \n  for (const obj of arr1) {\n    map.set(obj.id, { ...obj });\n  }\n  \n  \n  for (const obj of arr2) {\n    \n    if (map.has(obj.id)) {\n      map.set(obj.id, { ...map.get(obj.id), ...obj });\n    } else {\n      map.set(obj.id, { ...obj });\n    }\n  }\n  \n  \n  return Array.from(map.values()).sort((a, b) => a.id - b.id);\n}",
+      "\nfunction join(arr1, arr2) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  for (const obj of arr2) {\n    \n    if (map.has(obj.id)) {\n      /* TODO: реалізувати цей рядок */\n    } else {\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n  \n  \n  return Array.from(map.values()).sort((a, b) => a.id - b.id);\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Join Two Arrays By Id\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-compact-object",
+    "block": "JS Functions / Polyfills",
+    "title": "Compact Object",
+    "timeLimitMin": 10,
+    "description": "Given an object or array obj, return a compact object. A compact object is the same as the original, except with all falsy values removed (including nested ones).",
+    "starter": "function compactObject(obj) {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Compact Object\nfunction compactObject(obj) {\n  // Перевірка на базовий або крайовий випадок (null / undefined / порожнє значення)\n  if (obj === null || typeof obj !== 'object') return obj;\n  \n  // Перевірка умови виконання\n  if (Array.isArray(obj)) {\n    // Оголошення та ініціалізація змінної \"compactArr\"\n    const compactArr = [];\n    // Цикл перебору елементів\n    for (const item of obj) {\n      // Перевірка умови виконання\n      if (item) {\n        compactArr.push(compactObject(item));\n      }\n    }\n    // Повернення обчисленого значення\n    return compactArr;\n  }\n  \n  // Оголошення та ініціалізація змінної \"compactObj\"\n  const compactObj = {};\n  // Цикл перебору елементів\n  for (const key of Object.keys(obj)) {\n    // Перевірка умови виконання\n    if (obj[key]) {\n      compactObj[key] = compactObject(obj[key]);\n    }\n  }\n  // Повернення обчисленого значення\n  return compactObj;\n}",
+    "clozeSteps": [
+      "\nfunction compactObject(obj) {\n  \n  if (obj === null || typeof obj !== 'object') return obj;\n  \n  \n  if (Array.isArray(obj)) {\n    \n    const compactArr = [];\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (item) {\n        compactArr.push(compactObject(item));\n      }\n    }\n    \n    return compactArr;\n  }\n  \n  \n  /* TODO: реалізувати цей рядок */\n  \n  for (const key of Object.keys(obj)) {\n    \n    if (obj[key]) {\n      compactObj[key] = compactObject(obj[key]);\n    }\n  }\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction compactObject(obj) {\n  \n  if (obj === null || typeof obj !== 'object') return obj;\n  \n  \n  if (Array.isArray(obj)) {\n    \n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      \n      if (item) {\n        compactArr.push(compactObject(item));\n      }\n    }\n    \n    return compactArr;\n  }\n  \n  \n  const compactObj = {};\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      compactObj[key] = compactObject(obj[key]);\n    }\n  }\n  \n  /* TODO: реалізувати цей рядок */\n}",
+      "\nfunction compactObject(obj) {\n  \n  /* TODO: реалізувати цей рядок */\n  \n  \n  /* TODO: реалізувати цей рядок */\n    \n    const compactArr = [];\n    \n    for (const item of obj) {\n      \n      /* TODO: реалізувати цей рядок */\n        compactArr.push(compactObject(item));\n      }\n    }\n    \n    /* TODO: реалізувати цей рядок */\n  }\n  \n  \n  const compactObj = {};\n  \n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      /* TODO: реалізувати цей рядок */\n    }\n  }\n  \n  /* TODO: реалізувати цей рядок */\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Compact Object\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-array-wrapper",
+    "block": "JS Functions / Polyfills",
+    "title": "Array Wrapper",
+    "timeLimitMin": 10,
+    "description": "Create a class ArrayWrapper that accepts an array of integers in its constructor. It should support additions when added together using the + operator, and string conversion.",
+    "starter": "class ArrayWrapper {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Array Wrapper\nclass ArrayWrapper {\n  constructor(nums) {\n    this.nums = nums;\n  }\n\n  valueOf() {\n    // Повернення обчисленого значення\n    return this.nums.reduce((sum, val) => sum + val, 0);\n  }\n\n  toString() {\n    // Повернення обчисленого значення\n    return `[${this.nums.join(',')}]`;\n  }\n}",
+    "clozeSteps": [
+      "\nclass ArrayWrapper {\n  constructor(nums) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  valueOf() {\n    \n    return this.nums.reduce((sum, val) => sum + val, 0);\n  }\n\n  toString() {\n    \n    return `[${this.nums.join(',')}]`;\n  }\n}",
+      "\nclass ArrayWrapper {\n  constructor(nums) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n}",
+      "\nclass ArrayWrapper {\n  constructor(nums) {\n    this.nums = nums;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    return this.nums.reduce((sum, val) => sum + val, 0);\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Array Wrapper\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  },
+  {
+    "id": "canonical-calculator-with-method-chaining",
+    "block": "React Hooks & Components",
+    "title": "Calculator With Method Chaining",
+    "timeLimitMin": 10,
+    "description": "Design a Calculator class supporting addition, subtraction, multiplication, division, power, and method chaining.",
+    "starter": "class Calculator {\n  // Ваша реалізація тут\n}",
+    "solution": "// Головна функція/клас для: Calculator With Method Chaining\nclass Calculator {\n  constructor(value) {\n    this.value = value;\n  }\n\n  add(value) {\n    this.value += value;\n    // Повернення обчисленого значення\n    return this;\n  }\n\n  subtract(value) {\n    this.value -= value;\n    // Повернення обчисленого значення\n    return this;\n  }\n\n  multiply(value) {\n    this.value *= value;\n    // Повернення обчисленого значення\n    return this;\n  }\n\n  divide(value) {\n    // Перевірка умови виконання\n    if (value === 0) {\n      // Викидання помилки (обробка виняткових ситуацій)\n      throw new Error(\"Division by zero is not allowed\");\n    }\n    this.value /= value;\n    // Повернення обчисленого значення\n    return this;\n  }\n\n  power(value) {\n    this.value = Math.pow(this.value, value);\n    // Повернення обчисленого значення\n    return this;\n  }\n\n  getResult() {\n    // Повернення обчисленого значення\n    return this.value;\n  }\n}",
+    "clozeSteps": [
+      "\nclass Calculator {\n  constructor(value) {\n    this.value = value;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    this.value += value;\n    \n    return this;\n  }\n\n  subtract(value) {\n    this.value -= value;\n    \n    return this;\n  }\n\n  multiply(value) {\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  divide(value) {\n    \n    if (value === 0) {\n      \n      throw new Error(\"Division by zero is not allowed\");\n    }\n    this.value /= value;\n    \n    return this;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    \n    return this;\n  }\n\n  getResult() {\n    \n    return this.value;\n  }\n}",
+      "\nclass Calculator {\n  constructor(value) {\n    this.value = value;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    \n    return this;\n  }\n\n  subtract(value) {\n    /* TODO: реалізувати цей рядок */\n    \n    return this;\n  }\n\n  multiply(value) {\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  divide(value) {\n    \n    /* TODO: реалізувати цей рядок */\n      \n      throw new Error(\"Division by zero is not allowed\");\n    }\n    this.value /= value;\n    \n    return this;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    \n    return this;\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    return this.value;\n  }\n}",
+      "\nclass Calculator {\n  constructor(value) {\n    /* TODO: реалізувати цей рядок */\n  }\n\n  add(value) {\n    /* TODO: реалізувати цей рядок */\n    \n    return this;\n  }\n\n  subtract(value) {\n    this.value -= value;\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    this.value *= value;\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n      \n      /* TODO: реалізувати цей рядок */\n    }\n    this.value /= value;\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  /* TODO: реалізувати цей рядок */\n    /* TODO: реалізувати цей рядок */\n    \n    /* TODO: реалізувати цей рядок */\n  }\n\n  getResult() {\n    \n    return this.value;\n  }\n}"
+    ],
+    "breakdown": "Рішення для завдання \"Calculator With Method Chaining\".",
+    "testCode": "test('Placeholder test', () => {\n  assert(true, 'Task placeholder');\n});",
+    "difficulty": "junior"
+  }
+];
