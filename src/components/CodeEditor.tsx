@@ -31,6 +31,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         language={language}
         value={value}
         onChange={(val) => onChange && onChange(val || '')}
+        onMount={(editor) => {
+          if (!readOnly) {
+            editor.focus();
+          }
+        }}
         theme={theme}
         options={{
           readOnly,

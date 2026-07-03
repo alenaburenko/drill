@@ -161,6 +161,27 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
     onSaveProgress(task.id, { ...progress, peeksCount: newCount });
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        const hasEditor = currentStage >= 2 && currentStage <= 6;
+        if (hasEditor && !isRunning) {
+          e.preventDefault();
+          handleRunTests();
+        }
+      }
+      if (e.key === 'Escape') {
+        if (currentStage === 3) {
+          e.preventDefault();
+          handlePeek();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [code, isRunning, currentStage, handleRunTests, handlePeek]);
+
   const formatTime = (totalSec: number) => {
     const mins = Math.floor(totalSec / 60);
     const secs = totalSec % 60;
