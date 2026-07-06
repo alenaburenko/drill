@@ -72,9 +72,9 @@ function matchesAllowedImport(filePath, importPath) {
   const importDir = dirname(relImport);
   if (relDir === importDir) return true;
 
-  // Allow common patterns: types and i18n are freely importable
+  // Allow common patterns: types, i18n, and utils are freely importable
   const normalized = relImport.replace(/\.(ts|tsx|js|jsx)$/, '');
-  if (normalized === 'src/types' || normalized === 'src/i18n') return true;
+  if (normalized === 'src/types' || normalized === 'src/i18n' || normalized.startsWith('src/utils/')) return true;
   if (normalized.startsWith('src/types/')) return true;
 
   // Allow importing tasks from tasks/
