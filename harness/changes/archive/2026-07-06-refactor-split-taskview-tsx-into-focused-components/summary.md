@@ -1,8 +1,8 @@
 ---
 title: "refactor: split TaskView.tsx into focused components"
 slug: "refactor-split-taskview-tsx-into-focused-components"
-status: "in_progress"
-location: "active"
+status: "completed"
+location: "archive"
 phase: "intake"
 intake_status: "pending"
 spec_review: "pending"
