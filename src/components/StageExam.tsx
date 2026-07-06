@@ -1,6 +1,7 @@
 import React from 'react';
 import { DrillTask } from '../types';
 import { T } from '../i18n';
+import { Button } from './ui';
 import { BookOpen, Clock } from 'lucide-react';
 
 interface Props {
@@ -37,11 +38,9 @@ const StageExam: React.FC<Props> = ({ task, t, examActive, timerSec, formatTime,
           <p className="text-xs max-w-sm leading-relaxed mb-4" style={{ color: 'var(--text-muted)' }}>
             {t.timeExpiredDesc(task.timeLimitMin)}
           </p>
-          <button onClick={onRetry}
-            className="btn-glow text-xs font-bold py-2.5 px-4 rounded-xl transition-all"
-            style={{ background: 'var(--accent)', color: '#000' }}>
+          <Button onClick={onRetry} variant="primary" size="md" glow>
             {t.retryExam}
-          </button>
+          </Button>
         </>
       ) : (
         <>

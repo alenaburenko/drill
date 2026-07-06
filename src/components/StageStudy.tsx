@@ -2,6 +2,7 @@ import React from 'react';
 import { CodeEditor } from './CodeEditor';
 import { DrillTask } from '../types';
 import { T } from '../i18n';
+import { Button } from './ui';
 import { BookOpen, CheckCircle, Zap } from 'lucide-react';
 
 interface Props {
@@ -13,12 +14,10 @@ interface Props {
 const StageStudy: React.FC<Props> = ({ task, t, onStartPractice }) => (
   <>
     <div className="p-4 border-b" style={{ borderColor: 'var(--border-muted)', background: 'rgba(249,115,22,0.06)' }}>
-      <button onClick={onStartPractice}
-        className="btn-glow w-full flex items-center justify-center gap-2 font-bold py-3 px-4 rounded-xl text-sm transition-all"
-        style={{ background: 'var(--accent)', color: '#000' }}>
+      <Button onClick={onStartPractice} variant="primary" size="lg" glow className="w-full flex items-center justify-center gap-2">
         <Zap className="w-4 h-4" />
         {t.startPracticeBtn}
-      </button>
+      </Button>
     </div>
     <div className="p-5 flex flex-col gap-5 flex-1">
       <div>

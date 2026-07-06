@@ -16,6 +16,7 @@ import {
 // we keep them here for convenience — unused imports are tree-shaken by Vite.
 
 import { diffBadge, stageBadge } from './utils/badges';
+import { Button, Card, Badge, SectionHeader, EmptyState } from './components/ui';
 import DashboardView from './components/DashboardView';
 
 export default function App() {
@@ -342,7 +343,7 @@ export default function App() {
 
               {/* ──────── CATALOG ──────── */}
               {activeTab === 'catalog' && (
-                <div className="rounded-2xl border p-5" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
+                <Card padding="md">
                   {/* Filters */}
                   <div className="flex flex-col lg:flex-row gap-3 items-center justify-between mb-5 pb-4 border-b" style={{ borderColor: 'var(--border-muted)' }}>
                     <div className="relative w-full lg:w-80">
@@ -376,7 +377,7 @@ export default function App() {
 
                   {/* Grouped task list */}
                   {groupedCatalog.length === 0 ? (
-                    <div className="py-16 text-center text-sm italic" style={{ color: 'var(--text-muted)' }}>{t.noTasksFound}</div>
+                    <EmptyState description={t.noTasksFound} />
                   ) : (
                     <div className="space-y-6">
                       {groupedCatalog.map(([block, tasks]) => {
@@ -389,9 +390,7 @@ export default function App() {
                               className="w-full group-header hover:opacity-80 transition-opacity mb-3"
                             >
                               <span className="flex-1 text-left">{block.toUpperCase()}</span>
-                              <span className="ml-2 text-[10px] px-2 py-0.5 rounded font-mono font-bold" style={{ background: 'rgba(249,115,22,0.12)', color: 'var(--accent)' }}>
-                                {t.tasksCount(tasks.length)}
-                              </span>
+                              <Badge variant="accent" size="sm" className="ml-2">{t.tasksCount(tasks.length)}</Badge>
                               {isCollapsed ? <ChevronDown className="w-3.5 h-3.5 ml-2" /> : <ChevronUp className="w-3.5 h-3.5 ml-2" />}
                             </button>
 
@@ -402,12 +401,10 @@ export default function App() {
                                   const prog = getTaskProgress(task.id);
                                   const isMastered = prog.learningStage >= 7;
                                   return (
-                                    <div key={task.id}
-                                      className="flex flex-col justify-between p-4 rounded-xl border transition-all group hover:border-orange-800/40"
-                                      style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+                                    <Card key={task.id} variant="elevated" padding="md">
                                       <div>
                                         <div className="flex items-center justify-between mb-2">
-                                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${diffBadge(task.difficulty)}`}>{task.difficulty}</span>
+                                          <Badge variant="accent" size="sm" className={diffBadge(task.difficulty)}>{task.difficulty}</Badge>
                                           <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>#{task.id.slice(-8)}</span>
                                         </div>
                                         <h4 className="text-sm font-bold transition-colors group-hover:text-orange-400 line-clamp-1">{task.title}</h4>
@@ -416,18 +413,14 @@ export default function App() {
                                         </p>
                                       </div>
                                       <div className="mt-4 pt-3 border-t flex items-center justify-between" style={{ borderColor: 'var(--border-muted)' }}>
-                                        <span className={`text-[10px] font-semibold font-mono px-2 py-1 rounded-lg ${stageBadge(isMastered, prog.learningStage)}`}>
+                                        <Badge variant={isMastered ? 'stage-mastered' : 'stage'} size="md">
                                           {isMastered ? t.masteredLabel : t.stageOf(prog.learningStage)}
-                                        </span>
-                                        <button
-                                          onClick={() => setSelectedTaskId(task.id)}
-                                          className="text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all btn-glow"
-                                          style={{ background: 'var(--accent)', color: '#000' }}
-                                        >
+                                        </Badge>
+                                        <Button variant="primary" size="sm" glow onClick={() => setSelectedTaskId(task.id)}>
                                           {t.practiceBtn}
-                                        </button>
+                                        </Button>
                                       </div>
-                                    </div>
+                                    </Card>
                                   );
                                 })}
                               </div>
@@ -437,7 +430,7 @@ export default function App() {
                       })}
                     </div>
                   )}
-                </div>
+                </Card>
               )}
 
               {/* ──────── UPLOAD ──────── */}
@@ -445,14 +438,13 @@ export default function App() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                   {/* JSON import */}
-                  <div className="lg:col-span-7 rounded-2xl border p-6 flex flex-col gap-4" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
-                    <div className="border-b pb-3" style={{ borderColor: 'var(--border-muted)' }}>
-                      <h3 className="text-sm font-bold uppercase tracking-wider flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
-                        <Upload className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-                        {t.importJson}
-                      </h3>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.importJsonDesc}</p>
-                    </div>
+                  <div className="lg:col-span-7" style={{ height: '100%' }}>
+                    <Card padding="lg" className="flex flex-col gap-4 h-full">
+                      <SectionHeader
+                        icon={<Upload className="w-4 h-4" />}
+                        title={t.importJson}
+                        subtitle={t.importJsonDesc}
+                      />
 
                     <form onSubmit={handleImportTasksJSON} className="flex-1 flex flex-col gap-4">
                       <textarea
@@ -465,26 +457,25 @@ export default function App() {
                       />
 
                       {importStatus && (
-                        <div className={`p-3 rounded-xl text-xs font-mono border ${importStatus.type === 'success' ? 'bg-green-950/40 border-green-800/50 text-green-400' : 'bg-red-950/40 border-red-800/50 text-red-400'}`}>
+                        <Badge variant={importStatus.type === 'success' ? 'success' : 'danger'} size="md">
                           {importStatus.message}
-                        </div>
+                        </Badge>
                       )}
 
-                      <button type="submit" className="btn-glow font-bold py-3 px-4 rounded-xl text-sm transition-all" style={{ background: 'var(--accent)', color: '#000' }}>
+                      <Button type="submit" variant="primary" size="lg" glow>
                         {t.importBtn}
-                      </button>
+                      </Button>
                     </form>
-                  </div>
+                  </Card></div>
 
                   {/* Manual create */}
-                  <div className="lg:col-span-5 rounded-2xl border p-6" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
-                    <div className="border-b pb-3 mb-5" style={{ borderColor: 'var(--border-muted)' }}>
-                      <h3 className="text-sm font-bold uppercase tracking-wider flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
-                        <Plus className="w-4 h-4" style={{ color: 'var(--green)' }} />
-                        {t.createTask}
-                      </h3>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.createTaskDesc}</p>
-                    </div>
+                  <div className="lg:col-span-5" style={{ height: '100%' }}>
+                    <Card padding="lg">
+                      <SectionHeader
+                        icon={<Plus className="w-4 h-4" style={{ color: 'var(--green)' }} />}
+                        title={t.createTask}
+                        subtitle={t.createTaskDesc}
+                      />
 
                     <form onSubmit={handleCreateCustomTask} className="space-y-3 text-xs">
                       {[
@@ -539,38 +530,36 @@ export default function App() {
                       </div>
 
                       {importStatus && activeTab === 'upload' && (
-                        <div className={`p-3 rounded-xl text-xs font-mono border ${importStatus.type === 'success' ? 'bg-green-950/40 border-green-800/50 text-green-400' : 'bg-red-950/40 border-red-800/50 text-red-400'}`}>
+                        <Badge variant={importStatus.type === 'success' ? 'success' : 'danger'} size="md">
                           {importStatus.message}
-                        </div>
+                        </Badge>
                       )}
 
-                      <button type="submit" className="btn-glow font-bold py-2.5 px-4 rounded-xl text-xs w-full transition-all" style={{ background: 'var(--green)', color: '#000' }}>
+                      <Button type="submit" variant="success" size="md" glow className="w-full">
                         {t.createSaveBtn}
-                      </button>
+                      </Button>
                     </form>
-                  </div>
+                  </Card></div>
                 </div>
               )}
 
               {/* ──────── BACKUP ──────── */}
               {activeTab === 'backup' && (
-                <div className="rounded-2xl border p-6 flex flex-col gap-6" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
-                  <div className="border-b pb-3" style={{ borderColor: 'var(--border-muted)' }}>
-                    <h3 className="text-sm font-bold uppercase tracking-wider flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
-                      <Database className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-                      {t.exportImport}
-                    </h3>
-                    <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.exportImportDesc}</p>
-                  </div>
+                <Card padding="lg">
+                  <SectionHeader
+                    icon={<Database className="w-4 h-4" />}
+                    title={t.exportImport}
+                    subtitle={t.exportImportDesc}
+                  />
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                       <h4 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>{t.backupTitle}</h4>
                       <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{t.backupDesc}</p>
-                      <button onClick={generateProgressBackup} className="btn-glow text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all" style={{ background: 'var(--accent)', color: '#000' }}>
+                      <Button onClick={generateProgressBackup} variant="primary" size="md" glow className="flex items-center gap-1.5">
                         <Download className="w-4 h-4" />
                         {t.generateBackup}
-                      </button>
+                      </Button>
                       {progressBackupString && (
                         <textarea readOnly rows={8} value={progressBackupString} onClick={e => (e.target as any).select()}
                           className="w-full rounded-xl p-4 text-xs font-mono resize-none outline-none border"
@@ -584,21 +573,21 @@ export default function App() {
                       <textarea id="progress-import-textarea" rows={6} placeholder={t.restorePlaceholder}
                         className="w-full rounded-xl p-4 text-xs font-mono resize-none outline-none border"
                         style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                      <button
+                      <Button
                         onClick={() => {
                           const val = (document.getElementById('progress-import-textarea') as HTMLTextAreaElement)?.value;
                           if (val) { if (window.confirm(t.restoreConfirm)) handleImportProgressBackup(val); }
                           else alert(t.pasteFirst);
                         }}
-                        className="btn-glow text-xs font-bold py-2.5 px-4 rounded-xl flex items-center gap-1.5 w-full justify-center transition-all"
+                        variant="success" size="md" glow className="flex items-center gap-1.5 w-full justify-center"
                         style={{ background: 'var(--green)', color: '#000' }}
                       >
                         <Upload className="w-4 h-4" />
                         {t.restoreBtn}
-                      </button>
+                      </Button>
                     </div>
                   </div>
-                </div>
+                </Card>
               )}
 
             </div>

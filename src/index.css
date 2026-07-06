@@ -10,32 +10,77 @@
    Design Tokens — Dark Terminal / IDE Theme
 ─────────────────────────────────────────── */
 :root {
+  /* ── Backgrounds ─────────────────────────────── */
   --bg-base:      #0a0a0a;
   --bg-surface:   #111111;
   --bg-elevated:  #1a1a1a;
   --bg-card:      #141414;
+
+  /* ── Borders ──────────────────────────────────── */
   --border:       #252525;
   --border-muted: #1e1e1e;
 
+  /* ── Accent (orange) ──────────────────────────── */
   --accent:       #f97316;   /* orange-500 */
   --accent-dim:   #7c3a0e;
   --accent-glow:  rgba(249, 115, 22, 0.18);
   --accent-hover: #ea6c05;
 
+  /* ── Text ──────────────────────────────────────── */
   --text-primary:   #e8e8e8;
   --text-secondary: #888888;
   --text-muted:     #4a4a4a;
 
+  /* ── Semantic colors ──────────────────────────── */
   --green:  #22c55e;
   --red:    #ef4444;
   --amber:  #f59e0b;
   --blue:   #3b82f6;
   --purple: #a855f7;
 
-  --radius-sm: 6px;
-  --radius:    10px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
+  /* ── Border-radius scale (3px × 2^n) ─────────── */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   22px;
+  --radius-2xl:  28px;
+
+  /* ── Typography scale (modular 1.25, base=16) ── */
+  --font-size-xs:   10px;
+  --font-size-sm:   13px;
+  --font-size-base: 16px;
+  --font-size-lg:   20px;
+  --font-size-xl:   25px;
+  --font-size-2xl:  31px;
+  --font-size-3xl:  39px;
+  --font-size-4xl:  49px;
+
+  /* ── Font weights ─────────────────────────────── */
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --font-weight-black:    900;
+
+  /* ── Spacing grid (4px base) ─────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Z-index layers ───────────────────────────── */
+  --z-base:         0;
+  --z-dropdown:     100;
+  --z-sticky:       200;
+  --z-overlay:      300;
+  --z-modal:        400;
+  --z-notification: 500;
 }
 
 /* ─── Base ─── */
@@ -143,7 +188,7 @@ body::before {
 .code-block {
   background: #0d0d0d;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   font-family: var(--font-mono);
   font-size: 12px;
   color: #c9d1d9;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { RunResults } from '../runner/testRunner';
 import { T } from '../i18n';
+import { Button, Badge, Card } from './ui';
 import { Play, AlertTriangle } from 'lucide-react';
 
 interface Props {
@@ -20,14 +21,13 @@ const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, 
         {t.testConsole}
       </span>
       {currentStage > 1 && currentStage < 7 && (
-        <button onClick={onRunTests} disabled={isRunning}
-          className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all"
-          style={isRunning
-            ? { background: 'var(--bg-elevated)', color: 'var(--text-muted)', cursor: 'not-allowed' }
-            : { background: 'var(--accent)', color: '#000' }}>
+        <Button onClick={onRunTests} disabled={isRunning}
+          variant={isRunning ? 'secondary' : 'primary'}
+          size="sm"
+          className="flex items-center gap-1.5">
           <Play className="w-3.5 h-3.5 fill-current" />
           {isRunning ? t.running : t.runTests}
-        </button>
+        </Button>
       )}
     </div>
     <div className="flex-1 overflow-y-auto p-4 font-mono text-xs" style={{ color: 'var(--text-secondary)' }}>
@@ -44,11 +44,11 @@ const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, 
       ) : runResults ? (
         <div className="space-y-2">
           {runResults.error && (
-            <div className="p-3 rounded-lg flex items-start gap-2.5 border"
+            <Card padding="sm" className="flex items-start gap-2.5"
               style={{ background: 'rgba(239,68,68,0.08)', borderColor: 'rgba(239,68,68,0.25)', color: '#f87171' }}>
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <div className="whitespace-pre-wrap leading-relaxed">{runResults.error}</div>
-            </div>
+            </Card>
           )}
           {runResults.results?.map((r, i) => (
             <div key={i}
@@ -67,17 +67,16 @@ const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, 
                   )}
                 </div>
               </div>
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md`}
-                style={r.success ? { background: 'rgba(34,197,94,0.12)' } : { background: 'rgba(239,68,68,0.12)' }}>
+              <Badge variant={r.success ? 'success' : 'danger'} size="sm">
                 {r.success ? t.testPassed : t.testFailed}
-              </span>
+              </Badge>
             </div>
           ))}
           {runResults.success && (
-            <div className="p-3 rounded-lg border text-center font-bold"
+            <Card padding="sm" className="text-center font-bold"
               style={{ background: 'rgba(34,197,94,0.08)', borderColor: 'rgba(34,197,94,0.3)', color: '#4ade80' }}>
               {t.allTestsPassed(currentStage < 6)}
-            </div>
+            </Card>
           )}
         </div>
       ) : (
