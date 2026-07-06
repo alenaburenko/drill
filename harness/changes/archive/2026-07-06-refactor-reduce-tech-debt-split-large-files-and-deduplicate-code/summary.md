@@ -1,8 +1,8 @@
 ---
 title: "refactor: reduce tech debt — split large files and deduplicate code"
 slug: "refactor-reduce-tech-debt-split-large-files-and-deduplicate-code"
-status: "in_progress"
-location: "active"
+status: "completed"
+location: "archive"
 phase: "done"
 intake_status: "pending"
 spec_review: "approved"
