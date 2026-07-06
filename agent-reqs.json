@@ -1,0 +1,48 @@
+{
+  "goal": "Automated multi-perspective code review system for a React/TypeScript web application. Each agent reviews the same code change from a different lens, then results are synthesized into a unified report.",
+  "description": "A multi-agent code review system where specialist agents perform parallel reviews of the same code change. Each agent has a distinct focus area: general code quality (correctness, readability, architecture), security vulnerabilities, test coverage and strategy, and web performance. The system supports both single-agent and parallel fan-out modes, with slash commands orchestrating the workflow.",
+  "tasks": [
+    "Review code changes for correctness, readability, and architecture quality",
+    "Audit code for security vulnerabilities and threat modeling",
+    "Analyze test coverage and design test suites",
+    "Audit web performance (Core Web Vitals, loading, rendering)",
+    "Synthesize findings from multiple agents into unified report",
+    "Handle parallel fan-out reviews across all 4 specialists",
+    "Support standing review for specific dimensions on demand"
+  ],
+  "constraints": {
+    "max_response_time": 60000,
+    "budget_per_task": 2.0,
+    "quality_threshold": 0.85,
+    "concurrent_tasks": 4,
+    "security_level": "standard",
+    "compliance_requirements": []
+  },
+  "team_size": 4,
+  "performance_requirements": {
+    "high_throughput": false,
+    "fault_tolerance": true,
+    "low_latency": true,
+    "scalability": "low",
+    "availability": 0.95
+  },
+  "safety_requirements": [
+    "No agent delegates to another agent — recommendations only",
+    "Each agent operates independently from its own perspective",
+    "Slash commands orchestrate fan-out, not agent-to-agent calls",
+    "Clear separation of concerns between agents"
+  ],
+  "integration_requirements": [
+    "Claude Code agent system (.md files in .claude/agents/)",
+    "Slash commands for orchestration (.claude/commands/)",
+    "Synthesized output in markdown report format"
+  ],
+  "scale_requirements": {
+    "initial_users": 1,
+    "peak_concurrent_users": 1,
+    "data_volume_gb": 0.1,
+    "requests_per_hour": 10,
+    "geographic_regions": [],
+    "growth_projection": "0%"
+  }
+}

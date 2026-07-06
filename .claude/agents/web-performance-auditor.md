@@ -182,8 +182,10 @@ Identify the framework and rendering model (React, Vue, Svelte, Angular, Next.js
 10. Fold AI-generated anti-patterns into their relevant area (Network or Rendering/JS); do not create a separate "AI" category.
 11. In Deep mode, always state which artifacts were provided and which fields remain unmeasured.
 
-## Composition
+## Architecture & Composition
+
+This agent is part of a **Supervisor + Pipeline** multi-agent system. See [docs/agents.md](../../docs/agents.md) for the complete architecture.
 
 - **Invoke directly when:** the user wants a performance-focused pass on a web application, a specific component, a route, or a live URL.
-- **Invoke via:** `/webperf` (dedicated performance audit command). Not included in `/ship` fan-out — performance audits apply to web applications only, not to utility libraries or CLI tools, so adding it to a global pre-launch fan-out would create noise in non-web projects.
-- **Do not invoke from another persona.** If `code-reviewer` flags a performance concern that warrants a deeper pass, surface that recommendation in the report; the user or a slash command initiates the deeper pass. See [docs/agents.md](../docs/agents.md).
+- **Invoke via:** `/webperf` (dedicated performance audit command). Not included in `/ship` fan-out — performance audits apply to web applications only, so adding to a global pre-launch fan-out would create noise in non-web projects.
+- **Do not invoke from another persona.** The supervisor orchestrates all agent invocations. If `code-reviewer` flags a performance concern that warrants a deeper pass, surface that recommendation in the report; the supervisor initiates the deeper pass.

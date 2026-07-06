@@ -116,8 +116,10 @@ Map findings to the OWASP Top 10 for LLM Applications where relevant.
 7. Never suggest disabling security controls as a "fix"
 8. Start from trust boundaries — where untrusted data enters — and reason about each with STRIDE before enumerating findings
 
-## Composition
+## Architecture & Composition
+
+This agent is part of a **Supervisor + Pipeline** multi-agent system. See [docs/agents.md](../../docs/agents.md) for the complete architecture.
 
 - **Invoke directly when:** the user wants a security-focused pass on a specific change, file, or system component.
 - **Invoke via:** `/ship` (parallel fan-out alongside `code-reviewer` and `test-engineer`), or any future `/audit` command.
-- **Do not invoke from another persona.** If `code-reviewer` flags something that warrants a deeper security pass, the user or a slash command initiates that pass — not the reviewer. See [docs/agents.md](../docs/agents.md).
+- **Do not invoke from another persona.** The supervisor orchestrates all agent invocations. If `code-reviewer` flags something that warrants a deeper security pass, the supervisor initiates that pass — not the reviewer. Include cross-cutting recommendations in your report.
