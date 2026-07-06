@@ -157,6 +157,7 @@ node scripts/harness-change.mjs close completed
 
 ## See Also
 
+- [Commands Overview](docs/commands.md) — Slash command architecture and invocation map
 - [Architecture Overview](docs/ARCHITECTURE.md) — Application architecture
 - [ECL Operating Manual](docs/ECL.md) — Change lifecycle
 - [Project Status](docs/STATUS.md) — Current handoff state

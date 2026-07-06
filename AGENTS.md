@@ -26,9 +26,11 @@ This file is the project entry map for AI agents.
 | Section | Document | Description |
 |---------|----------|-------------|
 | 3.1 | [System Architecture](docs/ARCHITECTURE.md) | Component hierarchy, data flow, module layers |
-| 3.2 | [Development Setup](docs/DEVELOPMENT.md) | Install, build, test, lint commands |
-| 3.3 | [ECL Operating Manual](docs/ECL.md) | Change lifecycle and context loading |
-| 3.4 | [Status Handoff](docs/STATUS.md) | Recent work summary and next steps |
+| 3.2 | [Commands Overview](docs/commands.md) | Slash command architecture, pipeline flow, agent invocation |
+| 3.3 | [Agent Architecture](docs/agents.md) | Multi-agent system design |
+| 3.4 | [Development Setup](docs/DEVELOPMENT.md) | Install, build, test, lint commands |
+| 3.5 | [ECL Operating Manual](docs/ECL.md) | Change lifecycle and context loading |
+| 3.6 | [Status Handoff](docs/STATUS.md) | Recent work summary and next steps |
 
 ### Source Entrypoints
 
