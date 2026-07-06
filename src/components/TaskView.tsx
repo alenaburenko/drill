@@ -7,6 +7,7 @@ import {
   Play, Eye, EyeOff, RotateCcw, ArrowLeft,
   CheckCircle, AlertTriangle, Clock, Zap, BookOpen, Terminal
 } from 'lucide-react';
+import { diffBadge } from '../utils/badges';
 
 interface TaskViewProps {
   task: DrillTask;
@@ -190,11 +191,7 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
 
   const stageHeader = t.stageHeaders[Math.min(currentStage - 1, t.stageHeaders.length - 1)] || { title: '', desc: '' };
 
-  const diffBadge = (d: string) => {
-    if (d === 'junior') return 'bg-green-950/60 text-green-400 border border-green-800/60';
-    if (d === 'senior') return 'bg-red-950/60 text-red-400 border border-red-800/60';
-    return 'bg-amber-950/60 text-amber-400 border border-amber-800/60';
-  };
+  // diffBadge is imported from '../utils/badges'
 
   return (
     <div className="flex flex-col min-h-screen" style={{ background: 'var(--bg-base)' }}>
