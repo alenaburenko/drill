@@ -12,7 +12,10 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "check-facts": "tsx scripts/check-database-facts.mjs",
-    "import-itlead": "node scripts/import-itlead.mjs"
+    "import-itlead": "node scripts/import-itlead.mjs",
+    "lint:harness": "node scripts/lint-ecl.mjs && node scripts/lint-encoding.mjs",
+    "lint:arch": "node scripts/lint-deps.mjs",
+    "verify-harness": "node scripts/harness-change.mjs reindex && node scripts/lint-ecl.mjs && node scripts/lint-encoding.mjs && node scripts/lint-deps.mjs"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

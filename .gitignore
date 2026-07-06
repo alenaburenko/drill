@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# AI Skills — центральное хранилище, не пушить
+.claude/skills/
+.cursor/rules/
+.cursor/rules.mdc
+.windsurf/rules/

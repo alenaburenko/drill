@@ -1,0 +1,39 @@
+{
+  "name": "Drill — Practice Platform",
+  "type": "spa",
+  "stack": "typescript",
+  "package_manager": "npm",
+  "startup": {
+    "command": "npm run dev",
+    "port": 3000,
+    "protocol": "http",
+    "ready_path": "/",
+    "timeout_seconds": 30
+  },
+  "build": {
+    "command": "npm run build",
+    "output_dir": "dist"
+  },
+  "test": {
+    "command": "npm run test"
+  },
+  "lint": {
+    "command": "npm run lint"
+  },
+  "typecheck": {
+    "command": "npm run typecheck"
+  },
+  "harness": {
+    "lint": "npm run lint:harness",
+    "lint_arch": "npm run lint:arch",
+    "verify": "npm run verify-harness"
+  },
+  "environments": {
+    "local": {
+      "vars": {}
+    },
+    "ci": {
+      "vars": {}
+    }
+  }
+}
