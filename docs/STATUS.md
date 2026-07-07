@@ -10,18 +10,19 @@
 
 ## 2 Last Completed Change
 
-- No completed changes yet (harness was just created).
-- See `harness/changes/INDEX.json` for history.
+- Squirrel full-cycle pass (2026-07-07) — fixed STATUS.md, added 14 new tests (UI smoke + runner unit tests), split bundle from 2.1 MB to 1.3 MB main chunk + separate vendor chunks, fixed 2 `as any` suppressions, added test dir to dependency linter.
+- Previous: Initial ECL harness setup (2026-07-06).
+- See `harness/changes/INDEX.json` for full history.
 
 ## 3 Next Recommended Work
 
-- Review pre-existing test failures in `bank.test.ts` (4 tests fail with `new Function()` ESM limitation).
-- The project is fully functional and deployed to GitHub Pages.
+- Add more component tests covering learning stages (Study, Retype, Cloze, Exam).
+- Add integration tests for the full stage advancement flow.
 
 ## 4 Known Risks / Blockers
 
-- 4 pre-existing test failures in `src/tasks/bank.test.ts` — `SyntaxError: Cannot use import statement` in `new Function()` for React tasks (useState, useEffect, Custom Hook, Context API). These fail because the eval sandbox via `new Function()` cannot handle ESM `import` statements in user/test code.
-- Build produces a large chunk (2.1 MB). Consider code-splitting with dynamic imports.
+- ~~4 pre-existing test failures — RESOLVED (see above).~~
+- Bundle split into 6 chunks (monaco, icons, motion, task-data, main app, CSS). Main chunk still 1.3 MB due to React + app logic. Further dynamic `import()` for heavy panels (upload/backup) would help.
 
 ## 5 Quality Gate State
 
@@ -30,7 +31,7 @@
 | Harness | pass | `npm run lint:harness` passes |
 | Lint/typecheck | pass | `tsc --noEmit` passes |
 | Build | pass | `vite build` succeeds |
-| Test | fail (4 pre-existing) | ESM `new Function()` limitation in bank.test.ts |
+| Test | pass (716) | All bank tests pass — import/export stripped in eval sandbox |
 
 ## 6 Resume Context
 

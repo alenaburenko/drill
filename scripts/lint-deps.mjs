@@ -86,6 +86,10 @@ function matchesAllowedImport(filePath, importPath) {
   // Allow runner imports
   if (normalized.startsWith('src/runner/')) return true;
 
+  // Allow test files (in __tests__ dir) to import anything from src/
+  if (normalized.startsWith('src/__tests__')) return true;
+  if (relDir.startsWith('src/__tests__')) return true;
+
   return false;
 }
 

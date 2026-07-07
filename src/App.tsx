@@ -362,7 +362,7 @@ export default function App() {
                         <Filter className="w-3.5 h-3.5" /><span>{t.filters}</span>
                       </div>
                       {[
-                        { val: difficultyFilter, set: setDifficultyFilter as any, opts: [['all', t.allDifficulties], ['junior', 'Junior'], ['middle', 'Middle'], ['senior', 'Senior']] },
+                        { val: difficultyFilter, set: setDifficultyFilter, opts: [['all', t.allDifficulties], ['junior', 'Junior'], ['middle', 'Middle'], ['senior', 'Senior']] },
                         { val: categoryFilter, set: setCategoryFilter, opts: [['all', t.allCategories], ...categories.map(c => [c, c])] },
                         { val: stageFilter, set: setStageFilter, opts: [['all', t.allStages], ['unstarted', t.unstartedStage], ['2', 'Stage 2'], ['3', 'Stage 3'], ['4', 'Stage 4'], ['5', 'Stage 5'], ['6', 'Stage 6'], ['mastered', t.masteredLabel]] },
                       ].map(({ val, set, opts }, fi) => (
@@ -561,7 +561,7 @@ export default function App() {
                         {t.generateBackup}
                       </Button>
                       {progressBackupString && (
-                        <textarea readOnly rows={8} value={progressBackupString} onClick={e => (e.target as any).select()}
+                        <textarea readOnly rows={8} value={progressBackupString} onClick={e => (e.currentTarget as HTMLTextAreaElement).select()}
                           className="w-full rounded-xl p-4 text-xs font-mono resize-none outline-none border"
                           style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--accent)' }} />
                       )}
