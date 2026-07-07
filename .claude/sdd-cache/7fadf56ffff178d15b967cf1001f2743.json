@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/sanity-io/agent-toolkit",
+  "prompt": "List all skills and descriptions. Focus on SEO, web performance, and testing skills.",
+  "etag": "W/\"655dc932f0e95bd48c2841a8e28302ae\"",
+  "last_modified": "",
+  "content": "## All Skills and Descriptions\n\nBased on the page, there are **four agent skills** total:\n\n| Skill | Description |\n|---|---|\n| **sanity-best-practices** | \"GROQ performance, schema design, Visual Editing, images, Portable Text, Studio, TypeGen, localization, migrations, and framework integration guides\" |\n| **content-modeling-best-practices** | \"Structured content principles: separation of concerns, references vs embedding, content reuse\" |\n| **seo-aeo-best-practices** | \"SEO/AEO with EEAT principles, structured data (JSON-LD), technical SEO patterns\" |\n| **content-experimentation-best-practices** | \"A/B testing methodology, statistical foundations, experiment design\" |\n\n---\n\n### SEO-Focused\n\n**seo-aeo-best-practices** covers EEAT principles, JSON-LD structured data, and technical SEO patterns. Additionally, the **sanity-best-practices** skill includes guides on images (relevant to image SEO) and framework integration.\n\n### Web Performance–Focused\n\n**sanity-best-practices** explicitly includes \"GROQ performance\" guidance and image optimization patterns — both directly related to web performance in Sanity-powered frontends.\n\n### Testing-Focused\n\n**content-experimentation-best-practices** covers A/B testing methodology, statistical foundations, and experiment design. The **sanity-review** slash command also enables reviewing \"code for Sanity best practices,\" which serves as a validation/testing tool.",
+  "fetched_at": 1783446317
+}

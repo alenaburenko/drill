@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/mcollina/skills",
+  "prompt": "List all skills. Include descriptions.",
+  "etag": "W/\"d599b2ccb4e2d2d0246229205a3b6721\"",
+  "last_modified": "",
+  "content": "Here are all the skills listed in the repository, along with their descriptions:\n\n| Skill | Description |\n|-------|-------------|\n| **documentation** | \"Technical writer specializing in the Diátaxis documentation framework\" |\n| **fastify** | \"Comprehensive best practices for Fastify development\" |\n| **init** | \"Creates and maintains high-signal AGENTS.md guidance for repositories\" |\n| **linting-neostandard-eslint9** | \"Linting workflows with neostandard and ESLint v9 flat config\" |\n| **node** | \"Best practices for Node.js development\" |\n| **nodejs-core** | \"Deep Node.js internals expertise including C++ addons, V8, libuv, and build systems\" |\n| **oauth** | \"OAuth 2.0/2.1 specification expert with deep RFC knowledge and Fastify integration patterns\" |\n| **octocat** | \"Git and GitHub wizard using gh CLI for all git operations and GitHub interactions\" |\n| **skill-optimizer** | \"Improves skill activation, benchmark outcomes, and regression resistance across models\" |\n| **snipgrapher** | \"Configure and use snipgrapher to generate polished code snippet images\" |\n| **typescript-magician** | \"TypeScript wizard specializing in advanced type systems, complex generics, and eliminating any types\" |\n\nIn total, there are **11 skills** in the collection, focused on \"AI-assisted development\" according to the repository's description. The project uses a mix of TypeScript (93.6%) and JavaScript (6.4%) and is licensed under MIT.",
+  "fetched_at": 1783446303
+}

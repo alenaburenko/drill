@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/openai/codex",
+  "prompt": "List all skills and descriptions. Focus on testing, Playwright, browser automation skills.",
+  "etag": "W/\"b4f4ad5a2aa10a42d0ec2eb43a7ba7b1\"",
+  "last_modified": "",
+  "content": "## Skills Identified\n\nThe provided page content **does not include any specific skills, tool descriptions, or capabilities related to testing, Playwright, browser automation, or any functional feature list.**\n\nThe repository describes Codex CLI as \"a coding agent from OpenAI that runs locally on your computer.\" The page is primarily a GitHub landing page focused on **installation instructions** (curl, npm, Homebrew, binary downloads), **platform support** (macOS/Linux/Windows), and **authentication options** (ChatGPT plan sign-in or API key).\n\nThe repository's language breakdown shows:\n- **Rust** (96.5%) — the primary implementation language\n- **Python** (2.7%)\n- Smaller amounts of Starlark, TypeScript, Shell, and PowerShell\n\nNo content on the page discusses testing frameworks, Playwright integration, browser automation, or any technical capabilities of the agent itself. The page links to [Codex Documentation](https://developers.openai.com/codex) and a [contributing guide](/openai/codex/blob/main/docs/contributing.md), which may contain such information — but that detail is not present in the provided page content.",
+  "fetched_at": 1783446359
+}

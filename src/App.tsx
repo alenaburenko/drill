@@ -9,7 +9,7 @@ import {
   Play, Plus, Search, Check, Award, Database, Download, Upload,
   BookOpen, Filter, Code, Zap, Trash2, BrainCircuit, Calendar,
   Layers, ChevronRight, TrendingUp, AlertCircle, Clock, Sparkles,
-  Terminal, Globe, ChevronDown, ChevronUp, ArrowLeft, Eye, EyeOff,
+  Terminal, Globe, ChevronDown, ChevronUp, ArrowLeft,
   RotateCcw, CheckCircle, AlertTriangle, BookOpen as BookOpenIcon
 } from 'lucide-react';
 // Note: some lucide icons are used only in DashboardView or TaskView;
@@ -18,6 +18,8 @@ import {
 import { diffBadge, stageBadge } from './utils/badges';
 import { Button, Card, Badge, SectionHeader, EmptyState } from './components/ui';
 import DashboardView from './components/DashboardView';
+import UploadPanel from './components/UploadPanel';
+import BackupPanel from './components/BackupPanel';
 
 export default function App() {
   // ── i18n ────────────────────────────────────────────────────────────────
@@ -435,159 +437,46 @@ export default function App() {
 
               {/* ──────── UPLOAD ──────── */}
               {activeTab === 'upload' && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-                  {/* JSON import */}
-                  <div className="lg:col-span-7" style={{ height: '100%' }}>
-                    <Card padding="lg" className="flex flex-col gap-4 h-full">
-                      <SectionHeader
-                        icon={<Upload className="w-4 h-4" />}
-                        title={t.importJson}
-                        subtitle={t.importJsonDesc}
-                      />
-
-                    <form onSubmit={handleImportTasksJSON} className="flex-1 flex flex-col gap-4">
-                      <textarea
-                        rows={12}
-                        value={importText}
-                        onChange={e => setImportText(e.target.value)}
-                        placeholder={`[\n  {\n    "id": "my-task",\n    "block": "javascript",\n    "title": "My Task",\n    "starter": "function f() {}",\n    "solution": "function f() { return true; }",\n    "clozeSteps": ["...step1...", "...step2...", "...step3..."],\n    "testCode": "test('case', () => { assertEqual(f(), true); });",\n    "difficulty": "middle"\n  }\n]`}
-                        className="rounded-xl p-4 text-xs font-mono outline-none border resize-none"
-                        style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
-                      />
-
-                      {importStatus && (
-                        <Badge variant={importStatus.type === 'success' ? 'success' : 'danger'} size="md">
-                          {importStatus.message}
-                        </Badge>
-                      )}
-
-                      <Button type="submit" variant="primary" size="lg" glow>
-                        {t.importBtn}
-                      </Button>
-                    </form>
-                  </Card></div>
-
-                  {/* Manual create */}
-                  <div className="lg:col-span-5" style={{ height: '100%' }}>
-                    <Card padding="lg">
-                      <SectionHeader
-                        icon={<Plus className="w-4 h-4" style={{ color: 'var(--green)' }} />}
-                        title={t.createTask}
-                        subtitle={t.createTaskDesc}
-                      />
-
-                    <form onSubmit={handleCreateCustomTask} className="space-y-3 text-xs">
-                      {[
-                        { label: t.taskTitle, required: true, val: newTitle, set: setNewTitle, ph: t.taskTitlePlaceholder, rows: 0 },
-                        { label: t.descriptionLabel, required: false, val: newDescription, set: setNewDescription, ph: t.descriptionPlaceholder, rows: 3 },
-                      ].map(({ label, required, val, set, ph, rows }) => (
-                        <div key={label}>
-                          <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{label}</label>
-                          {rows > 0
-                            ? <textarea rows={rows} value={val} onChange={e => set(e.target.value)} placeholder={ph}
-                                className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                            : <input type="text" required={required} value={val} onChange={e => set(e.target.value)} placeholder={ph}
-                                className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                          }
-                        </div>
-                      ))}
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{t.categoryBlock}</label>
-                          <input type="text" value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="javascript"
-                            className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                        </div>
-                        <div>
-                          <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{t.difficulty}</label>
-                          <select value={newDifficulty} onChange={(e: any) => setNewDifficulty(e.target.value)}
-                            className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
-                            <option value="junior">Junior</option>
-                            <option value="middle">Middle</option>
-                            <option value="senior">Senior</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h4 className="font-bold uppercase tracking-wider border-b pb-1 text-[10px]" style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}>{t.codeTemplates}</h4>
-                        {[
-                          { label: t.starterLabel, val: newStarter, set: setNewStarter },
-                          { label: t.solutionLabel, val: newSolution, set: setNewSolution },
-                          { label: t.clozeLabel1, val: newCloze1, set: setNewCloze1 },
-                          { label: t.clozeLabel2, val: newCloze2, set: setNewCloze2 },
-                          { label: t.clozeLabel3, val: newCloze3, set: setNewCloze3 },
-                          { label: t.testCodeLabel, val: newTestCode, set: setNewTestCode },
-                        ].map(({ label, val, set }) => (
-                          <div key={label}>
-                            <label className="block mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>{label}</label>
-                            <textarea rows={2} value={val} onChange={e => set(e.target.value)}
-                              className="w-full rounded-xl p-2 font-mono text-[10px] outline-none border resize-none"
-                              style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                          </div>
-                        ))}
-                      </div>
-
-                      {importStatus && activeTab === 'upload' && (
-                        <Badge variant={importStatus.type === 'success' ? 'success' : 'danger'} size="md">
-                          {importStatus.message}
-                        </Badge>
-                      )}
-
-                      <Button type="submit" variant="success" size="md" glow className="w-full">
-                        {t.createSaveBtn}
-                      </Button>
-                    </form>
-                  </Card></div>
-                </div>
+                <UploadPanel
+                  t={t}
+                  importText={importText}
+                  importStatus={importStatus}
+                  newTitle={newTitle}
+                  newDifficulty={newDifficulty}
+                  newCategory={newCategory}
+                  newDescription={newDescription}
+                  newStarter={newStarter}
+                  newSolution={newSolution}
+                  newCloze1={newCloze1}
+                  newCloze2={newCloze2}
+                  newCloze3={newCloze3}
+                  newBreakdown={newBreakdown}
+                  newTestCode={newTestCode}
+                  onSetImportText={setImportText}
+                  onSetNewTitle={setNewTitle}
+                  onSetNewDifficulty={setNewDifficulty}
+                  onSetNewCategory={setNewCategory}
+                  onSetNewDescription={setNewDescription}
+                  onSetNewStarter={setNewStarter}
+                  onSetNewSolution={setNewSolution}
+                  onSetNewCloze1={setNewCloze1}
+                  onSetNewCloze2={setNewCloze2}
+                  onSetNewCloze3={setNewCloze3}
+                  onSetNewBreakdown={setNewBreakdown}
+                  onSetNewTestCode={setNewTestCode}
+                  onImportJSON={handleImportTasksJSON}
+                  onCreateTask={handleCreateCustomTask}
+                />
               )}
 
               {/* ──────── BACKUP ──────── */}
               {activeTab === 'backup' && (
-                <Card padding="lg">
-                  <SectionHeader
-                    icon={<Database className="w-4 h-4" />}
-                    title={t.exportImport}
-                    subtitle={t.exportImportDesc}
-                  />
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <h4 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>{t.backupTitle}</h4>
-                      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{t.backupDesc}</p>
-                      <Button onClick={generateProgressBackup} variant="primary" size="md" glow className="flex items-center gap-1.5">
-                        <Download className="w-4 h-4" />
-                        {t.generateBackup}
-                      </Button>
-                      {progressBackupString && (
-                        <textarea readOnly rows={8} value={progressBackupString} onClick={e => (e.currentTarget as HTMLTextAreaElement).select()}
-                          className="w-full rounded-xl p-4 text-xs font-mono resize-none outline-none border"
-                          style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--accent)' }} />
-                      )}
-                    </div>
-
-                    <div className="space-y-4">
-                      <h4 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>{t.restoreTitle}</h4>
-                      <p className="text-xs font-mono" style={{ color: 'var(--amber)' }}>{t.restoreWarning}</p>
-                      <textarea id="progress-import-textarea" rows={6} placeholder={t.restorePlaceholder}
-                        className="w-full rounded-xl p-4 text-xs font-mono resize-none outline-none border"
-                        style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                      <Button
-                        onClick={() => {
-                          const val = (document.getElementById('progress-import-textarea') as HTMLTextAreaElement)?.value;
-                          if (val) { if (window.confirm(t.restoreConfirm)) handleImportProgressBackup(val); }
-                          else alert(t.pasteFirst);
-                        }}
-                        variant="success" size="md" glow className="flex items-center gap-1.5 w-full justify-center"
-                        style={{ background: 'var(--green)', color: '#000' }}
-                      >
-                        <Upload className="w-4 h-4" />
-                        {t.restoreBtn}
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
+                <BackupPanel
+                  t={t}
+                  progressBackupString={progressBackupString}
+                  onGenerateBackup={generateProgressBackup}
+                  onRestore={handleImportProgressBackup}
+                />
               )}
 
             </div>

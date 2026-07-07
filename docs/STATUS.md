@@ -10,19 +10,21 @@
 
 ## 2 Last Completed Change
 
-- Squirrel full-cycle pass (2026-07-07) — fixed STATUS.md, added 14 new tests (UI smoke + runner unit tests), split bundle from 2.1 MB to 1.3 MB main chunk + separate vendor chunks, fixed 2 `as any` suppressions, added test dir to dependency linter.
-- Previous: Initial ECL harness setup (2026-07-06).
+- Squirrel full-cycle pass (2026-07-07) — fixed STATUS.md, added 36 new tests (UI smoke + runner + stage components), split bundle (6 chunks), refactored App.tsx 599→488 lines (extracted UploadPanel, BackupPanel), fixed `as any` suppressions.
+- Previous: Squirrel full-cycle pass (2026-07-07) — first pass.
 - See `harness/changes/INDEX.json` for full history.
 
 ## 3 Next Recommended Work
 
-- Add more component tests covering learning stages (Study, Retype, Cloze, Exam).
-- Add integration tests for the full stage advancement flow.
+- Investigate reimporting ITLead tasks (176 skipped with RSC format change).
+- Add integration tests for full stage advancement flow.
+- Consider dynamic `import()` for upload/backup panels.
 
 ## 4 Known Risks / Blockers
 
-- ~~4 pre-existing test failures — RESOLVED (see above).~~
-- Bundle split into 6 chunks (monaco, icons, motion, task-data, main app, CSS). Main chunk still 1.3 MB due to React + app logic. Further dynamic `import()` for heavy panels (upload/backup) would help.
+- ~~4 pre-existing test failures — RESOLVED.~~
+- 176 tasks skipped from ITLead import — site's RSC payload format changed. Re-run `npm run import-itlead` when the extraction script is updated.
+- Bundle: 6 chunks (monaco, icons, motion, task-data, app, CSS). Main app 1.3 MB due to React + all component code.
 
 ## 5 Quality Gate State
 
@@ -31,7 +33,7 @@
 | Harness | pass | `npm run lint:harness` passes |
 | Lint/typecheck | pass | `tsc --noEmit` passes |
 | Build | pass | `vite build` succeeds |
-| Test | pass (716) | All bank tests pass — import/export stripped in eval sandbox |
+| Test | pass (752) | 3 files: 716 bank + 4 smoke + 10 runner + 22 stage tests |
 
 ## 6 Resume Context
 

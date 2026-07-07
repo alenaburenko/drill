@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/vercel-labs/skills",
+  "prompt": "List ALL skills in this repository with descriptions. Focus on development, debugging, testing, code review skills.",
+  "etag": "W/\"2fda7ba8e87f6aad71aa919edd7f8d83\"",
+  "last_modified": "",
+  "content": "## No Skills Are Listed in This Repository's Content\n\n**Important:** The page you provided is for the **`vercel-labs/skills` CLI tool itself** — not a skill repository. It's \"the open agent skills tool\" you run via `npx skills`. The README only references **example** skill names from a different repo (`vercel-labs/agent-skills`), such as:\n\n- `web-design-guidelines`\n- `frontend-design`\n- `skill-creator`\n- `\"Convex Best Practices\"`\n\nNone of these come with descriptions in the page content, and they're merely used as illustrations of the CLI's commands.\n\n### What the Page Actually Describes\n\nThe CLI supports commands for installing, listing, finding, updating, removing, and initializing skills, but the specific skills available for development, debugging, testing, or code review would exist in **external repositories** like `vercel-labs/agent-skills` or others discoverable at **[skills.sh](https://skills.sh)**.\n\nTo find actual skills, you would run:\n\n```\nnpx skills find\n```\n\nor\n\n```\nnpx skills find react --owner vercel\n```\n\nThe page's content does not enumerate any concrete skills with descriptions — only the tool's command syntax and supported agents.",
+  "fetched_at": 1783446361
+}
