@@ -47,24 +47,24 @@ const t = {
   testError: 'Помилка:',
   testPassed: 'Пройдено',
   testFailed: 'Провалено',
-};
+} as const;
 
 // ── StageStudy ──────────────────────────────────────────────────────────
 describe('StageStudy', () => {
   test('renders start practice button', () => {
-    render(<StageStudy task={task} t={t as any} onStartPractice={() => {}} />);
+    render(<StageStudy task={task} t={t} onStartPractice={() => {}} />);
     expect(screen.getByText('Почати практику')).toBeTruthy();
   });
 
   test('shows task description and breakdown', () => {
-    const { container } = render(<StageStudy task={task} t={t as any} onStartPractice={() => {}} />);
+    const { container } = render(<StageStudy task={task} t={t} onStartPractice={() => {}} />);
     expect(container.textContent).toContain('Розбір логіки');
     expect(container.textContent).toContain('Умова задачі');
   });
 
   test('calls onStartPractice when button clicked', () => {
     let called = false;
-    render(<StageStudy task={task} t={t as any} onStartPractice={() => { called = true; }} />);
+    render(<StageStudy task={task} t={t} onStartPractice={() => { called = true; }} />);
     fireEvent.click(screen.getByText('Почати практику'));
     expect(called).toBe(true);
   });
@@ -74,7 +74,7 @@ describe('StageStudy', () => {
 describe('StageRetype', () => {
   test('renders solution description and toggle', () => {
     const { container } = render(
-      <StageRetype task={task} t={t as any} showComments={false} onToggleComments={() => {}} />
+      <StageRetype task={task} t={t} showComments={false} onToggleComments={() => {}} />
     );
     expect(container.textContent).toContain('Скопіюйте для передруку');
   });
@@ -82,7 +82,7 @@ describe('StageRetype', () => {
   test('toggle comments affects comments visibility', () => {
     let toggled = false;
     const { container } = render(
-      <StageRetype task={task} t={t as any} showComments={false} onToggleComments={() => { toggled = true; }} />
+      <StageRetype task={task} t={t} showComments={false} onToggleComments={() => { toggled = true; }} />
     );
     const toggle = container.querySelector('[class*="cursor-pointer"]');
     if (toggle) fireEvent.click(toggle);
@@ -95,7 +95,7 @@ describe('StageRetype', () => {
 describe('StageHint', () => {
   test('shows solution hidden state when peek is closed', () => {
     render(
-      <StageHint task={task} t={t as any} peekOpen={false} showComments={false}
+      <StageHint task={task} t={t} peekOpen={false} showComments={false}
         onPeek={() => {}} onToggleComments={() => {}} />
     );
     expect(screen.getByText('Рішення приховано')).toBeTruthy();
@@ -104,7 +104,7 @@ describe('StageHint', () => {
   test('shows peek button that triggers onPeek', () => {
     let peeked = false;
     render(
-      <StageHint task={task} t={t as any} peekOpen={false} showComments={false}
+      <StageHint task={task} t={t} peekOpen={false} showComments={false}
         onPeek={() => { peeked = true; }} onToggleComments={() => {}} />
     );
     fireEvent.click(screen.getByText('Все одно подивитись'));
@@ -113,7 +113,7 @@ describe('StageHint', () => {
 
   test('shows hide hint button when peek is open', () => {
     render(
-      <StageHint task={task} t={t as any} peekOpen={true} showComments={false}
+      <StageHint task={task} t={t} peekOpen={true} showComments={false}
         onPeek={() => {}} onToggleComments={() => {}} />
     );
     expect(screen.getByText('Сховати підказку')).toBeTruthy();
@@ -124,7 +124,7 @@ describe('StageHint', () => {
 describe('StageExam', () => {
   test('shows exam active state', () => {
     render(
-      <StageExam task={task} t={t as any} examActive={true} timerSec={300}
+      <StageExam task={task} t={t} examActive={true} timerSec={300}
         formatTime={(s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
         onRetry={() => {}} />
     );
@@ -133,7 +133,7 @@ describe('StageExam', () => {
 
   test('shows time expired when timer is 0 and exam not active', () => {
     render(
-      <StageExam task={task} t={t as any} examActive={false} timerSec={0}
+      <StageExam task={task} t={t} examActive={false} timerSec={0}
         formatTime={(s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
         onRetry={() => {}} />
     );
@@ -143,7 +143,7 @@ describe('StageExam', () => {
   test('retry button calls onRetry', () => {
     let retried = false;
     render(
-      <StageExam task={task} t={t as any} examActive={false} timerSec={0}
+      <StageExam task={task} t={t} examActive={false} timerSec={0}
         formatTime={(s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
         onRetry={() => { retried = true; }} />
     );
@@ -155,13 +155,13 @@ describe('StageExam', () => {
 // ── StageMastered ───────────────────────────────────────────────────────
 describe('StageMastered', () => {
   test('shows mastered message and peeks count', () => {
-    const { container } = render(<StageMastered t={t as any} peeksCount={3} />);
+    const { container } = render(<StageMastered t={t} peeksCount={3} />);
     expect(container.textContent).toContain('Завдання вивчено!');
     expect(container.textContent).toContain('3');
   });
 
   test('shows mastery results section', () => {
-    const { container } = render(<StageMastered t={t as any} peeksCount={0} />);
+    const { container } = render(<StageMastered t={t} peeksCount={0} />);
     expect(container.textContent).toContain('Результати');
     expect(container.textContent).toContain('Вивчено');
   });
@@ -171,14 +171,14 @@ describe('StageMastered', () => {
 describe('TestConsole', () => {
   test('shows press run tests message when idle', () => {
     render(
-      <TestConsole currentStage={3} isRunning={false} runResults={null} t={t as any} onRunTests={() => {}} />
+      <TestConsole currentStage={3} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />
     );
     expect(screen.getByText('Натисніть «Запустити тести»')).toBeTruthy();
   });
 
   test('shows running state when isRunning', () => {
     render(
-      <TestConsole currentStage={3} isRunning={true} runResults={null} t={t as any} onRunTests={() => {}} />
+      <TestConsole currentStage={3} isRunning={true} runResults={null} t={t} onRunTests={() => {}} />
     );
     expect(screen.getByText('Запуск sandbox...')).toBeTruthy();
   });
@@ -187,7 +187,7 @@ describe('TestConsole', () => {
     const { container } = render(
       <TestConsole currentStage={3} isRunning={false}
         runResults={{ success: true, results: [{ name: 'test 1', success: true }] }}
-        t={t as any} onRunTests={() => {}} />
+        t={t} onRunTests={() => {}} />
     );
     expect(container.textContent).toContain('test 1');
     expect(container.textContent).toContain('Пройдено');
@@ -197,7 +197,7 @@ describe('TestConsole', () => {
     const { container } = render(
       <TestConsole currentStage={3} isRunning={false}
         runResults={{ success: true, results: [{ name: 'test 1', success: true }] }}
-        t={t as any} onRunTests={() => {}} />
+        t={t} onRunTests={() => {}} />
     );
     expect(container.textContent).toContain('Всі тести пройдено!');
   });
@@ -206,21 +206,21 @@ describe('TestConsole', () => {
     const { container } = render(
       <TestConsole currentStage={3} isRunning={false}
         runResults={{ success: false, error: 'SyntaxError: unexpected token' }}
-        t={t as any} onRunTests={() => {}} />
+        t={t} onRunTests={() => {}} />
     );
     expect(container.textContent).toContain('SyntaxError');
   });
 
   test('stage 1 shows testsOnPractice message', () => {
     render(
-      <TestConsole currentStage={1} isRunning={false} runResults={null} t={t as any} onRunTests={() => {}} />
+      <TestConsole currentStage={1} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />
     );
     expect(screen.getByText('Тести доступні під час практики')).toBeTruthy();
   });
 
   test('stage 7 shows intervalDone message', () => {
     render(
-      <TestConsole currentStage={7} isRunning={false} runResults={null} t={t as any} onRunTests={() => {}} />
+      <TestConsole currentStage={7} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />
     );
     expect(screen.getByText('Завдання вивчено, інтервал запущено')).toBeTruthy();
   });

@@ -38,6 +38,8 @@ export default defineConfig(() => {
       environment: 'jsdom',
       setupFiles: './src/test-setup.ts',
       css: true,
+      include: ['src/**/*.{test,spec}.{ts,tsx}'],
+      exclude: ['node_modules', '.claude'],
     },
   };
 });

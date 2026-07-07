@@ -10,8 +10,8 @@
 
 ## 2 Last Completed Change
 
-- Squirrel full-cycle pass (2026-07-07) — fixed STATUS.md, added 36 new tests (UI smoke + runner + stage components), split bundle (6 chunks), refactored App.tsx 599→488 lines (extracted UploadPanel, BackupPanel), fixed `as any` suppressions.
-- Previous: Squirrel full-cycle pass (2026-07-07) — first pass.
+- Code review findings fix (2026-07-07): removed dead `stats` in App.tsx, extracted shared task progress logic into `src/utils/taskProgress.ts` (eliminating ~180 lines of duplication between App.tsx and DashboardView.tsx), fixed `(e: any)` cast in UploadPanel, removed all `t as any` casts in stage tests (using `as const`), added filtered vitest config to exclude `.claude/` test files.
+- Previous: Squirrel full-cycle pass (2026-07-07) — second pass.
 - See `harness/changes/INDEX.json` for full history.
 
 ## 3 Next Recommended Work

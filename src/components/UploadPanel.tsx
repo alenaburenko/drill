@@ -110,7 +110,7 @@ export default function UploadPanel({
               </div>
               <div>
                 <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{t.difficulty}</label>
-                <select value={newDifficulty} onChange={(e: any) => onSetNewDifficulty(e.target.value)}
+                <select value={newDifficulty} onChange={e => onSetNewDifficulty(e.target.value as 'junior' | 'middle' | 'senior')}
                   className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
                   <option value="junior">Junior</option>
                   <option value="middle">Middle</option>

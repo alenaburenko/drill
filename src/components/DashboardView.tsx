@@ -2,6 +2,15 @@ import React, { useMemo } from 'react';
 import { DrillTask, UserProgress } from '../types';
 import { getT, Lang } from '../i18n';
 import { diffBadge } from '../utils/badges';
+import {
+  getTaskProgress,
+  getNewTasks,
+  getDueRepetitions,
+  getMasteredTasks,
+  getInProgressTasks,
+  pickNextTask,
+  getStats,
+} from '../utils/taskProgress';
 import { Button, Card, Badge, SectionHeader, EmptyState, StatCard, ProgressBar } from './ui';
 import {
   Play, Clock, ChevronRight, Layers, TrendingUp,
@@ -23,57 +32,17 @@ export default function DashboardView({
 }: DashboardViewProps) {
   const t = getT(lang);
 
-  const getTaskProgress = (id: string): UserProgress =>
-    progressMap[id] || { learningStage: 1, peeksCount: 0, lastPracticed: null, history: [] };
-
-  const isTaskDue = (task: DrillTask): boolean => {
-    const prog = progressMap[task.id];
-    if (!prog || !prog.lastPracticed) return false;
-    if (prog.learningStage >= 7) return false;
-    const intervals = [0, 0, 1 * 3600000, 24 * 3600000, 72 * 3600000, 168 * 3600000, 336 * 3600000];
-    const dueTime = new Date(prog.lastPracticed).getTime() + (intervals[prog.learningStage] || 86400000);
-    return Date.now() >= dueTime;
-  };
-
-  const newTasks = useMemo(() =>
-    allTasks.filter(t => !progressMap[t.id] || progressMap[t.id].learningStage === 1),
-    [allTasks, progressMap]);
-
-  const dueRepetitions = useMemo(() => allTasks.filter(isTaskDue), [allTasks, progressMap]);
-
-  const masteredTasks = useMemo(() =>
-    allTasks.filter(t => progressMap[t.id]?.learningStage >= 7), [allTasks, progressMap]);
-
-  const inProgressTasks = useMemo(() =>
-    allTasks.filter(t => progressMap[t.id] && progressMap[t.id].learningStage > 1 && progressMap[t.id].learningStage < 7),
-    [allTasks, progressMap]);
+  const newTasks = useMemo(() => getNewTasks(allTasks, progressMap), [allTasks, progressMap]);
+  const dueRepetitions = useMemo(() => getDueRepetitions(allTasks, progressMap), [allTasks, progressMap]);
+  const masteredTasks = useMemo(() => getMasteredTasks(allTasks, progressMap), [allTasks, progressMap]);
+  const inProgressTasks = useMemo(() => getInProgressTasks(allTasks, progressMap), [allTasks, progressMap]);
 
   const handleContinuePractice = () => {
-    if (dueRepetitions.length > 0) { onSelectTask(dueRepetitions[0].id); return; }
-    const activePracticed = inProgressTasks
-      .filter(t => progressMap[t.id]?.lastPracticed)
-      .sort((a, b) => new Date(progressMap[b.id].lastPracticed!).getTime() - new Date(progressMap[a.id].lastPracticed!).getTime());
-    if (activePracticed.length > 0) onSelectTask(activePracticed[0].id);
-    else if (newTasks.length > 0) onSelectTask(newTasks[0].id);
-    else if (allTasks.length > 0) onSelectTask(allTasks[0].id);
+    const next = pickNextTask(dueRepetitions, inProgressTasks, progressMap, newTasks, allTasks);
+    if (next) onSelectTask(next);
   };
 
-  const stats = useMemo(() => {
-    let totalPeeks = 0, totalAttempts = 0, successfulAttempts = 0;
-    (Object.values(progressMap) as UserProgress[]).forEach(prog => {
-      totalPeeks += prog.peeksCount || 0;
-      if (prog.history) {
-        totalAttempts += prog.history.length;
-        successfulAttempts += prog.history.filter(h => h.success).length;
-      }
-    });
-    return {
-      totalPeeks,
-      totalAttempts,
-      accuracy: totalAttempts > 0 ? Math.round((successfulAttempts / totalAttempts) * 100) : 100,
-      completionRate: allTasks.length > 0 ? Math.round((masteredTasks.length / allTasks.length) * 100) : 0,
-    };
-  }, [progressMap, allTasks, masteredTasks]);
+  const stats = useMemo(() => getStats(progressMap, allTasks, masteredTasks), [progressMap, allTasks, masteredTasks]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -120,7 +89,7 @@ export default function DashboardView({
           {dueRepetitions.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {dueRepetitions.slice(0, 4).map(task => {
-                const prog = getTaskProgress(task.id);
+                const prog = getTaskProgress(progressMap, task.id);
                 return (
                   <Card key={task.id} variant="elevated" padding="md" onClick={() => onSelectTask(task.id)}
                     className="transition-all group hover:border-orange-800/50">

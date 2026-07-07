@@ -16,6 +16,15 @@ import {
 // we keep them here for convenience — unused imports are tree-shaken by Vite.
 
 import { diffBadge, stageBadge } from './utils/badges';
+import {
+  getTaskProgress,
+  isTaskDue,
+  getNewTasks,
+  getDueRepetitions,
+  getMasteredTasks,
+  getInProgressTasks,
+  pickNextTask,
+} from './utils/taskProgress';
 import { Button, Card, Badge, SectionHeader, EmptyState } from './components/ui';
 import DashboardView from './components/DashboardView';
 import UploadPanel from './components/UploadPanel';
@@ -90,45 +99,29 @@ export default function App() {
     return Array.from(set);
   }, [allTasks]);
 
-  const getTaskProgress = (id: string): UserProgress =>
-    progressMap[id] || { learningStage: 1, peeksCount: 0, lastPracticed: null, history: [] };
+  const getTaskProgressFromMap = (id: string): UserProgress =>
+    getTaskProgress(progressMap, id);
 
-  const isTaskDue = (task: DrillTask): boolean => {
-    const prog = progressMap[task.id];
-    if (!prog || !prog.lastPracticed) return false;
-    if (prog.learningStage >= 7) return false;
-    const intervals = [0, 0, 1 * 3600000, 24 * 3600000, 72 * 3600000, 168 * 3600000, 336 * 3600000];
-    const dueTime = new Date(prog.lastPracticed).getTime() + (intervals[prog.learningStage] || 86400000);
-    return Date.now() >= dueTime;
-  };
+  const isTaskDueFn = (task: DrillTask): boolean =>
+    isTaskDue(task, progressMap);
 
-  const newTasks = useMemo(() =>
-    allTasks.filter(t => !progressMap[t.id] || progressMap[t.id].learningStage === 1),
-    [allTasks, progressMap]);
+  const newTasks = useMemo(() => getNewTasks(allTasks, progressMap), [allTasks, progressMap]);
 
-  const dueRepetitions = useMemo(() => allTasks.filter(isTaskDue), [allTasks, progressMap]);
+  const dueRepetitions = useMemo(() => getDueRepetitions(allTasks, progressMap), [allTasks, progressMap]);
 
-  const masteredTasks = useMemo(() =>
-    allTasks.filter(t => progressMap[t.id]?.learningStage >= 7), [allTasks, progressMap]);
+  const masteredTasks = useMemo(() => getMasteredTasks(allTasks, progressMap), [allTasks, progressMap]);
 
-  const inProgressTasks = useMemo(() =>
-    allTasks.filter(t => progressMap[t.id] && progressMap[t.id].learningStage > 1 && progressMap[t.id].learningStage < 7),
-    [allTasks, progressMap]);
+  const inProgressTasks = useMemo(() => getInProgressTasks(allTasks, progressMap), [allTasks, progressMap]);
 
   const handleContinuePractice = () => {
-    if (dueRepetitions.length > 0) { setSelectedTaskId(dueRepetitions[0].id); return; }
-    const activePracticed = inProgressTasks
-      .filter(t => progressMap[t.id]?.lastPracticed)
-      .sort((a, b) => new Date(progressMap[b.id].lastPracticed!).getTime() - new Date(progressMap[a.id].lastPracticed!).getTime());
-    if (activePracticed.length > 0) setSelectedTaskId(activePracticed[0].id);
-    else if (newTasks.length > 0) setSelectedTaskId(newTasks[0].id);
-    else if (allTasks.length > 0) setSelectedTaskId(allTasks[0].id);
+    const next = pickNextTask(dueRepetitions, inProgressTasks, progressMap, newTasks, allTasks);
+    if (next) setSelectedTaskId(next);
   };
 
   // Grouped + filtered catalog
   const filteredCatalog = useMemo(() => {
     return allTasks.filter(task => {
-      const prog = getTaskProgress(task.id);
+      const prog = getTaskProgressFromMap(task.id);
       const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         task.id.toLowerCase().includes(searchQuery.toLowerCase());
@@ -239,23 +232,6 @@ export default function App() {
     }
   };
 
-  const stats = useMemo(() => {
-    let totalPeeks = 0, totalAttempts = 0, successfulAttempts = 0;
-    (Object.values(progressMap) as UserProgress[]).forEach(prog => {
-      totalPeeks += prog.peeksCount || 0;
-      if (prog.history) {
-        totalAttempts += prog.history.length;
-        successfulAttempts += prog.history.filter(h => h.success).length;
-      }
-    });
-    return {
-      totalPeeks,
-      totalAttempts,
-      accuracy: totalAttempts > 0 ? Math.round((successfulAttempts / totalAttempts) * 100) : 100,
-      completionRate: allTasks.length > 0 ? Math.round((masteredTasks.length / allTasks.length) * 100) : 0,
-    };
-  }, [progressMap, allTasks, masteredTasks]);
-
   const selectedTask = allTasks.find(t => t.id === selectedTaskId);
 
   // ── render ────────────────────────────────────────────────────────────────
@@ -266,7 +242,7 @@ export default function App() {
           <motion.div key="workspace" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
             <TaskView
               task={selectedTask}
-              progress={getTaskProgress(selectedTask.id)}
+              progress={getTaskProgressFromMap(selectedTask.id)}
               onSaveProgress={handleSaveProgress}
               onBack={() => setSelectedTaskId(null)}
               lang={lang}
@@ -400,7 +376,7 @@ export default function App() {
                             {!isCollapsed && (
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {tasks.map(task => {
-                                  const prog = getTaskProgress(task.id);
+                                  const prog = getTaskProgressFromMap(task.id);
                                   const isMastered = prog.learningStage >= 7;
                                   return (
                                     <Card key={task.id} variant="elevated" padding="md">
