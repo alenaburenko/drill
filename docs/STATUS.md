@@ -10,8 +10,8 @@
 
 ## 2 Last Completed Change
 
-- Code review findings fix (2026-07-07): removed dead `stats` in App.tsx, extracted shared task progress logic into `src/utils/taskProgress.ts` (eliminating ~180 lines of duplication between App.tsx and DashboardView.tsx), fixed `(e: any)` cast in UploadPanel, removed all `t as any` casts in stage tests (using `as const`), added filtered vitest config to exclude `.claude/` test files.
-- Previous: Squirrel full-cycle pass (2026-07-07) — second pass.
+- Squirrel full-cycle pass (2026-07-07): added 17 new tests (8 TaskView + 9 i18n), fixed vitest config to exclude `.claude/` test dirs.
+- Previous: Code review findings fix (2026-07-07).
 - See `harness/changes/INDEX.json` for full history.
 
 ## 3 Next Recommended Work
@@ -33,7 +33,7 @@
 | Harness | pass | `npm run lint:harness` passes |
 | Lint/typecheck | pass | `tsc --noEmit` passes |
 | Build | pass | `vite build` succeeds |
-| Test | pass (752) | 3 files: 716 bank + 4 smoke + 10 runner + 22 stage tests |
+| Test | pass (769) | 6 files: 716 bank + 4 smoke + 10 runner + 22 stage + 8 TaskView + 9 i18n |
 
 ## 6 Resume Context
 
