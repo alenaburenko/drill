@@ -12,3 +12,6 @@ coverage/
 .cursor/rules/
 .cursor/rules.mdc
 .windsurf/rules/
+
+# Claude SDD cache (auto-generated, machine-specific)
+.claude/sdd-cache/
