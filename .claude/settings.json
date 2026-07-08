@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "repomix": {
+      "command": "node",
+      "args": ["/Users/macbook/Desktop/Projects/repomix-local/bin/repomix.cjs", "--mcp"]
+    },
+    "figma": {
+      "command": "node",
+      "args": ["/Users/macbook/Desktop/Projects/plumb-corp/dist/index.js"]
+    }
+  }
+}

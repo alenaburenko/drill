@@ -16,25 +16,21 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   color,
 }) => {
   return (
-    <div
-      className="flex items-center justify-between mb-4 pb-3 border-b"
-      style={{ borderColor: 'var(--border-muted)' }}
-    >
-      <h3
-        className="text-xs font-bold uppercase tracking-wider flex items-center gap-2"
-        style={{ color: color || 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
-      >
+    <div className="section-header">
+      <h3 style={{ color: color || 'var(--text-secondary)' }}>
         {icon && (
-          <span style={{ color: color || 'var(--accent)' }}>{icon}</span>
+          <span style={{ color: color || 'var(--neon-cyan)' }}>{icon}</span>
         )}
         {title}
       </h3>
-      {subtitle && (
-        <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>
-          {subtitle}
-        </span>
-      )}
-      {action}
+      <div className="flex items-center gap-3">
+        {subtitle && (
+          <span className="text-[9px] font-mono" style={{ color: 'var(--text-muted)' }}>
+            {subtitle}
+          </span>
+        )}
+        {action}
+      </div>
     </div>
   );
 };

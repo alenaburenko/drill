@@ -6,23 +6,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   glow?: boolean;
 }
 
-const variantStyles: Record<string, string> = {
-  primary:
-    'font-bold transition-all active:scale-95 btn-glow',
-  success:
-    'font-bold transition-all active:scale-95 btn-glow',
-  secondary:
-    'font-bold transition-all border active:scale-95',
-  ghost:
-    'font-bold transition-all rounded-lg hover:opacity-80',
-  danger:
-    'font-bold transition-all border active:scale-95',
-};
-
 const sizeStyles: Record<string, string> = {
-  sm:  'text-[11px] px-3 py-1.5 rounded-lg',
-  md:  'text-xs px-4 py-2.5 rounded-xl',
-  lg:  'text-sm px-7 py-3.5 rounded-xl',
+  sm:  'text-[9px] px-3 py-1.5',
+  md:  'text-[10px] px-5 py-2.5',
+  lg:  'text-[11px] px-8 py-3.5',
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -34,17 +21,23 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const baseStyle: React.CSSProperties =
-    variant === 'primary' ? { background: 'var(--accent)', color: '#000' } :
-    variant === 'success' ? { background: 'var(--green)', color: '#000' } :
-    variant === 'secondary' ? { background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' } :
-    variant === 'danger' ? { background: 'transparent', borderColor: 'var(--red)', color: 'var(--red)' } :
-    { background: 'transparent', color: 'var(--text-secondary)' };
+  const retroClass =
+    variant === 'primary' ? 'btn-retro' :
+    variant === 'success' ? 'btn-retro btn-retro-green' :
+    variant === 'danger' ? 'btn-retro btn-retro-magenta' :
+    variant === 'secondary' ? 'btn-retro border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] hover:shadow-none hover:scale-100' :
+    'btn-retro border-none text-[var(--text-secondary)] hover:text-[var(--neon-cyan)] hover:bg-transparent hover:shadow-none hover:scale-100';
 
   return (
     <button
-      className={[variantStyles[variant], sizeStyles[size], glow ? 'btn-glow' : '', className].filter(Boolean).join(' ')}
-      style={{ ...baseStyle, ...style }}
+      className={[retroClass, sizeStyles[size], className].filter(Boolean).join(' ')}
+      style={{
+        fontFamily: 'var(--font-mono)',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        cursor: 'pointer',
+        ...style,
+      }}
       {...props}
     >
       {children}

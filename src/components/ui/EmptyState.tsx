@@ -9,12 +9,12 @@ interface EmptyStateProps {
 export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description }) => {
   return (
     <div
-      className="py-10 text-center border-2 border-dashed rounded-xl flex flex-col items-center gap-2"
-      style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}
+      className="py-10 text-center flex flex-col items-center gap-2"
+      style={{ color: 'var(--text-muted)' }}
     >
-      {icon && <span className="opacity-40">{icon}</span>}
-      {title && <span className="text-sm font-bold">{title}</span>}
-      <span className="text-sm italic">{description}</span>
+      {icon && <span className="opacity-40 font-mono">{icon}</span>}
+      {title && <span className="text-xs font-bold font-mono uppercase">{title}</span>}
+      <span className="text-xs font-mono italic opacity-70">{description}</span>
     </div>
   );
 };

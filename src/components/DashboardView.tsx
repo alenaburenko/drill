@@ -27,6 +27,23 @@ interface DashboardViewProps {
   activeTab: 'dashboard' | 'catalog' | 'upload' | 'backup';
 }
 
+// ─── Retro sound system (shared) ──────────────────────────────────────
+function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration / 1000);
+  } catch { /* silent fail */ }
+}
+
 export default function DashboardView({
   allTasks, progressMap, customTasks, lang, onSelectTask, onSetActiveTab, activeTab,
 }: DashboardViewProps) {
@@ -39,44 +56,82 @@ export default function DashboardView({
 
   const handleContinuePractice = () => {
     const next = pickNextTask(dueRepetitions, inProgressTasks, progressMap, newTasks, allTasks);
-    if (next) onSelectTask(next);
+    if (next) {
+      playBeep(880, 40, 'square');
+      setTimeout(() => playBeep(1100, 50, 'square'), 50);
+      onSelectTask(next);
+    }
   };
 
   const stats = useMemo(() => getStats(progressMap, allTasks, masteredTasks), [progressMap, allTasks, masteredTasks]);
+
+  // Retro-style floating unicode characters for hero
+  const glitchChars = useMemo(() => ['⚡', '✦', '◆', '▶', '⬡', '◈', '▣', '◉', '◆', '✦', '▶', '△'], []);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       {/* Left column */}
       <div className="lg:col-span-8 flex flex-col gap-5">
-        {/* Hero CTA */}
-        <Card variant="accent" className="min-h-[260px] relative animate-fade-in-up">
-          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, var(--accent) 0%, transparent 60%)' }} />
-          <div className="relative z-10">
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>
-              <Sparkles className="w-4 h-4 animate-pulse" />
-              <span>{t.personalQueue}</span>
+        {/* Hero CTA — Retro Game */}
+        <Card variant="accent" className="min-h-[280px] relative overflow-hidden" padding="lg">
+          {/* Glitch background */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{
+            backgroundImage: `
+              repeating-linear-gradient(0deg, transparent, transparent 40px, var(--neon-cyan) 40px, var(--neon-cyan) 41px),
+              repeating-linear-gradient(90deg, transparent, transparent 40px, var(--neon-magenta) 40px, var(--neon-magenta) 41px)
+            `
+          }} />
+
+          {/* Floating glitch symbols */}
+          {glitchChars.slice(0, 8).map((ch, i) => (
+            <div
+              key={i}
+              className="absolute font-mono"
+              style={{
+                left: `${15 + (i * 10)}%`,
+                top: `${20 + ((i * 7) % 60)}%`,
+                fontSize: `${8 + (i % 3) * 4}px`,
+                color: i % 2 === 0 ? 'var(--neon-cyan)' : 'var(--neon-magenta)',
+                opacity: 0.12,
+                animation: `particle-float ${3 + (i % 3)}s ease-in-out ${i * 0.4}s infinite alternate`,
+                transform: `rotate(${i * 15}deg)`,
+              }}
+            >
+              {ch}
             </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight max-w-md leading-tight" style={{ color: 'var(--text-primary)' }}>
+          ))}
+
+          {/* Content */}
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.15em] mb-3 hero-glitch-in" style={{ color: 'var(--neon-magenta)', fontFamily: 'var(--font-mono)' }}>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="text-flicker-magenta">{t.personalQueue}</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight max-w-md leading-snug hero-glitch-in" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ color: 'var(--neon-cyan)' }}>&gt; </span>
               {t.trainerReady}
+              <span className="cursor-blink" />
             </h2>
-            <p className="text-sm mt-3 max-w-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xs mt-3 max-w-lg leading-relaxed font-mono hero-glitch-in" style={{ color: 'var(--text-secondary)' }}>
               Заплановано{' '}
-              <span className="font-bold font-mono" style={{ color: 'var(--accent)' }}>{dueRepetitions.length} повторень</span>{' '}
+              <span className="font-bold" style={{ color: 'var(--neon-cyan)' }}>{dueRepetitions.length} повторень</span>{' '}
               та доступно{' '}
-              <span className="font-bold font-mono" style={{ color: 'var(--green)' }}>{newTasks.length} нових задач</span>.
+              <span className="font-bold" style={{ color: 'var(--neon-green)' }}>{newTasks.length} нових задач</span>.
             </p>
           </div>
-          <Button
-            variant="primary"
-            size="lg"
-            glow
-            onClick={handleContinuePractice}
-            className="relative z-10 mt-6 self-start flex items-center gap-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            {t.continuePractice}
-          </Button>
+
+          <div className="hero-glitch-in" style={{ animationDelay: '0.3s' }}>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={handleContinuePractice}
+              className="relative z-10 mt-6 self-start flex items-center gap-2"
+            >
+              <Play className="w-3.5 h-3.5 fill-current" />
+              {t.continuePractice}
+            </Button>
+          </div>
         </Card>
 
         {/* Due repetitions */}
@@ -87,23 +142,23 @@ export default function DashboardView({
             subtitle={t.intervalSchedule}
           />
           {dueRepetitions.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 stagger-enter">
               {dueRepetitions.slice(0, 4).map(task => {
                 const prog = getTaskProgress(progressMap, task.id);
                 return (
-                  <Card key={task.id} variant="elevated" padding="md" onClick={() => onSelectTask(task.id)}
-                    className="transition-all group hover:border-orange-800/50">
+                  <Card key={task.id} variant="elevated" padding="md" onClick={() => { playBeep(660, 30, 'square'); onSelectTask(task.id); }}
+                    className="group">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-[10px] font-mono font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
+                      <span className="text-[9px] font-mono font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
                         {task.block} · {task.difficulty}
                       </span>
                       <Badge variant="danger" size="sm">
-                        Stage {prog.learningStage}
+                        STAGE {prog.learningStage}
                       </Badge>
                     </div>
-                    <h4 className="text-sm font-bold truncate transition-colors group-hover:text-orange-400">{task.title}</h4>
-                    <div className="text-[10px] font-bold flex items-center gap-1 mt-2" style={{ color: 'var(--accent)' }}>
-                      <span>{t.startPractice}</span>
+                    <h4 className="text-xs font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
+                    <div className="text-[9px] font-bold flex items-center gap-1 mt-2" style={{ color: 'var(--neon-cyan)' }}>
+                      <span>&gt; {t.startPractice}</span>
                       <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
                     </div>
                   </Card>
@@ -118,28 +173,28 @@ export default function DashboardView({
         {/* New tasks */}
         <Card padding="md">
           <SectionHeader
-            icon={<Layers className="w-4 h-4" style={{ color: 'var(--green)' }} />}
+            icon={<Layers className="w-4 h-4" style={{ color: 'var(--neon-green)' }} />}
             title={`${t.newTasks} (${newTasks.length})`}
             action={
-              <button onClick={() => onSetActiveTab('catalog')} className="text-xs font-bold transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
+              <button onClick={() => onSetActiveTab('catalog')} className="text-[9px] font-bold font-mono uppercase tracking-wider transition-colors hover:underline" style={{ color: 'var(--neon-cyan)' }}>
                 {t.viewAll}
               </button>
             }
           />
-          <div className="space-y-2">
+          <div className="space-y-2 stagger-enter">
             {newTasks.slice(0, 5).map(task => (
-              <Card key={task.id} variant="elevated" padding="sm" onClick={() => onSelectTask(task.id)}
-                className="flex items-center justify-between gap-4 group transition-all hover:border-orange-800/40">
+              <Card key={task.id} variant="elevated" padding="sm" onClick={() => { playBeep(660, 30, 'square'); onSelectTask(task.id); }}
+                className="flex items-center justify-between gap-4 group">
                 <div className="flex items-center gap-3 truncate">
-                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: 'var(--green)' }} />
+                  <span className="w-2 h-2 shrink-0" style={{ background: 'var(--neon-green)', boxShadow: '0 0 6px rgba(0,255,65,0.5)' }} />
                   <div className="truncate">
-                    <h4 className="text-sm font-bold truncate transition-colors group-hover:text-orange-400">{task.title}</h4>
-                    <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{task.block}</span>
+                    <h4 className="text-xs font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
+                    <span className="text-[9px] font-mono" style={{ color: 'var(--text-muted)' }}>{task.block}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <Badge variant="accent" size="sm" className={diffBadge(task.difficulty)}>{task.difficulty}</Badge>
-                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: 'var(--text-muted)' }} />
+                  <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" style={{ color: 'var(--text-muted)' }} />
                 </div>
               </Card>
             ))}
@@ -157,36 +212,36 @@ export default function DashboardView({
             </div>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { val: inProgressTasks.length, label: t.inLearning, color: 'var(--accent)' },
-                { val: `${stats.accuracy}%`, label: t.testAccuracy, color: 'var(--green)' },
+                { val: inProgressTasks.length, label: t.inLearning, color: 'var(--neon-cyan)' },
+                { val: `${stats.accuracy}%`, label: t.testAccuracy, color: 'var(--neon-green)' },
               ].map(({ val, label, color }) => (
                 <StatCard key={label} value={val} label={label} color={color} />
               ))}
             </div>
-            <div className="p-3 rounded-xl flex items-center justify-between text-xs font-mono border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+            <div className="p-3 rounded-sm flex items-center justify-between text-[10px] font-mono border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
               <span style={{ color: 'var(--text-secondary)' }}>{t.totalPeeks}</span>
-              <span className="font-bold" style={{ color: 'var(--amber)' }}>{t.peeksTimes(stats.totalPeeks)}</span>
+              <span className="font-bold" style={{ color: 'var(--neon-amber)' }}>{t.peeksTimes(stats.totalPeeks)}</span>
             </div>
           </div>
         </Card>
 
         <Card variant="accent" padding="md">
-          <SectionHeader icon={<AlertCircle className="w-4 h-4" />} title={t.howItWorks} color="var(--accent)" />
-          <div className="space-y-3 text-xs leading-relaxed">
+          <SectionHeader icon={<AlertCircle className="w-4 h-4" />} title={t.howItWorks} color="var(--neon-magenta)" />
+          <div className="space-y-3 text-[11px] leading-relaxed font-mono">
             <p style={{ color: 'var(--text-secondary)' }}>{t.howDesc}</p>
             <ul className="space-y-1.5 list-none" style={{ color: 'var(--text-secondary)' }}>
               {t.stages.map((s, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="font-mono font-bold shrink-0" style={{ color: 'var(--accent)' }}>{i + 1}.</span>
+                  <span className="font-mono font-bold shrink-0" style={{ color: 'var(--neon-cyan)' }}>{i + 1}.</span>
                   <span>{s}</span>
                 </li>
               ))}
             </ul>
-            <p className="pt-2 border-t text-[11px]" style={{ color: 'var(--text-muted)', borderColor: 'var(--border-muted)' }}>{t.howNote}</p>
+            <p className="pt-2 border-t text-[10px]" style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}>{t.howNote}</p>
           </div>
         </Card>
       </div>
 
     </div>
   );
-}
+};

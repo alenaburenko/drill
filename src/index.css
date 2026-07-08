@@ -1,59 +1,67 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-pixel: "Press Start 2P", ui-monospace, monospace;
 }
 
 /* ───────────────────────────────────────────
-   Design Tokens — Dark Terminal / IDE Theme
+   Retro Gaming 80-90s Theme — Tokens
 ─────────────────────────────────────────── */
 :root {
   /* ── Backgrounds ─────────────────────────────── */
-  --bg-base:      #0a0a0a;
-  --bg-surface:   #111111;
-  --bg-elevated:  #1a1a1a;
-  --bg-card:      #141414;
+  --bg-base:      #0d0015;
+  --bg-surface:   #12001e;
+  --bg-elevated:  #1a0029;
+  --bg-card:      #160022;
 
   /* ── Borders ──────────────────────────────────── */
-  --border:       #252525;
-  --border-muted: #1e1e1e;
+  --border:       #2a0040;
+  --border-muted: #200030;
 
-  /* ── Accent (orange) ──────────────────────────── */
-  --accent:       #f97316;   /* orange-500 */
-  --accent-dim:   #7c3a0e;
-  --accent-glow:  rgba(249, 115, 22, 0.18);
-  --accent-hover: #ea6c05;
+  /* ── Retro neon palette ──────────────────────── */
+  --neon-cyan:    #00f0ff;
+  --neon-magenta: #ff00ff;
+  --neon-green:   #00ff41;
+  --neon-amber:   #ffb000;
+  --neon-red:     #ff004d;
+
+  /* ── Accent (cyan as primary) ─────────────────── */
+  --accent:       #00f0ff;
+  --accent-dim:   #006070;
+  --accent-glow:  rgba(0, 240, 255, 0.15);
+  --accent-hover: #00c8d4;
 
   /* ── Text ──────────────────────────────────────── */
-  --text-primary:   #e8e8e8;
-  --text-secondary: #888888;
-  --text-muted:     #4a4a4a;
+  --text-primary:   #e0e0e0;
+  --text-secondary: #9090a8;
+  --text-muted:     #505068;
 
   /* ── Semantic colors ──────────────────────────── */
-  --green:  #22c55e;
-  --red:    #ef4444;
-  --amber:  #f59e0b;
-  --blue:   #3b82f6;
-  --purple: #a855f7;
+  --green:  #00ff41;
+  --red:    #ff004d;
+  --amber:  #ffb000;
+  --blue:   #00aaff;
+  --purple: #aa44ff;
 
-  /* ── Border-radius scale (3px × 2^n) ─────────── */
-  --radius-sm:   6px;
-  --radius-md:   10px;
-  --radius-lg:   16px;
-  --radius-xl:   22px;
-  --radius-2xl:  28px;
+  /* ── Border-radius scale ─────────────────────── */
+  --radius-sm:   2px;
+  --radius-md:   4px;
+  --radius-lg:   6px;
+  --radius-xl:   8px;
+  --radius-2xl:  10px;
 
-  /* ── Typography scale (modular 1.25, base=16) ── */
-  --font-size-xs:   10px;
+  /* ── Typography scale ──────────────────────────── */
+  --font-size-xs:   11px;
   --font-size-sm:   13px;
-  --font-size-base: 16px;
-  --font-size-lg:   20px;
-  --font-size-xl:   25px;
-  --font-size-2xl:  31px;
-  --font-size-3xl:  39px;
-  --font-size-4xl:  49px;
+  --font-size-base: 15px;
+  --font-size-lg:   17px;
+  --font-size-xl:   21px;
+  --font-size-2xl:  26px;
+  --font-size-3xl:  32px;
+  --font-size-4xl:  42px;
 
   /* ── Font weights ─────────────────────────────── */
   --font-weight-normal:   400;
@@ -62,7 +70,7 @@
   --font-weight-bold:     700;
   --font-weight-black:    900;
 
-  /* ── Spacing grid (4px base) ─────────────────── */
+  /* ── Spacing grid ─────────────────────────────── */
   --space-1:  4px;
   --space-2:  8px;
   --space-3:  12px;
@@ -90,35 +98,29 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-sans);
+  font-size: 15px;
   background-color: var(--bg-base);
   color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  image-rendering: pixelated;
 }
 
-/* ─── Custom scrollbars (terminal style) ─── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: #2e2e2e;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-/* ─── Accent glow on focus ─── */
-*:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ─── Selection ─── */
-::selection {
-  background: rgba(249, 115, 22, 0.35);
-  color: #fff;
-}
-
-/* ─── Terminal scanline effect (subtle) ─── */
+/* ─── Retro grid overlay ─── */
 body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── CRT scanlines ─── */
+body::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -126,111 +128,541 @@ body::before {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.04) 2px,
-    rgba(0, 0, 0, 0.04) 4px
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
   );
   pointer-events: none;
-  z-index: 9999;
+  z-index: 9998;
 }
 
-/* ─── Micro-animations ─── */
-@keyframes pulse-orange {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
-  50%       { box-shadow: 0 0 0 6px rgba(249,115,22,0.12); }
+/* ─── Custom scrollbars (retro) ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 0px;
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--neon-magenta); box-shadow: 0 0 6px rgba(255, 0, 255, 0.4); }
+
+/* ─── Focus (retro) ─── */
+*:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
 }
 
-@keyframes blink {
+/* ─── Selection ─── */
+::selection {
+  background: rgba(0, 240, 255, 0.35);
+  color: #000;
+}
+
+/* ─── CRT screen curvature ─── */
+.crt-curve {
+  position: relative;
+}
+.crt-curve::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 65%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* ─── Scanline animation ─── */
+@keyframes scanline-sweep {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scanline-sweep {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,240,255,0.08) 20%, rgba(0,240,255,0.2) 50%, rgba(0,240,255,0.08) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 9996;
+  animation: scanline-sweep 8s linear infinite;
+}
+
+/* ─── Glow keyframes ─── */
+@keyframes glow-pulse-cyan {
+  0%, 100% { box-shadow: 0 0 5px rgba(0,240,255,0.3), 0 0 10px rgba(0,240,255,0.1); }
+  50%      { box-shadow: 0 0 10px rgba(0,240,255,0.5), 0 0 20px rgba(0,240,255,0.2); }
+}
+
+@keyframes glow-pulse-magenta {
+  0%, 100% { box-shadow: 0 0 5px rgba(255,0,255,0.3), 0 0 10px rgba(255,0,255,0.1); }
+  50%      { box-shadow: 0 0 10px rgba(255,0,255,0.5), 0 0 20px rgba(255,0,255,0.2); }
+}
+
+@keyframes glow-pulse-green {
+  0%, 100% { box-shadow: 0 0 5px rgba(0,255,65,0.3), 0 0 10px rgba(0,255,65,0.1); }
+  50%      { box-shadow: 0 0 10px rgba(0,255,65,0.5), 0 0 20px rgba(0,255,65,0.2); }
+}
+
+/* ─── Text glow animations ─── */
+@keyframes text-flicker {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  41%      { opacity: 1; }
+  42%      { opacity: 0.8; }
+  43%      { opacity: 1; }
+  45%      { opacity: 1; }
+  46%      { opacity: 0.9; }
+  47%      { opacity: 1; }
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes text-flicker-magenta {
+  0%, 100% { opacity: 1; }
+  3%       { opacity: 0.85; }
+  4%       { opacity: 1; }
+  6%       { opacity: 1; }
+  7%       { opacity: 0.9; }
+  8%       { opacity: 1; }
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
+.text-flicker {
+  animation: text-flicker 4s linear infinite;
 }
 
-.animate-fade-in-up { animation: fadeInUp 0.35s ease forwards; }
+.text-flicker-magenta {
+  animation: text-flicker-magenta 6s linear infinite;
+}
 
-/* ─── Terminal cursor blink ─── */
+/* ─── Retro button base ─── */
+.btn-retro {
+  position: relative;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 2px solid var(--neon-cyan);
+  background: transparent;
+  color: var(--neon-cyan);
+  transition: all 0.1s steps(2);
+}
+
+.btn-retro:hover {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow: 0 0 15px rgba(0,240,255,0.4), inset 0 0 15px rgba(0,240,255,0.1);
+  transform: scale(1.02);
+}
+
+.btn-retro:active {
+  transform: scale(0.96);
+}
+
+.btn-retro-green {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+}
+.btn-retro-green:hover {
+  background: var(--neon-green);
+  color: #000;
+  box-shadow: 0 0 15px rgba(0,255,65,0.4);
+}
+
+.btn-retro-magenta {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+}
+.btn-retro-magenta:hover {
+  background: var(--neon-magenta);
+  color: #000;
+  box-shadow: 0 0 15px rgba(255,0,255,0.4);
+}
+
+/* ─── Retro card ─── */
+.card-retro {
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  transition: all 0.15s steps(2);
+  position: relative;
+}
+
+.card-retro::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: var(--accent-dim);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card-retro:hover::before {
+  opacity: 1;
+}
+
+.card-retro:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(0, 240, 255, 0.03);
+  transform: translateY(-2px);
+}
+
+/* ─── Rainbow card (for mastered items) ─── */
+.card-retro-rainbow {
+  border: 2px solid var(--neon-cyan);
+  animation: rainbow-border 4s linear infinite;
+  position: relative;
+  overflow: hidden;
+}
+.card-retro-rainbow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-magenta), var(--neon-green), transparent);
+  animation: rainbow-border 4s linear infinite;
+}
+
+/* ─── Matrix rain drops ─── */
+@keyframes matrix-fall {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 0.03; }
+  90%  { opacity: 0.03; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.matrix-drop {
+  position: absolute;
+  top: 0;
+  animation: matrix-fall linear infinite;
+}
+
+/* ─── Retro accent card ─── */
+.card-retro-accent {
+  border: 2px solid var(--neon-cyan);
+  background: linear-gradient(135deg, rgba(0,240,255,0.04) 0%, transparent 50%);
+  box-shadow: 0 0 20px rgba(0,240,255,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-retro-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+}
+
+/* ─── Retro progress bar ─── */
+.progress-retro-track {
+  width: 100%;
+  height: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.progress-retro-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--neon-cyan) 0px,
+    var(--neon-cyan) 4px,
+    rgba(0,240,255,0.6) 4px,
+    rgba(0,240,255,0.6) 8px
+  );
+  transition: width 0.3s steps(8);
+  box-shadow: 0 0 8px rgba(0,240,255,0.4);
+  position: relative;
+}
+
+/* ─── Terminal-style cursor blink ─── */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
 .cursor-blink::after {
-  content: '▌';
+  content: '█';
   display: inline-block;
-  animation: blink 1s step-end infinite;
-  color: var(--accent);
+  animation: cursor-blink 0.8s steps(1) infinite;
+  color: var(--neon-cyan);
   margin-left: 2px;
+  font-size: 10px;
 }
 
-/* ─── Accent badge / pill ─── */
-.badge-accent {
-  background: rgba(249,115,22,0.1);
-  border: 1px solid rgba(249,115,22,0.3);
-  color: var(--accent);
+/* ─── Group header ─── */
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--neon-magenta);
+  border-bottom: 1px solid var(--border);
+  text-shadow: 0 0 8px rgba(255,0,255,0.3);
+}
+
+.group-header::before {
+  content: '▸';
+  color: var(--neon-cyan);
+  font-size: 10px;
+}
+
+/* ─── Retro badge ─── */
+.badge-retro {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 2px 8px;
-  border-radius: 4px;
+  border: 1px solid;
+  position: relative;
 }
 
-/* ─── Glow button ─── */
-.btn-glow:hover {
-  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3), 0 4px 16px rgba(249, 115, 22, 0.15);
+.badge-retro-cyan {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  background: rgba(0,240,255,0.08);
 }
 
-/* ─── Code block styled ─── */
-.code-block {
-  background: #0d0d0d;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+.badge-retro-magenta {
+  color: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+  background: rgba(255,0,255,0.08);
+}
+
+.badge-retro-green {
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  background: rgba(0,255,65,0.08);
+}
+
+.badge-retro-red {
+  color: var(--neon-red);
+  border-color: var(--neon-red);
+  background: rgba(255,0,77,0.08);
+}
+
+.badge-retro-amber {
+  color: var(--neon-amber);
+  border-color: var(--neon-amber);
+  background: rgba(255,176,0,0.08);
+}
+
+/* ─── Section header bar ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: #c9d1d9;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ─── Stagger children ─── */
+.stagger-enter > * {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.stagger-enter > *:nth-child(1) { animation: fadeInUp 0.25s steps(4) 0s forwards; }
+.stagger-enter > *:nth-child(2) { animation: fadeInUp 0.25s steps(4) 0.08s forwards; }
+.stagger-enter > *:nth-child(3) { animation: fadeInUp 0.25s steps(4) 0.16s forwards; }
+.stagger-enter > *:nth-child(4) { animation: fadeInUp 0.25s steps(4) 0.24s forwards; }
+.stagger-enter > *:nth-child(5) { animation: fadeInUp 0.25s steps(4) 0.32s forwards; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+	/* ═══════════════════════════════════════════
+	   🎮 RETRO ANIMATION PACK — 80s/90s style
+	   ═══════════════════════════════════════════ */
+
+	/* ─── 1. GLITCH SPASM — случайные помехи раз в 10s ─── */
+	@keyframes glitch-spasm {
+	  0%, 96%  { transform: none; clip-path: inset(0); }
+	  96.5%    { transform: translate(-3px, 2px) skewX(-1deg); clip-path: inset(20% 0 60% 0); }
+	  97%      { transform: translate(3px, -1px) skewX(1deg); clip-path: inset(50% 0 10% 0); }
+	  98%      { transform: translate(-1px, 1px) skewX(-0.5deg); clip-path: inset(10% 0 40% 0); }
+	  99%      { transform: none; clip-path: inset(0); }
+	  100%     { transform: none; clip-path: inset(0); }
+	}
+
+	/* ─── 2. RAINBOW BORDER PULSE ─── */
+	@keyframes rainbow-border {
+	  0%   { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,240,255,0.2); }
+	  20%  { border-color: var(--neon-magenta); box-shadow: 0 0 12px rgba(255,0,255,0.2); }
+	  40%  { border-color: var(--neon-green); box-shadow: 0 0 12px rgba(0,255,65,0.2); }
+	  60%  { border-color: var(--neon-amber); box-shadow: 0 0 12px rgba(255,176,0,0.2); }
+	  80%  { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,240,255,0.2); }
+	  100% { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,240,255,0.2); }
+	}
+
+	/* ─── 3. 8-BIT BOUNCE ─── */
+	@keyframes bounce-8bit {
+	  0%, 100% { transform: translateY(0); }
+	  30%      { transform: translateY(-6px); }
+	  60%      { transform: translateY(-2px); }
+	}
+
+	.bounce-8bit {
+	  animation: bounce-8bit 0.4s steps(2);
+	}
+
+	/* ─── 4. LEVEL UP FLASH ─── */
+	@keyframes levelup-flash {
+	  0%   { transform: scale(1); opacity: 1; }
+	  25%  { transform: scale(1.1); opacity: 0.6; filter: brightness(2); }
+	  50%  { transform: scale(0.95); opacity: 1; filter: brightness(1); }
+	  75%  { transform: scale(1.05); opacity: 0.8; filter: brightness(1.5); }
+	  100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+	}
+
+	/* ─── 5. TILE SHAKE — при клике ─── */
+	@keyframes tile-shake {
+	  0%, 100% { transform: translateX(0); }
+	  20%, 60% { transform: translateX(-3px); }
+	  40%, 80% { transform: translateX(3px); }
+	}
+
+	/* ─── 6. NOTIFICATION SLIDE ─── */
+	@keyframes notif-slide-in {
+	  from { transform: translateX(100%) translateY(-50%) scale(0.8); opacity: 0; }
+	  to   { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+	}
+
+	/* ─── 7. CASSETTE SPINNER ─── */
+	@keyframes cassette-spin {
+	  0%   { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+
+	/* ─── 8. PIXEL DISSOLVE EXIT ─── */
+	@keyframes pixel-dissolve {
+	  0%   { opacity: 1; filter: none; }
+	  60%  { opacity: 0.7; filter: contrast(3) brightness(3); }
+	  100% { opacity: 0; filter: contrast(10) brightness(5); }
+	}
+
+	/* ─── 9. SECTION REVEAL ─── */
+	@keyframes section-reveal {
+	  from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+	  to   { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+	}
+
+	/* ─── 10. SCROLL INDICATOR ─── мигает как в старых играх ─── */
+	@keyframes scroll-indicate {
+	  0%, 100% { transform: translateY(0); opacity: 0; }
+	  20%      { opacity: 1; }
+	  60%      { opacity: 1; transform: translateY(8px); }
+	  80%      { opacity: 0; transform: translateY(12px); }
+	}
+
+	/* ─── 11. POWER UP ─── */
+	@keyframes power-up {
+	  0%   { transform: scale(1); filter: hue-rotate(0deg); }
+	  50%  { transform: scale(1.08); filter: hue-rotate(180deg); }
+	  100% { transform: scale(1); filter: hue-rotate(360deg); }
+	}
+
+	/* ═══════════════════════════════════════════
+	   Hero entrance — glitch boot
+	   ═══════════════════════════════════════════ */
+@keyframes hero-glitch-in {
+  0%   { opacity: 0; clip-path: inset(50% 0 50% 0); transform: scale(0.95); }
+  20%  { opacity: 1; clip-path: inset(0 0 0 0); transform: scale(1); }
+  40%  { clip-path: inset(20% 0 80% 0); }
+  50%  { clip-path: inset(0 0 0 0); }
+  70%  { clip-path: inset(60% 0 10% 0); }
+  100% { clip-path: inset(0 0 0 0); transform: scale(1); }
+}
+
+.hero-glitch-in {
+  animation: hero-glitch-in 0.8s steps(5) forwards;
+}
+
+/* ─── Particle for hero ─── */
+@keyframes particle-float {
+  0%   { transform: translateY(0) translateX(0); opacity: 0.3; }
+  50%  { opacity: 0.8; }
+  100% { transform: translateY(-30px) translateX(10px); opacity: 0.1; }
+}
+
+/* ─── Workspace transition ─── */
+@keyframes workspace-glitch-in {
+  0%   { opacity: 0; transform: scale(0.97); clip-path: inset(0 0 100% 0); }
+  60%  { opacity: 1; clip-path: inset(0 0 0 0); transform: scale(1); }
+  80%  { clip-path: inset(10% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+.workspace-glitch-in {
+  animation: workspace-glitch-in 0.4s steps(4) forwards;
+}
+
+/* ─── Stat value ─── */
+.stat-value-pop {
+  animation: stat-value-pop 0.3s steps(3) forwards;
+}
+
+@keyframes stat-value-pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* ─── Code block ─── */
+.code-block {
+  background: #0a0010;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon-green);
+  text-shadow: 0 0 4px rgba(0,255,65,0.3);
   padding: 16px;
   white-space: pre-wrap;
   line-height: 1.6;
 }
 
-/* ─── Group header bar ─── */
-.group-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0 8px;
+/* ─── Utility ─── */
+.text-pixel {
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.05em;
 }
 
-.group-header::before {
-  content: '▶';
-  font-size: 8px;
-  opacity: 0.7;
+.text-shadow-cyan {
+  text-shadow: 0 0 6px rgba(0,240,255,0.4);
 }
 
-/* ─── Progress bar orange ─── */
-.progress-bar-track {
-  width: 100%;
-  height: 4px;
-  background: var(--border);
-  border-radius: 99px;
-  overflow: hidden;
+.text-shadow-magenta {
+  text-shadow: 0 0 6px rgba(255,0,255,0.4);
 }
 
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent) 0%, #fbbf24 100%);
-  border-radius: 99px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+.text-shadow-green {
+  text-shadow: 0 0 6px rgba(0,255,65,0.4);
 }

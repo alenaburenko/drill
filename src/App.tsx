@@ -26,16 +26,87 @@ import {
   pickNextTask,
 } from './utils/taskProgress';
 import { Button, Card, Badge, SectionHeader, EmptyState } from './components/ui';
+import { RetroLogo } from './components/RetroLogo';
 import DashboardView from './components/DashboardView';
 import UploadPanel from './components/UploadPanel';
 import BackupPanel from './components/BackupPanel';
+
+// ─── Retro sound system ────────────────────────────────────────────────
+function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration / 1000);
+  } catch { /* silent fail */ }
+}
+
+const SOUNDS = {
+  click: () => playBeep(660, 40, 'square'),
+  success: () => { playBeep(1047, 60, 'square'); setTimeout(() => playBeep(1319, 80, 'square'), 70); },
+  error: () => playBeep(220, 200, 'sawtooth'),
+  boot: () => { playBeep(440, 80, 'square'); setTimeout(() => playBeep(880, 60, 'square'), 100); setTimeout(() => playBeep(1320, 100, 'square'), 200); },
+  glitch: () => playBeep(180, 80, 'sawtooth'),
+};
+
+// ─── Matrix rain ────────────────────────────────────────────────────────
+function MatrixRain() {
+  const drops = React.useMemo(() => {
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+    return Array.from({ length: 40 }, (_, i) => ({
+      id: i,
+      left: `${(i / 40) * 100}%`,
+      delay: Math.random() * 8,
+      duration: 3 + Math.random() * 5,
+      length: 5 + Math.floor(Math.random() * 15),
+      char: chars[Math.floor(Math.random() * chars.length)],
+    }));
+  }, []);
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {drops.map(d => (
+        <div
+          key={d.id}
+          className="matrix-drop"
+          style={{
+            left: d.left,
+            animationDelay: `${d.delay}s`,
+            animationDuration: `${d.duration}s`,
+            height: `${d.length * 16}px`,
+            opacity: 0.025,
+          }}
+        >
+          <span className="text-[8px] font-mono" style={{ color: 'var(--neon-cyan)' }}>{d.char}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function App() {
   // ── i18n ────────────────────────────────────────────────────────────────
   const [lang, setLang] = useState<Lang>(() =>
     (localStorage.getItem('drill_lang') as Lang) || 'uk'
   );
+  const [bootPhase, setBootPhase] = useState<'flash' | 'boot' | 'ready'>('flash');
   const t = getT(lang);
+
+  // ── Boot sequence ───────────────────────────────────────────────────────
+  useEffect(() => {
+    SOUNDS.boot();
+    const t1 = setTimeout(() => setBootPhase('boot'), 400);
+    const t2 = setTimeout(() => {
+      setBootPhase('ready');
+    }, 1800);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('drill_lang', lang);
@@ -234,50 +305,88 @@ export default function App() {
 
   const selectedTask = allTasks.find(t => t.id === selectedTaskId);
 
+  // ── Sound hooks ──────────────────────────────────────────────────────
+  const handleTabClick = (tab: typeof activeTab) => {
+    SOUNDS.click();
+    setActiveTab(tab);
+  };
+
   // ── render ────────────────────────────────────────────────────────────────
+  if (bootPhase !== 'ready') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center crt-curve" style={{ background: 'var(--bg-base)', color: 'var(--neon-cyan)' }}>
+        {bootPhase === 'flash' && <div className="crt-flash" />}
+        <div className="font-mono text-center">
+          <div className="text-sm mb-8" style={{ color: 'var(--neon-green)' }}>
+            <div className="boot-line">SYS 43656 INIT v1.0</div>
+            <div className="boot-line" style={{ animationDelay: '0.3s' }}>MEMORY CHECK: OK</div>
+            <div className="boot-line" style={{ animationDelay: '0.6s' }}>CRT DISPLAY: 60Hz</div>
+            <div className="boot-line" style={{ animationDelay: '0.9s' }}>LOADING DRILL MODULE...</div>
+            <div className="mt-4 boot-prompt text-flicker" style={{ color: 'var(--neon-cyan)', fontSize: '9px' }}>
+              {`> PRESS START TO CONTINUE`}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+    <div className="min-h-screen flex flex-col crt-curve" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+      {/* Matrix rain background */}
+      <MatrixRain />
+
       <AnimatePresence mode="wait">
         {selectedTask ? (
-          <motion.div key="workspace" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-            <TaskView
-              task={selectedTask}
-              progress={getTaskProgressFromMap(selectedTask.id)}
-              onSaveProgress={handleSaveProgress}
-              onBack={() => setSelectedTaskId(null)}
-              lang={lang}
-            />
+          <motion.div key="workspace" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, filter: 'brightness(3)' }} transition={{ duration: 0.15 }}>
+            <div className="workspace-glitch-in">
+              <TaskView
+                task={selectedTask}
+                progress={getTaskProgressFromMap(selectedTask.id)}
+                onSaveProgress={handleSaveProgress}
+                onBack={() => {
+                  SOUNDS.click();
+                  setSelectedTaskId(null);
+                }}
+                lang={lang}
+              />
+            </div>
           </motion.div>
         ) : (
           <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col">
+            {/* Scanner line */}
+            <div className="scanline-sweep" />
 
             {/* ── Header ── */}
-            <header className="sticky top-0 z-30 px-6 py-3 flex items-center justify-between border-b" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
-              <div className="flex items-center gap-3">
-                <Terminal className="w-7 h-7" style={{ color: 'var(--accent)' }} />
+            <header className="sticky top-0 z-30 px-6 py-3 flex items-center justify-between border-b glitch-spasm-rare" style={{ background: 'rgba(13,0,21,0.85)', borderColor: 'var(--border)' }}>
+              <div className="flex items-center gap-4">
+                <RetroLogo size="md" />
                 <div>
-                  <h1 className="text-lg font-black tracking-tight flex items-center gap-2" style={{ fontFamily: 'var(--font-mono)' }}>
-                    <span style={{ color: 'var(--accent)' }}>{'>'}</span> {t.appTitle}
-                    <span className="badge-accent">{t.appBadge}</span>
+                  <h1 className="text-base font-bold tracking-tight flex items-center gap-2" style={{ fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ color: 'var(--neon-cyan)', textShadow: '0 0 8px rgba(0,240,255,0.4)' }}>{'>'} </span>
+                    <span className="text-flicker">{t.appTitle}</span>
+                    <span className="badge-retro badge-retro-magenta text-[7px] px-2 py-0.5 bounce-8bit">{t.appBadge}</span>
                   </h1>
-                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{t.appSubtitle}</p>
+                  <p className="text-[9px] mt-0.5 tracking-wider" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{t.appSubtitle}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 {/* Language switcher */}
                 <button
-                  onClick={() => setLang(l => l === 'uk' ? 'en' : 'uk')}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border"
-                  style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
+                  onClick={() => {
+                    SOUNDS.click();
+                    setLang(l => l === 'uk' ? 'en' : 'uk');
+                  }}
+                  className="font-mono text-[9px] uppercase tracking-widest px-3 py-1.5 border transition-all hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)]"
+                  style={{ background: 'transparent', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
                   title="Switch language"
                 >
-                  <Globe className="w-3.5 h-3.5" />
-                  {lang === 'uk' ? '🇺🇦 UA' : '🇬🇧 EN'}
+                  {lang === 'uk' ? '🤘 UA' : '🇬🇧 EN'}
                 </button>
 
                 {/* Nav tabs */}
-                <nav className="flex items-center gap-1 p-1 rounded-xl border text-xs" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+                <nav className="flex items-center gap-0 p-0.5 border" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
                   {(['dashboard', 'catalog', 'upload', 'backup'] as const).map(tab => {
                     const labels: Record<string, string> = {
                       dashboard: t.navTrainer,
@@ -288,11 +397,11 @@ export default function App() {
                     return (
                       <button
                         key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        className="px-4 py-2 rounded-lg font-bold transition-all"
+                        onClick={() => handleTabClick(tab)}
+                        className="px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all font-mono"
                         style={activeTab === tab
-                          ? { background: 'var(--accent)', color: '#000' }
-                          : { color: 'var(--text-secondary)' }
+                          ? { background: 'var(--neon-cyan)', color: '#000' }
+                          : { color: 'var(--text-secondary)', background: 'transparent' }
                         }
                       >
                         {labels[tab]}
@@ -323,29 +432,26 @@ export default function App() {
               {activeTab === 'catalog' && (
                 <Card padding="md">
                   {/* Filters */}
-                  <div className="flex flex-col lg:flex-row gap-3 items-center justify-between mb-5 pb-4 border-b" style={{ borderColor: 'var(--border-muted)' }}>
-                    <div className="relative w-full lg:w-80">
-                      <Search className="absolute left-3 top-2.5 w-4 h-4" style={{ color: 'var(--text-muted)' }} />
-                      <input
-                        type="text"
-                        placeholder={t.searchPlaceholder}
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 rounded-xl text-sm outline-none border"
-                        style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
-                      />
-                    </div>
+                  <div className="flex flex-col lg:flex-row gap-3 items-center justify-between mb-5 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
+                    <input
+                      type="text"
+                      placeholder={t.searchPlaceholder}
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      className="w-full lg:w-80 px-3 py-2 text-xs outline-none border font-mono"
+                      style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                    />
                     <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-                      <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
-                        <Filter className="w-3.5 h-3.5" /><span>{t.filters}</span>
-                      </div>
+                      <span className="font-mono text-[9px] uppercase tracking-widest flex items-center gap-1.5 px-2 py-1.5 border" style={{ color: 'var(--neon-cyan)', borderColor: 'var(--border)' }}>
+                        <Filter className="w-3 h-3" />{t.filters}
+                      </span>
                       {[
                         { val: difficultyFilter, set: setDifficultyFilter, opts: [['all', t.allDifficulties], ['junior', 'Junior'], ['middle', 'Middle'], ['senior', 'Senior']] },
                         { val: categoryFilter, set: setCategoryFilter, opts: [['all', t.allCategories], ...categories.map(c => [c, c])] },
                         { val: stageFilter, set: setStageFilter, opts: [['all', t.allStages], ['unstarted', t.unstartedStage], ['2', 'Stage 2'], ['3', 'Stage 3'], ['4', 'Stage 4'], ['5', 'Stage 5'], ['6', 'Stage 6'], ['mastered', t.masteredLabel]] },
                       ].map(({ val, set, opts }, fi) => (
                         <select key={fi} value={val} onChange={e => set(e.target.value)}
-                          className="text-xs rounded-xl px-3 py-2 outline-none border"
+                          className="text-[9px] uppercase tracking-wider px-2 py-1.5 outline-none border font-mono"
                           style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
                           {opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
                         </select>
@@ -362,39 +468,37 @@ export default function App() {
                         const isCollapsed = collapsedGroups.has(block);
                         return (
                           <div key={block}>
-                            {/* Group header */}
                             <button
                               onClick={() => toggleGroup(block)}
                               className="w-full group-header hover:opacity-80 transition-opacity mb-3"
                             >
                               <span className="flex-1 text-left">{block.toUpperCase()}</span>
                               <Badge variant="accent" size="sm" className="ml-2">{t.tasksCount(tasks.length)}</Badge>
-                              {isCollapsed ? <ChevronDown className="w-3.5 h-3.5 ml-2" /> : <ChevronUp className="w-3.5 h-3.5 ml-2" />}
+                              {isCollapsed ? <ChevronDown className="w-3 h-3 ml-2" /> : <ChevronUp className="w-3 h-3 ml-2" />}
                             </button>
 
-                            {/* Tasks grid */}
                             {!isCollapsed && (
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {tasks.map(task => {
                                   const prog = getTaskProgressFromMap(task.id);
                                   const isMastered = prog.learningStage >= 7;
                                   return (
-                                    <Card key={task.id} variant="elevated" padding="md">
+                                    <Card key={task.id} variant="elevated" padding="md" className={isMastered ? "card-retro-rainbow group" : "group"}>
                                       <div>
                                         <div className="flex items-center justify-between mb-2">
                                           <Badge variant="accent" size="sm" className={diffBadge(task.difficulty)}>{task.difficulty}</Badge>
-                                          <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>#{task.id.slice(-8)}</span>
+                                          <span className="text-[9px] font-mono" style={{ color: 'var(--text-muted)' }}>#{task.id.slice(-8)}</span>
                                         </div>
-                                        <h4 className="text-sm font-bold transition-colors group-hover:text-orange-400 line-clamp-1">{task.title}</h4>
-                                        <p className="text-xs mt-2 line-clamp-2 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                                        <h4 className="text-xs font-bold transition-colors group-hover:text-[var(--neon-cyan)] line-clamp-1">{task.title}</h4>
+                                        <p className="text-[11px] mt-2 line-clamp-2 leading-relaxed font-mono" style={{ color: 'var(--text-muted)' }}>
                                           {task.description.replace(/^(Источник|Source):.*$/m, '').trim()}
                                         </p>
                                       </div>
-                                      <div className="mt-4 pt-3 border-t flex items-center justify-between" style={{ borderColor: 'var(--border-muted)' }}>
+                                      <div className="mt-4 pt-3 border-t flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
                                         <Badge variant={isMastered ? 'stage-mastered' : 'stage'} size="md">
                                           {isMastered ? t.masteredLabel : t.stageOf(prog.learningStage)}
                                         </Badge>
-                                        <Button variant="primary" size="sm" glow onClick={() => setSelectedTaskId(task.id)}>
+                                        <Button variant="primary" size="sm" onClick={() => { SOUNDS.click(); setSelectedTaskId(task.id); }}>
                                           {t.practiceBtn}
                                         </Button>
                                       </div>
@@ -454,6 +558,11 @@ export default function App() {
                   onRestore={handleImportProgressBackup}
                 />
               )}
+
+              {/* ── Scroll indicator ── */}
+              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1" style={{ animation: 'scroll-indicate 2.5s ease-in-out infinite' }}>
+                <span className="text-[8px] font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>▼ SCROLL ▼</span>
+              </div>
 
             </div>
           </motion.div>
