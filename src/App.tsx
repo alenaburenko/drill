@@ -94,6 +94,11 @@ export default function App() {
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
+  // ── Scroll to top on route change ─────────────────────────────────────
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [route.tab, route.taskId]);
+
   // ── Data ──────────────────────────────────────────────────────────────
   const [customTasks, setCustomTasks] = useLocalStorage<DrillTask[]>('drill_custom_tasks', []);
   const allTasks = useMemo(() => [...itleadTasks, ...extraTasks, ...customTasks], [customTasks]);
