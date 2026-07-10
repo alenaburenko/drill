@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { ACHIEVEMENTS } from '../utils/achievements';
 import { ActivityHeatmap } from './ActivityHeatmap';
+import { calculateUserXP, getLevelForXP, calculatePracticeStreak } from '../utils/gamification';
 
 interface DashboardViewProps {
   allTasks: DrillTask[];
@@ -67,6 +68,13 @@ export default function DashboardView({
   };
 
   const stats = useMemo(() => getStats(progressMap, allTasks, masteredTasks), [progressMap, allTasks, masteredTasks]);
+
+  const userXP = useMemo(() => calculateUserXP(progressMap, allTasks), [progressMap, allTasks]);
+  const streak = useMemo(() => calculatePracticeStreak(progressMap), [progressMap]);
+  const currentLevel = useMemo(() => getLevelForXP(userXP), [userXP]);
+  
+  const xpInLevel = userXP - currentLevel.minXP;
+  const levelProgressMax = currentLevel.maxXP - currentLevel.minXP;
 
   // Retro-style floating unicode characters for hero
   const glitchChars = useMemo(() => ['⚡', '✦', '◆', '▶', '⬡', '◈', '▣', '◉', '◆', '✦', '▶', '△'], []);
@@ -211,6 +219,44 @@ export default function DashboardView({
         <Card padding="md">
           <SectionHeader icon={<TrendingUp className="w-4 h-4" />} title={t.yourProgress} />
           <div className="space-y-5">
+            {/* XP and Level progress */}
+            <div className="p-3.5 border rounded-sm relative overflow-hidden" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+              {/* Flame Streak Indicator in corner */}
+              {streak > 0 && (
+                <div className="absolute top-2.5 right-3 flex items-center gap-1 text-[9px] font-bold text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.35)] animate-pulse">
+                  <span>🔥</span>
+                  <span>{streak} {lang === 'uk' ? 'ДНІВ ПОДРЯД' : 'DAY STREAK'}</span>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-0.5 select-none">
+                <span className="text-[7px] font-mono tracking-widest text-[var(--text-muted)] uppercase">
+                  {lang === 'uk' ? 'Ранг Розробника' : 'Developer Rank'}
+                </span>
+                <span className="text-xs font-black tracking-wide" style={{ color: currentLevel.color }}>
+                  LVL {currentLevel.level} · {lang === 'uk' ? currentLevel.titleUk : currentLevel.titleEn}
+                </span>
+              </div>
+
+              <div className="mt-3">
+                <div className="flex justify-between text-[8px] font-mono text-[var(--text-muted)] mb-1">
+                  <span>XP: {userXP} / {currentLevel.maxXP === Infinity ? 'MAX' : currentLevel.maxXP}</span>
+                  {currentLevel.maxXP !== Infinity && (
+                    <span>{Math.round((xpInLevel / levelProgressMax) * 100)}%</span>
+                  )}
+                </div>
+                {/* Custom XP Progress bar */}
+                <div className="h-2 w-full bg-[var(--bg-base)] rounded-sm overflow-hidden border" style={{ borderColor: 'var(--border)' }}>
+                  <div 
+                    className="h-full transition-all duration-500 shadow-[0_0_10px_var(--accent)]" 
+                    style={{ 
+                      width: `${currentLevel.maxXP === Infinity ? 100 : (xpInLevel / levelProgressMax) * 100}%`,
+                      background: currentLevel.level === 1 ? 'var(--text-muted)' : 'var(--accent)'
+                    }} 
+                  />
+                </div>
+              </div>
+            </div>
             <div>
               <ProgressBar value={masteredTasks.length} max={allTasks.length} />
             </div>
