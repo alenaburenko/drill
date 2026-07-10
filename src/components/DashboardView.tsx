@@ -19,6 +19,7 @@ import {
 import { ACHIEVEMENTS } from '../utils/achievements';
 import { ActivityHeatmap } from './ActivityHeatmap';
 import { calculateUserXP, getLevelForXP, calculatePracticeStreak } from '../utils/gamification';
+import { playNavClick, playTaskClick } from '../utils/sound';
 
 interface DashboardViewProps {
   allTasks: DrillTask[];
@@ -29,23 +30,6 @@ interface DashboardViewProps {
   onSelectTask: (id: string) => void;
   onSetActiveTab: (tab: 'dashboard' | 'catalog' | 'upload' | 'backup') => void;
   activeTab: 'dashboard' | 'catalog' | 'upload' | 'backup';
-}
-
-// ─── Retro sound system (shared) ──────────────────────────────────────
-function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
-  try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + duration / 1000);
-  } catch { /* silent fail */ }
 }
 
 export default function DashboardView({
@@ -61,8 +45,7 @@ export default function DashboardView({
   const handleContinuePractice = () => {
     const next = pickNextTask(dueRepetitions, inProgressTasks, progressMap, newTasks, allTasks);
     if (next) {
-      playBeep(880, 40, 'square');
-      setTimeout(() => playBeep(1100, 50, 'square'), 50);
+      playNavClick();
       onSelectTask(next);
     }
   };
@@ -158,7 +141,7 @@ export default function DashboardView({
               {dueRepetitions.slice(0, 4).map(task => {
                 const prog = getTaskProgress(progressMap, task.id);
                 return (
-                  <Card key={task.id} variant="elevated" padding="md" onClick={() => { playBeep(660, 30, 'square'); onSelectTask(task.id); }}
+                  <Card key={task.id} variant="elevated" padding="md" onClick={() => { playTaskClick(); onSelectTask(task.id); }}
                     className="group">
                     <div className="flex justify-between items-start mb-2">
                       <span className="text-[9px] font-mono font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
@@ -195,7 +178,7 @@ export default function DashboardView({
           />
           <div className="space-y-2 stagger-enter">
             {newTasks.slice(0, 5).map(task => (
-              <Card key={task.id} variant="elevated" padding="sm" onClick={() => { playBeep(660, 30, 'square'); onSelectTask(task.id); }}
+              <Card key={task.id} variant="elevated" padding="sm" onClick={() => { playTaskClick(); onSelectTask(task.id); }}
                 className="flex items-center justify-between gap-4 group">
                 <div className="flex items-center gap-3 truncate">
                   <span className="w-2 h-2 shrink-0" style={{ background: 'var(--neon-green)', boxShadow: '0 0 6px rgba(0,255,65,0.5)' }} />

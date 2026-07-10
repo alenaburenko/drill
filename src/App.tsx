@@ -32,31 +32,8 @@ import UploadPanel from './components/UploadPanel';
 import BackupPanel from './components/BackupPanel';
 import { EpicLanding } from './components/EpicLanding';
 import { checkNewAchievements, ACHIEVEMENTS } from './utils/achievements';
-
-// ─── Retro sound system ────────────────────────────────────────────────
-function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
-  try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + duration / 1000);
-  } catch { /* silent fail */ }
-}
-
-const SOUNDS = {
-  click: () => playBeep(660, 40, 'square'),
-  success: () => { playBeep(1047, 60, 'square'); setTimeout(() => playBeep(1319, 80, 'square'), 70); },
-  error: () => playBeep(220, 200, 'sawtooth'),
-  boot: () => { playBeep(440, 80, 'square'); setTimeout(() => playBeep(880, 60, 'square'), 100); setTimeout(() => playBeep(1320, 100, 'square'), 200); },
-  glitch: () => playBeep(180, 80, 'sawtooth'),
-};
+import { playClick, playSuccess, playError, playBoot, playGlitch, playAchievementFanfare } from './utils/sound';
+import { useLocalStorage } from './utils/useLocalStorage';
 
 // ─── Matrix rain ────────────────────────────────────────────────────────
 function MatrixRain() {
@@ -94,32 +71,24 @@ function MatrixRain() {
 
 export default function App() {
   // ── i18n ────────────────────────────────────────────────────────────────
-  const [lang, setLang] = useState<Lang>(() =>
-    (localStorage.getItem('drill_lang') as Lang) || 'uk'
-  );
+  const [lang, setLang] = useLocalStorage<Lang>('drill_lang', 'uk');
   const [bootPhase, setBootPhase] = useState<'flash' | 'boot' | 'landing' | 'ready'>('flash');
   const t = getT(lang);
 
   // ── Theme system ────────────────────────────────────────────────────────
   type Theme = 'cyberpunk' | 'matrix' | 'amber' | 'dracula' | 'ice';
-  const [theme, setTheme] = useState<Theme>(() =>
-    (localStorage.getItem('drill_theme') as Theme) || 'cyberpunk'
-  );
+  const [theme, setTheme] = useLocalStorage<Theme>('drill_theme', 'cyberpunk');
 
   useEffect(() => {
-    localStorage.setItem('drill_theme', theme);
     const classes = ['theme-cyberpunk', 'theme-matrix', 'theme-amber', 'theme-dracula', 'theme-ice'];
     document.documentElement.classList.remove(...classes);
     document.documentElement.classList.add(`theme-${theme}`);
   }, [theme]);
 
   // ── CRT system ──────────────────────────────────────────────────────────
-  const [crtActive, setCrtActive] = useState<boolean>(() =>
-    localStorage.getItem('drill_crt_active') !== 'false'
-  );
+  const [crtActive, setCrtActive] = useLocalStorage<boolean>('drill_crt_active', true);
 
   useEffect(() => {
-    localStorage.setItem('drill_crt_active', String(crtActive));
     if (crtActive) {
       document.documentElement.classList.add('crt-effects-active');
     } else {
@@ -128,34 +97,12 @@ export default function App() {
   }, [crtActive]);
 
   // ── Achievements system ──────────────────────────────────────────────────
-  const [unlockedIds, setUnlockedIds] = useState<string[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem('drill_unlocked_achievements') || '[]');
-    } catch {
-      return [];
-    }
-  });
+  const [unlockedIds, setUnlockedIds] = useLocalStorage<string[]>('drill_unlocked_achievements', []);
 
   const [activeToast, setActiveToast] = useState<{ id: string; icon: string; titleUk: string; titleEn: string; descUk: string; descEn: string } | null>(null);
 
   const triggerAchievementToast = (achievement: { id: string; icon: string; titleUk: string; titleEn: string; descUk: string; descEn: string }) => {
-    try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const now = ctx.currentTime;
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 arpeggio
-      notes.forEach((freq, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + i * 0.08);
-        gain.gain.setValueAtTime(0.06, now + i * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now + i * 0.08);
-        osc.stop(now + i * 0.08 + 0.3);
-      });
-    } catch {}
+    playAchievementFanfare();
 
     setActiveToast(achievement);
     setTimeout(() => {
@@ -165,7 +112,7 @@ export default function App() {
 
   // ── Boot sequence ───────────────────────────────────────────────────────
   useEffect(() => {
-    SOUNDS.boot();
+    playBoot();
     const t1 = setTimeout(() => setBootPhase('boot'), 400);
     const t2 = setTimeout(() => {
       const skipIntro = localStorage.getItem('drill_skip_intro') === 'true';
@@ -178,24 +125,13 @@ export default function App() {
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('drill_lang', lang);
-  }, [lang]);
-
   // ── custom tasks ─────────────────────────────────────────────────────────
-  const [customTasks, setCustomTasks] = useState<DrillTask[]>(() => {
-    const saved = localStorage.getItem('drill_custom_tasks');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [customTasks, setCustomTasks] = useLocalStorage<DrillTask[]>('drill_custom_tasks', []);
 
   const allTasks = useMemo(() => [...itleadTasks, ...extraTasks, ...customTasks], [customTasks]);
 
   // ── progress ──────────────────────────────────────────────────────────────
-  const [progressMap, setProgressMap] = useState<Record<string, UserProgress>>(() => {
-    const saved = localStorage.getItem('drill_progress_map');
-    if (saved) { try { return JSON.parse(saved); } catch { return {}; } }
-    return {};
-  });
+  const [progressMap, setProgressMap] = useLocalStorage<Record<string, UserProgress>>('drill_progress_map', {});
 
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'catalog' | 'upload' | 'backup'>('dashboard');
@@ -223,15 +159,6 @@ export default function App() {
   const [importText, setImportText] = useState('');
   const [importStatus, setImportStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [progressBackupString, setProgressBackupString] = useState('');
-
-  // ── persist ───────────────────────────────────────────────────────────────
-  useEffect(() => {
-    localStorage.setItem('drill_custom_tasks', JSON.stringify(customTasks));
-  }, [customTasks]);
-
-  useEffect(() => {
-    localStorage.setItem('drill_progress_map', JSON.stringify(progressMap));
-  }, [progressMap]);
 
   // ── derived data ──────────────────────────────────────────────────────────
   const categories = useMemo(() => {
@@ -299,10 +226,8 @@ export default function App() {
     // Check for new achievements
     const newlyUnlocked = checkNewAchievements(progressMap, updatedProgress, unlockedIds);
     if (newlyUnlocked.length > 0) {
-      const nextUnlockedIds = [...unlockedIds, ...newlyUnlocked.map(a => a.id)];
-      setUnlockedIds(nextUnlockedIds);
-      localStorage.setItem('drill_unlocked_achievements', JSON.stringify(nextUnlockedIds));
-      
+      setUnlockedIds(prev => [...prev, ...newlyUnlocked.map(a => a.id)]);
+
       // Trigger toast for the first new achievement
       triggerAchievementToast(newlyUnlocked[0]);
     }
@@ -388,7 +313,7 @@ export default function App() {
 
   // ── Sound hooks ──────────────────────────────────────────────────────
   const handleTabClick = (tab: typeof activeTab) => {
-    SOUNDS.click();
+    playClick();
     setActiveTab(tab);
   };
 
@@ -437,7 +362,7 @@ export default function App() {
                 progress={getTaskProgressFromMap(selectedTask.id)}
                 onSaveProgress={handleSaveProgress}
                 onBack={() => {
-                  SOUNDS.click();
+                  playClick();
                   setSelectedTaskId(null);
                 }}
                 lang={lang}
@@ -467,7 +392,7 @@ export default function App() {
                 {/* Language switcher */}
                 <button
                   onClick={() => {
-                    SOUNDS.click();
+                    playClick();
                     setLang(l => l === 'uk' ? 'en' : 'uk');
                   }}
                   className="font-mono text-[9px] uppercase tracking-widest px-3 py-1.5 border transition-all hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)]"
@@ -480,7 +405,7 @@ export default function App() {
                 {/* Theme switcher */}
                 <button
                   onClick={() => {
-                    SOUNDS.click();
+                    playClick();
                     const themes: Theme[] = ['cyberpunk', 'matrix', 'amber', 'dracula', 'ice'];
                     const nextIndex = (themes.indexOf(theme) + 1) % themes.length;
                     setTheme(themes[nextIndex]);
@@ -496,7 +421,7 @@ export default function App() {
                 {/* CRT monitor toggle */}
                 <button
                   onClick={() => {
-                    SOUNDS.click();
+                    playClick();
                     setCrtActive(!crtActive);
                   }}
                   className={`font-mono text-[9px] uppercase tracking-widest px-3 py-1.5 border transition-all flex items-center gap-1.5 cursor-pointer ${crtActive ? 'border-[var(--neon-green)] text-[var(--neon-green)]' : 'border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)]'}`}
@@ -621,7 +546,7 @@ export default function App() {
                                         <Badge variant={isMastered ? 'stage-mastered' : 'stage'} size="md">
                                           {isMastered ? t.masteredLabel : t.stageOf(prog.learningStage)}
                                         </Badge>
-                                        <Button variant="primary" size="sm" onClick={() => { SOUNDS.click(); setSelectedTaskId(task.id); }}>
+                                        <Button variant="primary" size="sm" onClick={() => { playClick(); setSelectedTaskId(task.id); }}>
                                           {t.practiceBtn}
                                         </Button>
                                       </div>

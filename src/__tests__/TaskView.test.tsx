@@ -1,3 +1,4 @@
+import { fromAny } from '@total-typescript/shoehorn';
 import { describe, test, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { TaskView } from '../components/TaskView';
@@ -103,7 +104,7 @@ describe('TaskView — Test failure at Stage 3', () => {
     await new Promise(r => setTimeout(r, 200));
     const lastCall = onSaveProgress.mock.calls[onSaveProgress.mock.calls.length - 1];
     expect(lastCall).toBeTruthy();
-    const savedProgress = lastCall[1] as UserProgress;
+    const savedProgress = fromAny<typeof lastCall[1], UserProgress>(lastCall[1]);
     expect(savedProgress.learningStage).toBe(3);
     expect(savedProgress.history?.[0]?.success).toBe(false);
   });

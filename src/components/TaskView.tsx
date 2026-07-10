@@ -5,6 +5,8 @@ import { DrillTask, UserProgress } from '../types';
 import { runTestsInWorker, RunResults } from '../runner/testRunner';
 import { getT, Lang, T } from '../i18n';
 import { diffBadge } from '../utils/badges';
+import { playLevelUp } from '../utils/sound';
+import { INTERVAL_MAP } from '../constants';
 import {
   Play, Eye, EyeOff, RotateCcw, ArrowLeft,
   CheckCircle, AlertTriangle, Clock, Zap, BookOpen, Terminal
@@ -24,8 +26,6 @@ interface TaskViewProps {
   lang?: Lang;
 }
 
-const INTERVAL_MAP: Record<number, number> = { 2: 1, 3: 24, 4: 72, 5: 168, 6: 720 };
-
 function formatTime(totalSec: number): string {
   const mins = Math.floor(totalSec / 60);
   const secs = totalSec % 60;
@@ -39,26 +39,6 @@ function getInitialCode(stage: number, task: DrillTask): string {
   if (stage === 5) return task.clozeSteps?.[2] || task.starter || '';
   if (stage === 6) return task.starter || '';
   return '';
-}
-
-function playLevelUpSound() {
-  try {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const now = ctx.currentTime;
-    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5 arpeggio
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, now + i * 0.12);
-      gain.gain.setValueAtTime(0.08, now + i * 0.12);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.2);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now + i * 0.12);
-      osc.stop(now + i * 0.12 + 0.2);
-    });
-  } catch { /* silent fail */ }
 }
 
 export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgress, onBack, lang = 'uk' as Lang }) => {
@@ -148,7 +128,7 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
       const nextStage = currentStage === 6 ? 7 : currentStage + 1;
       if (currentStage === 6) setExamActive(false);
 
-      playLevelUpSound();
+      playLevelUp();
       setShowLevelUp(true);
 
       const nextPracticeDate = new Date();

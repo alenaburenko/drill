@@ -1,7 +1,8 @@
 import type { DrillTask, UserProgress } from '../types';
+import { STAGE_INTERVALS_HOURS } from '../constants';
 
-/** Interval hours per learning stage (index = stage) */
-export const STAGE_INTERVALS_HOURS = [0, 0, 1, 24, 72, 168, 720];
+// Note: STAGE_INTERVALS_HOURS is now defined in src/constants.ts,
+// imported here as the single source of truth.
 
 /** Get a default progress object for a task that hasn't been started */
 export function getDefaultProgress(): UserProgress {

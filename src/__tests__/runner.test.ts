@@ -1,3 +1,4 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { describe, test, expect, vi, beforeAll } from 'vitest';
 import { runTestsInWorker, type RunResults, type TestResult } from '../runner/testRunner';
 
@@ -68,11 +69,11 @@ beforeAll(() => {
           }
 
           if (this.onmessageHandler) {
-            this.onmessageHandler({ data: { type: 'results', results } } as MessageEvent);
+            this.onmessageHandler(fromPartial({ data: { type: 'results', results } }));
           }
         } catch (err: any) {
           if (this.onmessageHandler) {
-            this.onmessageHandler({ data: { type: 'error', error: err.message || String(err) } } as MessageEvent);
+            this.onmessageHandler(fromPartial({ data: { type: 'error', error: err.message || String(err) } }));
           }
         }
       }
