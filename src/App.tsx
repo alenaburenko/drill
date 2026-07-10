@@ -280,7 +280,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col crt-curve crt-warp-container" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+    <div className="min-h-screen flex flex-col crt-curve crt-warp-container overflow-x-hidden" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
       <MatrixRain />
 
       <AnimatePresence mode="wait">
