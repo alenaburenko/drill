@@ -150,8 +150,8 @@ export default function DashboardView({
                         STAGE {prog.learningStage}
                       </Badge>
                     </div>
-                    <h4 className="text-sm font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
-                    <div className="text-xs font-bold flex items-center gap-1 mt-2" style={{ color: 'var(--neon-cyan)' }}>
+                    <h4 className="text-base font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
+                    <div className="text-sm font-bold flex items-center gap-1 mt-2" style={{ color: 'var(--neon-cyan)' }}>
                       <span>&gt; {t.startPractice}</span>
                       <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
                     </div>
@@ -182,8 +182,8 @@ export default function DashboardView({
                 <div className="flex items-center gap-3 truncate">
                   <span className="w-2 h-2 shrink-0" style={{ background: 'var(--neon-green)', boxShadow: '0 0 6px rgba(0,255,65,0.5)' }} />
                   <div className="truncate">
-                    <h4 className="text-sm font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
-                    <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{task.block}</span>
+                    <h4 className="text-base font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
+                    <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>{task.block}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">

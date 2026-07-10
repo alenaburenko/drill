@@ -19,8 +19,8 @@ const variantMap: Record<string, string> = {
 };
 
 const sizeStyles: Record<string, string> = {
-  sm: 'text-[11px] px-2 py-0.5',
-  md: 'text-xs px-3 py-1',
+  sm: 'text-xs px-2 py-0.5',
+  md: 'text-sm px-3 py-1',
 };
 
 export const Badge: React.FC<BadgeProps> = ({
