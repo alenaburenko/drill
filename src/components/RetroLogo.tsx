@@ -1,7 +1,8 @@
 import React from 'react';
 
 interface RetroLogoProps {
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'xl';
+  variant?: 'animated';
 }
 
 export const RetroLogo: React.FC<RetroLogoProps> = ({ size = 'md' }) => {

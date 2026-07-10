@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CodeEditor } from './CodeEditor';
 import { DrillTask, UserProgress } from '../types';
@@ -228,6 +228,13 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
   // ── Derived state ───────────────────────────────────────────────────────
   const stageHeader = t.stageHeaders[Math.min(currentStage - 1, t.stageHeaders.length - 1)] || { title: '', desc: '' };
 
+  const personalBestSec = useMemo(() => {
+    const history = progress.history || [];
+    const examSuccesses = history.filter(h => h.success && h.stageBefore === 6 && h.timeSpentSec !== undefined);
+    if (examSuccesses.length === 0) return null;
+    return Math.min(...examSuccesses.map(h => h.timeSpentSec as number));
+  }, [progress.history]);
+
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <div className="flex flex-col min-h-screen" style={{ background: 'var(--bg-base)' }}>
@@ -319,7 +326,7 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
           )}
           {currentStage === 6 && (
             <StageExam task={task} t={t} examActive={examActive} timerSec={timerSec}
-              formatTime={formatTime} onRetry={handleRetry} />
+              formatTime={formatTime} onRetry={handleRetry} personalBestSec={personalBestSec} />
           )}
         </div>
 

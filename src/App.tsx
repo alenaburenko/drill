@@ -136,9 +136,9 @@ export default function App() {
     }
   });
 
-  const [activeToast, setActiveToast] = useState<{ id: string; icon: string; titleUk: string; titleEn: string } | null>(null);
+  const [activeToast, setActiveToast] = useState<{ id: string; icon: string; titleUk: string; titleEn: string; descUk: string; descEn: string } | null>(null);
 
-  const triggerAchievementToast = (achievement: { id: string; icon: string; titleUk: string; titleEn: string }) => {
+  const triggerAchievementToast = (achievement: { id: string; icon: string; titleUk: string; titleEn: string; descUk: string; descEn: string }) => {
     try {
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
       const now = ctx.currentTime;

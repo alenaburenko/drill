@@ -17,6 +17,7 @@ import {
   Sparkles, AlertCircle
 } from 'lucide-react';
 import { ACHIEVEMENTS } from '../utils/achievements';
+import { ActivityHeatmap } from './ActivityHeatmap';
 
 interface DashboardViewProps {
   allTasks: DrillTask[];
@@ -116,10 +117,8 @@ export default function DashboardView({
               <span className="cursor-blink" />
             </h2>
             <p className="text-xs mt-3 max-w-lg leading-relaxed font-mono hero-glitch-in" style={{ color: 'var(--text-secondary)' }}>
-              Заплановано{' '}
-              <span className="font-bold" style={{ color: 'var(--neon-cyan)' }}>{dueRepetitions.length} повторень</span>{' '}
-              та доступно{' '}
-              <span className="font-bold" style={{ color: 'var(--neon-green)' }}>{newTasks.length} нових задач</span>.
+              <span className="font-bold" style={{ color: 'var(--neon-cyan)' }}>{t.scheduledRepetitions(dueRepetitions.length)}</span>{' '}
+              <span className="font-bold" style={{ color: 'var(--neon-green)' }}>{t.availableNewTasks(newTasks.length)}</span>.
             </p>
           </div>
 
@@ -135,6 +134,9 @@ export default function DashboardView({
             </Button>
           </div>
         </Card>
+
+        {/* Activity Heatmap */}
+        <ActivityHeatmap progressMap={progressMap} lang={lang} />
 
         {/* Due repetitions */}
         <Card padding="md">

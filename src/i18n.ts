@@ -22,6 +22,8 @@ const translations = {
     trainerDesc: (due: number, newT: number) =>
       `Повторення закріплює знання у довгостроковій пам'яті. Сьогодні заплановано <b>${due} повторень</b> та доступно <b>${newT} нових задач</b>.`,
     continuePractice: 'ПРОДОВЖИТИ ЗАУЧУВАННЯ',
+    scheduledRepetitions: (n: number) => `Заплановано ${n} повторень`,
+    availableNewTasks: (n: number) => `та доступно ${n} нових задач`,
 
     // Repetition queue
     repetitionQueue: 'Черга на повторення',
@@ -184,6 +186,8 @@ const translations = {
     trainerDesc: (due: number, newT: number) =>
       `Repetition cements knowledge in long-term memory. Today you have <b>${due} repetitions</b> scheduled and <b>${newT} new tasks</b> available.`,
     continuePractice: 'CONTINUE PRACTICE',
+    scheduledRepetitions: (n: number) => `${n} repetitions scheduled`,
+    availableNewTasks: (n: number) => `and ${n} new tasks available`,
 
     repetitionQueue: 'Repetition Queue',
     intervalSchedule: 'Spaced Schedule',
