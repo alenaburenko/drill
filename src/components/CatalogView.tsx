@@ -75,19 +75,19 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                 </button>
 
                 {!isCollapsed && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {tasks.map(task => {
                       const prog = getTaskProgress(progressMap, task.id);
                       const isMastered = prog.learningStage >= 7;
                       return (
-                        <Card key={task.id} variant="elevated" padding="md" className={isMastered ? "card-retro-rainbow group" : "group"}>
+                        <Card key={task.id} variant="elevated" padding="lg" className={isMastered ? "card-retro-rainbow group" : "group"}>
                           <div>
                             <div className="flex items-center justify-between mb-2">
-                              <Badge variant="accent" size="sm" className={diffBadge(task.difficulty)}>{task.difficulty}</Badge>
+                              <Badge variant="accent" size="md" className={diffBadge(task.difficulty)}>{task.difficulty}</Badge>
                               <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>#{task.id.slice(-8)}</span>
                             </div>
-                            <h4 className="text-sm font-bold transition-colors group-hover:text-[var(--neon-cyan)] line-clamp-1">{task.title}</h4>
-                            <p className="text-xs mt-2 line-clamp-2 leading-relaxed font-mono" style={{ color: 'var(--text-muted)' }}>
+                            <h4 className="text-base font-bold transition-colors group-hover:text-[var(--neon-cyan)] line-clamp-1">{task.title}</h4>
+                            <p className="text-sm mt-2 line-clamp-2 leading-relaxed font-mono" style={{ color: 'var(--text-muted)' }}>
                               {task.description.replace(/^(Источник|Source):.*$/m, '').trim()}
                             </p>
                           </div>
@@ -95,7 +95,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                             <Badge variant={isMastered ? 'stage-mastered' : 'stage'} size="md">
                               {isMastered ? t.masteredLabel : t.stageOf(prog.learningStage)}
                             </Badge>
-                            <Button variant="primary" size="sm" onClick={() => { playClick(); setRoute({ tab: 'catalog', taskId: task.id }); }}>
+                            <Button variant="primary" size="md" onClick={() => { playClick(); setRoute({ tab: 'catalog', taskId: task.id }); }}>
                               {t.practiceBtn}
                             </Button>
                           </div>

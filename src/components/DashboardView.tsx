@@ -143,15 +143,15 @@ export default function DashboardView({
                   <Card key={task.id} variant="elevated" padding="md" onClick={() => { playTaskClick(); onSelectTask(task.id); }}
                     className="group">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-[9px] font-mono font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
+                      <span className="text-xs font-mono font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
                         {task.block} · {task.difficulty}
                       </span>
                       <Badge variant="danger" size="sm">
                         STAGE {prog.learningStage}
                       </Badge>
                     </div>
-                    <h4 className="text-xs font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
-                    <div className="text-[9px] font-bold flex items-center gap-1 mt-2" style={{ color: 'var(--neon-cyan)' }}>
+                    <h4 className="text-sm font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
+                    <div className="text-xs font-bold flex items-center gap-1 mt-2" style={{ color: 'var(--neon-cyan)' }}>
                       <span>&gt; {t.startPractice}</span>
                       <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
                     </div>
@@ -170,7 +170,7 @@ export default function DashboardView({
             icon={<Layers className="w-4 h-4" style={{ color: 'var(--neon-green)' }} />}
             title={`${t.newTasks} (${newTasks.length})`}
             action={
-              <button onClick={() => onSetActiveTab('catalog')} className="text-[9px] font-bold font-mono uppercase tracking-wider transition-colors hover:underline" style={{ color: 'var(--neon-cyan)' }}>
+              <button onClick={() => onSetActiveTab('catalog')} className="text-xs font-bold font-mono uppercase tracking-wider transition-colors hover:underline" style={{ color: 'var(--neon-cyan)' }}>
                 {t.viewAll}
               </button>
             }
@@ -182,8 +182,8 @@ export default function DashboardView({
                 <div className="flex items-center gap-3 truncate">
                   <span className="w-2 h-2 shrink-0" style={{ background: 'var(--neon-green)', boxShadow: '0 0 6px rgba(0,255,65,0.5)' }} />
                   <div className="truncate">
-                    <h4 className="text-xs font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
-                    <span className="text-[9px] font-mono" style={{ color: 'var(--text-muted)' }}>{task.block}</span>
+                    <h4 className="text-sm font-bold truncate transition-colors group-hover:text-[var(--neon-cyan)]">{task.title}</h4>
+                    <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{task.block}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
