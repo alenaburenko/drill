@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
+    "lint:fix": "prettier --write 'src/**/*.{ts,tsx,css}'",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "check-facts": "tsx scripts/check-database-facts.mjs",
