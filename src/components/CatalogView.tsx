@@ -84,10 +84,10 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                           <div>
                             <div className="flex items-center justify-between mb-3">
                               <Badge variant="accent" size="md" className={diffBadge(task.difficulty)}>{task.difficulty}</Badge>
-                              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>#{task.id.slice(-8)}</span>
+                              <span className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>#{task.id.slice(-8)}</span>
                             </div>
-                            <h4 className="text-lg font-bold transition-colors group-hover:text-[var(--neon-cyan)] line-clamp-2">{task.title}</h4>
-                            <p className="text-base mt-3 line-clamp-3 leading-relaxed font-mono" style={{ color: 'var(--text-muted)' }}>
+                            <h4 className="font-bold transition-colors group-hover:text-[var(--neon-cyan)] line-clamp-2" style={{ fontSize: '17px' }}>{task.title}</h4>
+                            <p className="mt-3 line-clamp-3 leading-relaxed font-mono" style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
                               {task.description.replace(/^(Источник|Source):.*$/m, '').trim()}
                             </p>
                           </div>
