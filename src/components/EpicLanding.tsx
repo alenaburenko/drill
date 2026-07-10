@@ -158,7 +158,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
 
   return (
     <div
-      className="min-h-screen relative w-full overflow-hidden flex flex-col justify-between p-6 select-none bg-[#0d0015] crt-curve"
+      className="min-h-screen relative w-full overflow-hidden flex flex-col justify-between p-6 select-none bg-[var(--bg-base)] crt-curve"
       style={{ fontFamily: 'var(--font-mono)' }}
     >
       {/* Vignette & scanline sweeps (Depth 5 foreground overlays) */}
@@ -189,7 +189,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
             LANDING_SOUNDS.click();
             onSetLang(lang === 'uk' ? 'en' : 'uk');
           }}
-          className="flex items-center gap-2 text-[9px] uppercase tracking-widest px-3 py-1.5 border border-[#2a0040] hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)] transition-all bg-[rgba(18,0,30,0.5)] cursor-pointer"
+          className="flex items-center gap-2 text-[9px] uppercase tracking-widest px-3 py-1.5 border border-[#2a0040] hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)] transition-all bg-[var(--bg-surface)] cursor-pointer"
         >
           <Globe className="w-3.5 h-3.5" />
           {lang === 'uk' ? '🤘 UA' : '🇬🇧 EN'}
@@ -325,7 +325,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
               onChange={handleSkipToggle} 
               className="sr-only"
             />
-            <div className={`w-3.5 h-3.5 border flex items-center justify-center transition-colors ${skipIntro ? 'border-[var(--neon-green)] bg-[rgba(0,255,65,0.05)]' : 'border-[var(--border)] bg-[#12001e]'}`}>
+            <div className={`w-3.5 h-3.5 border flex items-center justify-center transition-colors ${skipIntro ? 'border-[var(--neon-green)] bg-[rgba(0,255,65,0.05)]' : 'border-[var(--border)] bg-[var(--bg-surface)]'}`}>
               {skipIntro && <Check className="w-2.5 h-2.5 text-[var(--neon-green)]" />}
             </div>
             <span>{t.skipCheckbox}</span>

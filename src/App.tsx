@@ -10,7 +10,7 @@ import {
   BookOpen, Filter, Code, Zap, Trash2, BrainCircuit, Calendar,
   Layers, ChevronRight, TrendingUp, AlertCircle, Clock, Sparkles,
   Terminal, Globe, ChevronDown, ChevronUp, ArrowLeft,
-  RotateCcw, CheckCircle, AlertTriangle, BookOpen as BookOpenIcon
+  RotateCcw, CheckCircle, AlertTriangle, BookOpen as BookOpenIcon, Palette
 } from 'lucide-react';
 // Note: some lucide icons are used only in DashboardView or TaskView;
 // we keep them here for convenience — unused imports are tree-shaken by Vite.
@@ -98,6 +98,19 @@ export default function App() {
   );
   const [bootPhase, setBootPhase] = useState<'flash' | 'boot' | 'landing' | 'ready'>('flash');
   const t = getT(lang);
+
+  // ── Theme system ────────────────────────────────────────────────────────
+  type Theme = 'cyberpunk' | 'matrix' | 'amber' | 'dracula' | 'ice';
+  const [theme, setTheme] = useState<Theme>(() =>
+    (localStorage.getItem('drill_theme') as Theme) || 'cyberpunk'
+  );
+
+  useEffect(() => {
+    localStorage.setItem('drill_theme', theme);
+    const classes = ['theme-cyberpunk', 'theme-matrix', 'theme-amber', 'theme-dracula', 'theme-ice'];
+    document.documentElement.classList.remove(...classes);
+    document.documentElement.classList.add(`theme-${theme}`);
+  }, [theme]);
 
   // ── Boot sequence ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -400,6 +413,22 @@ export default function App() {
                   title="Switch language"
                 >
                   {lang === 'uk' ? '🤘 UA' : '🇬🇧 EN'}
+                </button>
+
+                {/* Theme switcher */}
+                <button
+                  onClick={() => {
+                    SOUNDS.click();
+                    const themes: Theme[] = ['cyberpunk', 'matrix', 'amber', 'dracula', 'ice'];
+                    const nextIndex = (themes.indexOf(theme) + 1) % themes.length;
+                    setTheme(themes[nextIndex]);
+                  }}
+                  className="font-mono text-[9px] uppercase tracking-widest px-3 py-1.5 border transition-all hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)] flex items-center gap-1.5 cursor-pointer"
+                  style={{ background: 'transparent', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+                  title="Switch theme"
+                >
+                  <Palette className="w-3.5 h-3.5" />
+                  {theme}
                 </button>
 
                 {/* Nav tabs */}
