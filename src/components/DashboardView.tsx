@@ -29,11 +29,10 @@ interface DashboardViewProps {
   unlockedIds: string[];
   onSelectTask: (id: string) => void;
   onSetActiveTab: (tab: 'dashboard' | 'catalog' | 'upload' | 'backup') => void;
-  activeTab: 'dashboard' | 'catalog' | 'upload' | 'backup';
 }
 
 export default function DashboardView({
-  allTasks, progressMap, customTasks, lang, unlockedIds, onSelectTask, onSetActiveTab, activeTab,
+  allTasks, progressMap, customTasks, lang, unlockedIds, onSelectTask, onSetActiveTab,
 }: DashboardViewProps) {
   const t = getT(lang);
 
