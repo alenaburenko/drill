@@ -10,6 +10,7 @@
 
 ## 2 Last Completed Change
 
+- Epic-design 2.5D Interactive Welcome Gate (2026-07-10): added 2.5D landing screen with mouse parallax, 8-bit sound synthesized effects, and boot-skip option.
 - Squirrel full-cycle pass (2026-07-07): added 17 new tests (8 TaskView + 9 i18n), fixed vitest config to exclude `.claude/` test dirs.
 - Previous: Code review findings fix (2026-07-07).
 - See `harness/changes/INDEX.json` for full history.

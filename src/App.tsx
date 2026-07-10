@@ -30,6 +30,7 @@ import { RetroLogo } from './components/RetroLogo';
 import DashboardView from './components/DashboardView';
 import UploadPanel from './components/UploadPanel';
 import BackupPanel from './components/BackupPanel';
+import { EpicLanding } from './components/EpicLanding';
 
 // ─── Retro sound system ────────────────────────────────────────────────
 function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
@@ -95,7 +96,7 @@ export default function App() {
   const [lang, setLang] = useState<Lang>(() =>
     (localStorage.getItem('drill_lang') as Lang) || 'uk'
   );
-  const [bootPhase, setBootPhase] = useState<'flash' | 'boot' | 'ready'>('flash');
+  const [bootPhase, setBootPhase] = useState<'flash' | 'boot' | 'landing' | 'ready'>('flash');
   const t = getT(lang);
 
   // ── Boot sequence ───────────────────────────────────────────────────────
@@ -103,7 +104,12 @@ export default function App() {
     SOUNDS.boot();
     const t1 = setTimeout(() => setBootPhase('boot'), 400);
     const t2 = setTimeout(() => {
-      setBootPhase('ready');
+      const skipIntro = localStorage.getItem('drill_skip_intro') === 'true';
+      if (skipIntro) {
+        setBootPhase('ready');
+      } else {
+        setBootPhase('landing');
+      }
     }, 1800);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
@@ -312,7 +318,7 @@ export default function App() {
   };
 
   // ── render ────────────────────────────────────────────────────────────────
-  if (bootPhase !== 'ready') {
+  if (bootPhase === 'flash' || bootPhase === 'boot') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center crt-curve" style={{ background: 'var(--bg-base)', color: 'var(--neon-cyan)' }}>
         {bootPhase === 'flash' && <div className="crt-flash" />}
@@ -328,6 +334,17 @@ export default function App() {
           </div>
         </div>
       </div>
+    );
+  }
+
+  if (bootPhase === 'landing') {
+    return (
+      <EpicLanding
+        lang={lang}
+        onSetLang={setLang}
+        onEnter={() => setBootPhase('ready')}
+        totalTasks={allTasks.length}
+      />
     );
   }
 
