@@ -10,21 +10,14 @@ export interface RunResults {
   error?: string;
 }
 
-export function runTestsInWorker(
-  userCode: string,
-  testCode: string,
-  timeoutMs: number = 4000
-): Promise<RunResults> {
-  return new Promise((resolve) => {
+export function runTestsInWorker(userCode: string, testCode: string, timeoutMs: number = 4000): Promise<RunResults> {
+  return new Promise(resolve => {
     let worker: Worker | null = null;
     let timeoutId: any = null;
 
     try {
       // Instantiate worker using ESM standard URL syntax (fully supported by Vite)
-      worker = new Worker(
-        new URL('./testRunner.worker.ts', import.meta.url),
-        { type: 'module' }
-      );
+      worker = new Worker(new URL('./testRunner.worker.ts', import.meta.url), { type: 'module' });
 
       timeoutId = setTimeout(() => {
         if (worker) {
@@ -36,14 +29,14 @@ export function runTestsInWorker(
         }
       }, timeoutMs);
 
-      worker.onmessage = (e) => {
+      worker.onmessage = e => {
         clearTimeout(timeoutId);
         if (worker) worker.terminate();
 
         const data = e.data;
         if (data.type === 'results') {
           const results: TestResult[] = data.results;
-          const allPassed = results.every((r) => r.success);
+          const allPassed = results.every(r => r.success);
           resolve({
             success: allPassed,
             results,
@@ -56,7 +49,7 @@ export function runTestsInWorker(
         }
       };
 
-      worker.onerror = (err) => {
+      worker.onerror = err => {
         clearTimeout(timeoutId);
         if (worker) worker.terminate();
         resolve({

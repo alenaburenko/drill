@@ -1,0 +1,380 @@
+/* ─── Retro button ─── */
+.btn-retro {
+  position: relative;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 2px solid var(--neon-cyan);
+  background: transparent;
+  color: var(--neon-cyan);
+  transition: all 0.1s steps(2);
+}
+
+.btn-retro:hover {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow:
+    0 0 15px rgba(0, 240, 255, 0.4),
+    inset 0 0 15px rgba(0, 240, 255, 0.1);
+  transform: scale(1.02);
+}
+
+.btn-retro:active {
+  transform: scale(0.96);
+}
+
+.btn-retro-green {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+}
+.btn-retro-green:hover {
+  background: var(--neon-green);
+  color: #000;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+}
+
+.btn-retro-magenta {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+}
+.btn-retro-magenta:hover {
+  background: var(--neon-magenta);
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+}
+
+/* ─── Retro card ─── */
+.card-retro {
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  transition: all 0.15s steps(2);
+  position: relative;
+}
+
+.card-retro::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: var(--accent-dim);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card-retro:hover::before {
+  opacity: 1;
+}
+
+.card-retro:hover {
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 12px rgba(0, 240, 255, 0.15),
+    inset 0 0 20px rgba(0, 240, 255, 0.03);
+  transform: translateY(-2px);
+}
+
+/* ─── Rainbow card (for mastered items) ─── */
+.card-retro-rainbow {
+  border: 2px solid var(--neon-cyan);
+  animation: rainbow-border 4s linear infinite;
+  position: relative;
+  overflow: hidden;
+}
+.card-retro-rainbow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-cyan),
+    var(--neon-magenta),
+    var(--neon-green),
+    transparent
+  );
+  animation: rainbow-border 4s linear infinite;
+}
+
+/* ─── Retro accent card ─── */
+.card-retro-accent {
+  border: 2px solid var(--neon-cyan);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.04) 0%, transparent 50%);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-retro-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+}
+
+/* ─── Retro progress bar ─── */
+.progress-retro-track {
+  width: 100%;
+  height: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.progress-retro-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--neon-cyan) 0px,
+    var(--neon-cyan) 4px,
+    rgba(0, 240, 255, 0.6) 4px,
+    rgba(0, 240, 255, 0.6) 8px
+  );
+  transition: width 0.3s steps(8);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  position: relative;
+}
+
+/* ─── Retro badge ─── */
+.badge-retro {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid;
+  position: relative;
+}
+
+.badge-retro-cyan {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+.badge-retro-magenta {
+  color: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+  background: rgba(255, 0, 255, 0.08);
+}
+
+.badge-retro-green {
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  background: rgba(0, 255, 65, 0.08);
+}
+
+.badge-retro-red {
+  color: var(--neon-red);
+  border-color: var(--neon-red);
+  background: rgba(255, 0, 77, 0.08);
+}
+
+.badge-retro-amber {
+  color: var(--neon-amber);
+  border-color: var(--neon-amber);
+  background: rgba(255, 176, 0, 0.08);
+}
+
+/* ─── Section header bar ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ─── Group header ─── */
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neon-magenta);
+  border-bottom: 1px solid var(--border);
+  text-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+}
+
+.group-header::before {
+  content: '\25B8';
+  color: var(--neon-cyan);
+  font-size: 12px;
+}
+
+/* ─── Terminal-style cursor blink ─── */
+.cursor-blink::after {
+  content: '\2588';
+  display: inline-block;
+  animation: cursor-blink 0.8s steps(1) infinite;
+  color: var(--neon-cyan);
+  margin-left: 2px;
+  font-size: 10px;
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ─── Matrix rain drops ─── */
+.matrix-drop {
+  position: absolute;
+  top: 0;
+  animation: matrix-fall linear infinite;
+}
+
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.03;
+  }
+  90% {
+    opacity: 0.03;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* ─── Hero entrance ─── */
+.hero-glitch-in {
+  animation: hero-glitch-in 0.8s steps(5) forwards;
+}
+
+@keyframes hero-glitch-in {
+  0% {
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+    transform: scale(0.95);
+  }
+  20% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+  40% {
+    clip-path: inset(20% 0 80% 0);
+  }
+  50% {
+    clip-path: inset(0 0 0 0);
+  }
+  70% {
+    clip-path: inset(60% 0 10% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+}
+
+/* ─── Workspace transition ─── */
+.workspace-glitch-in {
+  animation: workspace-glitch-in 0.4s steps(4) forwards;
+}
+
+@keyframes workspace-glitch-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.97);
+    clip-path: inset(0 0 100% 0);
+  }
+  60% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+  80% {
+    clip-path: inset(10% 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ─── Stat value ─── */
+.stat-value-pop {
+  animation: stat-value-pop 0.3s steps(3) forwards;
+}
+
+@keyframes stat-value-pop {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ─── Stagger children ─── */
+.stagger-enter > * {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.stagger-enter > *:nth-child(1) {
+  animation: fadeInUp 0.25s steps(4) 0s forwards;
+}
+.stagger-enter > *:nth-child(2) {
+  animation: fadeInUp 0.25s steps(4) 0.08s forwards;
+}
+.stagger-enter > *:nth-child(3) {
+  animation: fadeInUp 0.25s steps(4) 0.16s forwards;
+}
+.stagger-enter > *:nth-child(4) {
+  animation: fadeInUp 0.25s steps(4) 0.24s forwards;
+}
+.stagger-enter > *:nth-child(5) {
+  animation: fadeInUp 0.25s steps(4) 0.32s forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

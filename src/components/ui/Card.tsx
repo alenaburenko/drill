@@ -23,9 +23,7 @@ export const Card: React.FC<CardProps> = ({
   onClick,
   children,
 }) => {
-  const retroClass =
-    variant === 'accent' ? 'card-retro-accent' :
-    'card-retro';
+  const retroClass = variant === 'accent' ? 'card-retro-accent' : 'card-retro';
 
   return (
     <div

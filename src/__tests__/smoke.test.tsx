@@ -15,23 +15,12 @@ describe('App', () => {
 // ── CodeEditor ────────────────────────────────────────────────────────────
 describe('CodeEditor', () => {
   test('renders with code content', () => {
-    const { container } = render(
-      <CodeEditor
-        code="function hello() { return 42; }"
-        onChange={() => {}}
-      />
-    );
+    const { container } = render(<CodeEditor code="function hello() { return 42; }" onChange={() => {}} />);
     expect(container.querySelector('[class]')).toBeTruthy();
   });
 
   test('accepts readOnly prop', () => {
-    const { container } = render(
-      <CodeEditor
-        code="const x = 1;"
-        onChange={() => {}}
-        readOnly={true}
-      />
-    );
+    const { container } = render(<CodeEditor code="const x = 1;" onChange={() => {}} readOnly={true} />);
     expect(container.querySelector('[class]')).toBeTruthy();
   });
 });
@@ -47,7 +36,7 @@ describe('TaskView', () => {
         progress={{ learningStage: 1, peeksCount: 0, lastPracticed: null, history: [] }}
         onSaveProgress={() => {}}
         onBack={() => {}}
-      />
+      />,
     );
     expect(container.textContent).toBeTruthy();
   });

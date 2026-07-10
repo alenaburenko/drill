@@ -30,8 +30,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         width="100%"
         language={language}
         value={value}
-        onChange={(val) => onChange && onChange(val || '')}
-        onMount={(editor) => {
+        onChange={val => onChange && onChange(val || '')}
+        onMount={editor => {
           if (!readOnly) {
             editor.focus();
           }

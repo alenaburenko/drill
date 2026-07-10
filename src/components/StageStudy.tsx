@@ -13,24 +13,37 @@ interface Props {
 
 const StageStudy: React.FC<Props> = ({ task, t, onStartPractice }) => (
   <>
-    <div className="p-4 border-b" style={{ borderColor: 'var(--border-muted)', background: 'rgba(var(--accent-rgb), 0.06)' }}>
-      <Button onClick={onStartPractice} variant="primary" size="lg" glow className="w-full flex items-center justify-center gap-2">
+    <div
+      className="p-4 border-b"
+      style={{ borderColor: 'var(--border-muted)', background: 'rgba(var(--accent-rgb), 0.06)' }}
+    >
+      <Button
+        onClick={onStartPractice}
+        variant="primary"
+        size="lg"
+        glow
+        className="w-full flex items-center justify-center gap-2"
+      >
         <Zap className="w-4 h-4" />
         {t.startPracticeBtn}
       </Button>
     </div>
     <div className="p-5 flex flex-col gap-5 flex-1">
       <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2 mb-2"
-          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+        <h3
+          className="text-xs font-bold uppercase tracking-wider flex items-center gap-2 mb-2"
+          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
+        >
           <BookOpen className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
           {t.taskCondition}
         </h3>
         <div className="code-block text-sm">{task.description.replace(/^(Источник|Source):.*$/m, '').trim()}</div>
       </div>
       <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-2"
-          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+        <h3
+          className="text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-2"
+          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
+        >
           <CheckCircle className="w-4 h-4" style={{ color: 'var(--neon-green)' }} />
           {t.referenceSolution}
         </h3>
@@ -39,8 +52,10 @@ const StageStudy: React.FC<Props> = ({ task, t, onStartPractice }) => (
         </div>
       </div>
       <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider mb-2"
-          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+        <h3
+          className="text-xs font-bold uppercase tracking-wider mb-2"
+          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
+        >
           {t.logicBreakdown}
         </h3>
         <div className="code-block text-xs">{task.breakdown}</div>

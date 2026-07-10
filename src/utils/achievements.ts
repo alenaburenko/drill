@@ -57,13 +57,13 @@ export const ACHIEVEMENTS: Achievement[] = [
     titleEn: 'Grind Machine',
     descUk: 'Ви почали практикувати вже 5 або більше різних задач!',
     descEn: 'Practiced 5 or more different tasks in total.',
-  }
+  },
 ];
 
 export function checkNewAchievements(
   progressMap: Record<string, UserProgress>,
   updatedProgress: UserProgress,
-  unlockedIds: string[]
+  unlockedIds: string[],
 ): Achievement[] {
   const newUnlocks: Achievement[] = [];
 

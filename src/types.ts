@@ -27,4 +27,3 @@ export interface UserProgress {
     timeSpentSec?: number;
   }[];
 }
-

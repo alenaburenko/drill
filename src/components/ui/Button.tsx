@@ -7,9 +7,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeStyles: Record<string, string> = {
-  sm:  'px-3 py-1.5',
-  md:  'px-5 py-2.5',
-  lg:  'px-8 py-3.5',
+  sm: 'px-3 py-1.5',
+  md: 'px-5 py-2.5',
+  lg: 'px-8 py-3.5',
 };
 
 const sizeFont: Record<string, number> = {
@@ -28,11 +28,15 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const retroClass =
-    variant === 'primary' ? 'btn-retro' :
-    variant === 'success' ? 'btn-retro btn-retro-green' :
-    variant === 'danger' ? 'btn-retro btn-retro-magenta' :
-    variant === 'secondary' ? 'btn-retro border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] hover:shadow-none hover:scale-100' :
-    'btn-retro border-none text-[var(--text-secondary)] hover:text-[var(--neon-cyan)] hover:bg-transparent hover:shadow-none hover:scale-100';
+    variant === 'primary'
+      ? 'btn-retro'
+      : variant === 'success'
+        ? 'btn-retro btn-retro-green'
+        : variant === 'danger'
+          ? 'btn-retro btn-retro-magenta'
+          : variant === 'secondary'
+            ? 'btn-retro border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] hover:shadow-none hover:scale-100'
+            : 'btn-retro border-none text-[var(--text-secondary)] hover:text-[var(--neon-cyan)] hover:bg-transparent hover:shadow-none hover:scale-100';
 
   return (
     <button

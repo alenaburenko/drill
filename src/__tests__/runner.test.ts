@@ -53,9 +53,7 @@ beforeAll(() => {
           const cleanUserCode = userCode.replace(/^(import|export)\s.*;?$/gm, '// $& (stripped)');
           const cleanTestCode = testCode.replace(/^(import|export)\s.*;?$/gm, '// $& (stripped)');
 
-          const fn = new Function('test', 'assertEqual', 'assert',
-            `${cleanUserCode}\n${cleanTestCode}`
-          );
+          const fn = new Function('test', 'assertEqual', 'assert', `${cleanUserCode}\n${cleanTestCode}`);
           fn(testReg, assertEqual, assert);
 
           const results = [];
@@ -100,9 +98,12 @@ describe('runTestsInWorker', () => {
   });
 
   test('returns failure for failing test', async () => {
-    const result = await runTestsInWorker('', `test('fail', async () => {
+    const result = await runTestsInWorker(
+      '',
+      `test('fail', async () => {
   assertEqual(1, 2);
-});`);
+});`,
+    );
     expect(result.success).toBe(false);
     expect(result.results).toHaveLength(1);
     expect(result.results![0].success).toBe(false);
@@ -116,52 +117,71 @@ describe('runTestsInWorker', () => {
   });
 
   test('reports multiple test results', async () => {
-    const result = await runTestsInWorker('', `
+    const result = await runTestsInWorker(
+      '',
+      `
       test('first', async () => { assertEqual(1, 1); });
       test('second', async () => { assertEqual(2, 2); });
-    `);
+    `,
+    );
     expect(result.success).toBe(true);
     expect(result.results).toHaveLength(2);
   });
 
   test('reports partial success when some tests fail', async () => {
-    const result = await runTestsInWorker('', `
+    const result = await runTestsInWorker(
+      '',
+      `
       test('pass', async () => { assertEqual(1, 1); });
       test('fail', async () => { assertEqual(1, 2); });
-    `);
+    `,
+    );
     expect(result.success).toBe(false);
     expect(result.results![0].success).toBe(true);
     expect(result.results![1].success).toBe(false);
   });
 
   test('handles runtime error in test gracefully', async () => {
-    const result = await runTestsInWorker('', `test('throws', async () => {
+    const result = await runTestsInWorker(
+      '',
+      `test('throws', async () => {
   throw new Error('oops');
-});`);
+});`,
+    );
     expect(result.success).toBe(false);
     expect(result.results![0].success).toBe(false);
     expect(result.results![0].error).toContain('oops');
   });
 
   test('handles assert with falsy condition', async () => {
-    const result = await runTestsInWorker('', `test('assert false', async () => {
+    const result = await runTestsInWorker(
+      '',
+      `test('assert false', async () => {
   assert(false, 'condition was false');
-});`);
+});`,
+    );
     expect(result.results![0].success).toBe(false);
   });
 
   test('handles async assertEqual correctly', async () => {
-    const result = await runTestsInWorker('', `test('async equal', async () => {
+    const result = await runTestsInWorker(
+      '',
+      `test('async equal', async () => {
   const val = await Promise.resolve(42);
   assertEqual(val, 42);
-});`);
+});`,
+    );
     expect(result.success).toBe(true);
   });
 
   test('times out on infinite loop', async () => {
-    const result = await runTestsInWorker('', `test('infinite', async () => {
+    const result = await runTestsInWorker(
+      '',
+      `test('infinite', async () => {
   while(true) { await new Promise(r => setTimeout(r, 10)); }
-});`, 100);
+});`,
+      100,
+    );
     expect(result.success).toBe(false);
     expect(result.error).toContain('Timeout');
   }, 10000);

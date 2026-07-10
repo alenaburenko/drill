@@ -17,7 +17,7 @@ function assertEqual(actual: any, expected: any) {
 
 function assert(condition: any, message?: string) {
   if (!condition) {
-    throw new Error(message || "Assertion failed");
+    throw new Error(message || 'Assertion failed');
   }
 }
 
@@ -28,10 +28,10 @@ function assert(condition: any, message?: string) {
 
 self.onmessage = async (e: MessageEvent) => {
   const { userCode, testCode } = e.data;
-  
+
   // Clear tests array for this run
   tests.length = 0;
-  
+
   try {
     // We execute user code and test code using new Function
     // Wrapped in a block to resolve variables safely
@@ -40,11 +40,11 @@ self.onmessage = async (e: MessageEvent) => {
       
       ${testCode}
     `);
-    
+
     runCode();
-    
+
     const results: { name: string; success: boolean; error?: string }[] = [];
-    
+
     for (const t of tests) {
       try {
         await t.fn();
@@ -53,7 +53,7 @@ self.onmessage = async (e: MessageEvent) => {
         results.push({ name: t.name, success: false, error: err.message || String(err) });
       }
     }
-    
+
     self.postMessage({ type: 'results', results });
   } catch (err: any) {
     self.postMessage({ type: 'error', error: err.message || String(err) });

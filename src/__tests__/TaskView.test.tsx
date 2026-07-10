@@ -20,11 +20,13 @@ const baseProgress: UserProgress = {
   history: [],
 };
 
-function renderTaskView(overrides: {
-  progress?: UserProgress;
-  onSaveProgress?: () => void;
-  onBack?: () => void;
-} = {}) {
+function renderTaskView(
+  overrides: {
+    progress?: UserProgress;
+    onSaveProgress?: () => void;
+    onBack?: () => void;
+  } = {},
+) {
   const onSaveProgress = vi.fn();
   const onBack = vi.fn();
   const result = render(
@@ -33,7 +35,7 @@ function renderTaskView(overrides: {
       progress={overrides.progress || baseProgress}
       onSaveProgress={onSaveProgress}
       onBack={onBack}
-    />
+    />,
   );
   return { ...result, onSaveProgress, onBack };
 }
@@ -104,7 +106,7 @@ describe('TaskView — Test failure at Stage 3', () => {
     await new Promise(r => setTimeout(r, 200));
     const lastCall = onSaveProgress.mock.calls[onSaveProgress.mock.calls.length - 1];
     expect(lastCall).toBeTruthy();
-    const savedProgress = fromAny<typeof lastCall[1], UserProgress>(lastCall[1]);
+    const savedProgress = fromAny<(typeof lastCall)[1], UserProgress>(lastCall[1]);
     expect(savedProgress.learningStage).toBe(3);
     expect(savedProgress.history?.[0]?.success).toBe(false);
   });

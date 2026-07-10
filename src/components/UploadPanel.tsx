@@ -36,23 +36,41 @@ interface Props {
 }
 
 export default function UploadPanel({
-  t, importText, importStatus,
-  newTitle, newDifficulty, newCategory, newDescription,
-  newStarter, newSolution, newCloze1, newCloze2, newCloze3, newBreakdown, newTestCode,
-  onSetImportText, onSetNewTitle, onSetNewDifficulty, onSetNewCategory, onSetNewDescription,
-  onSetNewStarter, onSetNewSolution, onSetNewCloze1, onSetNewCloze2, onSetNewCloze3,
-  onSetNewBreakdown, onSetNewTestCode, onImportJSON, onCreateTask,
+  t,
+  importText,
+  importStatus,
+  newTitle,
+  newDifficulty,
+  newCategory,
+  newDescription,
+  newStarter,
+  newSolution,
+  newCloze1,
+  newCloze2,
+  newCloze3,
+  newBreakdown,
+  newTestCode,
+  onSetImportText,
+  onSetNewTitle,
+  onSetNewDifficulty,
+  onSetNewCategory,
+  onSetNewDescription,
+  onSetNewStarter,
+  onSetNewSolution,
+  onSetNewCloze1,
+  onSetNewCloze2,
+  onSetNewCloze3,
+  onSetNewBreakdown,
+  onSetNewTestCode,
+  onImportJSON,
+  onCreateTask,
 }: Props) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* JSON import */}
       <div className="lg:col-span-7" style={{ height: '100%' }}>
         <Card padding="lg" className="flex flex-col gap-4 h-full">
-          <SectionHeader
-            icon={<Upload className="w-4 h-4" />}
-            title={t.importJson}
-            subtitle={t.importJsonDesc}
-          />
+          <SectionHeader icon={<Upload className="w-4 h-4" />} title={t.importJson} subtitle={t.importJsonDesc} />
 
           <form onSubmit={onImportJSON} className="flex-1 flex flex-col gap-4">
             <textarea
@@ -88,30 +106,99 @@ export default function UploadPanel({
 
           <form onSubmit={onCreateTask} className="space-y-3 text-xs">
             {[
-              { label: t.taskTitle, required: true, val: newTitle, set: onSetNewTitle, ph: t.taskTitlePlaceholder, rows: 0 },
-              { label: t.descriptionLabel, required: false, val: newDescription, set: onSetNewDescription, ph: t.descriptionPlaceholder, rows: 3 },
+              {
+                label: t.taskTitle,
+                required: true,
+                val: newTitle,
+                set: onSetNewTitle,
+                ph: t.taskTitlePlaceholder,
+                rows: 0,
+              },
+              {
+                label: t.descriptionLabel,
+                required: false,
+                val: newDescription,
+                set: onSetNewDescription,
+                ph: t.descriptionPlaceholder,
+                rows: 3,
+              },
             ].map(({ label, required, val, set, ph, rows }) => (
               <div key={label}>
-                <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{label}</label>
-                {rows > 0
-                  ? <textarea rows={rows} value={val} onChange={e => set(e.target.value)} placeholder={ph}
-                      className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                  : <input type="text" required={required} value={val} onChange={e => set(e.target.value)} placeholder={ph}
-                      className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-                }
+                <label
+                  className="block font-bold mb-1 uppercase tracking-wider"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {label}
+                </label>
+                {rows > 0 ? (
+                  <textarea
+                    rows={rows}
+                    value={val}
+                    onChange={e => set(e.target.value)}
+                    placeholder={ph}
+                    className="w-full rounded-xl px-3 py-2 outline-none border"
+                    style={{
+                      background: 'var(--bg-elevated)',
+                      borderColor: 'var(--border)',
+                      color: 'var(--text-primary)',
+                    }}
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    required={required}
+                    value={val}
+                    onChange={e => set(e.target.value)}
+                    placeholder={ph}
+                    className="w-full rounded-xl px-3 py-2 outline-none border"
+                    style={{
+                      background: 'var(--bg-elevated)',
+                      borderColor: 'var(--border)',
+                      color: 'var(--text-primary)',
+                    }}
+                  />
+                )}
               </div>
             ))}
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{t.categoryBlock}</label>
-                <input type="text" value={newCategory} onChange={e => onSetNewCategory(e.target.value)} placeholder="javascript"
-                  className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
+                <label
+                  className="block font-bold mb-1 uppercase tracking-wider"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {t.categoryBlock}
+                </label>
+                <input
+                  type="text"
+                  value={newCategory}
+                  onChange={e => onSetNewCategory(e.target.value)}
+                  placeholder="javascript"
+                  className="w-full rounded-xl px-3 py-2 outline-none border"
+                  style={{
+                    background: 'var(--bg-elevated)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--text-primary)',
+                  }}
+                />
               </div>
               <div>
-                <label className="block font-bold mb-1 uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>{t.difficulty}</label>
-                <select value={newDifficulty} onChange={e => onSetNewDifficulty(e.target.value as 'junior' | 'middle' | 'senior')}
-                  className="w-full rounded-xl px-3 py-2 outline-none border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
+                <label
+                  className="block font-bold mb-1 uppercase tracking-wider"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {t.difficulty}
+                </label>
+                <select
+                  value={newDifficulty}
+                  onChange={e => onSetNewDifficulty(e.target.value as 'junior' | 'middle' | 'senior')}
+                  className="w-full rounded-xl px-3 py-2 outline-none border"
+                  style={{
+                    background: 'var(--bg-elevated)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--text-primary)',
+                  }}
+                >
                   <option value="junior">Junior</option>
                   <option value="middle">Middle</option>
                   <option value="senior">Senior</option>
@@ -120,7 +207,12 @@ export default function UploadPanel({
             </div>
 
             <div className="space-y-2">
-              <h4 className="font-bold uppercase tracking-wider border-b pb-1 text-[10px]" style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}>{t.codeTemplates}</h4>
+              <h4
+                className="font-bold uppercase tracking-wider border-b pb-1 text-[10px]"
+                style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}
+              >
+                {t.codeTemplates}
+              </h4>
               {[
                 { label: t.starterLabel, val: newStarter, set: onSetNewStarter },
                 { label: t.solutionLabel, val: newSolution, set: onSetNewSolution },
@@ -130,10 +222,20 @@ export default function UploadPanel({
                 { label: t.testCodeLabel, val: newTestCode, set: onSetNewTestCode },
               ].map(({ label, val, set }) => (
                 <div key={label}>
-                  <label className="block mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>{label}</label>
-                  <textarea rows={2} value={val} onChange={e => set(e.target.value)}
+                  <label className="block mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>
+                    {label}
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={val}
+                    onChange={e => set(e.target.value)}
                     className="w-full rounded-xl p-2 font-mono text-[10px] outline-none border resize-none"
-                    style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
+                    style={{
+                      background: 'var(--bg-elevated)',
+                      borderColor: 'var(--border)',
+                      color: 'var(--text-primary)',
+                    }}
+                  />
                 </div>
               ))}
             </div>

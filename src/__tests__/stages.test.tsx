@@ -43,7 +43,7 @@ const t = {
   masteryPeeks: 'Підглядання',
   masteryRepeat: 'Повторення',
   masteryRepeatVal: '∞',
-  allTestsPassed: (hasNext: boolean) => hasNext ? 'Всі тести пройдено!' : 'Завершено!',
+  allTestsPassed: (hasNext: boolean) => (hasNext ? 'Всі тести пройдено!' : 'Завершено!'),
   testError: 'Помилка:',
   testPassed: 'Пройдено',
   testFailed: 'Провалено',
@@ -64,7 +64,15 @@ describe('StageStudy', () => {
 
   test('calls onStartPractice when button clicked', () => {
     let called = false;
-    render(<StageStudy task={task} t={t} onStartPractice={() => { called = true; }} />);
+    render(
+      <StageStudy
+        task={task}
+        t={t}
+        onStartPractice={() => {
+          called = true;
+        }}
+      />,
+    );
     fireEvent.click(screen.getByText('Почати практику'));
     expect(called).toBe(true);
   });
@@ -73,16 +81,21 @@ describe('StageStudy', () => {
 // ── StageRetype ─────────────────────────────────────────────────────────
 describe('StageRetype', () => {
   test('renders solution description and toggle', () => {
-    const { container } = render(
-      <StageRetype task={task} t={t} showComments={false} onToggleComments={() => {}} />
-    );
+    const { container } = render(<StageRetype task={task} t={t} showComments={false} onToggleComments={() => {}} />);
     expect(container.textContent).toContain('Скопіюйте для передруку');
   });
 
   test('toggle comments affects comments visibility', () => {
     let toggled = false;
     const { container } = render(
-      <StageRetype task={task} t={t} showComments={false} onToggleComments={() => { toggled = true; }} />
+      <StageRetype
+        task={task}
+        t={t}
+        showComments={false}
+        onToggleComments={() => {
+          toggled = true;
+        }}
+      />,
     );
     const toggle = container.querySelector('[class*="cursor-pointer"]');
     if (toggle) fireEvent.click(toggle);
@@ -95,8 +108,14 @@ describe('StageRetype', () => {
 describe('StageHint', () => {
   test('shows solution hidden state when peek is closed', () => {
     render(
-      <StageHint task={task} t={t} peekOpen={false} showComments={false}
-        onPeek={() => {}} onToggleComments={() => {}} />
+      <StageHint
+        task={task}
+        t={t}
+        peekOpen={false}
+        showComments={false}
+        onPeek={() => {}}
+        onToggleComments={() => {}}
+      />,
     );
     expect(screen.getByText('Рішення приховано')).toBeTruthy();
   });
@@ -104,8 +123,16 @@ describe('StageHint', () => {
   test('shows peek button that triggers onPeek', () => {
     let peeked = false;
     render(
-      <StageHint task={task} t={t} peekOpen={false} showComments={false}
-        onPeek={() => { peeked = true; }} onToggleComments={() => {}} />
+      <StageHint
+        task={task}
+        t={t}
+        peekOpen={false}
+        showComments={false}
+        onPeek={() => {
+          peeked = true;
+        }}
+        onToggleComments={() => {}}
+      />,
     );
     fireEvent.click(screen.getByText('Все одно подивитись'));
     expect(peeked).toBe(true);
@@ -113,8 +140,14 @@ describe('StageHint', () => {
 
   test('shows hide hint button when peek is open', () => {
     render(
-      <StageHint task={task} t={t} peekOpen={true} showComments={false}
-        onPeek={() => {}} onToggleComments={() => {}} />
+      <StageHint
+        task={task}
+        t={t}
+        peekOpen={true}
+        showComments={false}
+        onPeek={() => {}}
+        onToggleComments={() => {}}
+      />,
     );
     expect(screen.getByText('Сховати підказку')).toBeTruthy();
   });
@@ -124,18 +157,28 @@ describe('StageHint', () => {
 describe('StageExam', () => {
   test('shows exam active state', () => {
     render(
-      <StageExam task={task} t={t} examActive={true} timerSec={300}
-        formatTime={(s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
-        onRetry={() => {}} />
+      <StageExam
+        task={task}
+        t={t}
+        examActive={true}
+        timerSec={300}
+        formatTime={s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
+        onRetry={() => {}}
+      />,
     );
     expect(screen.getByText('Екзамен активний')).toBeTruthy();
   });
 
   test('shows time expired when timer is 0 and exam not active', () => {
     render(
-      <StageExam task={task} t={t} examActive={false} timerSec={0}
-        formatTime={(s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
-        onRetry={() => {}} />
+      <StageExam
+        task={task}
+        t={t}
+        examActive={false}
+        timerSec={0}
+        formatTime={s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
+        onRetry={() => {}}
+      />,
     );
     expect(screen.getByText('Час вичерпано')).toBeTruthy();
   });
@@ -143,9 +186,16 @@ describe('StageExam', () => {
   test('retry button calls onRetry', () => {
     let retried = false;
     render(
-      <StageExam task={task} t={t} examActive={false} timerSec={0}
-        formatTime={(s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
-        onRetry={() => { retried = true; }} />
+      <StageExam
+        task={task}
+        t={t}
+        examActive={false}
+        timerSec={0}
+        formatTime={s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
+        onRetry={() => {
+          retried = true;
+        }}
+      />,
     );
     fireEvent.click(screen.getByText('Спробувати знову'));
     expect(retried).toBe(true);
@@ -170,24 +220,24 @@ describe('StageMastered', () => {
 // ── TestConsole ─────────────────────────────────────────────────────────
 describe('TestConsole', () => {
   test('shows press run tests message when idle', () => {
-    render(
-      <TestConsole currentStage={3} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />
-    );
+    render(<TestConsole currentStage={3} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />);
     expect(screen.getByText('Натисніть «Запустити тести»')).toBeTruthy();
   });
 
   test('shows running state when isRunning', () => {
-    render(
-      <TestConsole currentStage={3} isRunning={true} runResults={null} t={t} onRunTests={() => {}} />
-    );
+    render(<TestConsole currentStage={3} isRunning={true} runResults={null} t={t} onRunTests={() => {}} />);
     expect(screen.getByText('Запуск sandbox...')).toBeTruthy();
   });
 
   test('shows test results', () => {
     const { container } = render(
-      <TestConsole currentStage={3} isRunning={false}
+      <TestConsole
+        currentStage={3}
+        isRunning={false}
         runResults={{ success: true, results: [{ name: 'test 1', success: true }] }}
-        t={t} onRunTests={() => {}} />
+        t={t}
+        onRunTests={() => {}}
+      />,
     );
     expect(container.textContent).toContain('test 1');
     expect(container.textContent).toContain('Пройдено');
@@ -195,33 +245,37 @@ describe('TestConsole', () => {
 
   test('shows all tests passed message', () => {
     const { container } = render(
-      <TestConsole currentStage={3} isRunning={false}
+      <TestConsole
+        currentStage={3}
+        isRunning={false}
         runResults={{ success: true, results: [{ name: 'test 1', success: true }] }}
-        t={t} onRunTests={() => {}} />
+        t={t}
+        onRunTests={() => {}}
+      />,
     );
     expect(container.textContent).toContain('Всі тести пройдено!');
   });
 
   test('shows error card when runResults has error', () => {
     const { container } = render(
-      <TestConsole currentStage={3} isRunning={false}
+      <TestConsole
+        currentStage={3}
+        isRunning={false}
         runResults={{ success: false, error: 'SyntaxError: unexpected token' }}
-        t={t} onRunTests={() => {}} />
+        t={t}
+        onRunTests={() => {}}
+      />,
     );
     expect(container.textContent).toContain('SyntaxError');
   });
 
   test('stage 1 shows testsOnPractice message', () => {
-    render(
-      <TestConsole currentStage={1} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />
-    );
+    render(<TestConsole currentStage={1} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />);
     expect(screen.getByText('Тести доступні під час практики')).toBeTruthy();
   });
 
   test('stage 7 shows intervalDone message', () => {
-    render(
-      <TestConsole currentStage={7} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />
-    );
+    render(<TestConsole currentStage={7} isRunning={false} runResults={null} t={t} onRunTests={() => {}} />);
     expect(screen.getByText('Завдання вивчено, інтервал запущено')).toBeTruthy();
   });
 });
@@ -235,7 +289,15 @@ describe('ToggleSwitch', () => {
 
   test('calls onChange on click', () => {
     let toggled = false;
-    const { container } = render(<ToggleSwitch checked={false} onChange={() => { toggled = true; }} label="Коментарі" />);
+    const { container } = render(
+      <ToggleSwitch
+        checked={false}
+        onChange={() => {
+          toggled = true;
+        }}
+        label="Коментарі"
+      />,
+    );
     fireEvent.click(container.firstElementChild!);
     expect(toggled).toBe(true);
   });

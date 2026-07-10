@@ -8,14 +8,14 @@ interface BadgeProps {
 }
 
 const variantMap: Record<string, string> = {
-  accent:         'badge-retro-cyan',
-  difficulty:     '',
-  stage:          'badge-retro-amber',
+  accent: 'badge-retro-cyan',
+  difficulty: '',
+  stage: 'badge-retro-amber',
   'stage-mastered': 'badge-retro-green',
   'stage-active': 'badge-retro-cyan',
-  danger:         'badge-retro-red',
-  success:        'badge-retro-green',
-  info:           'badge-retro-magenta',
+  danger: 'badge-retro-red',
+  success: 'badge-retro-green',
+  info: 'badge-retro-magenta',
 };
 
 const sizeStyles: Record<string, string> = {
@@ -28,14 +28,12 @@ const sizeFont: Record<string, number> = {
   md: 13,
 };
 
-export const Badge: React.FC<BadgeProps> = ({
-  variant = 'accent',
-  size = 'sm',
-  className = '',
-  children,
-}) => {
+export const Badge: React.FC<BadgeProps> = ({ variant = 'accent', size = 'sm', className = '', children }) => {
   return (
-    <span className={`badge-retro ${variantMap[variant]} ${sizeStyles[size]} ${className}`} style={{ fontSize: sizeFont[size] }}>
+    <span
+      className={`badge-retro ${variantMap[variant]} ${sizeStyles[size]} ${className}`}
+      style={{ fontSize: sizeFont[size] }}
+    >
       {children}
     </span>
   );

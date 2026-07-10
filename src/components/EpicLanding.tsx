@@ -25,7 +25,9 @@ function playRetroBeep(freq = 880, duration = 60, type: OscillatorType = 'square
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + duration / 1000);
-  } catch { /* silent fail */ }
+  } catch {
+    /* silent fail */
+  }
 }
 
 const LANDING_SOUNDS = {
@@ -35,7 +37,7 @@ const LANDING_SOUNDS = {
     playRetroBeep(880, 80, 'square');
     setTimeout(() => playRetroBeep(1200, 100, 'square'), 100);
     setTimeout(() => playRetroBeep(1760, 150, 'square'), 200);
-  }
+  },
 };
 
 export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandingProps) {
@@ -84,7 +86,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
         tasks: 'Tasks',
         stages: 'Learning Stages',
         retention: 'Avg. Retention',
-      }
+      },
     }[lang];
   }, [lang, totalTasks]);
 
@@ -110,20 +112,20 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
   const parallaxY = useSpring(mouseY, springConfig);
 
   // Transform values for each depth level (top-level hooks)
-  const x0 = useTransform(parallaxX, (v) => v * -0.1);
-  const y0 = useTransform(parallaxY, (v) => v * -0.1);
+  const x0 = useTransform(parallaxX, v => v * -0.1);
+  const y0 = useTransform(parallaxY, v => v * -0.1);
 
-  const x1 = useTransform(parallaxX, (v) => v * -0.25);
-  const y1 = useTransform(parallaxY, (v) => v * -0.25);
+  const x1 = useTransform(parallaxX, v => v * -0.25);
+  const y1 = useTransform(parallaxY, v => v * -0.25);
 
-  const x2 = useTransform(parallaxX, (v) => v * -0.5);
-  const y2 = useTransform(parallaxY, (v) => v * -0.5);
+  const x2 = useTransform(parallaxX, v => v * -0.5);
+  const y2 = useTransform(parallaxY, v => v * -0.5);
 
-  const x3 = useTransform(parallaxX, (v) => v * -0.8);
-  const y3 = useTransform(parallaxY, (v) => v * -0.8);
+  const x3 = useTransform(parallaxX, v => v * -0.8);
+  const y3 = useTransform(parallaxY, v => v * -0.8);
 
-  const x4 = useTransform(parallaxX, (v) => v * -1.0);
-  const y4 = useTransform(parallaxY, (v) => v * -1.0);
+  const x4 = useTransform(parallaxX, v => v * -1.0);
+  const y4 = useTransform(parallaxY, v => v * -1.0);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -147,7 +149,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
     return Array.from({ length: 12 }, (_, i) => ({
       id: i,
       char: chars[i % chars.length],
-      left: `${10 + (i * 7.5) + (i % 2 === 0 ? 3 : -3)}%`,
+      left: `${10 + i * 7.5 + (i % 2 === 0 ? 3 : -3)}%`,
       top: `${15 + ((i * 7) % 65)}%`,
       scale: 0.8 + (i % 3) * 0.2,
       duration: 6 + (i % 4) * 2,
@@ -163,8 +165,10 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
     >
       {/* Vignette & scanline sweeps (Depth 5 foreground overlays) */}
       <div className="pointer-events-none fixed inset-0 z-50 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.6)_100%)]" />
-      <div className="pointer-events-none fixed inset-0 z-50" style={{
-        backgroundImage: `
+      <div
+        className="pointer-events-none fixed inset-0 z-50"
+        style={{
+          backgroundImage: `
           repeating-linear-gradient(
             0deg,
             transparent,
@@ -172,8 +176,9 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
             rgba(0, 0, 0, 0.15) 2px,
             rgba(0, 0, 0, 0.15) 4px
           )
-        `
-      }} />
+        `,
+        }}
+      />
 
       {/* Header bar (UI layer) */}
       <header className="relative z-40 flex justify-between items-center w-full max-w-7xl mx-auto py-2">
@@ -263,7 +268,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
           <div className="relative animate-[float-orbit_8s_ease-in-out_infinite] cursor-pointer group">
             {/* Ambient aura glow behind the logo */}
             <div className="absolute inset-[-40px] rounded-full blur-[30px] opacity-20 bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-magenta)] group-hover:opacity-40 transition-all duration-300" />
-            
+
             <RetroLogo size="xl" variant="animated" />
           </div>
         </div>
@@ -286,11 +291,9 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
         {/* Cinematic Headline */}
         <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight text-[#e8e8e8] max-w-2xl mb-4">
           &gt; {t.titlePart1}
-          <span className="text-[var(--neon-cyan)] drop-shadow-[0_0_12px_rgba(0,240,255,0.4)]">
-            {t.titlePart2}
-          </span>
+          <span className="text-[var(--neon-cyan)] drop-shadow-[0_0_12px_rgba(0,240,255,0.4)]">{t.titlePart2}</span>
           {t.titlePart3}
-          <span 
+          <span
             className="italic font-normal text-[var(--neon-magenta)] drop-shadow-[0_0_12px_rgba(255,0,255,0.3)]"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
@@ -300,9 +303,7 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
         </h1>
 
         {/* Subtext description */}
-        <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-xl mb-8 font-mono">
-          {t.subtitle}
-        </p>
+        <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-xl mb-8 font-mono">{t.subtitle}</p>
 
         {/* CTA Launch Button */}
         <div className="flex flex-col items-center gap-4 w-full sm:w-auto">
@@ -316,16 +317,11 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
           </button>
 
           {/* Skip setting */}
-          <label 
-            className="flex items-center gap-2 text-[9px] uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors cursor-pointer select-none py-1"
-          >
-            <input 
-              type="checkbox" 
-              checked={skipIntro} 
-              onChange={handleSkipToggle} 
-              className="sr-only"
-            />
-            <div className={`w-3.5 h-3.5 border flex items-center justify-center transition-colors ${skipIntro ? 'border-[var(--neon-green)] bg-[rgba(0,255,65,0.05)]' : 'border-[var(--border)] bg-[var(--bg-surface)]'}`}>
+          <label className="flex items-center gap-2 text-[9px] uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors cursor-pointer select-none py-1">
+            <input type="checkbox" checked={skipIntro} onChange={handleSkipToggle} className="sr-only" />
+            <div
+              className={`w-3.5 h-3.5 border flex items-center justify-center transition-colors ${skipIntro ? 'border-[var(--neon-green)] bg-[rgba(0,255,65,0.05)]' : 'border-[var(--border)] bg-[var(--bg-surface)]'}`}
+            >
               {skipIntro && <Check className="w-2.5 h-2.5 text-[var(--neon-green)]" />}
             </div>
             <span>{t.skipCheckbox}</span>
@@ -338,25 +334,19 @@ export function EpicLanding({ lang, onSetLang, onEnter, totalTasks }: EpicLandin
             <span className="text-lg sm:text-2xl font-black text-[var(--neon-cyan)] drop-shadow-[0_0_10px_rgba(0,240,255,0.25)]">
               {totalTasks}+
             </span>
-            <span className="text-[8px] uppercase tracking-widest text-[var(--text-muted)]">
-              {t.tasks}
-            </span>
+            <span className="text-[8px] uppercase tracking-widest text-[var(--text-muted)]">{t.tasks}</span>
           </div>
           <div className="flex flex-col gap-1 items-center">
             <span className="text-lg sm:text-2xl font-black text-[var(--neon-magenta)] drop-shadow-[0_0_10px_rgba(255,0,255,0.2)]">
               {totalTasks > 500 ? '6' : '6'}
             </span>
-            <span className="text-[8px] uppercase tracking-widest text-[var(--text-muted)]">
-              {t.stages}
-            </span>
+            <span className="text-[8px] uppercase tracking-widest text-[var(--text-muted)]">{t.stages}</span>
           </div>
           <div className="flex flex-col gap-1 items-center">
             <span className="text-lg sm:text-2xl font-black text-[var(--neon-green)] drop-shadow-[0_0_10px_rgba(0,255,65,0.25)]">
               85%
             </span>
-            <span className="text-[8px] uppercase tracking-widest text-[var(--text-muted)]">
-              {t.retention}
-            </span>
+            <span className="text-[8px] uppercase tracking-widest text-[var(--text-muted)]">{t.retention}</span>
           </div>
         </div>
       </motion.div>

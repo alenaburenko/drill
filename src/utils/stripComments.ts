@@ -6,5 +6,8 @@ export function stripComments(code: string): string {
     if (trimmed.startsWith('//') || (trimmed.startsWith('/*') && trimmed.endsWith('*/'))) continue;
     result.push(line.replace(/(^|[^:])\/\/.*$/, '$1').trimEnd());
   }
-  return result.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  return result
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }

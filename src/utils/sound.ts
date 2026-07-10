@@ -22,7 +22,9 @@ function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + duration / 1000);
-  } catch { /* silent fail */ }
+  } catch {
+    /* silent fail */
+  }
 }
 
 export function playClick() {
@@ -61,7 +63,7 @@ export function playLevelUp() {
   try {
     const ctx = getAudioContext();
     const now = ctx.currentTime;
-    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5 arpeggio
+    const notes = [261.63, 329.63, 392.0, 523.25]; // C4, E4, G4, C5 arpeggio
     notes.forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -74,14 +76,16 @@ export function playLevelUp() {
       osc.start(now + i * 0.12);
       osc.stop(now + i * 0.12 + 0.2);
     });
-  } catch { /* silent fail */ }
+  } catch {
+    /* silent fail */
+  }
 }
 
 export function playAchievementFanfare() {
   try {
     const ctx = getAudioContext();
     const now = ctx.currentTime;
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 arpeggio
+    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6 arpeggio
     notes.forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -94,5 +98,7 @@ export function playAchievementFanfare() {
       osc.start(now + i * 0.08);
       osc.stop(now + i * 0.08 + 0.3);
     });
-  } catch { /* silent fail */ }
+  } catch {
+    /* silent fail */
+  }
 }

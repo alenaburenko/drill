@@ -8,19 +8,11 @@ interface SectionHeaderProps {
   color?: string;
 }
 
-export const SectionHeader: React.FC<SectionHeaderProps> = ({
-  icon,
-  title,
-  subtitle,
-  action,
-  color,
-}) => {
+export const SectionHeader: React.FC<SectionHeaderProps> = ({ icon, title, subtitle, action, color }) => {
   return (
     <div className="section-header">
       <h3 style={{ color: color || 'var(--text-secondary)' }}>
-        {icon && (
-          <span style={{ color: color || 'var(--neon-cyan)' }}>{icon}</span>
-        )}
+        {icon && <span style={{ color: color || 'var(--neon-cyan)' }}>{icon}</span>}
         {title}
       </h3>
       <div className="flex items-center gap-3">

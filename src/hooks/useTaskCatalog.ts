@@ -22,10 +22,7 @@ export interface TaskCatalogResult {
   groupedCatalog: [string, DrillTask[]][];
 }
 
-export function useTaskCatalog(
-  allTasks: DrillTask[],
-  progressMap: Record<string, UserProgress>,
-): TaskCatalogResult {
+export function useTaskCatalog(allTasks: DrillTask[], progressMap: Record<string, UserProgress>): TaskCatalogResult {
   const [searchQuery, setSearchQuery] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<CatalogFilters['difficultyFilter']>('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -34,21 +31,25 @@ export function useTaskCatalog(
 
   const categories = useMemo(() => {
     const set = new Set<string>();
-    allTasks.forEach(t => { if (t.block) set.add(t.block); });
+    allTasks.forEach(t => {
+      if (t.block) set.add(t.block);
+    });
     return Array.from(set);
   }, [allTasks]);
 
   const filteredCatalog = useMemo(() => {
     return allTasks.filter(task => {
       const prog = getTaskProgress(progressMap, task.id);
-      const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      const matchesSearch =
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         task.id.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesDiff = difficultyFilter === 'all' || task.difficulty === difficultyFilter;
       const matchesCat = categoryFilter === 'all' || task.block === categoryFilter;
       let matchesStage = true;
       if (stageFilter !== 'all') {
-        if (stageFilter === 'unstarted') matchesStage = !progressMap[task.id] || progressMap[task.id].learningStage === 1;
+        if (stageFilter === 'unstarted')
+          matchesStage = !progressMap[task.id] || progressMap[task.id].learningStage === 1;
         else if (stageFilter === 'mastered') matchesStage = progressMap[task.id]?.learningStage >= 7;
         else matchesStage = progressMap[task.id]?.learningStage === parseInt(stageFilter);
       }
@@ -68,7 +69,8 @@ export function useTaskCatalog(
   const toggleGroup = (block: string) => {
     setCollapsedGroups(prev => {
       const next = new Set(prev);
-      if (next.has(block)) next.delete(block); else next.add(block);
+      if (next.has(block)) next.delete(block);
+      else next.add(block);
       return next;
     });
   };

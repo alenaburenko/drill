@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-pixel: 'Press Start 2P', ui-monospace, monospace;
+}
+
+/* ───────────────────────────────────────────
+   Retro Gaming 80-90s Theme — Tokens
+─────────────────────────────────────────── */
+:root {
+  /* ── Backgrounds ─────────────────────────────── */
+  --bg-base: #0d0015;
+  --bg-surface: #12001e;
+  --bg-elevated: #1a0029;
+  --bg-card: #160022;
+
+  /* ── Borders ──────────────────────────────────── */
+  --border: #2a0040;
+  --border-muted: #200030;
+
+  /* ── Retro neon palette ──────────────────────── */
+  --neon-cyan: #00f0ff;
+  --neon-cyan-rgb: 0, 240, 255;
+  --neon-magenta: #ff00ff;
+  --neon-magenta-rgb: 255, 0, 255;
+  --neon-green: #00ff41;
+  --neon-green-rgb: 0, 255, 65;
+  --neon-amber: #ffb000;
+  --neon-amber-rgb: 255, 176, 0;
+  --neon-red: #ff004d;
+  --neon-red-rgb: 255, 0, 77;
+
+  /* ── Accent (cyan as primary) ─────────────────── */
+  --accent: #00f0ff;
+  --accent-rgb: 0, 240, 255;
+  --accent-dim: #006070;
+  --accent-glow: rgba(0, 240, 255, 0.15);
+  --accent-hover: #00c8d4;
+
+  /* ── Text ──────────────────────────────────────── */
+  --text-primary: #e0e0e0;
+  --text-secondary: #9090a8;
+  --text-muted: #505068;
+
+  /* ── Semantic colors ──────────────────────────── */
+  --green: #00ff41;
+  --red: #ff004d;
+  --amber: #ffb000;
+  --blue: #00aaff;
+  --purple: #aa44ff;
+
+  /* ── Border-radius scale ─────────────────────── */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 10px;
+
+  /* ── Typography scale ──────────────────────────── */
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 21px;
+  --font-size-2xl: 26px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 42px;
+
+  /* ── Font weights ─────────────────────────────── */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  /* ── Spacing grid ─────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Z-index layers ───────────────────────────── */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-notification: 500;
+}
+
+/* ─── Base ─── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  image-rendering: pixelated;
+}
+
+/* ─── Custom scrollbars (retro) ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 0px;
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-magenta);
+  box-shadow: 0 0 6px rgba(255, 0, 255, 0.4);
+}
+
+/* ─── Focus (retro) ─── */
+*:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgba(0, 240, 255, 0.35);
+  color: #000;
+}
+
+/* ─── Code block ─── */
+.code-block {
+  background: #0a0010;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon-green);
+  text-shadow: 0 0 4px rgba(0, 255, 65, 0.3);
+  padding: 16px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* ─── Utility ─── */
+.text-pixel {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.text-shadow-cyan {
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+}
+
+.text-shadow-magenta {
+  text-shadow: 0 0 6px rgba(255, 0, 255, 0.4);
+}
+
+.text-shadow-green {
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.4);
+}

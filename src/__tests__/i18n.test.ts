@@ -32,9 +32,7 @@ describe('i18n', () => {
     const uk = getT('uk');
     const en = getT('en');
     // Some keys should differ
-    const differingKeys = Object.keys(uk).filter(
-      key => typeof uk[key] === 'string' && uk[key] !== en[key],
-    );
+    const differingKeys = Object.keys(uk).filter(key => typeof uk[key] === 'string' && uk[key] !== en[key]);
     expect(differingKeys.length).toBeGreaterThan(0);
   });
 

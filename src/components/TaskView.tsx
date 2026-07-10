@@ -8,8 +8,17 @@ import { diffBadge } from '../utils/badges';
 import { playLevelUp } from '../utils/sound';
 import { INTERVAL_MAP } from '../constants';
 import {
-  Play, Eye, EyeOff, RotateCcw, ArrowLeft,
-  CheckCircle, AlertTriangle, Clock, Zap, BookOpen, Terminal
+  Play,
+  Eye,
+  EyeOff,
+  RotateCcw,
+  ArrowLeft,
+  CheckCircle,
+  AlertTriangle,
+  Clock,
+  Zap,
+  BookOpen,
+  Terminal,
 } from 'lucide-react';
 import StageStudy from './StageStudy';
 import StageRetype from './StageRetype';
@@ -100,8 +109,19 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
   const handleExamTimeout = useCallback(() => {
     setRunResults({ success: false, error: 'Час вичерпано! Ви перевищили ліміт часу.', results: [] });
     onSaveProgress(task.id, {
-      ...progress, learningStage: 6, lastPracticed: new Date().toISOString(),
-      history: [...(progress.history || []), { date: new Date().toISOString(), success: false, stageBefore: 6, stageAfter: 6, timeSpentSec: task.timeLimitMin * 60 }],
+      ...progress,
+      learningStage: 6,
+      lastPracticed: new Date().toISOString(),
+      history: [
+        ...(progress.history || []),
+        {
+          date: new Date().toISOString(),
+          success: false,
+          stageBefore: 6,
+          stageAfter: 6,
+          timeSpentSec: task.timeLimitMin * 60,
+        },
+      ],
     });
   }, [task.id, task.timeLimitMin, progress, onSaveProgress]);
 
@@ -134,13 +154,21 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
       const nextPracticeDate = new Date();
       nextPracticeDate.setHours(nextPracticeDate.getHours() + (INTERVAL_MAP[currentStage] || 24));
       onSaveProgress(task.id, {
-        learningStage: nextStage, peeksCount, lastPracticed: new Date().toISOString(),
-        nextDue: nextPracticeDate.toISOString(), drafts: progress.drafts || {},
-        history: [...(progress.history || []), {
-          date: new Date().toISOString(), success: true,
-          stageBefore: currentStage, stageAfter: nextStage,
-          timeSpentSec: currentStage === 6 ? (task.timeLimitMin * 60 - timerSec) : undefined,
-        }],
+        learningStage: nextStage,
+        peeksCount,
+        lastPracticed: new Date().toISOString(),
+        nextDue: nextPracticeDate.toISOString(),
+        drafts: progress.drafts || {},
+        history: [
+          ...(progress.history || []),
+          {
+            date: new Date().toISOString(),
+            success: true,
+            stageBefore: currentStage,
+            stageAfter: nextStage,
+            timeSpentSec: currentStage === 6 ? task.timeLimitMin * 60 - timerSec : undefined,
+          },
+        ],
       });
       setTimeout(() => {
         setCurrentStage(nextStage);
@@ -148,11 +176,18 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
       }, 1800);
     } else {
       onSaveProgress(task.id, {
-        ...progress, learningStage: currentStage, lastPracticed: new Date().toISOString(),
-        history: [...(progress.history || []), {
-          date: new Date().toISOString(), success: false,
-          stageBefore: currentStage, stageAfter: currentStage,
-        }],
+        ...progress,
+        learningStage: currentStage,
+        lastPracticed: new Date().toISOString(),
+        history: [
+          ...(progress.history || []),
+          {
+            date: new Date().toISOString(),
+            success: false,
+            stageBefore: currentStage,
+            stageAfter: currentStage,
+          },
+        ],
       });
     }
   };
@@ -194,7 +229,10 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
         const hasEditor = currentStage >= 2 && currentStage <= 6;
-        if (hasEditor && !isRunning) { e.preventDefault(); handleRunTests(); }
+        if (hasEditor && !isRunning) {
+          e.preventDefault();
+          handleRunTests();
+        }
       }
       if (e.key === 'Escape' && currentStage === 3) {
         e.preventDefault();
@@ -218,22 +256,35 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <div className="flex flex-col min-h-screen" style={{ background: 'var(--bg-base)' }}>
-
       {/* ── Top Navbar ── */}
-      <header className="sticky top-0 z-40 px-5 py-3 flex items-center justify-between border-b"
-        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
+      <header
+        className="sticky top-0 z-40 px-5 py-3 flex items-center justify-between border-b"
+        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+      >
         <div className="flex items-center gap-4">
-          <button onClick={onBack}
+          <button
+            onClick={onBack}
             className="flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-lg transition-all"
-            style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
+            style={{
+              background: 'var(--bg-elevated)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border)',
+            }}
+          >
             <ArrowLeft className="w-4 h-4" />
             {t.back}
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider ${diffBadge(task.difficulty)}`}>{task.difficulty}</span>
+              <span
+                className={`text-xs font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider ${diffBadge(task.difficulty)}`}
+              >
+                {task.difficulty}
+              </span>
               {progress.learningStage >= 7 && <span className="badge-accent">{t.mastered}</span>}
-              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>{task.title}</h1>
+              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
+                {task.title}
+              </h1>
             </div>
             <p className="text-[11px] font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>
               {t.id} {task.id} · {t.category} {task.block}
@@ -246,15 +297,30 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
           {Array.from({ length: 6 }).map((_, i) => {
             const num = i + 1;
             return (
-              <button key={num} onClick={() => handleStageDotClick(num)} disabled={num > progress.learningStage}
+              <button
+                key={num}
+                onClick={() => handleStageDotClick(num)}
+                disabled={num > progress.learningStage}
                 title={t.stageLabel(num)}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all font-mono"
-                style={currentStage === num
-                  ? { background: 'var(--accent)', color: '#000', boxShadow: '0 0 12px rgba(var(--accent-rgb), 0.4)' }
-                  : num < progress.learningStage
-                    ? { background: 'rgba(var(--accent-rgb), 0.15)', color: 'var(--accent)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }
-                    : { background: 'var(--bg-elevated)', color: 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'not-allowed', opacity: 0.5 }
-                }>
+                style={
+                  currentStage === num
+                    ? { background: 'var(--accent)', color: '#000', boxShadow: '0 0 12px rgba(var(--accent-rgb), 0.4)' }
+                    : num < progress.learningStage
+                      ? {
+                          background: 'rgba(var(--accent-rgb), 0.15)',
+                          color: 'var(--accent)',
+                          border: '1px solid rgba(var(--accent-rgb), 0.3)',
+                        }
+                      : {
+                          background: 'var(--bg-elevated)',
+                          color: 'var(--text-muted)',
+                          border: '1px solid var(--border)',
+                          cursor: 'not-allowed',
+                          opacity: 0.5,
+                        }
+                }
+              >
                 {num}
               </button>
             );
@@ -263,65 +329,107 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
       </header>
 
       {/* ── Stage info bar ── */}
-      <div className="px-5 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b"
-        style={{ background: 'rgba(var(--accent-rgb), 0.04)', borderColor: 'rgba(var(--accent-rgb), 0.15)' }}>
+      <div
+        className="px-5 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b"
+        style={{ background: 'rgba(var(--accent-rgb), 0.04)', borderColor: 'rgba(var(--accent-rgb), 0.15)' }}
+      >
         <div className="flex items-start gap-2.5">
           <Zap className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} />
           <div>
-            <h2 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{stageHeader.title}</h2>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{stageHeader.desc}</p>
+            <h2 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+              {stageHeader.title}
+            </h2>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+              {stageHeader.desc}
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-semibold shrink-0 px-4 py-2 rounded-lg border font-mono"
-          style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}>
+        <div
+          className="flex items-center gap-4 text-xs font-semibold shrink-0 px-4 py-2 rounded-lg border font-mono"
+          style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+        >
           {currentStage === 6 && (
             <div className="flex items-center gap-1.5 animate-pulse" style={{ color: 'var(--neon-red)' }}>
               <Clock className="w-4 h-4" />
-              <span>{t.examTimer} {formatTime(timerSec)}</span>
+              <span>
+                {t.examTimer} {formatTime(timerSec)}
+              </span>
             </div>
           )}
           <div className="flex items-center gap-1.5">
             <Eye className="w-4 h-4" style={{ color: 'var(--neon-amber)' }} />
-            <span>{t.peeksLabel} <span className="font-bold" style={{ color: 'var(--neon-amber)' }}>{peeksCount}</span></span>
+            <span>
+              {t.peeksLabel}{' '}
+              <span className="font-bold" style={{ color: 'var(--neon-amber)' }}>
+                {peeksCount}
+              </span>
+            </span>
           </div>
           <div>
-            <span>{t.maxTime} <span style={{ color: 'var(--text-primary)' }}>{task.timeLimitMin} {t.minSuffix}</span></span>
+            <span>
+              {t.maxTime}{' '}
+              <span style={{ color: 'var(--text-primary)' }}>
+                {task.timeLimitMin} {t.minSuffix}
+              </span>
+            </span>
           </div>
         </div>
       </div>
 
       {/* ── Main workspace ── */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden" style={{ height: 'calc(100vh - 130px)' }}>
-
+      <div
+        className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden"
+        style={{ height: 'calc(100vh - 130px)' }}
+      >
         {/* Left panel — stage-dependent content */}
-        <div className="lg:col-span-5 border-r overflow-y-auto flex flex-col" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
+        <div
+          className="lg:col-span-5 border-r overflow-y-auto flex flex-col"
+          style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+        >
           {currentStage === 1 && <StageStudy task={task} t={t} onStartPractice={handleStartPractice} />}
           {currentStage === 2 && (
             <StageRetype task={task} t={t} showComments={showComments} onToggleComments={setShowComments} />
           )}
           {currentStage > 2 && currentStage < 6 && (
-            <StageHint task={task} t={t} peekOpen={peekOpen} showComments={showComments}
-              onPeek={handlePeek} onToggleComments={setShowComments} />
+            <StageHint
+              task={task}
+              t={t}
+              peekOpen={peekOpen}
+              showComments={showComments}
+              onPeek={handlePeek}
+              onToggleComments={setShowComments}
+            />
           )}
           {currentStage === 6 && (
-            <StageExam task={task} t={t} examActive={examActive} timerSec={timerSec}
-              formatTime={formatTime} onRetry={handleRetry} personalBestSec={personalBestSec} />
+            <StageExam
+              task={task}
+              t={t}
+              examActive={examActive}
+              timerSec={timerSec}
+              formatTime={formatTime}
+              onRetry={handleRetry}
+              personalBestSec={personalBestSec}
+            />
           )}
         </div>
 
         {/* Right panel — Monaco Editor + test console */}
         <div className="lg:col-span-7 flex flex-col overflow-hidden" style={{ background: 'var(--bg-base)' }}>
-
           {/* Editor header */}
-          <div className="px-4 py-2.5 flex items-center justify-between border-b text-xs font-mono"
-            style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+          <div
+            className="px-4 py-2.5 flex items-center justify-between border-b text-xs font-mono"
+            style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
+          >
             <span className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--neon-green)' }} />
               solution.js
             </span>
-            <button onClick={handleReset}
-              className="flex items-center gap-1 transition-colors hover:text-orange-400" title={t.resetCode}>
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-1 transition-colors hover:text-orange-400"
+              title={t.resetCode}
+            >
               <RotateCcw className="w-3.5 h-3.5" />
               {t.resetCode}
             </button>
@@ -330,21 +438,39 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
           {/* Editor */}
           <div className="flex-1 min-h-[200px]">
             {currentStage > 1 && currentStage < 7 && (
-              <CodeEditor height="100%" language="javascript" value={code} onChange={handleCodeChange} theme="vs-dark" />
+              <CodeEditor
+                height="100%"
+                language="javascript"
+                value={code}
+                onChange={handleCodeChange}
+                theme="vs-dark"
+              />
             )}
             {currentStage === 7 && <StageMastered t={t} peeksCount={peeksCount} />}
             {currentStage === 1 && (
-              <div className="w-full h-full flex flex-col items-center justify-center text-center p-8" style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}>
+              <div
+                className="w-full h-full flex flex-col items-center justify-center text-center p-8"
+                style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}
+              >
                 <Terminal className="w-12 h-12 mb-3" style={{ color: 'var(--accent)' }} />
-                <h4 className="text-base font-bold mb-1" style={{ color: 'var(--text-primary)' }}>{t.stage1Title}</h4>
-                <p className="text-xs max-w-sm" style={{ color: 'var(--text-muted)' }}>{t.stage1Right}</p>
+                <h4 className="text-base font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
+                  {t.stage1Title}
+                </h4>
+                <p className="text-xs max-w-sm" style={{ color: 'var(--text-muted)' }}>
+                  {t.stage1Right}
+                </p>
               </div>
             )}
           </div>
 
           {/* Test console */}
-          <TestConsole currentStage={currentStage} isRunning={isRunning}
-            runResults={runResults} t={t} onRunTests={handleRunTests} />
+          <TestConsole
+            currentStage={currentStage}
+            isRunning={isRunning}
+            runResults={runResults}
+            t={t}
+            onRunTests={handleRunTests}
+          />
         </div>
       </div>
 
@@ -374,15 +500,17 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
               <h2 className="text-xl font-black tracking-widest text-[var(--neon-green)] drop-shadow-[0_0_10px_rgba(0,255,65,0.5)] uppercase font-mono">
                 STAGE PASSED
               </h2>
-              
+
               <div className="h-0.5 w-32 bg-[var(--neon-green)] my-3 opacity-60 animate-pulse" />
 
               <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.2em] font-mono">
                 {lang === 'uk' ? 'РІВЕНЬ ПІДВИЩЕНО' : 'LEVEL UP'}
               </p>
-              
+
               <p className="text-[12px] text-[var(--neon-cyan)] mt-2 font-bold tracking-wider font-mono">
-                {lang === 'uk' ? `Етап ${currentStage} → ${currentStage === 6 ? 7 : currentStage + 1}` : `Stage ${currentStage} → ${currentStage === 6 ? 7 : currentStage + 1}`}
+                {lang === 'uk'
+                  ? `Етап ${currentStage} → ${currentStage === 6 ? 7 : currentStage + 1}`
+                  : `Stage ${currentStage} → ${currentStage === 6 ? 7 : currentStage + 1}`}
               </p>
             </motion.div>
           </motion.div>

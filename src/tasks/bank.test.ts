@@ -18,7 +18,7 @@ function runTask(code: string, testCode: string, opts?: { allowImports?: boolean
 
   const assert = (condition: any, message?: string) => {
     if (!condition) {
-      throw new Error(message || "Assertion failed");
+      throw new Error(message || 'Assertion failed');
     }
   };
 
@@ -30,9 +30,9 @@ function runTask(code: string, testCode: string, opts?: { allowImports?: boolean
 
   // Evaluate code
   const fn = new Function('test', 'assertEqual', 'assert', evalCode);
-  
+
   fn(testReg, assertEqual, assert);
-  
+
   return tests;
 }
 
@@ -45,7 +45,7 @@ describe('ITLead Task Bank Verification', () => {
   });
 
   // 2. Perform validations on each task
-  itleadTasks.forEach((task) => {
+  itleadTasks.forEach(task => {
     describe(`Task: ${task.title} (${task.id})`, () => {
       test('Has non-empty core fields', () => {
         expect(task.id).toBeTruthy();
@@ -76,7 +76,7 @@ describe('ITLead Task Bank Verification', () => {
       test('Solution passes all tests', async () => {
         const tests = runTask(task.solution, task.testCode);
         expect(tests.length).toBeGreaterThan(0);
-        
+
         for (const t of tests) {
           await t.fn(); // Should not throw
         }

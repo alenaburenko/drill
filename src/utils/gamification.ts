@@ -10,12 +10,54 @@ export interface LevelInfo {
 }
 
 export const LEVELS: LevelInfo[] = [
-  { level: 1, titleUk: 'Початківець (Script Kiddie)', titleEn: 'Script Kiddie', minXP: 0, maxXP: 100, color: 'var(--text-muted)' },
-  { level: 2, titleUk: 'Юніор Кодер (Junior Coder)', titleEn: 'Junior Coder', minXP: 100, maxXP: 300, color: 'var(--neon-green)' },
-  { level: 3, titleUk: 'Кібер Взломщик (Cyber Hacker)', titleEn: 'Cyber Hacker', minXP: 300, maxXP: 700, color: 'var(--neon-cyan)' },
-  { level: 4, titleUk: 'Кодовий Ніндзя (Code Ninja)', titleEn: 'Code Ninja', minXP: 700, maxXP: 1500, color: 'var(--neon-amber)' },
-  { level: 5, titleUk: 'Майстер Системи (System Architect)', titleEn: 'System Architect', minXP: 1500, maxXP: 3000, color: 'var(--neon-magenta)' },
-  { level: 6, titleUk: 'Легенда Деків (Code Demigod)', titleEn: 'Code Demigod', minXP: 3000, maxXP: Infinity, color: '#ff003c' }
+  {
+    level: 1,
+    titleUk: 'Початківець (Script Kiddie)',
+    titleEn: 'Script Kiddie',
+    minXP: 0,
+    maxXP: 100,
+    color: 'var(--text-muted)',
+  },
+  {
+    level: 2,
+    titleUk: 'Юніор Кодер (Junior Coder)',
+    titleEn: 'Junior Coder',
+    minXP: 100,
+    maxXP: 300,
+    color: 'var(--neon-green)',
+  },
+  {
+    level: 3,
+    titleUk: 'Кібер Взломщик (Cyber Hacker)',
+    titleEn: 'Cyber Hacker',
+    minXP: 300,
+    maxXP: 700,
+    color: 'var(--neon-cyan)',
+  },
+  {
+    level: 4,
+    titleUk: 'Кодовий Ніндзя (Code Ninja)',
+    titleEn: 'Code Ninja',
+    minXP: 700,
+    maxXP: 1500,
+    color: 'var(--neon-amber)',
+  },
+  {
+    level: 5,
+    titleUk: 'Майстер Системи (System Architect)',
+    titleEn: 'System Architect',
+    minXP: 1500,
+    maxXP: 3000,
+    color: 'var(--neon-magenta)',
+  },
+  {
+    level: 6,
+    titleUk: 'Легенда Деків (Code Demigod)',
+    titleEn: 'Code Demigod',
+    minXP: 3000,
+    maxXP: Infinity,
+    color: '#ff003c',
+  },
 ];
 
 export function getLevelForXP(xp: number): LevelInfo {
@@ -57,7 +99,7 @@ export function calculateUserXP(progressMap: Record<string, UserProgress>, tasks
 
 export function calculatePracticeStreak(progressMap: Record<string, UserProgress>): number {
   const dates = new Set<string>();
-  
+
   Object.values(progressMap).forEach(progress => {
     const p = progress as UserProgress;
     if (p?.history) {
@@ -73,7 +115,7 @@ export function calculatePracticeStreak(progressMap: Record<string, UserProgress
 
   // Sort dates descending
   const sortedDates = Array.from(dates).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-  
+
   const todayStr = new Date().toISOString().split('T')[0];
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);

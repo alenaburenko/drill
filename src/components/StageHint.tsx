@@ -18,8 +18,10 @@ interface Props {
 const StageHint: React.FC<Props> = ({ task, t, peekOpen, showComments, onPeek, onToggleComments }) => (
   <div className="flex-1 flex flex-col p-5 gap-4">
     <div>
-      <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2 mb-2"
-        style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+      <h3
+        className="text-xs font-bold uppercase tracking-wider flex items-center gap-2 mb-2"
+        style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
+      >
         <BookOpen className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
         {t.taskCondition}
       </h3>
@@ -29,14 +31,23 @@ const StageHint: React.FC<Props> = ({ task, t, peekOpen, showComments, onPeek, o
     </div>
 
     <div className="flex items-center justify-between">
-      <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+      <h3
+        className="text-xs font-bold uppercase tracking-wider"
+        style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}
+      >
         {t.hint}
       </h3>
       <div className="flex items-center gap-3">
         {peekOpen && <ToggleSwitch checked={showComments} onChange={onToggleComments} label="Коментарі" />}
-        <button onClick={onPeek}
+        <button
+          onClick={onPeek}
           className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
-          style={{ background: 'rgba(var(--neon-amber-rgb), 0.1)', borderColor: 'rgba(var(--neon-amber-rgb), 0.3)', color: 'var(--neon-amber)' }}>
+          style={{
+            background: 'rgba(var(--neon-amber-rgb), 0.1)',
+            borderColor: 'rgba(var(--neon-amber-rgb), 0.3)',
+            color: 'var(--neon-amber)',
+          }}
+        >
           {peekOpen ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           {peekOpen ? t.hideHint : t.peekSolution}
         </button>
@@ -44,22 +55,44 @@ const StageHint: React.FC<Props> = ({ task, t, peekOpen, showComments, onPeek, o
     </div>
 
     {peekOpen ? (
-      <div className="flex-1 border rounded-xl overflow-hidden" style={{ borderColor: 'rgba(var(--neon-amber-rgb), 0.3)', minHeight: '200px' }}>
-        <CodeEditor height="100%" language="javascript"
-          value={showComments ? task.solution : stripComments(task.solution)} readOnly theme="vs-dark" />
+      <div
+        className="flex-1 border rounded-xl overflow-hidden"
+        style={{ borderColor: 'rgba(var(--neon-amber-rgb), 0.3)', minHeight: '200px' }}
+      >
+        <CodeEditor
+          height="100%"
+          language="javascript"
+          value={showComments ? task.solution : stripComments(task.solution)}
+          readOnly
+          theme="vs-dark"
+        />
       </div>
     ) : (
-      <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 text-center"
-        style={{ borderColor: 'var(--border)', background: 'var(--bg-elevated)' }}>
-        <div className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
-          style={{ background: 'var(--bg-surface)', color: 'var(--text-muted)' }}>
+      <div
+        className="flex-1 flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 text-center"
+        style={{ borderColor: 'var(--border)', background: 'var(--bg-elevated)' }}
+      >
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
+          style={{ background: 'var(--bg-surface)', color: 'var(--text-muted)' }}
+        >
           <EyeOff className="w-6 h-6" />
         </div>
-        <h4 className="text-sm font-bold mb-1" style={{ color: 'var(--text-secondary)' }}>{t.solutionHidden}</h4>
-        <p className="text-xs max-w-xs mb-4" style={{ color: 'var(--text-muted)' }}>{t.solutionHiddenDesc}</p>
-        <button onClick={onPeek}
+        <h4 className="text-sm font-bold mb-1" style={{ color: 'var(--text-secondary)' }}>
+          {t.solutionHidden}
+        </h4>
+        <p className="text-xs max-w-xs mb-4" style={{ color: 'var(--text-muted)' }}>
+          {t.solutionHiddenDesc}
+        </p>
+        <button
+          onClick={onPeek}
           className="text-xs font-bold px-4 py-2 rounded-lg transition-all"
-          style={{ background: 'rgba(var(--neon-amber-rgb), 0.12)', color: 'var(--neon-amber)', border: '1px solid rgba(var(--neon-amber-rgb), 0.3)' }}>
+          style={{
+            background: 'rgba(var(--neon-amber-rgb), 0.12)',
+            color: 'var(--neon-amber)',
+            border: '1px solid rgba(var(--neon-amber-rgb), 0.3)',
+          }}
+        >
           {t.peekAnyway}
         </button>
       </div>
