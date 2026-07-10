@@ -8,9 +8,9 @@ interface Props {
 }
 
 const StageMastered: React.FC<Props> = ({ t, peeksCount }) => (
-  <div className="w-full h-full flex flex-col items-center justify-center text-center p-8" style={{ background: '#0d0d0d', color: 'var(--text-secondary)' }}>
+  <div className="w-full h-full flex flex-col items-center justify-center text-center p-8" style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}>
     <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-      style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: 'var(--green)' }}>
+      style={{ background: 'rgba(var(--neon-green-rgb), 0.08)', border: '1px solid rgba(var(--neon-green-rgb), 0.2)', color: 'var(--neon-green)' }}>
       <CheckCircle className="w-10 h-10" />
     </div>
     <h4 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.masteredFull}</h4>
@@ -19,7 +19,7 @@ const StageMastered: React.FC<Props> = ({ t, peeksCount }) => (
       style={{ background: 'rgba(0,0,0,0.4)', borderColor: 'var(--border)' }}>
       <div className="font-bold mb-1 uppercase tracking-wider text-[10px]" style={{ color: 'var(--accent)' }}>{t.masteryResults}</div>
       {[
-        [t.masteryStatus, t.masteryStatusVal, 'var(--green)'],
+        [t.masteryStatus, t.masteryStatusVal, 'var(--neon-green)'],
         [t.masteryPeeks, String(peeksCount), 'var(--text-primary)'],
         [t.masteryRepeat, t.masteryRepeatVal, 'var(--text-primary)'],
       ].map(([k, v, c]) => (

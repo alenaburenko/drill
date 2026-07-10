@@ -34,8 +34,8 @@ const StageExam: React.FC<Props> = ({ task, t, examActive, timerSec, formatTime,
         style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
         {!examActive && timerSec === 0 ? (
           <>
-            <div className="w-14 h-14 rounded-full flex items-center justify-center text-red-500 mb-4"
-              style={{ background: 'rgba(239,68,68,0.1)' }}>
+            <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4"
+              style={{ background: 'rgba(var(--neon-red-rgb), 0.1)', color: 'var(--neon-red)' }}>
               <Clock className="w-8 h-8" />
             </div>
             <h4 className="text-base font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.timeExpired}</h4>
@@ -49,13 +49,13 @@ const StageExam: React.FC<Props> = ({ task, t, examActive, timerSec, formatTime,
         ) : (
           <>
             <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 animate-pulse"
-              style={{ background: 'rgba(239,68,68,0.12)', color: '#ef4444' }}>
+              style={{ background: 'rgba(var(--neon-red-rgb), 0.12)', color: 'var(--neon-red)' }}>
               <Clock className="w-8 h-8" />
             </div>
             <h4 className="text-base font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.examActive}</h4>
             <p className="text-xs max-w-sm leading-relaxed mb-4" style={{ color: 'var(--text-muted)' }}>{t.examActiveDesc}</p>
             <div className="text-sm font-mono font-bold px-4 py-2 rounded-lg border"
-              style={{ color: '#ef4444', background: 'rgba(239,68,68,0.08)', borderColor: 'rgba(239,68,68,0.25)' }}>
+              style={{ color: 'var(--neon-red)', background: 'rgba(var(--neon-red-rgb), 0.08)', borderColor: 'rgba(var(--neon-red-rgb), 0.25)' }}>
               {t.currentTime} {formatTime(timerSec)}
             </div>
 

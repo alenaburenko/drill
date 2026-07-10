@@ -250,9 +250,9 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
                 title={t.stageLabel(num)}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all font-mono"
                 style={currentStage === num
-                  ? { background: 'var(--accent)', color: '#000', boxShadow: '0 0 12px rgba(249,115,22,0.4)' }
+                  ? { background: 'var(--accent)', color: '#000', boxShadow: '0 0 12px rgba(var(--accent-rgb), 0.4)' }
                   : num < progress.learningStage
-                    ? { background: 'rgba(249,115,22,0.15)', color: 'var(--accent)', border: '1px solid rgba(249,115,22,0.3)' }
+                    ? { background: 'rgba(var(--accent-rgb), 0.15)', color: 'var(--accent)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }
                     : { background: 'var(--bg-elevated)', color: 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'not-allowed', opacity: 0.5 }
                 }>
                 {num}
@@ -264,7 +264,7 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
 
       {/* ── Stage info bar ── */}
       <div className="px-5 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b"
-        style={{ background: 'rgba(249,115,22,0.04)', borderColor: 'rgba(249,115,22,0.15)' }}>
+        style={{ background: 'rgba(var(--accent-rgb), 0.04)', borderColor: 'rgba(var(--accent-rgb), 0.15)' }}>
         <div className="flex items-start gap-2.5">
           <Zap className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} />
           <div>
@@ -276,14 +276,14 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
         <div className="flex items-center gap-4 text-xs font-semibold shrink-0 px-4 py-2 rounded-lg border font-mono"
           style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-secondary)' }}>
           {currentStage === 6 && (
-            <div className="flex items-center gap-1.5 animate-pulse" style={{ color: '#ef4444' }}>
+            <div className="flex items-center gap-1.5 animate-pulse" style={{ color: 'var(--neon-red)' }}>
               <Clock className="w-4 h-4" />
               <span>{t.examTimer} {formatTime(timerSec)}</span>
             </div>
           )}
           <div className="flex items-center gap-1.5">
-            <Eye className="w-4 h-4" style={{ color: 'var(--amber)' }} />
-            <span>{t.peeksLabel} <span className="font-bold" style={{ color: 'var(--amber)' }}>{peeksCount}</span></span>
+            <Eye className="w-4 h-4" style={{ color: 'var(--neon-amber)' }} />
+            <span>{t.peeksLabel} <span className="font-bold" style={{ color: 'var(--neon-amber)' }}>{peeksCount}</span></span>
           </div>
           <div>
             <span>{t.maxTime} <span style={{ color: 'var(--text-primary)' }}>{task.timeLimitMin} {t.minSuffix}</span></span>
@@ -311,13 +311,13 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
         </div>
 
         {/* Right panel — Monaco Editor + test console */}
-        <div className="lg:col-span-7 flex flex-col overflow-hidden" style={{ background: '#0d0d0d' }}>
+        <div className="lg:col-span-7 flex flex-col overflow-hidden" style={{ background: 'var(--bg-base)' }}>
 
           {/* Editor header */}
           <div className="px-4 py-2.5 flex items-center justify-between border-b text-xs font-mono"
-            style={{ background: '#111111', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+            style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
             <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--green)' }} />
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--neon-green)' }} />
               solution.js
             </span>
             <button onClick={handleReset}
@@ -334,7 +334,7 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
             )}
             {currentStage === 7 && <StageMastered t={t} peeksCount={peeksCount} />}
             {currentStage === 1 && (
-              <div className="w-full h-full flex flex-col items-center justify-center text-center p-8" style={{ background: '#0d0d0d', color: 'var(--text-secondary)' }}>
+              <div className="w-full h-full flex flex-col items-center justify-center text-center p-8" style={{ background: 'var(--bg-base)', color: 'var(--text-secondary)' }}>
                 <Terminal className="w-12 h-12 mb-3" style={{ color: 'var(--accent)' }} />
                 <h4 className="text-base font-bold mb-1" style={{ color: 'var(--text-primary)' }}>{t.stage1Title}</h4>
                 <p className="text-xs max-w-sm" style={{ color: 'var(--text-muted)' }}>{t.stage1Right}</p>

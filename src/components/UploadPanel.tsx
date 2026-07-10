@@ -81,7 +81,7 @@ export default function UploadPanel({
       <div className="lg:col-span-5" style={{ height: '100%' }}>
         <Card padding="lg">
           <SectionHeader
-            icon={<Plus className="w-4 h-4" style={{ color: 'var(--green)' }} />}
+            icon={<Plus className="w-4 h-4" style={{ color: 'var(--neon-green)' }} />}
             title={t.createTask}
             subtitle={t.createTaskDesc}
           />

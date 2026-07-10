@@ -36,7 +36,7 @@ export default function BackupPanel({ t, progressBackupString, onGenerateBackup,
 
         <div className="space-y-4">
           <h4 className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>{t.restoreTitle}</h4>
-          <p className="text-xs font-mono" style={{ color: 'var(--amber)' }}>{t.restoreWarning}</p>
+          <p className="text-xs font-mono" style={{ color: 'var(--neon-amber)' }}>{t.restoreWarning}</p>
           <textarea id="progress-import-textarea" rows={6} placeholder={t.restorePlaceholder}
             className="w-full rounded-xl p-4 text-xs font-mono resize-none outline-none border"
             style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
@@ -47,7 +47,7 @@ export default function BackupPanel({ t, progressBackupString, onGenerateBackup,
               else alert(t.pasteFirst);
             }}
             variant="success" size="md" glow className="flex items-center gap-1.5 w-full justify-center"
-            style={{ background: 'var(--green)', color: '#000' }}
+            style={{ background: 'var(--neon-green)', color: '#000' }}
           >
             <Upload className="w-4 h-4" />
             {t.restoreBtn}

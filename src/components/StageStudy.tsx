@@ -13,7 +13,7 @@ interface Props {
 
 const StageStudy: React.FC<Props> = ({ task, t, onStartPractice }) => (
   <>
-    <div className="p-4 border-b" style={{ borderColor: 'var(--border-muted)', background: 'rgba(249,115,22,0.06)' }}>
+    <div className="p-4 border-b" style={{ borderColor: 'var(--border-muted)', background: 'rgba(var(--accent-rgb), 0.06)' }}>
       <Button onClick={onStartPractice} variant="primary" size="lg" glow className="w-full flex items-center justify-center gap-2">
         <Zap className="w-4 h-4" />
         {t.startPracticeBtn}
@@ -31,7 +31,7 @@ const StageStudy: React.FC<Props> = ({ task, t, onStartPractice }) => (
       <div>
         <h3 className="text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-2"
           style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
-          <CheckCircle className="w-4 h-4" style={{ color: 'var(--green)' }} />
+          <CheckCircle className="w-4 h-4" style={{ color: 'var(--neon-green)' }} />
           {t.referenceSolution}
         </h3>
         <div className="border rounded-xl overflow-hidden" style={{ borderColor: 'var(--border)', height: '220px' }}>

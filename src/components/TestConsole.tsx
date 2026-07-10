@@ -13,7 +13,7 @@ interface Props {
 }
 
 const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, onRunTests }) => (
-  <div className="border-t flex flex-col" style={{ background: '#090909', borderColor: 'var(--border)', height: '240px' }}>
+  <div className="border-t flex flex-col" style={{ background: 'var(--bg-base)', borderColor: 'var(--border)', height: '240px' }}>
     <div className="px-4 py-2 border-b flex items-center justify-between text-xs font-mono"
       style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
       <span className="font-bold flex items-center gap-1.5">
@@ -45,7 +45,7 @@ const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, 
         <div className="space-y-2">
           {runResults.error && (
             <Card padding="sm" className="flex items-start gap-2.5"
-              style={{ background: 'rgba(239,68,68,0.08)', borderColor: 'rgba(239,68,68,0.25)', color: '#f87171' }}>
+              style={{ background: 'rgba(var(--neon-red-rgb), 0.08)', borderColor: 'rgba(var(--neon-red-rgb), 0.25)', color: 'var(--neon-red)' }}>
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <div className="whitespace-pre-wrap leading-relaxed">{runResults.error}</div>
             </Card>
@@ -54,14 +54,14 @@ const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, 
             <div key={i}
               className="p-2.5 rounded-lg border flex items-start justify-between gap-4"
               style={r.success
-                ? { background: 'rgba(34,197,94,0.06)', borderColor: 'rgba(34,197,94,0.2)', color: '#4ade80' }
-                : { background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.2)', color: '#f87171' }}>
+                ? { background: 'rgba(var(--neon-green-rgb), 0.06)', borderColor: 'rgba(var(--neon-green-rgb), 0.2)', color: 'var(--neon-green)' }
+                : { background: 'rgba(var(--neon-red-rgb), 0.06)', borderColor: 'rgba(var(--neon-red-rgb), 0.2)', color: 'var(--neon-red)' }}>
               <div className="flex items-start gap-2">
                 <span className="font-bold">{r.success ? '✔' : '✘'}</span>
                 <div>
                   <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{r.name}</span>
                   {!r.success && r.error && (
-                    <p className="mt-1 text-[11px] leading-relaxed whitespace-pre-wrap" style={{ color: '#fca5a5' }}>
+                    <p className="mt-1 text-xs leading-relaxed whitespace-pre-wrap" style={{ color: 'var(--neon-red)' }}>
                       {t.testError} {r.error}
                     </p>
                   )}
@@ -74,7 +74,7 @@ const TestConsole: React.FC<Props> = ({ currentStage, isRunning, runResults, t, 
           ))}
           {runResults.success && (
             <Card padding="sm" className="text-center font-bold"
-              style={{ background: 'rgba(34,197,94,0.08)', borderColor: 'rgba(34,197,94,0.3)', color: '#4ade80' }}>
+              style={{ background: 'rgba(var(--neon-green-rgb), 0.08)', borderColor: 'rgba(var(--neon-green-rgb), 0.3)', color: 'var(--neon-green)' }}>
               {t.allTestsPassed(currentStage < 6)}
             </Card>
           )}

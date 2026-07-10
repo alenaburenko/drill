@@ -36,7 +36,7 @@ const StageHint: React.FC<Props> = ({ task, t, peekOpen, showComments, onPeek, o
         {peekOpen && <ToggleSwitch checked={showComments} onChange={onToggleComments} label="Коментарі" />}
         <button onClick={onPeek}
           className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
-          style={{ background: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)', color: 'var(--amber)' }}>
+          style={{ background: 'rgba(var(--neon-amber-rgb), 0.1)', borderColor: 'rgba(var(--neon-amber-rgb), 0.3)', color: 'var(--neon-amber)' }}>
           {peekOpen ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           {peekOpen ? t.hideHint : t.peekSolution}
         </button>
@@ -44,7 +44,7 @@ const StageHint: React.FC<Props> = ({ task, t, peekOpen, showComments, onPeek, o
     </div>
 
     {peekOpen ? (
-      <div className="flex-1 border rounded-xl overflow-hidden" style={{ borderColor: 'rgba(245,158,11,0.3)', minHeight: '200px' }}>
+      <div className="flex-1 border rounded-xl overflow-hidden" style={{ borderColor: 'rgba(var(--neon-amber-rgb), 0.3)', minHeight: '200px' }}>
         <CodeEditor height="100%" language="javascript"
           value={showComments ? task.solution : stripComments(task.solution)} readOnly theme="vs-dark" />
       </div>
@@ -59,7 +59,7 @@ const StageHint: React.FC<Props> = ({ task, t, peekOpen, showComments, onPeek, o
         <p className="text-xs max-w-xs mb-4" style={{ color: 'var(--text-muted)' }}>{t.solutionHiddenDesc}</p>
         <button onClick={onPeek}
           className="text-xs font-bold px-4 py-2 rounded-lg transition-all"
-          style={{ background: 'rgba(245,158,11,0.12)', color: 'var(--amber)', border: '1px solid rgba(245,158,11,0.3)' }}>
+          style={{ background: 'rgba(var(--neon-amber-rgb), 0.12)', color: 'var(--neon-amber)', border: '1px solid rgba(var(--neon-amber-rgb), 0.3)' }}>
           {t.peekAnyway}
         </button>
       </div>

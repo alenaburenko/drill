@@ -18,7 +18,7 @@ const StageRetype: React.FC<Props> = ({ task, t, showComments, onToggleComments 
     <div className="flex items-center justify-between">
       <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2"
         style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
-        <CheckCircle className="w-4 h-4" style={{ color: 'var(--green)' }} />
+        <CheckCircle className="w-4 h-4" style={{ color: 'var(--neon-green)' }} />
         {t.copyForRetyping}
       </h3>
       <ToggleSwitch checked={showComments} onChange={onToggleComments} label="Коментарі" />

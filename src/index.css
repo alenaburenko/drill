@@ -23,13 +23,19 @@
 
   /* ── Retro neon palette ──────────────────────── */
   --neon-cyan:    #00f0ff;
+  --neon-cyan-rgb:    0, 240, 255;
   --neon-magenta: #ff00ff;
+  --neon-magenta-rgb: 255, 0, 255;
   --neon-green:   #00ff41;
+  --neon-green-rgb:   0, 255, 65;
   --neon-amber:   #ffb000;
+  --neon-amber-rgb:   255, 176, 0;
   --neon-red:     #ff004d;
+  --neon-red-rgb:     255, 0, 77;
 
   /* ── Accent (cyan as primary) ─────────────────── */
   --accent:       #00f0ff;
+  --accent-rgb:       0, 240, 255;
   --accent-dim:   #006070;
   --accent-glow:  rgba(0, 240, 255, 0.15);
   --accent-hover: #00c8d4;
@@ -700,18 +706,24 @@ body {
   --bg-card:      #061a06;
   --border:       #0c300c;
   --border-muted: #082208;
-  
-  --neon-cyan:    #00ff41; /* Map cyan to green */
-  --neon-magenta: #008f11; /* Map magenta to dark green */
+
+  --neon-cyan:    #00ff41;
+  --neon-cyan-rgb:    0, 255, 65;
+  --neon-magenta: #008f11;
+  --neon-magenta-rgb: 0, 143, 17;
   --neon-green:   #00ff41;
+  --neon-green-rgb:   0, 255, 65;
   --neon-amber:   #39ff14;
+  --neon-amber-rgb:   57, 255, 20;
   --neon-red:     #8f0000;
-  
+  --neon-red-rgb:     143, 0, 0;
+
   --accent:       #00ff41;
+  --accent-rgb:       0, 255, 65;
   --accent-dim:   #005008;
   --accent-glow:  rgba(0, 255, 65, 0.15);
   --accent-hover: #10e035;
-  
+
   --text-primary:   #d8ffd8;
   --text-secondary: #70b870;
   --text-muted:     #356835;
@@ -725,18 +737,24 @@ body {
   --bg-card:      #1e1405;
   --border:       #3c280a;
   --border-muted: #2e1e08;
-  
-  --neon-cyan:    #ffb000; /* Map cyan to amber */
-  --neon-magenta: #ff6c00; /* Map magenta to orange */
+
+  --neon-cyan:    #ffb000;
+  --neon-cyan-rgb:    255, 176, 0;
+  --neon-magenta: #ff6c00;
+  --neon-magenta-rgb: 255, 108, 0;
   --neon-green:   #00ff41;
+  --neon-green-rgb:   0, 255, 65;
   --neon-amber:   #ffb000;
+  --neon-amber-rgb:   255, 176, 0;
   --neon-red:     #ff003c;
-  
+  --neon-red-rgb:     255, 0, 60;
+
   --accent:       #ffb000;
+  --accent-rgb:       255, 176, 0;
   --accent-dim:   #7c3a0e;
   --accent-glow:  rgba(255, 176, 0, 0.15);
   --accent-hover: #ea9f00;
-  
+
   --text-primary:   #ffe8d0;
   --text-secondary: #b89060;
   --text-muted:     #685038;
@@ -750,18 +768,24 @@ body {
   --bg-card:      #2e303e;
   --border:       #44475a;
   --border-muted: #383a4c;
-  
-  --neon-cyan:    #8bd5ca; /* Map cyan to dracula cyan */
-  --neon-magenta: #ff79c6; /* Map magenta to pink */
+
+  --neon-cyan:    #8bd5ca;
+  --neon-cyan-rgb:    139, 213, 202;
+  --neon-magenta: #ff79c6;
+  --neon-magenta-rgb: 255, 121, 198;
   --neon-green:   #50fa7b;
+  --neon-green-rgb:   80, 250, 123;
   --neon-amber:   #f1fa8c;
+  --neon-amber-rgb:   241, 250, 140;
   --neon-red:     #ff5555;
-  
-  --accent:       #bd93f9; /* Dracula Purple */
+  --neon-red-rgb:     255, 85, 85;
+
+  --accent:       #bd93f9;
+  --accent-rgb:       189, 147, 249;
   --accent-dim:   #6272a4;
   --accent-glow:  rgba(189, 147, 249, 0.18);
   --accent-hover: #ae7cf7;
-  
+
   --text-primary:   #f8f8f2;
   --text-secondary: #a4a7b5;
   --text-muted:     #6272a4;
@@ -775,18 +799,24 @@ body {
   --bg-card:      #132032;
   --border:       #243c58;
   --border-muted: #1c2e44;
-  
+
   --neon-cyan:    #00e5ff;
-  --neon-magenta: #0088ff; /* Map magenta to blue */
+  --neon-cyan-rgb:    0, 229, 255;
+  --neon-magenta: #0088ff;
+  --neon-magenta-rgb: 0, 136, 255;
   --neon-green:   #00ffb7;
+  --neon-green-rgb:   0, 255, 183;
   --neon-amber:   #00e5ff;
+  --neon-amber-rgb:   0, 229, 255;
   --neon-red:     #ff3366;
-  
+  --neon-red-rgb:     255, 51, 102;
+
   --accent:       #00e5ff;
+  --accent-rgb:       0, 229, 255;
   --accent-dim:   #005b66;
   --accent-glow:  rgba(0, 229, 255, 0.15);
   --accent-hover: #00ccff;
-  
+
   --text-primary:   #e0f7fc;
   --text-secondary: #8da4b8;
   --text-muted:     #4d6278;

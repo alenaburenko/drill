@@ -15,3 +15,11 @@ coverage/
 
 # Claude SDD cache (auto-generated, machine-specific)
 .claude/sdd-cache/
+
+# Handoff / IDE config — local-only
+.handoff/
+.cursor/
+.windsurf/
+
+# Generated task metadata (not part of source)
+skipped-tasks.json
