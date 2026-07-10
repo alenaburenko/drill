@@ -10,7 +10,7 @@ import {
   BookOpen, Filter, Code, Zap, Trash2, BrainCircuit, Calendar,
   Layers, ChevronRight, TrendingUp, AlertCircle, Clock, Sparkles,
   Terminal, Globe, ChevronDown, ChevronUp, ArrowLeft,
-  RotateCcw, CheckCircle, AlertTriangle, BookOpen as BookOpenIcon, Palette
+  RotateCcw, CheckCircle, AlertTriangle, BookOpen as BookOpenIcon, Palette, Tv
 } from 'lucide-react';
 // Note: some lucide icons are used only in DashboardView or TaskView;
 // we keep them here for convenience — unused imports are tree-shaken by Vite.
@@ -31,6 +31,7 @@ import DashboardView from './components/DashboardView';
 import UploadPanel from './components/UploadPanel';
 import BackupPanel from './components/BackupPanel';
 import { EpicLanding } from './components/EpicLanding';
+import { checkNewAchievements, ACHIEVEMENTS } from './utils/achievements';
 
 // ─── Retro sound system ────────────────────────────────────────────────
 function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
@@ -111,6 +112,56 @@ export default function App() {
     document.documentElement.classList.remove(...classes);
     document.documentElement.classList.add(`theme-${theme}`);
   }, [theme]);
+
+  // ── CRT system ──────────────────────────────────────────────────────────
+  const [crtActive, setCrtActive] = useState<boolean>(() =>
+    localStorage.getItem('drill_crt_active') !== 'false'
+  );
+
+  useEffect(() => {
+    localStorage.setItem('drill_crt_active', String(crtActive));
+    if (crtActive) {
+      document.documentElement.classList.add('crt-effects-active');
+    } else {
+      document.documentElement.classList.remove('crt-effects-active');
+    }
+  }, [crtActive]);
+
+  // ── Achievements system ──────────────────────────────────────────────────
+  const [unlockedIds, setUnlockedIds] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('drill_unlocked_achievements') || '[]');
+    } catch {
+      return [];
+    }
+  });
+
+  const [activeToast, setActiveToast] = useState<{ id: string; icon: string; titleUk: string; titleEn: string } | null>(null);
+
+  const triggerAchievementToast = (achievement: { id: string; icon: string; titleUk: string; titleEn: string }) => {
+    try {
+      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const now = ctx.currentTime;
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 arpeggio
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        gain.gain.setValueAtTime(0.06, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 0.3);
+      });
+    } catch {}
+
+    setActiveToast(achievement);
+    setTimeout(() => {
+      setActiveToast(null);
+    }, 4500);
+  };
 
   // ── Boot sequence ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -245,6 +296,17 @@ export default function App() {
   };
 
   const handleSaveProgress = (taskId: string, updatedProgress: UserProgress) => {
+    // Check for new achievements
+    const newlyUnlocked = checkNewAchievements(progressMap, updatedProgress, unlockedIds);
+    if (newlyUnlocked.length > 0) {
+      const nextUnlockedIds = [...unlockedIds, ...newlyUnlocked.map(a => a.id)];
+      setUnlockedIds(nextUnlockedIds);
+      localStorage.setItem('drill_unlocked_achievements', JSON.stringify(nextUnlockedIds));
+      
+      // Trigger toast for the first new achievement
+      triggerAchievementToast(newlyUnlocked[0]);
+    }
+
     setProgressMap(prev => ({ ...prev, [taskId]: updatedProgress }));
   };
 
@@ -362,7 +424,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col crt-curve" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+    <div className="min-h-screen flex flex-col crt-curve crt-warp-container" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
       {/* Matrix rain background */}
       <MatrixRain />
 
@@ -431,6 +493,20 @@ export default function App() {
                   {theme}
                 </button>
 
+                {/* CRT monitor toggle */}
+                <button
+                  onClick={() => {
+                    SOUNDS.click();
+                    setCrtActive(!crtActive);
+                  }}
+                  className={`font-mono text-[9px] uppercase tracking-widest px-3 py-1.5 border transition-all flex items-center gap-1.5 cursor-pointer ${crtActive ? 'border-[var(--neon-green)] text-[var(--neon-green)]' : 'border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)]'}`}
+                  style={{ background: 'transparent' }}
+                  title="Toggle CRT Screen Curve & Scanlines"
+                >
+                  <Tv className="w-3.5 h-3.5" />
+                  <span>CRT: {crtActive ? 'ON' : 'OFF'}</span>
+                </button>
+
                 {/* Nav tabs */}
                 <nav className="flex items-center gap-0 p-0.5 border" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
                   {(['dashboard', 'catalog', 'upload', 'backup'] as const).map(tab => {
@@ -468,6 +544,7 @@ export default function App() {
                   progressMap={progressMap}
                   customTasks={customTasks}
                   lang={lang}
+                  unlockedIds={unlockedIds}
                   onSelectTask={setSelectedTaskId}
                   onSetActiveTab={setActiveTab}
                   activeTab={activeTab}
@@ -610,6 +687,38 @@ export default function App() {
                 <span className="text-[8px] font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>▼ SCROLL ▼</span>
               </div>
 
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Achievements Toast Notification */}
+      <AnimatePresence>
+        {activeToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.85 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 180 }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-4 px-5 py-4 border-2 border-[var(--neon-magenta)] bg-[var(--bg-surface)] shadow-[0_0_25px_rgba(255,0,255,0.25)] rounded-md max-w-sm pointer-events-auto"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            <span className="text-3xl filter drop-shadow-[0_0_8px_rgba(255,0,255,0.5)] animate-pulse shrink-0">
+              {activeToast.icon}
+            </span>
+
+            <div>
+              <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--neon-magenta)] drop-shadow-[0_0_6px_rgba(255,0,255,0.4)]">
+                {lang === 'uk' ? 'ДОСЯГНЕННЯ РОЗБЛОКОВАНО!' : 'ACHIEVEMENT UNLOCKED!'}
+              </h3>
+              
+              <h4 className="text-xs font-bold text-[var(--text-primary)] mt-1">
+                {lang === 'uk' ? activeToast.titleUk : activeToast.titleEn}
+              </h4>
+              
+              <p className="text-[9px] text-[var(--text-secondary)] mt-0.5 leading-normal">
+                {lang === 'uk' ? activeToast.descUk : activeToast.descEn}
+              </p>
             </div>
           </motion.div>
         )}

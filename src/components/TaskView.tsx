@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { CodeEditor } from './CodeEditor';
 import { DrillTask, UserProgress } from '../types';
 import { runTestsInWorker, RunResults } from '../runner/testRunner';
@@ -40,11 +41,32 @@ function getInitialCode(stage: number, task: DrillTask): string {
   return '';
 }
 
+function playLevelUpSound() {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const now = ctx.currentTime;
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5 arpeggio
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + i * 0.12);
+      gain.gain.setValueAtTime(0.08, now + i * 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + i * 0.12);
+      osc.stop(now + i * 0.12 + 0.2);
+    });
+  } catch { /* silent fail */ }
+}
+
 export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgress, onBack, lang = 'uk' as Lang }) => {
   const t: T = getT(lang);
 
   const [currentStage, setCurrentStage] = useState<number>(progress.learningStage || 1);
   const [code, setCode] = useState<string>('');
+  const [showLevelUp, setShowLevelUp] = useState<boolean>(false);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [runResults, setRunResults] = useState<RunResults | null>(null);
 
@@ -126,6 +148,9 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
       const nextStage = currentStage === 6 ? 7 : currentStage + 1;
       if (currentStage === 6) setExamActive(false);
 
+      playLevelUpSound();
+      setShowLevelUp(true);
+
       const nextPracticeDate = new Date();
       nextPracticeDate.setHours(nextPracticeDate.getHours() + (INTERVAL_MAP[currentStage] || 24));
       onSaveProgress(task.id, {
@@ -137,7 +162,10 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
           timeSpentSec: currentStage === 6 ? (task.timeLimitMin * 60 - timerSec) : undefined,
         }],
       });
-      setTimeout(() => setCurrentStage(nextStage), 1500);
+      setTimeout(() => {
+        setCurrentStage(nextStage);
+        setShowLevelUp(false);
+      }, 1800);
     } else {
       onSaveProgress(task.id, {
         ...progress, learningStage: currentStage, lastPracticed: new Date().toISOString(),
@@ -332,6 +360,47 @@ export const TaskView: React.FC<TaskViewProps> = ({ task, progress, onSaveProgre
             runResults={runResults} t={t} onRunTests={handleRunTests} />
         </div>
       </div>
+
+      {/* Level Up Overlay */}
+      <AnimatePresence>
+        {showLevelUp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[rgba(13,0,21,0.85)] pointer-events-none"
+          >
+            <motion.div
+              initial={{ scale: 0.5, rotate: -5, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              exit={{ scale: 1.2, opacity: 0 }}
+              transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+              className="px-8 py-6 border-4 border-[var(--neon-green)] bg-[var(--bg-surface)] shadow-[0_0_40px_rgba(0,255,65,0.4)] text-center relative max-w-sm flex flex-col items-center"
+            >
+              {/* Particle glow ring behind */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[var(--neon-green)] to-[var(--neon-cyan)] blur-[25px] opacity-15 rounded-lg -z-10" />
+
+              {/* Blinking game badge */}
+              <span className="text-4xl animate-bounce mb-2">⭐</span>
+
+              {/* Pixelated title */}
+              <h2 className="text-xl font-black tracking-widest text-[var(--neon-green)] drop-shadow-[0_0_10px_rgba(0,255,65,0.5)] uppercase font-mono">
+                STAGE PASSED
+              </h2>
+              
+              <div className="h-0.5 w-32 bg-[var(--neon-green)] my-3 opacity-60 animate-pulse" />
+
+              <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.2em] font-mono">
+                {lang === 'uk' ? 'РІВЕНЬ ПІДВИЩЕНО' : 'LEVEL UP'}
+              </p>
+              
+              <p className="text-[12px] text-[var(--neon-cyan)] mt-2 font-bold tracking-wider font-mono">
+                {lang === 'uk' ? `Етап ${currentStage} → ${currentStage === 6 ? 7 : currentStage + 1}` : `Stage ${currentStage} → ${currentStage === 6 ? 7 : currentStage + 1}`}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

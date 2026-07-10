@@ -16,12 +16,14 @@ import {
   Play, Clock, ChevronRight, Layers, TrendingUp,
   Sparkles, AlertCircle
 } from 'lucide-react';
+import { ACHIEVEMENTS } from '../utils/achievements';
 
 interface DashboardViewProps {
   allTasks: DrillTask[];
   progressMap: Record<string, UserProgress>;
   customTasks: DrillTask[];
   lang: Lang;
+  unlockedIds: string[];
   onSelectTask: (id: string) => void;
   onSetActiveTab: (tab: 'dashboard' | 'catalog' | 'upload' | 'backup') => void;
   activeTab: 'dashboard' | 'catalog' | 'upload' | 'backup';
@@ -45,7 +47,7 @@ function playBeep(freq = 880, duration = 60, type: OscillatorType = 'square') {
 }
 
 export default function DashboardView({
-  allTasks, progressMap, customTasks, lang, onSelectTask, onSetActiveTab, activeTab,
+  allTasks, progressMap, customTasks, lang, unlockedIds, onSelectTask, onSetActiveTab, activeTab,
 }: DashboardViewProps) {
   const t = getT(lang);
 
@@ -222,6 +224,45 @@ export default function DashboardView({
               <span style={{ color: 'var(--text-secondary)' }}>{t.totalPeeks}</span>
               <span className="font-bold" style={{ color: 'var(--neon-amber)' }}>{t.peeksTimes(stats.totalPeeks)}</span>
             </div>
+          </div>
+        </Card>
+
+        {/* Achievements board */}
+        <Card padding="md">
+          <SectionHeader
+            icon={<span className="text-sm">🏆</span>}
+            title={lang === 'uk' ? `Досягнення (${unlockedIds.length}/${ACHIEVEMENTS.length})` : `Achievements (${unlockedIds.length}/${ACHIEVEMENTS.length})`}
+          />
+          <div className="grid grid-cols-6 gap-2 pt-2">
+            {ACHIEVEMENTS.map(ach => {
+              const isUnlocked = unlockedIds.includes(ach.id);
+              return (
+                <div
+                  key={ach.id}
+                  title={lang === 'uk' ? `${ach.titleUk}: ${ach.descUk}` : `${ach.titleEn}: ${ach.descEn}`}
+                  className={`h-11 rounded-sm border flex items-center justify-center text-xl transition-all duration-300 relative group cursor-pointer ${
+                    isUnlocked
+                      ? 'border-[var(--neon-magenta)] bg-[rgba(255,0,255,0.04)] shadow-[0_0_8px_rgba(255,0,255,0.15)] opacity-100 hover:scale-105'
+                      : 'border-dashed border-[var(--border)] bg-transparent opacity-30 hover:opacity-50'
+                  }`}
+                >
+                  <span>{ach.icon}</span>
+                  
+                  {/* Tooltip on hover */}
+                  <div className="absolute bottom-full mb-2 hidden group-hover:block z-50 bg-[var(--bg-elevated)] border border-[var(--border)] p-2 rounded-sm text-[9px] font-mono leading-normal w-48 shadow-xl -translate-x-1/2 left-1/2 pointer-events-none">
+                    <div className={`font-bold uppercase tracking-wider mb-1 ${isUnlocked ? 'text-[var(--neon-magenta)]' : 'text-[var(--text-muted)]'}`}>
+                      {lang === 'uk' ? (isUnlocked ? 'Розблоковано' : 'Заблоковано') : (isUnlocked ? 'Unlocked' : 'Locked')}
+                    </div>
+                    <div className="text-[var(--text-primary)] font-bold mb-0.5">
+                      {lang === 'uk' ? ach.titleUk : ach.titleEn}
+                    </div>
+                    <div style={{ color: 'var(--text-secondary)' }}>
+                      {lang === 'uk' ? ach.descUk : ach.descEn}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </Card>
 

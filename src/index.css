@@ -107,7 +107,7 @@ body {
 }
 
 /* ─── Retro grid overlay ─── */
-body::before {
+.crt-effects-active body::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -120,7 +120,7 @@ body::before {
 }
 
 /* ─── CRT scanlines ─── */
-body::after {
+.crt-effects-active body::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -162,7 +162,7 @@ body::after {
 .crt-curve {
   position: relative;
 }
-.crt-curve::after {
+.crt-effects-active .crt-curve::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -177,7 +177,12 @@ body::after {
   100% { transform: translateY(100vh); }
 }
 
+.crt-effects-active .scanline-sweep {
+  display: block;
+}
+
 .scanline-sweep {
+  display: none;
   position: fixed;
   left: 0;
   right: 0;
@@ -186,6 +191,22 @@ body::after {
   pointer-events: none;
   z-index: 9996;
   animation: scanline-sweep 8s linear infinite;
+}
+
+/* ─── CRT Monitor Warp & Flicker ─── */
+.crt-effects-active .crt-warp-container {
+  transform: perspective(1000px) rotateX(0.5deg) scale(0.99);
+  animation: crt-flicker 0.15s infinite alternate;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s ease;
+}
+.crt-warp-container {
+  transition: transform 0.3s ease;
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.994; }
+  100% { opacity: 1; }
 }
 
 /* ─── Glow keyframes ─── */
