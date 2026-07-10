@@ -22,7 +22,7 @@ import { CatalogView } from './components/CatalogView';
 const DashboardView = lazy(() => import('./components/DashboardView'));
 const UploadPanel = lazy(() => import('./components/UploadPanel'));
 const BackupPanel = lazy(() => import('./components/BackupPanel'));
-const EpicLanding = lazy(() => import('./components/EpicLanding'));
+const EpicLanding = lazy(() => import('./components/EpicLanding').then(m => ({ default: m.EpicLanding })));
 
 // ─── Matrix rain ────────────────────────────────────────────────────────
 function MatrixRain() {
